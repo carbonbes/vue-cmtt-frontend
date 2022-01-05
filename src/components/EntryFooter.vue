@@ -1,5 +1,5 @@
 <template>
-  <div class="entry-footer e-island">
+  <div class="entry-footer">
     <div class="entry-footer__comments-btn entry-footer__item">
       <message-circle-icon class="icon" />
       <span class="label" v-if="commentsCount > 0">{{ commentsCount }}</span>
@@ -66,7 +66,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .entry-footer {
   display: flex;
   align-items: center;
@@ -81,21 +81,21 @@ export default {
   margin-right: 33px;
 }
 
-.entry-footer__comments-btn .icon,
-.entry-footer__repost-btn .icon,
-.entry-footer__favorite-btn .icon {
-  width: 21px;
-  height: 21px;
-  color: inherit;
-  stroke-width: 2.25;
-}
+.entry-footer__comments-btn,
+.entry-footer__repost-btn,
+.entry-footer__favorite-btn {
+  & .icon {
+    width: 21px;
+    height: 21px;
+    color: inherit;
+    stroke-width: 2.25;
+  }
 
-.entry-footer__comments-btn .label,
-.entry-footer__repost-btn .label,
-.entry-footer__favorite-btn .label {
-  margin-left: 5px;
-  color: inherit;
-  font-weight: 500;
+  & .label {
+    margin-left: 5px;
+    color: inherit;
+    font-weight: 500;
+  }
 }
 
 .entry-footer__comments-btn,

@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 @import "normalize.css";
 @import "roboto.css";
 @import "../node_modules/nprogress/nprogress.css";
@@ -169,8 +169,32 @@ body {
   background: var(--highlight-block-color);
 }
 
+.e-island {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 .cover_highlighted > div {
   margin: 0 auto;
+}
+
+.embed-text,
+.entry-content-subtitle {
+  & a {
+    color: #3766a9;
+    border-bottom: 1px solid #bed0ea;
+    cursor: pointer;
+  }
+}
+
+@media (hover: hover) {
+  .embed-text,
+  .entry-content-subtitle {
+    & a:hover {
+      color: #cd192e;
+      border-bottom: 1px solid #f6b4bc;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {

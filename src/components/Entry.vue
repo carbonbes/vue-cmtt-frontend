@@ -21,15 +21,18 @@
       </div>
     </div>
     <div class="entry-content">
-      <div class="e-island" v-if="entry.title">
-        <div class="entry-content__title">
+      <div class="e-island">
+        <div class="entry-content__title" v-if="entry.title">
           <entry-title :title="entry.title" />
         </div>
-      </div>
-      <div class="e-island" v-if="subtitle.length > 0">
-        <div class="entry-content__subtitle">
+        <div class="entry-content__subtitle" v-if="subtitle.length > 0">
           {{ subtitle[0].data.text }}
         </div>
+        <telegram-embed
+          :data="telegramCovers"
+          v-if="telegramCovers.length > 0"
+        />
+        <link-block :data="linkCovers" v-if="linkCovers.length > 0" />
       </div>
       <div
         class="entry-content__cover cover"
@@ -46,23 +49,37 @@
       <div
         class="entry-content__cover cover"
         :class="videoClassObject"
-        v-if="videoCovers.length > 0"
+        v-if="videoCovers.length > 0 || gifCovers.length > 0"
       >
-        <Video :video="videoCovers" type="1" :maxWidth="640" :maxHeight="600" />
-      </div>
-      <div class="e-island" v-if="telegramCovers.length > 0">
-        <telegram-embed :data="telegramCovers" />
-      </div>
-      <div class="e-island" v-if="linkCovers.length > 0">
-        <link-block :data="linkCovers" />
+        <Video
+          :video="videoCovers"
+          :srcWidth="videoCovers[0].data.video.data.width"
+          :srcHeight="videoCovers[0].data.video.data.height"
+          :maxWidth="640"
+          :maxHeight="600"
+          type="1"
+          :externalService="videoCovers[0].data.video.data.external_service"
+          v-if="videoCovers.length > 0"
+        />
+        <Video
+          :video="gifCovers[0].data.items[0].image.data.uuid"
+          :srcWidth="gifCovers[0].data.items[0].image.data.width"
+          :srcHeight="gifCovers[0].data.items[0].image.data.height"
+          :maxWidth="640"
+          :maxHeight="600"
+          type="1"
+          v-if="gifCovers.length > 0"
+        />
       </div>
     </div>
-    <entry-footer
-      :commentsCount="entry.counters.comments"
-      :repostsCount="entry.counters.reposts"
-      :favoritesCount="entry.counters.favorites"
-      :entryRating="entry.likes"
-    />
+    <div class="e-island">
+      <entry-footer
+        :commentsCount="entry.counters.comments"
+        :repostsCount="entry.counters.reposts"
+        :favoritesCount="entry.counters.favorites"
+        :entryRating="entry.likes"
+      />
+    </div>
   </div>
 </template>
 
@@ -159,11 +176,15 @@ export default {
     },
 
     telegramCovers() {
-      return this.entry.blocks.filter((cover) => cover.type === "telegram");
+      return this.entry.blocks.filter(
+        (cover) => cover.type === "telegram" && cover.cover === true
+      );
     },
 
     linkCovers() {
-      return this.entry.blocks.filter((cover) => cover.type === "link");
+      return this.entry.blocks.filter(
+        (cover) => cover.type === "link" && cover.cover === true
+      );
     },
   },
 
@@ -184,12 +205,7 @@ export default {
 };
 </script>
 
-<style>
-.e-island {
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
+<style lang="scss">
 .entry {
   max-width: 640px;
   display: flex;
@@ -197,6 +213,22 @@ export default {
   background: var(--entry-bg-color);
   border-radius: 8px;
   user-select: none;
+
+  & .entry-header {
+    margin-top: 16px;
+    margin-bottom: 10px;
+  }
+
+  & .entry-title {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.3em;
+  }
+
+  & .entry-footer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
 }
 
 .entry-repost-data {
@@ -226,28 +258,12 @@ export default {
   line-height: 1.5em;
 }
 
-.entry-content__title {
-  margin-bottom: 7px;
-}
-
-.entry .entry-title {
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 1.3em;
+.entry-content__subtitle {
+  margin-top: 7px;
 }
 
 .entry-content__cover {
   margin-top: 12px;
-}
-
-.entry .entry-header {
-  margin-top: 16px;
-  margin-bottom: 10px;
-}
-
-.entry .entry-footer {
-  margin-top: 15px;
-  margin-bottom: 15px;
 }
 
 @media screen and (max-width: 768px) {

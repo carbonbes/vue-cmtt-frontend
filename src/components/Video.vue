@@ -83,18 +83,6 @@ export default {
       return width;
     },
 
-    srcWidth: function () {
-      return this.video[0].data.video.data.width;
-    },
-
-    srcHeight: function () {
-      return this.video[0].data.video.data.height;
-    },
-
-    externalService: function () {
-      return this.video[0].data.video.data.external_service;
-    },
-
     isDefaultVideo: function () {
       return (
         !this.externalService || Object.keys(this.externalService).length === 0
@@ -102,31 +90,34 @@ export default {
     },
 
     isYoutube: function () {
-      return this.externalService.name === "youtube";
+      return this.externalService?.name === "youtube";
     },
 
     isVimeo: function () {
-      return this.externalService.name === "vimeo";
+      return this.externalService?.name === "vimeo";
     },
 
     isGfycat: function () {
-      return this.externalService.name === "gfycat";
+      return this.externalService?.name === "gfycat";
     },
 
     isGiphy: function () {
-      return this.externalService.name === "giphy";
+      return this.externalService?.name === "giphy";
     },
 
     isCoub: function () {
-      return this.externalService.name === "coub";
+      return this.externalService?.name === "coub";
     },
   },
 
   props: {
-    video: Object,
+    video: String,
     type: String,
+    srcWidth: Number,
+    srcHeight: Number,
     maxWidth: Number,
     maxHeight: Number,
+    externalService: Object,
   },
 };
 </script>

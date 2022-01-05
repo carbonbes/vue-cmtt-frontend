@@ -34,7 +34,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .header {
   position: sticky !important;
   top: 0;
@@ -56,17 +56,18 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  & .icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2.25;
+  }
 }
 
-.header__item-bell-btn .icon,
-.header__item-login-btn .icon {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2.25;
-}
-
-.header__item-login-btn .icon {
-  margin-right: 8px;
+.header__item-login-btn {
+  & .icon {
+    margin-right: 8px;
+  }
 }
 
 .header__item-login-btn {
@@ -85,14 +86,21 @@ export default {
 }
 
 @media (hover: hover) {
-  .site-burger-btn:hover .icon {
-    color: var(--grey-color);
+  .site-burger-btn {
+    &:hover {
+      .icon {
+        color: var(--grey-color);
+      }
+    }
   }
 
-  .header__item-bell-btn:hover .icon,
-  .header__item-login-btn:hover .icon,
-  .header__item-login-btn:hover .label {
-    color: var(--brand-color);
+  .header__item-bell-btn,
+  .header__item-login-btn {
+    &:hover {
+      .icon {
+        color: var(--brand-color);
+      }
+    }
   }
 }
 </style>

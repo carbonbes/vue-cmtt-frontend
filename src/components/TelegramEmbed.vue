@@ -9,17 +9,22 @@
           :title="new Date(dateTime * 1000).toLocaleString()"
         />
       </div>
+      <div class="spacer" />
+      <div class="embed-header__logo"><telegram-logo /></div>
     </div>
-    <div class="embed-text" v-html="text"></div>
+    <div class="embed-text" v-html="text" v-if="text"></div>
     <div class="embed-cover" v-if="imgCover || videoCover">
       <img :src="imgCover" alt="" v-if="imgCover" />
-      <video controls v-if="videoCover"><source :src="videoCover" /></video>
+      <video controls playsinline v-if="videoCover">
+        <source :src="videoCover" />
+      </video>
     </div>
   </div>
 </template>
 
 <script>
 import DateTime from "./DateTime.vue";
+import TelegramLogo from "@/assets/logos/telegram_logo.svg";
 
 export default {
   components: { DateTime },
@@ -60,7 +65,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .embed {
   margin-top: 7px;
   display: flex;
@@ -71,18 +76,18 @@ export default {
 }
 
 .embed-header {
-  margin: 20px 20px 0;
+  margin: 15px 20px;
   display: flex;
   align-items: center;
 }
 
 .embed-header__data {
   margin-left: 10px;
-}
 
-.embed-header__data .date-time {
-  font-size: 13px;
-  color: var(--grey-color);
+  & .date-time {
+    font-size: 13px;
+    color: var(--grey-color);
+  }
 }
 
 .embed-header__author-name {
@@ -97,22 +102,28 @@ export default {
 }
 
 .embed-text {
-  margin: 10px 20px 20px;
+  margin: 0 20px 15px;
   font-size: 18px;
   line-height: 26px;
+
+  & b {
+    font-weight: 400;
+  }
 }
 
-.embed-cover img,
-video {
-  width: 100%;
-  display: block;
-  border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
+.embed-cover {
+  & img,
+  video {
+    width: 100%;
+    display: block;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
 
-.embed-cover video {
-  max-height: 600px;
-  background: var(--grey-color);
-  cursor: pointer;
+  & video {
+    max-height: 600px;
+    background: var(--grey-color);
+    cursor: pointer;
+  }
 }
 </style>
