@@ -23,7 +23,7 @@
     <div class="entry-content">
       <div class="e-island">
         <div class="entry-content__title" v-if="entry.title">
-          <entry-title :title="entry.title" />
+          <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
         </div>
         <div class="entry-content__subtitle" v-if="subtitle.length > 0">
           {{ subtitle[0].data.text }}
@@ -49,7 +49,7 @@
       <div
         class="entry-content__cover cover"
         :class="videoClassObject"
-        v-if="videoCovers.length > 0 || gifCovers.length > 0"
+        v-if="videoCovers.length > 0"
       >
         <Video
           :video="videoCovers"
@@ -61,6 +61,12 @@
           :externalService="videoCovers[0].data.video.data.external_service"
           v-if="videoCovers.length > 0"
         />
+      </div>
+      <div
+        class="entry-content__cover cover"
+        :class="gifClassObject"
+        v-if="gifCovers.length > 0"
+      >
         <Video
           :video="gifCovers[0].data.items[0].image.data.uuid"
           :srcWidth="gifCovers[0].data.items[0].image.data.width"
@@ -94,48 +100,6 @@ import { RefreshCwIcon } from "@zhuowenli/vue-feather-icons";
 import LinkBlock from "./LinkBlock.vue";
 
 export default {
-  methods: {
-    imageClassObject() {
-      if (this.imageCovers.length > 0) {
-        return {
-          cover_vertical:
-            this.imageCovers[0].data.items[0].covers.data.height >
-            this.imageCovers[0].data.items[0].covers.data.width,
-          cover_wide:
-            this.imageCovers[0].data.items[0].covers.data.width > 640 &&
-            !this.imageCovers[0].data.with_background,
-          cover_vertical:
-            this.imageCovers[0].data.items[0].covers.data.height >
-            this.imageCovers[0].data.items[0].covers.data.width,
-          cover_thin:
-            this.imageCovers[0].data.items[0].covers.data.width < 640 &&
-            !this.imageCovers[0].data.with_background,
-          cover_highlighted: this.imageCovers[0].data.with_background,
-        };
-      }
-    },
-
-    videoClassObject() {
-      if (this.videoCovers.length > 0) {
-        return {
-          cover_vertical:
-            this.videoCovers[0].data.video.data.height >
-            this.videoCovers[0].data.video.data.width,
-          cover_wide:
-            this.videoCovers[0].data.video.data.width > 640 &&
-            !this.videoCovers[0].data.with_background,
-          cover_vertical:
-            this.videoCovers[0].data.video.data.height >
-            this.videoCovers[0].data.video.data.width,
-          cover_thin:
-            this.videoCovers[0].data.video.data.width < 640 &&
-            !this.videoCovers[0].data.with_background,
-          cover_highlighted: this.videoCovers[0].data.with_background,
-        };
-      }
-    },
-  },
-
   computed: {
     subtitle() {
       return this.entry.blocks.filter(
@@ -186,6 +150,51 @@ export default {
         (cover) => cover.type === "link" && cover.cover === true
       );
     },
+
+    imageClassObject() {
+      return {
+        cover_vertical:
+          this.imageCovers[0].data.items[0].image.data.height >
+          this.imageCovers[0].data.items[0].image.data.width,
+        cover_wide:
+          this.imageCovers[0].data.items[0].image.data.width > 640 &&
+          !this.imageCovers[0].data.with_background,
+        cover_thin:
+          this.imageCovers[0].data.items[0].image.data.width < 640 &&
+          !this.imageCovers[0].data.with_background,
+        cover_highlighted: this.imageCovers[0].data.with_background,
+      };
+    },
+
+    videoClassObject() {
+      return {
+        cover_vertical:
+          this.videoCovers[0]?.data.video.data.height >
+          this.videoCovers[0]?.data.video.data.width,
+        cover_wide:
+          this.videoCovers[0]?.data.video.data.width > 640 &&
+          !this.videoCovers[0]?.data.with_background,
+        cover_thin:
+          this.videoCovers[0]?.data.video.data.width < 640 &&
+          !this.videoCovers[0]?.data.with_background,
+        cover_highlighted: this.videoCovers[0]?.data.with_background,
+      };
+    },
+
+    /* gifClassObject() {
+      return {
+        cover_vertical:
+          this.gifCovers[0].data.items[0].image.data.height >
+          this.gifCovers[0].data.items[0].image.data.width,
+        cover_wide:
+          this.videoCovers[0]?.data.video.data.width > 640 &&
+          !this.gifCovers[0].data.items[0].image.data.width,
+        cover_thin:
+          this.gifCovers[0].data.items[0].image.data.width < 640 &&
+          !this.gifCovers[0].data.with_background,
+        cover_highlighted: this.gifCovers[0].data.with_background,
+      };
+    }, */
   },
 
   components: {
@@ -215,8 +224,8 @@ export default {
   user-select: none;
 
   & .entry-header {
-    margin-top: 16px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   & .entry-title {
@@ -258,12 +267,27 @@ export default {
   line-height: 1.5em;
 }
 
-.entry-content__subtitle {
-  margin-top: 7px;
+.entry-content__title {
+  & ~ .embed {
+    margin-top: 15px;
+  }
 }
 
-.entry-content__cover {
-  margin-top: 12px;
+.entry-content__title {
+  & ~ .entry-content__subtitle {
+    margin-top: 5px;
+  }
+}
+
+.entry-content__subtitle {
+  & ~ .entry-content__cover {
+    margin-top: 10px;
+  }
+}
+
+.e-island {
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 @media screen and (max-width: 768px) {

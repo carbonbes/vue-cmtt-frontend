@@ -24,10 +24,10 @@
 
 <script>
 import DateTime from "./DateTime.vue";
-import TelegramLogo from "@/assets/logos/telegram_logo.svg";
+import TelegramLogo from "@/assets/logos/telegram_logo.svg?inline";
 
 export default {
-  components: { DateTime },
+  components: { DateTime, TelegramLogo },
 
   props: {
     data: Object,
@@ -67,7 +67,6 @@ export default {
 
 <style lang="scss">
 .embed {
-  margin-top: 7px;
   display: flex;
   flex-flow: column;
   box-shadow: 0 0 1px #00000080;
@@ -99,6 +98,13 @@ export default {
   height: 36px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.embed-header__logo {
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .embed-text {

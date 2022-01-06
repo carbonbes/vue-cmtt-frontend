@@ -1,9 +1,13 @@
 <template>
-  <h1 class="entry-title">
-    {{ title }}
-    <div class="entry-title__editorial" title="Статья от редакции">
+  <!-- <h1 class="entry-title" v-if="isEditorial">
+    {{ title.substring(0, titleWithoutLastWord) + " " }}
+    <div class="entry-title__editorial-icon" title="Статья от редакции">
+      {{ { lastWord } }}
       <check-icon class="icon"></check-icon>
     </div>
+  </h1> -->
+  <h1 class="entry-title">
+    {{ title }}
   </h1>
 </template>
 
@@ -23,14 +27,14 @@ export default {
 </script>
 
 <style>
-.entry-title__editorial {
+.entry-title__editorial-icon {
   margin-top: -4px;
   display: inline-block;
   line-height: 0;
   vertical-align: middle;
 }
 
-.entry-title__editorial .icon {
+.entry-title__editorial-icon .icon {
   width: 25px;
   height: 25px;
   stroke-width: 2.75;

@@ -169,11 +169,6 @@ body {
   background: var(--highlight-block-color);
 }
 
-.e-island {
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
 .cover_highlighted > div {
   margin: 0 auto;
 }

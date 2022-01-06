@@ -1,7 +1,7 @@
 <template>
   <div :style="styleObject">
     <div class="video-wrapp" :style="wrappStyleObject">
-      <video class="video" playsInline loop controls v-if="isDefaultVideo">
+      <video class="video" playsInline controls v-if="isDefaultVideo">
         <source :src="`https://leonardo.osnova.io/${video}/-/format/mp4/`" />
       </video>
 
@@ -23,11 +23,11 @@
         v-if="isVimeo"
       />
 
-      <video class="video" playsInline loop controls v-if="isGfycat">
+      <video class="video" playsInline controls v-if="isGfycat">
         <source :src="`${externalService.mp4_url}`" />
       </video>
 
-      <video class="video" playsInline loop controls v-if="isGiphy">
+      <video class="video" playsInline controls v-if="isGiphy">
         <source :src="`${externalService.mp4_url}`" />
       </video>
 
@@ -48,7 +48,7 @@ import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
   computed: {
-    styleObject: function () {
+    styleObject() {
       return {
         margin:
           this.calculatedWidth < this.maxWidth && this.type === 1
@@ -66,13 +66,13 @@ export default {
       };
     },
 
-    wrappStyleObject: function () {
+    wrappStyleObject() {
       return {
         paddingTop: (this.srcHeight / this.srcWidth) * 100 + "%",
       };
     },
 
-    calculatedWidth: function () {
+    calculatedWidth() {
       const { width } = сalculateAspectRatio(
         this.srcWidth,
         this.srcHeight,
@@ -80,32 +80,32 @@ export default {
         this.maxHeight
       );
 
-      return width;
+      return Math.round(width);
     },
 
-    isDefaultVideo: function () {
+    isDefaultVideo() {
       return (
         !this.externalService || Object.keys(this.externalService).length === 0
       );
     },
 
-    isYoutube: function () {
+    isYoutube() {
       return this.externalService?.name === "youtube";
     },
 
-    isVimeo: function () {
+    isVimeo() {
       return this.externalService?.name === "vimeo";
     },
 
-    isGfycat: function () {
+    isGfycat() {
       return this.externalService?.name === "gfycat";
     },
 
-    isGiphy: function () {
+    isGiphy() {
       return this.externalService?.name === "giphy";
     },
 
-    isCoub: function () {
+    isCoub() {
       return this.externalService?.name === "coub";
     },
   },
