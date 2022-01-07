@@ -14,10 +14,6 @@ export default {
   computed: {
     styleObject: function () {
       return {
-        margin:
-          this.calculatedWidth < this.maxWidth && this.type === 1
-            ? "0 auto"
-            : null,
         maxWidth:
           (this.srcWidth >= this.maxWidth &&
             (this.srcHeight > this.maxHeight ||

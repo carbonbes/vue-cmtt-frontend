@@ -39,7 +39,7 @@ export default {
 
 <style>
 .link-block {
-  margin-top: 12px;
+  margin-top: 15px;
   padding: 11px 16px;
   display: flex;
   flex-flow: row;
@@ -66,5 +66,12 @@ export default {
   max-width: 472px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 768px) {
+  .link-block__title,
+  .link-block__description {
+    max-width: 230px;
+  }
 }
 </style>

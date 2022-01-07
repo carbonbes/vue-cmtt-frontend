@@ -96,7 +96,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .left-sidebar {
   position: sticky;
   top: 60px;
@@ -126,6 +126,7 @@ export default {
   height: 44px;
   display: flex;
   align-items: center;
+  color: var(--black-color);
   border-radius: 8px;
   user-select: none;
 }

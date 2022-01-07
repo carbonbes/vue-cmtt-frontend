@@ -10,7 +10,9 @@
         />
       </div>
       <div class="spacer" />
-      <div class="embed-header__logo"><telegram-logo /></div>
+      <div class="embed-header__logo">
+        <telegram-logo class="telegram-logo" />
+      </div>
     </div>
     <div class="embed-text" v-html="text" v-if="text"></div>
     <div class="embed-cover" v-if="imgCover || videoCover">
@@ -50,10 +52,6 @@ export default {
       return this.data[0].data.telegram.data.tg_data.text;
     },
 
-    views() {
-      return this.data[0].data.telegram.data.tg_data.views;
-    },
-
     imgCover() {
       return this.data[0].data.telegram.data.tg_data.photos[0]?.leonardo_url;
     },
@@ -64,72 +62,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.embed {
-  display: flex;
-  flex-flow: column;
-  box-shadow: 0 0 1px #00000080;
-  border-radius: 8px;
-  line-height: normal;
-}
-
-.embed-header {
-  margin: 15px 20px;
-  display: flex;
-  align-items: center;
-}
-
-.embed-header__data {
-  margin-left: 10px;
-
-  & .date-time {
-    font-size: 13px;
-    color: var(--grey-color);
-  }
-}
-
-.embed-header__author-name {
-  font-weight: 700;
-}
-
-.embed-header__author-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.embed-header__logo {
-  & svg {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-.embed-text {
-  margin: 0 20px 15px;
-  font-size: 18px;
-  line-height: 26px;
-
-  & b {
-    font-weight: 400;
-  }
-}
-
-.embed-cover {
-  & img,
-  video {
-    width: 100%;
-    display: block;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-
-  & video {
-    max-height: 600px;
-    background: var(--grey-color);
-    cursor: pointer;
-  }
-}
-</style>

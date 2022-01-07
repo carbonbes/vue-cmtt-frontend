@@ -6,34 +6,40 @@
         >{{ entry.repost.author.name }} сделал репост</span
       >
     </div>
-    <div class="e-island">
-      <div class="entry-header">
-        <entry-header
-          :subsiteType="entry.subsite.type"
-          :subsiteId="entry.subsite.id"
-          :subsiteAvatar="entry.subsite.avatar.data.uuid"
-          :subsiteName="entry.subsite.name"
-          :authorType="entry.author.type"
-          :authorId="entry.author.id"
-          :authorName="entry.author.name"
-          :date="entry.date"
-        />
-      </div>
+    <div class="entry-header e-island">
+      <entry-header
+        :subsiteType="entry.subsite.type"
+        :subsiteId="entry.subsite.id"
+        :subsiteAvatar="entry.subsite.avatar.data.uuid"
+        :subsiteName="entry.subsite.name"
+        :authorType="entry.author.type"
+        :authorId="entry.author.id"
+        :authorName="entry.author.name"
+        :date="entry.date"
+      />
     </div>
     <div class="entry-content">
-      <div class="e-island">
-        <div class="entry-content__title" v-if="entry.title">
-          <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
-        </div>
-        <div class="entry-content__subtitle" v-if="subtitle.length > 0">
-          {{ subtitle[0].data.text }}
-        </div>
-        <telegram-embed
-          :data="telegramCovers"
-          v-if="telegramCovers.length > 0"
-        />
-        <link-block :data="linkCovers" v-if="linkCovers.length > 0" />
+      <div class="entry-content__title e-island" v-if="entry.title">
+        <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
       </div>
+      <div class="entry-content__subtitle e-island" v-if="subtitle.length > 0">
+        {{ subtitle[0].data.text }}
+      </div>
+      <telegram-embed
+        class="e-island"
+        :data="telegramCovers"
+        v-if="telegramCovers.length > 0"
+      />
+      <twitter-embed
+        class="e-island"
+        :data="twitterCovers"
+        v-if="twitterCovers.length > 0"
+      />
+      <link-block
+        class="e-island"
+        :data="linkCovers"
+        v-if="linkCovers.length > 0"
+      />
       <div
         class="entry-content__cover cover"
         :class="imageClassObject"
@@ -78,14 +84,13 @@
         />
       </div>
     </div>
-    <div class="e-island">
-      <entry-footer
-        :commentsCount="entry.counters.comments"
-        :repostsCount="entry.counters.reposts"
-        :favoritesCount="entry.counters.favorites"
-        :entryRating="entry.likes"
-      />
-    </div>
+    <entry-footer
+      class="e-island"
+      :commentsCount="entry.counters.comments"
+      :repostsCount="entry.counters.reposts"
+      :favoritesCount="entry.counters.favorites"
+      :entryRating="entry.likes"
+    />
   </div>
 </template>
 
@@ -96,8 +101,9 @@ import EntryFooter from "@/components/EntryFooter.vue";
 import Image from "@/components/Image.vue";
 import Video from "@/components/Video.vue";
 import TelegramEmbed from "@/components/TelegramEmbed.vue";
+import TwitterEmbed from "@/components/TwitterEmbed.vue";
 import { RefreshCwIcon } from "@zhuowenli/vue-feather-icons";
-import LinkBlock from "./LinkBlock.vue";
+import LinkBlock from "@/components/LinkBlock.vue";
 
 export default {
   computed: {
@@ -145,6 +151,12 @@ export default {
       );
     },
 
+    twitterCovers() {
+      return this.entry.blocks.filter(
+        (cover) => cover.type === "tweet" && cover.cover === true
+      );
+    },
+
     linkCovers() {
       return this.entry.blocks.filter(
         (cover) => cover.type === "link" && cover.cover === true
@@ -181,7 +193,7 @@ export default {
       };
     },
 
-    /* gifClassObject() {
+    gifClassObject() {
       return {
         cover_vertical:
           this.gifCovers[0].data.items[0].image.data.height >
@@ -194,7 +206,7 @@ export default {
           !this.gifCovers[0].data.with_background,
         cover_highlighted: this.gifCovers[0].data.with_background,
       };
-    }, */
+    },
   },
 
   components: {
@@ -206,6 +218,7 @@ export default {
     TelegramEmbed,
     RefreshCwIcon,
     LinkBlock,
+    TwitterEmbed,
   },
 
   props: {
@@ -219,13 +232,14 @@ export default {
   max-width: 640px;
   display: flex;
   flex-flow: column;
+  color: var(--black-color);
   background: var(--entry-bg-color);
   border-radius: 8px;
   user-select: none;
 
   & .entry-header {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 16px;
+    margin-bottom: 10px;
   }
 
   & .entry-title {
@@ -275,14 +289,25 @@ export default {
 
 .entry-content__title {
   & ~ .entry-content__subtitle {
-    margin-top: 5px;
+    margin-top: 7px;
+  }
+}
+
+.entry-content__title,
+.entry-content__subtitle {
+  & ~ .entry-content__cover {
+    margin-top: 12px;
   }
 }
 
 .entry-content__subtitle {
-  & ~ .entry-content__cover {
-    margin-top: 10px;
+  & ~ .embed {
+    margin-top: 12px;
   }
+}
+
+.entry-content__cover {
+  margin-top: 5px;
 }
 
 .e-island {

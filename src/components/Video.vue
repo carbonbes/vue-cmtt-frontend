@@ -80,7 +80,7 @@ export default {
         this.maxHeight
       );
 
-      return Math.round(width);
+      return width;
     },
 
     isDefaultVideo() {

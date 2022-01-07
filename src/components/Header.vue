@@ -6,30 +6,68 @@
     <router-link class="header__item site-logo" to="/">Т///</router-link>
     <div class="spacer"></div>
     <div class="header__item">
+      <div class="header__item-theme-toggle-btn" @click="toggleTheme">
+        <sun-icon class="icon" v-if="this.currentTheme" />
+        <moon-icon class="icon" v-if="!this.currentTheme" />
+      </div>
+    </div>
+    <div class="header__item">
       <div class="header__item-bell-btn"><bell-icon class="icon" /></div>
     </div>
     <div class="header__item">
       <div class="header__item-login-btn">
-        <log-in-icon class="icon" />
+        <user-icon class="icon" />
       </div>
     </div>
   </header>
 </template>
 
 <script>
-import { MenuIcon, BellIcon, LogInIcon } from "@zhuowenli/vue-feather-icons";
+import {
+  MenuIcon,
+  BellIcon,
+  UserIcon,
+  SunIcon,
+  MoonIcon,
+} from "@zhuowenli/vue-feather-icons";
 
 export default {
   components: {
     MenuIcon,
     BellIcon,
-    LogInIcon,
+    UserIcon,
+    SunIcon,
+    MoonIcon,
+  },
+
+  data() {
+    return {
+      currentTheme: null,
+    };
   },
 
   methods: {
     leftSidebarVisibility() {
       this.emitter.emit("left-sidebar-visibled");
     },
+
+    toggleTheme() {
+      document.documentElement.setAttribute("data-theme", this.currentTheme ? "light" : "dark");
+      localStorage.setItem("theme", this.currentTheme ? "light" : "dark");
+      this.currentTheme = !this.currentTheme;
+    },
+  },
+
+  created() {
+    let theme = localStorage.getItem("theme");
+
+    if (theme === "light") {
+      this.currentTheme = false;
+      document.documentElement.setAttribute("data-theme", "light");
+    } else {
+      this.currentTheme = true;
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
   },
 };
 </script>
@@ -51,7 +89,9 @@ export default {
 }
 
 .header__item-bell-btn,
-.header__item-login-btn {
+.header__item-login-btn,
+.header__item-theme-toggle-btn {
+  margin-left: 10px;
   padding: 0 12px;
   display: flex;
   align-items: center;
@@ -60,6 +100,7 @@ export default {
   & .icon {
     width: 24px;
     height: 24px;
+    color: var(--black-color);
     stroke-width: 2.25;
   }
 }
@@ -71,7 +112,6 @@ export default {
 }
 
 .header__item-login-btn {
-  margin-left: 5px;
   padding-right: 40px;
 }
 
@@ -95,7 +135,8 @@ export default {
   }
 
   .header__item-bell-btn,
-  .header__item-login-btn {
+  .header__item-login-btn,
+  .header__item-theme-toggle-btn {
     &:hover {
       .icon {
         color: var(--brand-color);

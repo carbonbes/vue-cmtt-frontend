@@ -11,6 +11,10 @@ const feedModule = {
         .filter((entry) => entry.type === "entry")
         .map((entry) => entry.data);
     },
+
+    lastId(state) {
+      return state.lastId;
+    },
   },
   mutations: {
     setFeed(state, data) {
@@ -19,6 +23,10 @@ const feedModule = {
 
     setLastId(state, id) {
       state.lastId = id;
+    },
+
+    clearFeed(state) {
+      state.feed = [];
     },
   },
   actions: {

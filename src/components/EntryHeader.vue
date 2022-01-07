@@ -8,7 +8,10 @@
     ></div>
     <span class="entry-header__subsite-name">{{ subsiteName }}</span>
   </div>
-  <div class="entry-header__author-name entry-header__item">
+  <div
+    class="entry-header__author-name entry-header__item"
+    v-if="!isSameAuthor"
+  >
     {{ authorName }}
   </div>
   <time
@@ -35,6 +38,12 @@ export default {
     authorId: Number,
     authorName: String,
     date: Number,
+  },
+
+  computed: {
+    isSameAuthor() {
+      return this.subsiteId === this.authorId;
+    },
   },
 };
 </script>

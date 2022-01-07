@@ -2,7 +2,7 @@
   <div class="feed-page">
     <div class="feed-page__header"></div>
     <div class="feed-page__content">
-      <entry v-for="entry in feed" :entry="entry" :key="entry.id" />
+      <entry v-for="(entry, index) in feed" :entry="entry" :key="entry.id" />
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["feed"]),
+    ...mapGetters(["feed", "lastId"]),
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .feed-page {
   margin-top: 12px;
 }
@@ -62,9 +62,9 @@ export default {
 .feed-page__content {
   margin: 0 auto;
   max-width: 640px;
-}
 
-.feed-page__content .entry {
-  margin-bottom: 30px;
+  & .entry {
+    margin-bottom: 30px;
+  }
 }
 </style>

@@ -9,5 +9,15 @@ export const API_v2 = {
     if (!data.sorting) {
       return instance_v2.get(`timeline?sorting=hotness`);
     }
+
+    if (data.sorting && data.lastId) {
+      return instance_v2.get(
+        `timeline?sorting=${data.sorting}&lastId=${data.lastId}`
+      );
+    }
+
+    if (!data.sorting && !data.lastId) {
+      return instance_v2.get(`timeline?sorting="hotness`);
+    }
   },
 };

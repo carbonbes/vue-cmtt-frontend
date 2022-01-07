@@ -28,9 +28,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "normalize.css";
-@import "roboto.css";
-@import "../node_modules/nprogress/nprogress.css";
+@use "normalize.css";
+@use "roboto.css";
+@use "../node_modules/nprogress/nprogress.css";
 
 :root {
   --brand-color: #e5a040;
@@ -38,11 +38,28 @@ export default {
   --blue-color: #3766a9;
   --green-color: #07a23b;
   --red-color: #e92a40;
+  --black-color: #000;
   --bg-color: #f2f2f2;
   --header-bg-color: #fff4e2;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
+  --embed-bg-color: #f5f5f5;
+  --embed-border-color: #0000001a;
   --highlight-block-color: #fffaf1;
+}
+
+[data-theme="dark"] {
+  --grey-color: #939393;
+  --blue-color: #6794cc;
+  --green-color: #5fb668;
+  --red-color: #c2646d;
+  --black-color: #f2f2f2;
+  --bg-color: #000;
+  --header-bg-color: #202020;
+  --entry-bg-color: #151515;
+  --embed-bg-color: #242424;
+  --embed-border-color: #303030;
+  --highlight-block-color: #242424;
 }
 
 * {
@@ -69,7 +86,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0 !important;
+  margin: 0;
 }
 
 body {
@@ -92,6 +109,7 @@ body {
   padding-left: 20px;
   display: flex;
   align-items: center;
+  color: var(--black-color);
   cursor: pointer;
 }
 
@@ -122,6 +140,7 @@ body {
 
 .site-logo {
   margin-left: 18px;
+  color: var(--black-color);
   font-weight: 900;
   font-size: 2rem;
   line-height: 60px;
@@ -151,17 +170,20 @@ body {
   cursor: pointer;
 }
 
-/* .cover.cover_vertical {
+.cover.cover_thin {
   padding: 0 25px;
-} */
+}
 
 .cover.cover_wide {
   width: 100%;
 }
 
-.cover_vertical > div {
-  margin: 0 auto;
-  max-width: 55% !important;
+.cover_vertical {
+  padding: 0 25px;
+
+  & > div {
+    max-width: 55% !important;
+  }
 }
 
 .cover_highlighted {
@@ -176,8 +198,102 @@ body {
 .embed-text,
 .entry-content-subtitle {
   & a {
-    color: #3766a9;
-    border-bottom: 1px solid #bed0ea;
+    color: var(--blue-color);
+    cursor: pointer;
+  }
+}
+
+.embed {
+  display: flex;
+  flex-flow: column;
+  background: var(--embed-bg-color);
+  border: 1px solid var(--embed-border-color);
+  border-radius: 8px;
+  line-height: normal;
+
+  &:first-child {
+    margin-top: 5px;
+  }
+
+  & + .embed {
+    margin-top: 12px;
+  }
+
+  & + .entry-content__cover {
+    margin-top: 15px;
+  }
+}
+
+.embed-header {
+  margin: 15px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.embed-header__data {
+  margin-left: 10px;
+
+  & .date-time {
+    font-size: 13px;
+    color: var(--grey-color);
+  }
+}
+
+.embed-header__author-name {
+  font-weight: 700;
+}
+
+.embed-header__author-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.embed-header__author-tag {
+  margin-left: 10px;
+  font-size: 15px;
+  color: var(--grey-color);
+}
+
+.embed-header__logo {
+  & .telegram-logo,
+  .twitter-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  & .twitter-logo {
+    fill: #1d9bf0;
+  }
+}
+
+.embed-text {
+  margin: 0 20px 20px;
+  font-size: 18px;
+  line-height: 26px;
+
+  & b {
+    font-weight: 400;
+  }
+
+  & i {
+    font-style: normal;
+  }
+}
+
+.embed-cover {
+  & img,
+  video {
+    width: 100%;
+    display: block;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+
+  & video {
+    max-height: 600px;
+    background: var(--grey-color);
     cursor: pointer;
   }
 }
@@ -186,8 +302,7 @@ body {
   .embed-text,
   .entry-content-subtitle {
     & a:hover {
-      color: #cd192e;
-      border-bottom: 1px solid #f6b4bc;
+      color: var(--red-color);
     }
   }
 }
@@ -207,11 +322,17 @@ body {
   }
 
   .embed-header {
-    margin: 15px 15px 0;
+    margin: 15px 15px;
   }
 
   .embed-text {
-    margin: 10px 15px 15px;
+    margin: 0 15px 15px;
+  }
+
+  .cover_vertical {
+    & > div {
+      max-width: 75% !important;
+    }
   }
 }
 
