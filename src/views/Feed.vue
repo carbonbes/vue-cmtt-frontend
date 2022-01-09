@@ -2,7 +2,7 @@
   <div class="feed-page">
     <div class="feed-page__header"></div>
     <div class="feed-page__content">
-      <entry v-for="(entry, index) in feed" :entry="entry" :key="entry.id" />
+      <entry v-for="entry in feed" :entry="entry" :key="entry.id" />
     </div>
   </div>
 </template>
@@ -13,18 +13,6 @@ import Entry from "@/components/Entry.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 
-function requestFeed(routeTo, next) {
-  nProgress.start();
-  store
-    .dispatch("requestFeed", {
-      sorting: routeTo.params.sorting === "new" ? "date" : null,
-    })
-    .then(() => {
-      nProgress.done();
-      next();
-    });
-}
-
 export default {
   data() {
     return {
@@ -32,24 +20,64 @@ export default {
     };
   },
 
-  props: {
-    sorting: String,
-  },
-
   components: {
     Entry,
   },
 
+  methods: {
+    requestFeed() {
+      store.dispatch("requestFeed", {
+        sorting: this.currentSorting,
+        lastId,
+      });
+    },
+  },
+
   computed: {
     ...mapGetters(["feed", "lastId"]),
+
+    savedSorting() {
+      let sorting = localStorage.getItem("saved-sorting");
+
+      if (sorting === "" || !sorting) {
+        return "hotness";
+      } else return "date";
+    },
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
-    requestFeed(routeTo, next);
+    nProgress.start();
+
+    next((vm) => {
+      store
+        .dispatch("requestFeed", {
+          sorting: !routeTo.params.sorting
+            ? vm.savedSorting
+            : routeTo.params.sorting,
+          prevSorting: routeFrom.params.sorting,
+        })
+        .then(() => {
+          nProgress.done();
+        });
+    });
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
-    requestFeed(routeTo, next);
+    nProgress.start();
+
+    store
+      .dispatch("requestFeed", {
+        sorting: routeTo.params.sorting,
+        prevSorting: routeFrom.sorting,
+      })
+      .then(() => {
+        nProgress.done();
+        next();
+      });
+  },
+
+  beforeRouteLeave() {
+    store.commit("clearFeed");
   },
 };
 </script>

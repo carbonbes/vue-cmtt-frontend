@@ -5,6 +5,7 @@ const feedModule = {
     feed: [],
     lastId: null,
   }),
+
   getters: {
     feed(state) {
       return state.feed
@@ -16,9 +17,10 @@ const feedModule = {
       return state.lastId;
     },
   },
+
   mutations: {
     setFeed(state, data) {
-      state.feed = data;
+      state.feed.push(...data);
     },
 
     setLastId(state, id) {
@@ -27,11 +29,16 @@ const feedModule = {
 
     clearFeed(state) {
       state.feed = [];
+      state.lastId = null;
     },
   },
+
   actions: {
     requestFeed({ commit }, data) {
       return API_v2.getTimeline(data).then((response) => {
+        if (data.prevSorting !== data.sorting) {
+          commit("clearFeed");
+        }
         commit("setFeed", response.data.result.items);
         commit("setLastId", response.data.result.lastId);
       });

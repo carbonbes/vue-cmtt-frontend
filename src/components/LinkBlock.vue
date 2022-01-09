@@ -1,14 +1,19 @@
 <template>
-  <div class="link-block">
-    <div>
+  <a
+    class="link-block"
+    :href="url"
+    target="_blank
+"
+  >
+    <div class="link-block__content">
       <span class="link-block__title">{{ title }}</span>
       <span class="link-block__description">{{ description }}</span>
-      <div>{{ url }}</div>
+      <div class="link-block__link">{{ url }}</div>
     </div>
-    <div>
-      <div></div>
+    <div class="link-block__logo">
+      <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" />
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -37,14 +42,15 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .link-block {
-  margin-top: 15px;
+  margin-top: 5px;
   padding: 11px 16px;
   display: flex;
   flex-flow: row;
+  background: var(--link-block-bg-color);
+  border: 1px solid var(--embed-border-color);
   border-radius: 4px;
-  box-shadow: 0 0 1px #00000080;
 }
 
 .link-block__title {
@@ -54,6 +60,7 @@ export default {
 }
 
 .link-block__description {
+  margin-bottom: 5px;
   font-size: 15px;
   line-height: 22px;
 }
@@ -66,6 +73,24 @@ export default {
   max-width: 472px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.link-block__logo {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+
+  & img {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.link-block__link {
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--grey-color);
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 768px) {

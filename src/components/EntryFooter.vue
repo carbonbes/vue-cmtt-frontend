@@ -1,12 +1,12 @@
 <template>
   <div class="entry-footer">
     <div class="entry-footer__comments-btn entry-footer__item">
-      <message-circle-icon class="icon" />
+      <comment-icon class="icon" />
       <span class="label" v-if="commentsCount > 0">{{ commentsCount }}</span>
       <span class="label" v-if="commentsCount === 0">Обсудить</span>
     </div>
     <div class="entry-footer__repost-btn entry-footer__item">
-      <refresh-cw-icon class="icon" />
+      <repost-icon class="icon" />
       <span class="label" v-if="repostsCount > 0">{{ repostsCount }}</span>
     </div>
     <div class="entry-footer__favorite-btn entry-footer__item">
@@ -30,18 +30,15 @@
 </template>
 
 <script>
-import {
-  MessageCircleIcon,
-  RefreshCwIcon,
-  BookmarkIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@zhuowenli/vue-feather-icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@zhuowenli/vue-feather-icons";
+import CommentIcon from "@/assets/logos/comment_icon.svg?inline";
+import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
+import BookmarkIcon from "@/assets/logos/bookmark_icon.svg?inline";
 
 export default {
   components: {
-    MessageCircleIcon,
-    RefreshCwIcon,
+    CommentIcon,
+    RepostIcon,
     BookmarkIcon,
     ChevronDownIcon,
     ChevronUpIcon,
@@ -85,8 +82,6 @@ export default {
 .entry-footer__repost-btn,
 .entry-footer__favorite-btn {
   & .icon {
-    width: 21px;
-    height: 21px;
     color: inherit;
     stroke-width: 2.25;
   }
@@ -104,10 +99,6 @@ export default {
 .entry-footer__vote-btn {
   color: var(--grey-color);
   cursor: pointer;
-}
-
-.entry-footer__comments-btn .icon {
-  transform: scale(-1, 1);
 }
 
 .entry-footer__rating {
@@ -151,10 +142,12 @@ export default {
 }
 
 @media (hover: hover) {
-  .entry-footer__comments-btn:hover,
-  .entry-footer__repost-btn:hover,
-  .entry-footer__favorite-btn:hover {
-    color: var(--blue-color);
+  .entry-footer__comments-btn,
+  .entry-footer__repost-btn,
+  .entry-footer__favorite-btn {
+    &:hover {
+      color: var(--blue-color);
+    }
   }
 
   .entry-footer__vote-btn:hover {

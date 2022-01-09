@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg" height="28" width="28">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_bell">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M5 10a7 7 0 0114 0v3.764l1.532 3.065A1.5 1.5 0 0119.191 19H15a3 3 0 01-6 0H4.809a1.5 1.5 0 01-1.342-2.17L5 13.763V10zm6 9a1 1 0 102 0h-2zm1-14a5 5 0 00-5 5v4a1 1 0 01-.106.447L5.618 17H18.38l-1.276-2.553A1 1 0 0117 14v-4a5 5 0 00-5-5z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_bell" fill="currentColor"></use>
+</svg>

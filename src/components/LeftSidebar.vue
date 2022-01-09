@@ -14,20 +14,22 @@
           </div>
         </div>
         <router-link class="left-sidebar__item site-logo" to="/"
-          >Т///</router-link
-        >
+          ><site-logo
+        /></router-link>
       </div>
       <div class="left-sidebar__link-list">
         <router-link
           class="left-sidebar__link"
           active-class="left-sidebar__link_active"
           to="/"
-          ><zap-icon class="icon" />Популярное</router-link
+          @click="setSavedSorting('hotness')"
+          ><hot-icon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
           active-class="left-sidebar__link_active"
           to="/new"
+          @click="setSavedSorting('date')"
           ><clock-icon class="icon" />Свежее</router-link
         >
       </div>
@@ -37,7 +39,10 @@
 </template>
 
 <script>
-import { ZapIcon, ClockIcon, MenuIcon } from "@zhuowenli/vue-feather-icons";
+import SiteLogo from "@/assets/logos/site_logo.svg?inline";
+import HotIcon from "@/assets/logos/hot_icon.svg?inline";
+import ClockIcon from "@/assets/logos/clock_icon.svg?inline";
+import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
 
 export default {
   data() {
@@ -48,9 +53,10 @@ export default {
   },
 
   components: {
-    ZapIcon,
-    ClockIcon,
+    SiteLogo,
     MenuIcon,
+    HotIcon,
+    ClockIcon,
   },
 
   methods: {
@@ -67,6 +73,10 @@ export default {
         document.documentElement.clientWidth < 768 ? false : true;
       this.ignoredOutsideClick =
         document.documentElement.clientWidth < 768 ? false : true;
+    },
+
+    setSavedSorting(sorting) {
+      localStorage.setItem("saved-sorting", sorting);
     },
   },
 
@@ -132,14 +142,12 @@ export default {
 }
 
 .left-sidebar__link .icon {
-  width: 22px;
-  height: 22px;
   margin-right: 12px;
   color: var(--grey-color);
 }
 
 .left-sidebar__link_active {
-  background: #fff !important;
+  background: var(--active-item-color) !important;
 }
 
 .left-sidebar__link_active .icon {
@@ -177,7 +185,7 @@ export default {
 
 @media (hover: hover) {
   .left-sidebar__link:hover {
-    background: #ffffff99;
+    background: var(--hover-item-color);
   }
 }
 </style>

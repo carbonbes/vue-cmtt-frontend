@@ -35,44 +35,43 @@ export default {
 
   computed: {
     authorAvatar() {
-      return this.data[0].data.tweet.data.tweet_data.user
-        .profile_image_url_https;
+      return this.data.data.tweet.data.tweet_data.user.profile_image_url_https;
     },
 
     authorName() {
-      return this.data[0].data.tweet.data.tweet_data.user.name;
+      return this.data.data.tweet.data.tweet_data.user.name;
     },
 
     authorTag() {
-      return this.data[0].data.tweet.data.tweet_data.user.screen_name;
+      return this.data.data.tweet.data.tweet_data.user.screen_name;
     },
 
     text() {
-      return this.data[0].data.tweet.data.tweet_data.processed_text;
+      return this.data.data.tweet.data.tweet_data.processed_text;
     },
 
     imgCover() {
       if (
-        Object.keys(this.data[0].data.tweet.data.tweet_data.extended_entities)
+        Object.keys(this.data.data.tweet.data.tweet_data.extended_entities)
           .length !== 0 &&
-        this.data[0].data.tweet.data.tweet_data.extended_entities.media &&
-        this.data[0].data.tweet.data.tweet_data.extended_entities.media[0]
-          .type === "photo"
+        this.data.data.tweet.data.tweet_data.extended_entities.media &&
+        this.data.data.tweet.data.tweet_data.extended_entities.media[0].type ===
+          "photo"
       ) {
-        return this.data[0].data.tweet.data.tweet_data.extended_entities
-          .media[0]?.media_url_https;
+        return this.data.data.tweet.data.tweet_data.extended_entities.media[0].media_url_https;
       }
     },
 
     videoCover() {
       if (
-        Object.keys(this.data[0].data.tweet.data.tweet_data.extended_entities)
+        Object.keys(this.data.data.tweet.data.tweet_data.extended_entities)
           .length !== 0 &&
-        this.data[0].data.tweet.data.tweet_data.extended_entities.media &&
-        this.data[0].data.tweet.data.tweet_data.extended_entities.media[0]
-          .type === "video"
+        this.data.data.tweet.data.tweet_data.extended_entities.media &&
+        this.data.data.tweet.data.tweet_data.extended_entities.media[0].type ===
+          "video"
       ) {
-        return this.data[0].data.tweet.data.tweet_data.extended_entities.media[0].video_info.variants[0].url;
+        return this.data.data.tweet.data.tweet_data.extended_entities.media[0]
+          .video_info.variants[0].url;
       }
     },
   },

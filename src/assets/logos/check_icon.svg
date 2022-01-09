@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_editorial">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M21.06 5.94a1.5 1.5 0 010 2.12l-10.5 10.5a1.5 1.5 0 01-2.12 0l-5.5-5.5a1.5 1.5 0 012.12-2.12l4.44 4.439 9.44-9.44a1.5 1.5 0 012.12 0z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_editorial" fill="currentColor"></use>
+</svg>

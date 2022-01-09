@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_repost">
+      <path fill-rule="evenodd" d="M6.91 5a1 1 0 011-1h5.912a6 6 0 016 6v3.683l1.497-1.41a1 1 0 011.371 1.455l-3.182 3a1 1 0 01-1.372 0l-3.183-3a1 1 0 111.372-1.456l1.497 1.411V10a4 4 0 00-4-4H7.91a1 1 0 01-1-1zM4.497 7.272a1 1 0 011.372 0l3.182 3a1 1 0 01-1.372 1.456l-1.496-1.411v3.433c0 .242 0 .334.003.407a4 4 0 003.84 3.84c.073.003.165.003.407.003h5.661a1 1 0 110 2h-5.686c-.209 0-.343 0-.461-.005a6 6 0 01-5.76-5.76 12.488 12.488 0 01-.004-.46v-3.458l-1.497 1.41a1 1 0 01-1.372-1.455l3.183-3z" clip-rule="evenodd"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_repost" fill="currentColor"></use>
+</svg>

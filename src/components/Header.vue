@@ -3,7 +3,9 @@
     <div class="header__item" @click="leftSidebarVisibility">
       <div class="site-burger-btn"><menu-icon class="icon" /></div>
     </div>
-    <router-link class="header__item site-logo" to="/">Т///</router-link>
+    <router-link class="header__item" to="/"
+      ><site-logo class="site-logo"
+    /></router-link>
     <div class="spacer"></div>
     <div class="header__item">
       <div class="header__item-theme-toggle-btn" @click="toggleTheme">
@@ -23,13 +25,11 @@
 </template>
 
 <script>
-import {
-  MenuIcon,
-  BellIcon,
-  UserIcon,
-  SunIcon,
-  MoonIcon,
-} from "@zhuowenli/vue-feather-icons";
+import { SunIcon, MoonIcon } from "@zhuowenli/vue-feather-icons";
+import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
+import SiteLogo from "@/assets/logos/site_logo.svg?inline";
+import BellIcon from "@/assets/logos/bell_icon.svg?inline";
+import UserIcon from "@/assets/logos/user_icon.svg?inline";
 
 export default {
   components: {
@@ -38,6 +38,7 @@ export default {
     UserIcon,
     SunIcon,
     MoonIcon,
+    SiteLogo,
   },
 
   data() {
@@ -52,7 +53,10 @@ export default {
     },
 
     toggleTheme() {
-      document.documentElement.setAttribute("data-theme", this.currentTheme ? "light" : "dark");
+      document.documentElement.setAttribute(
+        "data-theme",
+        this.currentTheme ? "light" : "dark"
+      );
       localStorage.setItem("theme", this.currentTheme ? "light" : "dark");
       this.currentTheme = !this.currentTheme;
     },
@@ -61,7 +65,7 @@ export default {
   created() {
     let theme = localStorage.getItem("theme");
 
-    if (theme === "light") {
+    if (theme === "light" || !theme) {
       this.currentTheme = false;
       document.documentElement.setAttribute("data-theme", "light");
     } else {
@@ -91,17 +95,22 @@ export default {
 .header__item-bell-btn,
 .header__item-login-btn,
 .header__item-theme-toggle-btn {
-  margin-left: 10px;
+  margin-left: 7px;
   padding: 0 12px;
   display: flex;
   align-items: center;
   cursor: pointer;
 
   & .icon {
-    width: 24px;
-    height: 24px;
     color: var(--black-color);
     stroke-width: 2.25;
+  }
+}
+
+.header__item-theme-toggle-btn {
+  & .icon {
+    width: 28px;
+    height: 24px;
   }
 }
 
@@ -116,6 +125,18 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  .header__item-bell-btn,
+  .header__item-login-btn,
+  .header__item-theme-toggle-btn {
+    margin-left: 0px;
+  }
+
+  .header__item-login-btn {
+    & .icon {
+      margin-right: 0px;
+    }
+  }
+
   .header__item-bars-btn {
     padding-left: 20px;
   }
@@ -129,7 +150,7 @@ export default {
   .site-burger-btn {
     &:hover {
       .icon {
-        color: var(--grey-color);
+        opacity: 0.5;
       }
     }
   }

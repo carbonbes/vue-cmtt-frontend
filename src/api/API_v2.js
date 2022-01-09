@@ -20,4 +20,8 @@ export const API_v2 = {
       return instance_v2.get(`timeline?sorting="hotness`);
     }
   },
+
+  getEntry(id) {
+    return instance_v2.get(`content?id=${id}`);
+  },
 };

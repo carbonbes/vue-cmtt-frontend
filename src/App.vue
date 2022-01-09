@@ -18,12 +18,6 @@ export default {
     LeftSidebar,
     RightSidebar,
   },
-
-  methods: {
-    toggleTheme(theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-    },
-  },
 };
 </script>
 
@@ -43,9 +37,12 @@ export default {
   --header-bg-color: #fff4e2;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
-  --embed-bg-color: #f5f5f5;
+  --embed-bg-color: #f9f9f9;
   --embed-border-color: #0000001a;
+  --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
+  --hover-item-color: #ffffff80;
+  --active-item-color: #fff;
 }
 
 [data-theme="dark"] {
@@ -57,9 +54,11 @@ export default {
   --bg-color: #000;
   --header-bg-color: #202020;
   --entry-bg-color: #151515;
-  --embed-bg-color: #242424;
+  --embed-bg-color: #1e1e1e;
   --embed-border-color: #303030;
   --highlight-block-color: #242424;
+  --hover-item-color: #1f1f1fbf;
+  --active-item-color: #1e1e1e;
 }
 
 * {
@@ -109,17 +108,15 @@ body {
   padding-left: 20px;
   display: flex;
   align-items: center;
-  color: var(--black-color);
   cursor: pointer;
+
+  & .icon {
+    color: var(--black-color);
+  }
 }
 
 .spacer {
   margin: auto;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
 }
 
 .sidebar {
@@ -140,11 +137,20 @@ body {
 
 .site-logo {
   margin-left: 18px;
-  color: var(--black-color);
-  font-weight: 900;
-  font-size: 2rem;
-  line-height: 60px;
+  align-self: center;
   user-select: none;
+
+  & .st0 {
+    fill: #e8a427;
+  }
+
+  & .st1 {
+    fill: var(--black-color);
+  }
+
+  & .st2 {
+    fill: #00000026;
+  }
 }
 
 .img-wrapp {
@@ -170,29 +176,31 @@ body {
   cursor: pointer;
 }
 
-.cover.cover_thin {
-  padding: 0 25px;
-}
-
-.cover.cover_wide {
-  width: 100%;
-}
-
-.cover_vertical {
-  padding: 0 25px;
-
-  & > div {
-    max-width: 55% !important;
+.cover {
+  &.cover_thin {
+    padding: 0 25px;
   }
-}
 
-.cover_highlighted {
-  padding: 30px;
-  background: var(--highlight-block-color);
-}
+  &.cover_wide {
+    width: 100%;
+  }
 
-.cover_highlighted > div {
-  margin: 0 auto;
+  &.cover_vertical {
+    padding: 0 25px;
+
+    & > div {
+      max-width: 65% !important;
+    }
+  }
+
+  &.cover_highlighted {
+    padding: 30px;
+    background: var(--highlight-block-color);
+  }
+
+  &.cover_highlighted > div {
+    margin: 0 auto;
+  }
 }
 
 .embed-text,
@@ -257,6 +265,8 @@ body {
 }
 
 .embed-header__logo {
+  align-self: flex-start;
+
   & .telegram-logo,
   .twitter-logo {
     width: 24px;

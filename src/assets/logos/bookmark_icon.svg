@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_bookmark">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M4 7a4 4 0 014-4h8a4 4 0 014 4v12.045c0 1.628-1.875 2.539-3.155 1.534l-4.32-3.395a.85.85 0 00-1.05 0l-4.32 3.395C5.875 21.584 4 20.673 4 19.045V7zm4-2a2 2 0 00-2 2v11.942l4.24-3.33a2.85 2.85 0 013.52 0l4.24 3.33V7a2 2 0 00-2-2H8z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_bookmark" fill="currentColor"></use>
+</svg>

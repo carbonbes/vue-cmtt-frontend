@@ -1,12 +1,26 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Feed from "../views/Feed.vue";
+import Feed from "@/views/Feed.vue";
+import EntryPage from "@/views/EntryPage.vue";
 
 const routes = [
   {
     path: "/:sorting?",
-    name: "Feed",
+    name: "FeedPage",
     component: Feed,
-    props: true,
+    beforeEnter: (to, from, next) => {
+      let sorting = localStorage.getItem("saved-sorting");
+
+      if (!sorting && !to.params.sorting) {
+        next();
+      } else if (sorting === "date" && !to.params.sorting) {
+        next("/new");
+      } else next();
+    },
+  },
+  {
+    path: "/:id(\\d+)",
+    name: "EntryPage",
+    component: EntryPage,
   },
 ];
 

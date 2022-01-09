@@ -111,7 +111,7 @@ export default {
   },
 
   props: {
-    video: String,
+    video: [String, Object],
     type: String,
     srcWidth: Number,
     srcHeight: Number,

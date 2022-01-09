@@ -1,11 +1,10 @@
 import { createStore } from "vuex";
 import Feed from "./modules/Feed";
+import Entry from "./modules/Entry";
 
 export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
   modules: {
     feed: Feed,
+    entry: Entry,
   },
 });

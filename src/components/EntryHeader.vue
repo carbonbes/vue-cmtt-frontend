@@ -1,24 +1,26 @@
 <template>
-  <div class="entry-header__subsite-data entry-header__item">
+  <div class="entry-header">
+    <div class="entry-header__subsite-data entry-header__item">
+      <div
+        class="entry-header__subsite-avatar"
+        :style="{
+          'background-image': `url(https://leonardo.osnova.io/${subsiteAvatar}/-/scale_crop/64x64/)`,
+        }"
+      ></div>
+      <span class="entry-header__subsite-name">{{ subsiteName }}</span>
+    </div>
     <div
-      class="entry-header__subsite-avatar"
-      :style="{
-        'background-image': `url(https://leonardo.osnova.io/${subsiteAvatar}/-/scale_crop/64x64/)`,
-      }"
-    ></div>
-    <span class="entry-header__subsite-name">{{ subsiteName }}</span>
+      class="entry-header__author-name entry-header__item"
+      v-if="!isSameAuthor"
+    >
+      {{ authorName }}
+    </div>
+    <time
+      class="entry-header__date-publish entry-header__item"
+      :title="new Date(date * 1000).toLocaleString()"
+      ><date-time :date="date"
+    /></time>
   </div>
-  <div
-    class="entry-header__author-name entry-header__item"
-    v-if="!isSameAuthor"
-  >
-    {{ authorName }}
-  </div>
-  <time
-    class="entry-header__date-publish entry-header__item"
-    :title="new Date(date * 1000).toLocaleString()"
-    ><date-time :date="date"
-  /></time>
 </template>
 
 <script>

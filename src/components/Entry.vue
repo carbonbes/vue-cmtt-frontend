@@ -1,23 +1,22 @@
 <template>
   <div class="entry">
     <div class="entry-repost-data e-island" v-if="entry.repost">
-      <div class="entry-repost__icon"><refresh-cw-icon class="icon" /></div>
+      <div class="entry-repost__icon"><repost-icon class="icon" /></div>
       <span class="entry-repost__name"
         >{{ entry.repost.author.name }} сделал репост</span
       >
     </div>
-    <div class="entry-header e-island">
-      <entry-header
-        :subsiteType="entry.subsite.type"
-        :subsiteId="entry.subsite.id"
-        :subsiteAvatar="entry.subsite.avatar.data.uuid"
-        :subsiteName="entry.subsite.name"
-        :authorType="entry.author.type"
-        :authorId="entry.author.id"
-        :authorName="entry.author.name"
-        :date="entry.date"
-      />
-    </div>
+    <entry-header
+      class="e-island"
+      :subsiteType="entry.subsite.type"
+      :subsiteId="entry.subsite.id"
+      :subsiteAvatar="entry.subsite.avatar.data.uuid"
+      :subsiteName="entry.subsite.name"
+      :authorType="entry.author.type"
+      :authorId="entry.author.id"
+      :authorName="entry.author.name"
+      :date="entry.date"
+    />
     <div class="entry-content">
       <div class="entry-content__title e-island" v-if="entry.title">
         <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
@@ -30,11 +29,14 @@
         :data="telegramCovers"
         v-if="telegramCovers.length > 0"
       />
-      <twitter-embed
-        class="e-island"
-        :data="twitterCovers"
-        v-if="twitterCovers.length > 0"
-      />
+      <template
+        v-for="twitterData in twitterCovers"
+        :key="twitterData.data.tweet.data.tweet_data.id"
+        ><twitter-embed
+          class="e-island"
+          :data="twitterData"
+          v-if="twitterCovers.length > 0"
+      /></template>
       <link-block
         class="e-island"
         :data="linkCovers"
@@ -91,6 +93,7 @@
       :favoritesCount="entry.counters.favorites"
       :entryRating="entry.likes"
     />
+    <router-link class="entry__link" :to="entry.id.toString()"></router-link>
   </div>
 </template>
 
@@ -102,7 +105,7 @@ import Image from "@/components/Image.vue";
 import Video from "@/components/Video.vue";
 import TelegramEmbed from "@/components/TelegramEmbed.vue";
 import TwitterEmbed from "@/components/TwitterEmbed.vue";
-import { RefreshCwIcon } from "@zhuowenli/vue-feather-icons";
+import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
 import LinkBlock from "@/components/LinkBlock.vue";
 
 export default {
@@ -216,7 +219,7 @@ export default {
     Image,
     Video,
     TelegramEmbed,
-    RefreshCwIcon,
+    RepostIcon,
     LinkBlock,
     TwitterEmbed,
   },
@@ -229,6 +232,7 @@ export default {
 
 <style lang="scss">
 .entry {
+  position: relative;
   max-width: 640px;
   display: flex;
   flex-flow: column;
@@ -267,8 +271,8 @@ export default {
 }
 
 .entry-repost__icon .icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   color: var(--grey-color);
 }
 
@@ -308,6 +312,12 @@ export default {
 
 .entry-content__cover {
   margin-top: 5px;
+}
+
+.entry__link {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .e-island {
