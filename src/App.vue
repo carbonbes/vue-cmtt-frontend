@@ -212,12 +212,14 @@ body {
 }
 
 .embed {
+  position: relative;
   display: flex;
   flex-flow: column;
   background: var(--embed-bg-color);
   border: 1px solid var(--embed-border-color);
   border-radius: 8px;
   line-height: normal;
+  z-index: 1;
 
   &:first-child {
     margin-top: 5px;
@@ -279,7 +281,7 @@ body {
 }
 
 .embed-text {
-  margin: 0 20px 20px;
+  margin: 0 20px 15px;
   font-size: 18px;
   line-height: 26px;
 

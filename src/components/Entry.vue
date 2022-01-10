@@ -25,7 +25,6 @@
         {{ subtitle[0].data.text }}
       </div>
       <telegram-embed
-        class="e-island"
         :data="telegramCovers"
         v-if="telegramCovers.length > 0"
       />
@@ -33,12 +32,10 @@
         v-for="twitterData in twitterCovers"
         :key="twitterData.data.tweet.data.tweet_data.id"
         ><twitter-embed
-          class="e-island"
           :data="twitterData"
           v-if="twitterCovers.length > 0"
       /></template>
       <link-block
-        class="e-island"
         :data="linkCovers"
         v-if="linkCovers.length > 0"
       />
@@ -253,8 +250,9 @@ export default {
   }
 
   & .entry-footer {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    z-index: 1;
   }
 }
 
@@ -283,6 +281,11 @@ export default {
 .entry-content {
   word-break: break-word;
   line-height: 1.5em;
+
+  & .embed, .link-block {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
 
 .entry-content__title {
@@ -321,18 +324,25 @@ export default {
 }
 
 .e-island {
-  margin-left: 20px;
-  margin-right: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 @media screen and (max-width: 768px) {
   .e-island {
-    margin-left: 15px;
-    margin-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   .entry {
     border-radius: 0;
+  }
+
+  .entry-content {
+    .embed, .link-block {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
   }
 }
 </style>

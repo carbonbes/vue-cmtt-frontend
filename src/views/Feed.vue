@@ -13,9 +13,24 @@ import Entry from "@/components/Entry.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 
+function requestFeed(routeTo, routeFrom, next) {
+  nProgress.start();
+
+  store
+    .dispatch("requestFeed", {
+      sorting: routeTo.params.sorting,
+      prevSorting: routeFrom.params.sorting,
+    })
+    .then(() => {
+      nProgress.done();
+      next();
+    });
+}
+
 export default {
   data() {
     return {
+      currentSorting: null,
       currentPage: 1,
     };
   },
@@ -25,7 +40,7 @@ export default {
   },
 
   methods: {
-    requestFeed() {
+    requestNextPage() {
       store.dispatch("requestFeed", {
         sorting: this.currentSorting,
         lastId,
@@ -46,37 +61,14 @@ export default {
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
-    nProgress.start();
-
-    next((vm) => {
-      store
-        .dispatch("requestFeed", {
-          sorting: !routeTo.params.sorting
-            ? vm.savedSorting
-            : routeTo.params.sorting,
-          prevSorting: routeFrom.params.sorting,
-        })
-        .then(() => {
-          nProgress.done();
-        });
-    });
+    requestFeed(routeTo, routeFrom, next);
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
-    nProgress.start();
-
-    store
-      .dispatch("requestFeed", {
-        sorting: routeTo.params.sorting,
-        prevSorting: routeFrom.sorting,
-      })
-      .then(() => {
-        nProgress.done();
-        next();
-      });
+    requestFeed(routeTo, routeFrom, next);
   },
 
-  beforeRouteLeave() {
+  unmounted() {
     store.commit("clearFeed");
   },
 };

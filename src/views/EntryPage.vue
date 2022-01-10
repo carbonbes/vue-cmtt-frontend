@@ -1,7 +1,7 @@
 <template>
   <div class="entry-page-wrapp">
-    <div class="entry-page ep-island">
-      <div class="entry-page__header">
+    <div class="entry-page">
+      <div class="entry-page__header ep-island">
         <entry-header
           :subsiteType="entry.subsite.type"
           :subsiteId="entry.subsite.id"
@@ -14,9 +14,13 @@
         />
       </div>
       <div class="entry-page__content">
-        <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
+        <entry-title
+          class="ep-island"
+          :title="entry.title"
+          :isEditorial="entry.isEditorial"
+        />
       </div>
-      <div class="entry-page__footer">
+      <div class="entry-page__footer ep-island">
         <entry-footer
           :commentsCount="entry.counters.comments"
           :repostsCount="entry.counters.reposts"
@@ -36,6 +40,15 @@ import store from "@/store";
 import nProgress from "nprogress";
 import { mapGetters } from "vuex";
 
+function requestEntry(routeTo, next) {
+  nProgress.start();
+
+  store.dispatch("requestEntry", routeTo.params.id).then(() => {
+    nProgress.done();
+    next();
+  });
+}
+
 export default {
   components: {
     EntryHeader,
@@ -48,24 +61,14 @@ export default {
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
-    nProgress.start();
-
-    store.dispatch("requestEntry", routeTo.params.id).then(() => {
-      nProgress.done();
-      next();
-    });
+    requestEntry(routeTo, next);
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
-    nProgress.start();
-
-    store.dispatch("requestEntry", routeTo.params.id).then(() => {
-      nProgress.done();
-      next();
-    });
+    requestEntry(routeTo, next);
   },
 
-  beforeRouteLeave() {
+  unmounted() {
     store.commit("clearEntry");
   },
 };
@@ -74,17 +77,17 @@ export default {
 <style lang="scss">
 .entry-page-wrapp {
   margin: 0 auto;
-  padding-top: 30px;
   max-width: 1020px;
   color: var(--black-color);
   background: var(--entry-bg-color);
 }
 
 .entry-page {
+  padding-top: 30px;
 }
 
 .entry-page__header {
-  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .entry-page__content {

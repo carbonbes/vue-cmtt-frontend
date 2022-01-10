@@ -13,8 +13,7 @@
 
 @media screen and (max-width: 768px) {
   .right-sidebar {
-    position: fixed;
-    right: -100%;
+    display: none;
   }
 }
 </style>

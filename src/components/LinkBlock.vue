@@ -44,6 +44,7 @@ export default {
 
 <style lang="scss">
 .link-block {
+  position: relative;
   margin-top: 5px;
   padding: 11px 16px;
   display: flex;
@@ -51,6 +52,7 @@ export default {
   background: var(--link-block-bg-color);
   border: 1px solid var(--embed-border-color);
   border-radius: 4px;
+  z-index: 1;
 }
 
 .link-block__title {
