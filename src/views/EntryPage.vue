@@ -14,11 +14,13 @@
         />
       </div>
       <div class="entry-page__content">
-        <entry-title
-          class="ep-island"
-          :title="entry.title"
-          :isEditorial="entry.isEditorial"
-        />
+        <div class="entry-page__title" v-if="entry.title">
+          <entry-title
+            class="ep-island"
+            :title="entry.title"
+            :isEditorial="entry.isEditorial"
+          />
+        </div>
       </div>
       <div class="entry-page__footer ep-island">
         <entry-footer
@@ -90,7 +92,7 @@ export default {
   padding-bottom: 15px;
 }
 
-.entry-page__content {
+.entry-page__title {
   & .entry-title {
     font-size: 36px;
     font-weight: 500;

@@ -298,6 +298,10 @@ export default {
   & ~ .entry-content__subtitle {
     margin-top: 7px;
   }
+
+  & + .link-block {
+    margin-top: 13px;
+  }
 }
 
 .entry-content__title,
