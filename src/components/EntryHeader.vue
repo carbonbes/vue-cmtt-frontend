@@ -50,7 +50,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .entry-header {
   display: flex;
   align-items: center;
@@ -60,14 +60,10 @@ export default {
   display: flex;
   align-items: center;
   white-space: nowrap;
-}
 
-.entry-header__item:not(:last-child) {
-  margin-right: 20px;
-}
-
-.entry-header__subsite-data {
-  font-weight: 500;
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
 }
 
 .entry-header__subsite-avatar {
@@ -81,9 +77,20 @@ export default {
   image-rendering: -webkit-optimize-contrast;
 }
 
+.entry-header__subsite-name {
+  font-weight: 500;
+}
+
 .entry-header__author-name,
 .entry-header__date-publish {
   font-size: 15px;
+}
+
+.entry-header__subsite-name,
+.entry-header__author-name,
+.entry-header__date-publish {
+  position: relative;
+  z-index: 1;
 }
 
 .entry-header__author-name {
@@ -102,8 +109,16 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  .entry-header__item:not(:last-child) {
+    margin-right: 12px;
+  }
+
+  .entry-header__subsite-avatar {
+    margin-right: 8px;
+  }
+
   .entry-header__subsite-name {
-    max-width: 75px;
+    max-width: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

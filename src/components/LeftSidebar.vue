@@ -1,15 +1,9 @@
 <template>
   <nav class="left-sidebar" :class="classObject">
-    <div
-      class="sidebar"
-      v-outside-click="{
-        ignore: this.ignoredOutsideClick,
-        emitterName: 'left-sidebar-visible',
-      }"
-    >
+    <div class="sidebar" v-outside-click:[this.ignoredOutsideClick]="visibilityHide">
       <div class="left-sidebar__header">
-        <div class="left-sidebar__item" @click="visibilityToggler">
-          <div class="site-burger-btn">
+        <div class="left-sidebar__item">
+          <div class="site-burger-btn" @click="visibilityToggler">
             <menu-icon class="icon" width="24" height="24" />
           </div>
         </div>
@@ -22,14 +16,14 @@
           class="left-sidebar__link"
           active-class="left-sidebar__link_active"
           to="/"
-          @click="setSavedSorting('hotness')"
+          @click="savedSorting('hotness')"
           ><hot-icon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
           active-class="left-sidebar__link_active"
           to="/new"
-          @click="setSavedSorting('date')"
+          @click="savedSorting('date')"
           ><clock-icon class="icon" />Свежее</router-link
         >
       </div>
@@ -64,7 +58,7 @@ export default {
       this.isVisibled = !this.isVisibled;
     },
 
-    visibilityToggle() {
+    visibilityHide() {
       this.isVisibled = false;
     },
 
@@ -75,7 +69,7 @@ export default {
         document.documentElement.clientWidth < 768 ? false : true;
     },
 
-    setSavedSorting(sorting) {
+    savedSorting(sorting) {
       localStorage.setItem("saved-sorting", sorting);
     },
   },
@@ -95,13 +89,11 @@ export default {
 
   mounted() {
     this.emitter.on("left-sidebar-visibled", this.visibilityToggler);
-    this.emitter.on("left-sidebar-visible", this.visibilityToggle);
   },
 
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
     this.emitter.off("left-sidebar-visibled", this.visibilityToggler);
-    this.emitter.on("left-sidebar-visible", this.visibilityToggle);
   },
 };
 </script>
@@ -114,10 +106,10 @@ export default {
   height: calc(100vh - 60px);
   flex-shrink: 0;
   z-index: 2;
-}
 
-.left-sidebar_hidden {
-  display: none;
+  &_hidden {
+    display: none;
+  }
 }
 
 .left-sidebar__header {
@@ -141,17 +133,19 @@ export default {
   user-select: none;
 }
 
-.left-sidebar__link .icon {
-  margin-right: 12px;
-  color: var(--grey-color);
-}
+.left-sidebar__link {
+  & .icon {
+    margin-right: 12px;
+    color: var(--grey-color);
+  }
 
-.left-sidebar__link_active {
-  background: var(--active-item-color) !important;
-}
+  &_active {
+    background: var(--active-item-color) !important;
 
-.left-sidebar__link_active .icon {
-  color: var(--brand-color);
+    & .icon {
+      color: var(--brand-color);
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -175,11 +169,6 @@ export default {
   .left-sidebar__link {
     height: 48px;
     font-size: 18px;
-  }
-
-  .left-sidebar__link .icon {
-    width: 24px;
-    height: 24px;
   }
 }
 

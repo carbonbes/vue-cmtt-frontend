@@ -52,10 +52,7 @@ export default {
             if (secondsAgo >= 0 && secondsAgo <= 60) {
               this.dateTime = "только что";
             } else if (secondsAgo > 60 && secondsAgo <= 3600) {
-              this.dateTime =
-                minutesAgo +
-                " " +
-                declensionWords(minutesAgo, this.minutesWords);
+              this.dateTime = minutesAgo + " мин";
             } else if (secondsAgo > 3600 && secondsAgo <= 86400) {
               if (secondsAgo <= 18000) {
                 this.dateTime =

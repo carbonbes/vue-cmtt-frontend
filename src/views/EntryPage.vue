@@ -21,6 +21,37 @@
             :isEditorial="entry.isEditorial"
           />
         </div>
+        <template v-for="(block, index) in entry.blocks" :key="index">
+          <!-- <div
+            class="entry-page__img-block"
+            v-if="
+              block.type === 'media' &&
+              (block.data.items[0].image.data.type === 'jpg' ||
+                block.data.items[0].image.data.type === 'png' ||
+                block.data.items[0].image.data.type === 'webp') &&
+              block.cover
+            "
+          >
+            <Image
+              :image="block"
+              :type="2"
+              :maxWidth="1020"
+              :maxHeight="1500"
+            />
+          </div> -->
+          <div
+            class="entry-page__text-block ep-island"
+            v-if="block.type === 'text' && block.cover"
+          >
+            <p>{{ block.data.text }}</p>
+          </div>
+          <div
+            class="entry-page__text-block ep-island"
+            v-if="block.type === 'text' && !block.cover"
+          >
+            <p>{{ block.data.text }}</p>
+          </div>
+        </template>
       </div>
       <div class="entry-page__footer ep-island">
         <entry-footer
@@ -38,6 +69,7 @@
 import EntryHeader from "@/components/EntryHeader.vue";
 import EntryTitle from "@/components/EntryTitle.vue";
 import EntryFooter from "@/components/EntryFooter.vue";
+import Image from "@/components/Image.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import { mapGetters } from "vuex";
@@ -56,6 +88,7 @@ export default {
     EntryHeader,
     EntryTitle,
     EntryFooter,
+    Image,
   },
 
   computed: {
@@ -100,8 +133,31 @@ export default {
   }
 }
 
+.entry-page__content {
+  font-size: 18px;
+  line-height: 1.6em;
+  word-break: break-word;
+}
+
 .ep-island {
   margin: 0 auto;
   max-width: 680px;
+}
+
+@media screen and (max-width: 768px) {
+  .entry-page {
+    padding-top: 15px;
+  }
+
+  .entry-page__title {
+    & .entry-title {
+      font-size: 28px;
+    }
+  }
+
+  .ep-island {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 </style>

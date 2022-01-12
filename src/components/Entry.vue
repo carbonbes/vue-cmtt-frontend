@@ -24,21 +24,13 @@
       <div class="entry-content__subtitle e-island" v-if="subtitle.length > 0">
         {{ subtitle[0].data.text }}
       </div>
-      <telegram-embed
-        :data="telegramCovers"
-        v-if="telegramCovers.length > 0"
-      />
+      <telegram-embed :data="telegramCovers" v-if="telegramCovers.length > 0" />
       <template
         v-for="twitterData in twitterCovers"
         :key="twitterData.data.tweet.data.tweet_data.id"
-        ><twitter-embed
-          :data="twitterData"
-          v-if="twitterCovers.length > 0"
+        ><twitter-embed :data="twitterData" v-if="twitterCovers.length > 0"
       /></template>
-      <link-block
-        :data="linkCovers"
-        v-if="linkCovers.length > 0"
-      />
+      <link-block :data="linkCovers" v-if="linkCovers.length > 0" />
       <div
         class="entry-content__cover cover"
         :class="imageClassObject"
@@ -282,37 +274,36 @@ export default {
   word-break: break-word;
   line-height: 1.5em;
 
-  & .embed, .link-block {
+  & .embed,
+  .link-block {
     margin-left: 20px;
     margin-right: 20px;
   }
 }
 
 .entry-content__title {
-  & ~ .embed {
-    margin-top: 15px;
-  }
-}
-
-.entry-content__title {
-  & ~ .entry-content__subtitle {
+  & + .entry-content__subtitle {
     margin-top: 7px;
   }
 
+  & + .embed {
+    margin-top: 12px;
+  }
+
   & + .link-block {
-    margin-top: 13px;
+    margin-top: 12px;
   }
 }
 
 .entry-content__title,
 .entry-content__subtitle {
-  & ~ .entry-content__cover {
+  & + .entry-content__cover {
     margin-top: 12px;
   }
 }
 
 .entry-content__subtitle {
-  & ~ .embed {
+  & + .embed {
     margin-top: 12px;
   }
 }
@@ -343,7 +334,8 @@ export default {
   }
 
   .entry-content {
-    .embed, .link-block {
+    .embed,
+    .link-block {
       margin-left: 15px;
       margin-right: 15px;
     }

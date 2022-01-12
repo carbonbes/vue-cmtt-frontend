@@ -8,21 +8,21 @@ import nProgress from "nprogress";
 const emitter = mitt();
 const app = createApp(App);
 app.config.globalProperties.emitter = emitter;
-nProgress.configure({ showSpinner: false, parent: ".header" });
+nProgress.configure({ showSpinner: false, parent: ".loader" });
 
 app.directive("outside-click", {
-  mounted(el, binding) {
-    function hundleClick(e) {
-      if (binding.value.ignore === false && !el.contains(e.target)) {
-        emitter.emit(binding.value.emitterName);
+  beforeMount(el, binding) {
+    el.hundleClick = function (e) {
+      if (!binding.arg && !el.contains(e.target)) {
+        binding.value();
       }
-    }
+    };
 
-    document.addEventListener("click", hundleClick);
+    document.addEventListener("click", el.hundleClick);
   },
 
-  beforeUnmount() {
-    document.removeEventListener("click", hundleClick);
+  beforeUnmount(el) {
+    document.removeEventListener("click", el.hundleClick);
   },
 });
 

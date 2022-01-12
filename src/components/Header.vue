@@ -21,6 +21,7 @@
         <user-icon class="icon" />
       </div>
     </div>
+    <div class="loader" />
   </header>
 </template>
 

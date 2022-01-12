@@ -8,7 +8,7 @@
     <div class="link-block__content">
       <span class="link-block__title">{{ title }}</span>
       <span class="link-block__description">{{ description }}</span>
-      <div class="link-block__link">{{ url }}</div>
+      <span class="link-block__link">{{ url }}</span>
     </div>
     <div class="link-block__logo">
       <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" />
@@ -85,6 +85,7 @@ export default {
   & img {
     width: 64px;
     height: 64px;
+    border-radius: 2px;
   }
 }
 

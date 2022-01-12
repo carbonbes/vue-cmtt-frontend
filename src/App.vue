@@ -65,6 +65,13 @@ export default {
   box-sizing: border-box;
 }
 
+.loader {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  height: 3px;
+}
+
 #nprogress .bar {
   height: 3px;
   background: var(--brand-color);
@@ -185,13 +192,13 @@ body {
     width: 100%;
   }
 
-  &.cover_vertical {
+  /* &.cover_vertical {
     padding: 0 25px;
 
     & > div {
       max-width: 65% !important;
     }
-  }
+  } */
 
   &.cover_highlighted {
     padding: 30px;
@@ -299,8 +306,17 @@ body {
   video {
     width: 100%;
     display: block;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+
+    &:last-child {
+      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+  }
+
+  & img {
+    & + video {
+      margin-top: 7px;
+    }
   }
 
   & video {
