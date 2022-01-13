@@ -63,6 +63,7 @@ export default {
 
 * {
   box-sizing: border-box;
+  transition: background 0.3s;
 }
 
 .loader {
@@ -203,6 +204,12 @@ body {
   &.cover_highlighted {
     padding: 30px;
     background: var(--highlight-block-color);
+
+    &.cover_vertical {
+      & > div {
+        max-width: 55% !important;
+      }
+    }
   }
 
   &.cover_highlighted > div {
@@ -227,10 +234,6 @@ body {
   border-radius: 8px;
   line-height: normal;
   z-index: 1;
-
-  &:first-child {
-    margin-top: 5px;
-  }
 
   & + .embed {
     margin-top: 12px;

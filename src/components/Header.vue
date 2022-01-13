@@ -10,7 +10,7 @@
     <div class="header__item">
       <div class="header__item-theme-toggle-btn" @click="toggleTheme">
         <sun-icon class="icon" v-if="this.currentTheme" />
-        <moon-icon class="icon" v-if="!this.currentTheme" />
+        <moon-icon class="icon" v-else />
       </div>
     </div>
     <div class="header__item">
@@ -96,7 +96,7 @@ export default {
 .header__item-bell-btn,
 .header__item-login-btn,
 .header__item-theme-toggle-btn {
-  margin-left: 7px;
+  margin-left: 5px;
   padding: 0 12px;
   display: flex;
   align-items: center;

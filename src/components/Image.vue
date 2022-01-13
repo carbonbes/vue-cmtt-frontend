@@ -1,7 +1,7 @@
 <template>
   <div class="img-wrapp" :style="styleObject">
     <img
-      :src="`https://leonardo.osnova.io/${uuid}/-/preview/1200/-/format/webp/`"
+      :src="`https://leonardo.osnova.io/${this.image.data.uuid}/-/preview/1200/-/format/webp/`"
       alt=""
     />
   </div>
@@ -35,23 +35,13 @@ export default {
 
       return width;
     },
-
-    uuid: function () {
-      return this.image[0].data.items[0].image.data.uuid;
-    },
-
-    srcWidth: function () {
-      return this.image[0].data.items[0].image.data.width;
-    },
-
-    srcHeight: function () {
-      return this.image[0].data.items[0].image.data.height;
-    },
   },
 
   props: {
     image: Object,
     type: Number,
+    srcWidth: Number,
+    srcHeight: Number,
     maxWidth: Number,
     maxHeight: Number,
   },

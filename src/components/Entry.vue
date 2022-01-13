@@ -37,8 +37,10 @@
         v-if="imageCovers.length > 0"
       >
         <Image
-          :image="imageCovers"
+          :image="imageCovers[0].data.items[0].image"
           :type="1"
+          :srcWidth="imageCovers[0].data.items[0].image.data.width"
+          :srcHeight="imageCovers[0].data.items[0].image.data.height"
           :maxWidth="640"
           :maxHeight="600"
         />
@@ -231,8 +233,8 @@ export default {
   user-select: none;
 
   & .entry-header {
-    margin-top: 16px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   & .entry-title {
@@ -258,12 +260,12 @@ export default {
 .entry-repost__icon {
   margin-right: 9px;
   display: flex;
-}
 
-.entry-repost__icon .icon {
-  width: 20px;
-  height: 20px;
-  color: var(--grey-color);
+  & .icon {
+    width: 20px;
+    height: 20px;
+    color: var(--grey-color);
+  }
 }
 
 .entry-repost__name {
@@ -306,10 +308,6 @@ export default {
   & + .embed {
     margin-top: 12px;
   }
-}
-
-.entry-content__cover {
-  margin-top: 5px;
 }
 
 .entry__link {

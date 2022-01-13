@@ -8,7 +8,7 @@
     <div class="link-block__content">
       <span class="link-block__title">{{ title }}</span>
       <span class="link-block__description">{{ description }}</span>
-      <span class="link-block__link">{{ url }}</span>
+      <div class="link-block__link"><link-icon />{{ url[1] }}</div>
     </div>
     <div class="link-block__logo">
       <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" />
@@ -17,10 +17,14 @@
 </template>
 
 <script>
+import LinkIcon from "@/assets/logos/link_icon.svg?inline";
+
 export default {
   props: {
     data: Object,
   },
+
+  components: { LinkIcon },
 
   computed: {
     title() {
@@ -32,7 +36,9 @@ export default {
     },
 
     url() {
-      return this.data[0].data.link.data.url;
+      let regex = /https?\:\/\/(.+?)(?=\/)/gi;
+      let srcUrl = this.data[0].data.link.data.url;
+      return regex.exec(srcUrl);
     },
 
     sourceIcon() {

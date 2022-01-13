@@ -22,7 +22,7 @@
           />
         </div>
         <template v-for="(block, index) in entry.blocks" :key="index">
-          <!-- <div
+          <div
             class="entry-page__img-block"
             v-if="
               block.type === 'media' &&
@@ -33,12 +33,14 @@
             "
           >
             <Image
-              :image="block"
+              :image="block.data.items[0].image"
               :type="2"
+              :srcWidth="block.data.items[0].image.data.width"
+              :srcHeight="block.data.items[0].image.data.height"
               :maxWidth="1020"
               :maxHeight="1500"
             />
-          </div> -->
+          </div>
           <div
             class="entry-page__text-block ep-island"
             v-if="block.type === 'text' && block.cover"
@@ -137,6 +139,12 @@ export default {
   font-size: 18px;
   line-height: 1.6em;
   word-break: break-word;
+}
+
+.entry-page__text-block:first-child {
+  & p {
+    margin-top: 0;
+  }
 }
 
 .ep-island {
