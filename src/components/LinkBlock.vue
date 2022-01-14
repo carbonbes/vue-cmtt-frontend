@@ -11,7 +11,8 @@
       <div class="link-block__link"><link-icon />{{ url[1] }}</div>
     </div>
     <div class="link-block__logo">
-      <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" />
+      <!-- <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" /> -->
+      <img :src="`${sourceIcon}`" />
     </div>
   </a>
 </template>
@@ -51,7 +52,6 @@ export default {
 <style lang="scss">
 .link-block {
   position: relative;
-  margin-top: 5px;
   padding: 11px 16px;
   display: flex;
   flex-flow: row;
@@ -100,6 +100,12 @@ export default {
   line-height: 17px;
   color: var(--grey-color);
   text-transform: uppercase;
+
+  & .icon {
+    margin-right: 7px;
+    width: 11px;
+    height: 11px;
+  }
 }
 
 @media screen and (max-width: 768px) {

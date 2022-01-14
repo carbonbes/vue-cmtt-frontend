@@ -209,10 +209,10 @@ export default {
     EntryFooter,
     Image,
     Video,
-    TelegramEmbed,
-    RepostIcon,
     LinkBlock,
     TwitterEmbed,
+    TelegramEmbed,
+    RepostIcon,
   },
 
   props: {
@@ -287,14 +287,6 @@ export default {
   & + .entry-content__subtitle {
     margin-top: 7px;
   }
-
-  & + .embed {
-    margin-top: 12px;
-  }
-
-  & + .link-block {
-    margin-top: 12px;
-  }
 }
 
 .entry-content__title,
@@ -302,10 +294,12 @@ export default {
   & + .entry-content__cover {
     margin-top: 12px;
   }
-}
 
-.entry-content__subtitle {
   & + .embed {
+    margin-top: 12px;
+  }
+
+  & + .link-block {
     margin-top: 12px;
   }
 }

@@ -37,7 +37,7 @@ export default {
   --header-bg-color: #fff4e2;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
-  --embed-bg-color: #f9f9f9;
+  --embed-bg-color: #fafafa;
   --embed-border-color: #0000001a;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
@@ -54,16 +54,15 @@ export default {
   --bg-color: #000;
   --header-bg-color: #202020;
   --entry-bg-color: #151515;
-  --embed-bg-color: #1e1e1e;
+  --embed-bg-color: #1c1c1c;
   --embed-border-color: #303030;
-  --highlight-block-color: #242424;
+  --highlight-block-color: #1d1d1d;
   --hover-item-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
 }
 
 * {
   box-sizing: border-box;
-  transition: background 0.3s;
 }
 
 .loader {
