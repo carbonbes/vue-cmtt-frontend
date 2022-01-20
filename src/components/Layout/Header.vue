@@ -7,8 +7,8 @@
       ><site-logo class="site-logo"
     /></router-link>
     <div class="spacer"></div>
-    <div class="header__item">
-      <div class="header__item-theme-toggle-btn" @click="toggleTheme">
+    <div class="header__item" @click="toggleTheme">
+      <div class="header__item-theme-toggle-btn">
         <sun-icon class="icon" v-if="this.currentTheme" />
         <moon-icon class="icon" v-else />
       </div>
@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       currentTheme: null,
+      timeout: null,
     };
   },
 
@@ -54,12 +55,16 @@ export default {
     },
 
     toggleTheme() {
+      document.documentElement.classList.add("theme-change");
       document.documentElement.setAttribute(
         "data-theme",
         this.currentTheme ? "light" : "dark"
       );
       localStorage.setItem("theme", this.currentTheme ? "light" : "dark");
       this.currentTheme = !this.currentTheme;
+      this.timeout = setTimeout(() => {
+        document.documentElement.classList.remove("theme-change");
+      }, 200);
     },
   },
 
@@ -74,6 +79,10 @@ export default {
       document.documentElement.setAttribute("data-theme", "dark");
     }
   },
+
+  beforeUnmount() {
+    clearTimeout(this.timeout);
+  },
 };
 </script>
 
@@ -85,7 +94,7 @@ export default {
   height: 60px;
   display: flex;
   background: var(--header-bg-color);
-  z-index: 2;
+  z-index: 3;
 }
 
 .header__item {

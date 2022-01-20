@@ -47,13 +47,18 @@
 import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
+  props: {
+    video: [String, Object],
+    srcWidth: Number,
+    srcHeight: Number,
+    maxWidth: Number,
+    maxHeight: Number,
+    externalService: Object,
+  },
+
   computed: {
     styleObject() {
       return {
-        margin:
-          this.calculatedWidth < this.maxWidth && this.type === 1
-            ? "0 auto"
-            : null,
         maxWidth:
           this.externalService && Object.keys(this.externalService).length !== 0
             ? this.maxWidth + "px"
@@ -108,16 +113,6 @@ export default {
     isCoub() {
       return this.externalService?.name === "coub";
     },
-  },
-
-  props: {
-    video: [String, Object],
-    type: String,
-    srcWidth: Number,
-    srcHeight: Number,
-    maxWidth: Number,
-    maxHeight: Number,
-    externalService: Object,
   },
 };
 </script>

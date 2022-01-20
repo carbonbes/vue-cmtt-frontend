@@ -8,7 +8,11 @@ import nProgress from "nprogress";
 const emitter = mitt();
 const app = createApp(App);
 app.config.globalProperties.emitter = emitter;
-nProgress.configure({ showSpinner: false, parent: ".loader" });
+nProgress.configure({
+  showSpinner: false,
+  parent: ".loader",
+  trickleSpeed: 75,
+});
 
 app.directive("outside-click", {
   beforeMount(el, binding) {

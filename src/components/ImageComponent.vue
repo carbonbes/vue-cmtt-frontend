@@ -12,7 +12,7 @@ import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
   computed: {
-    styleObject: function () {
+    styleObject() {
       return {
         maxWidth:
           (this.srcWidth >= this.maxWidth &&
@@ -25,7 +25,7 @@ export default {
       };
     },
 
-    calculatedWidth: function () {
+    calculatedWidth() {
       const { width } = сalculateAspectRatio(
         this.srcWidth,
         this.srcHeight,

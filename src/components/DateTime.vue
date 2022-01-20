@@ -17,7 +17,7 @@ export default {
   },
 
   props: {
-    date: Number,
+    date: [String, Number],
   },
 
   methods: {

@@ -3,6 +3,7 @@
     <div class="entry-page">
       <div class="entry-page__header ep-island">
         <entry-header
+          :subsiteData="entry.subsite"
           :subsiteType="entry.subsite.type"
           :subsiteId="entry.subsite.id"
           :subsiteAvatar="entry.subsite.avatar.data.uuid"
@@ -14,44 +15,47 @@
         />
       </div>
       <div class="entry-page__content">
-        <div class="entry-page__title" v-if="entry.title">
-          <entry-title
-            class="ep-island"
-            :title="entry.title"
-            :isEditorial="entry.isEditorial"
-          />
+        <div class="entry-page__title ep-island" v-if="entry.title">
+          <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
         </div>
         <template v-for="(block, index) in entry.blocks" :key="index">
-          <div
-            class="entry-page__img-block"
+          <image-block
+            :item="block"
             v-if="
               block.type === 'media' &&
               (block.data.items[0].image.data.type === 'jpg' ||
                 block.data.items[0].image.data.type === 'png' ||
-                block.data.items[0].image.data.type === 'webp') &&
-              block.cover
+                block.data.items[0].image.data.type === 'webp')
             "
-          >
-            <Image
-              :image="block.data.items[0].image"
-              :type="2"
-              :srcWidth="block.data.items[0].image.data.width"
-              :srcHeight="block.data.items[0].image.data.height"
-              :maxWidth="1020"
-              :maxHeight="1500"
+          />
+          <video-block
+            :item="block"
+            type="default"
+            v-if="
+              block.type === 'media' &&
+              block.data.items[0].image.data.type === 'gif'
+            "
+          />
+          <video-block
+            :item="block"
+            type="video"
+            v-if="
+              block.type === 'media' &&
+              block.data.items[0].image.data.type === 'video'
+            "
+          />
+          <text-block :item="block" v-if="block.type === 'text'" />
+          <div class="entry-page__embed" v-if="block.type === 'telegram'">
+            <telegram-component
+              :authorAvatar="block.data.telegram.data.tg_data.author.avatar_url"
+              :authorName="block.data.telegram.data.tg_data.author.name"
+              :dateTime="block.data.telegram.data.tg_data.datetime"
+              :text="block.data.telegram.data.tg_data.text"
+              :imgCover="
+                block.data.telegram.data.tg_data.photos[0]?.leonardo_url
+              "
+              :videoCover="block.data.telegram.data.tg_data.videos[0]?.src"
             />
-          </div>
-          <div
-            class="entry-page__text-block ep-island"
-            v-if="block.type === 'text' && block.cover"
-          >
-            <p>{{ block.data.text }}</p>
-          </div>
-          <div
-            class="entry-page__text-block ep-island"
-            v-if="block.type === 'text' && !block.cover"
-          >
-            <p>{{ block.data.text }}</p>
           </div>
         </template>
       </div>
@@ -68,10 +72,15 @@
 </template>
 
 <script>
-import EntryHeader from "@/components/EntryHeader.vue";
-import EntryTitle from "@/components/EntryTitle.vue";
-import EntryFooter from "@/components/EntryFooter.vue";
-import Image from "@/components/Image.vue";
+import EntryHeader from "@/components/Entry/EntryHeader.vue";
+import EntryTitle from "@/components/Entry/EntryTitle.vue";
+import EntryFooter from "@/components/Entry/EntryFooter.vue";
+import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
+import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
+import TextBlock from "@/components/EntryPage/TextBlock.vue";
+import TwitterComponent from "@/components/TwitterComponent.vue";
+import TelegramComponent from "@/components/TelegramComponent.vue";
+import { useTitle } from "@vueuse/core";
 import store from "@/store";
 import nProgress from "nprogress";
 import { mapGetters } from "vuex";
@@ -90,7 +99,11 @@ export default {
     EntryHeader,
     EntryTitle,
     EntryFooter,
-    Image,
+    ImageBlock,
+    VideoBlock,
+    TextBlock,
+    TwitterComponent,
+    TelegramComponent,
   },
 
   computed: {
@@ -105,6 +118,10 @@ export default {
     requestEntry(routeTo, next);
   },
 
+  mounted() {
+    useTitle(this.entry.title);
+  },
+
   unmounted() {
     store.commit("clearEntry");
   },
@@ -115,12 +132,13 @@ export default {
 .entry-page-wrapp {
   margin: 0 auto;
   max-width: 1020px;
-  color: var(--black-color);
-  background: var(--entry-bg-color);
 }
 
 .entry-page {
   padding-top: 30px;
+  color: var(--black-color);
+  background: var(--entry-bg-color);
+  border-radius: 0 0 8px 8px;
 }
 
 .entry-page__header {
@@ -133,6 +151,10 @@ export default {
     font-weight: 500;
     line-height: 1.3em;
   }
+
+  & + .entry-page__embed {
+    margin-top: 12px;
+  }
 }
 
 .entry-page__content {
@@ -141,10 +163,13 @@ export default {
   word-break: break-word;
 }
 
-.entry-page__text-block:first-child {
-  & p {
-    margin-top: 0;
-  }
+.entry-page__footer {
+  padding: 30px 0;
+}
+
+.entry-page__embed {
+  margin: 0 auto;
+  max-width: 680px;
 }
 
 .ep-island {

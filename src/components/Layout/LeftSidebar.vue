@@ -1,6 +1,9 @@
 <template>
   <nav class="left-sidebar" :class="classObject">
-    <div class="sidebar" v-outside-click:[this.ignoredOutsideClick]="visibilityHide">
+    <div
+      class="sidebar"
+      v-outside-click:[this.ignoredOutsideClick]="visibilityHide"
+    >
       <div class="left-sidebar__header">
         <div class="left-sidebar__item">
           <div class="site-burger-btn" @click="visibilityToggler">
@@ -83,8 +86,9 @@ export default {
   },
 
   created() {
-    window.addEventListener("resize", this.onResize);
     this.onResize();
+
+    window.addEventListener("resize", this.onResize);
   },
 
   mounted() {
@@ -105,7 +109,7 @@ export default {
   width: 220px;
   height: calc(100vh - 60px);
   flex-shrink: 0;
-  z-index: 2;
+  z-index: 3;
 
   &_hidden {
     display: none;

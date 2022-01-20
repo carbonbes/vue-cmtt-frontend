@@ -9,7 +9,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Entry from "@/components/Entry.vue";
+import Entry from "@/components/Entry/Entry.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 

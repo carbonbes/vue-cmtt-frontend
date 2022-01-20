@@ -24,4 +24,8 @@ export const API_v2 = {
   getEntry(id) {
     return instance_v2.get(`content?id=${id}`);
   },
+
+  subsite(id) {
+    return instance_v2.get(`subsite?id=${id}`);
+  },
 };

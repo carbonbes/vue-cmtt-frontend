@@ -8,6 +8,7 @@
     </div>
     <entry-header
       class="e-island"
+      :subsiteData="entry.subsite"
       :subsiteType="entry.subsite.type"
       :subsiteId="entry.subsite.id"
       :subsiteAvatar="entry.subsite.avatar.data.uuid"
@@ -24,56 +25,64 @@
       <div class="entry-content__subtitle e-island" v-if="subtitle.length > 0">
         {{ subtitle[0].data.text }}
       </div>
-      <telegram-embed :data="telegramCovers" v-if="telegramCovers.length > 0" />
+      <template
+        v-for="telegramData in telegramCovers"
+        :key="telegramData.data.telegram.data.tg_data.id"
+        ><telegram-component
+          :authorAvatar="
+            telegramData.data.telegram.data.tg_data.author.avatar_url
+          "
+          :authorName="telegramData.data.telegram.data.tg_data.author.name"
+          :dateTime="telegramData.data.telegram.data.tg_data.datetime"
+          :text="telegramData.data.telegram.data.tg_data.text"
+          :videoCover="telegramData.data.telegram.data.tg_data.videos[0]?.src"
+          v-if="telegramCovers.length > 0"
+      /></template>
       <template
         v-for="twitterData in twitterCovers"
         :key="twitterData.data.tweet.data.tweet_data.id"
-        ><twitter-embed :data="twitterData" v-if="twitterCovers.length > 0"
+        ><twitter-component :data="twitterData" v-if="twitterCovers.length > 0"
       /></template>
-      <link-block :data="linkCovers" v-if="linkCovers.length > 0" />
+      <link-component :data="linkCovers" v-if="linkCovers.length > 0" />
       <div
-        class="entry-content__cover cover"
+        class="entry-content__cover"
         :class="imageClassObject"
         v-if="imageCovers.length > 0"
       >
-        <Image
+        <image-component
           :image="imageCovers[0].data.items[0].image"
-          :type="1"
           :srcWidth="imageCovers[0].data.items[0].image.data.width"
           :srcHeight="imageCovers[0].data.items[0].image.data.height"
           :maxWidth="640"
           :maxHeight="600"
+          :type="1"
         />
       </div>
       <div
-        class="entry-content__cover cover"
+        class="entry-content__cover"
         :class="videoClassObject"
         v-if="videoCovers.length > 0"
       >
-        <Video
+        <video-component
           :video="videoCovers"
           :srcWidth="videoCovers[0].data.video.data.width"
           :srcHeight="videoCovers[0].data.video.data.height"
           :maxWidth="640"
           :maxHeight="600"
-          type="1"
           :externalService="videoCovers[0].data.video.data.external_service"
-          v-if="videoCovers.length > 0"
         />
       </div>
       <div
-        class="entry-content__cover cover"
+        class="entry-content__cover"
         :class="gifClassObject"
         v-if="gifCovers.length > 0"
       >
-        <Video
+        <video-component
           :video="gifCovers[0].data.items[0].image.data.uuid"
           :srcWidth="gifCovers[0].data.items[0].image.data.width"
           :srcHeight="gifCovers[0].data.items[0].image.data.height"
           :maxWidth="640"
           :maxHeight="600"
-          type="1"
-          v-if="gifCovers.length > 0"
         />
       </div>
     </div>
@@ -89,17 +98,29 @@
 </template>
 
 <script>
-import EntryHeader from "@/components/EntryHeader.vue";
-import EntryTitle from "@/components/EntryTitle.vue";
-import EntryFooter from "@/components/EntryFooter.vue";
-import Image from "@/components/Image.vue";
-import Video from "@/components/Video.vue";
-import TelegramEmbed from "@/components/TelegramEmbed.vue";
-import TwitterEmbed from "@/components/TwitterEmbed.vue";
+import EntryHeader from "@/components/Entry/EntryHeader.vue";
+import EntryTitle from "@/components/Entry/EntryTitle.vue";
+import EntryFooter from "@/components/Entry/EntryFooter.vue";
+import ImageComponent from "@/components/ImageComponent.vue";
+import VideoComponent from "@/components/VideoComponent.vue";
+import TelegramComponent from "@/components/TelegramComponent.vue";
+import TwitterComponent from "@/components/TwitterComponent.vue";
 import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
-import LinkBlock from "@/components/LinkBlock.vue";
+import LinkComponent from "@/components/LinkComponent.vue";
 
 export default {
+  components: {
+    EntryHeader,
+    EntryTitle,
+    EntryFooter,
+    ImageComponent,
+    VideoComponent,
+    LinkComponent,
+    TwitterComponent,
+    TelegramComponent,
+    RepostIcon,
+  },
+
   computed: {
     subtitle() {
       return this.entry.blocks.filter(
@@ -158,61 +179,60 @@ export default {
     },
 
     imageClassObject() {
-      return {
-        cover_vertical:
-          this.imageCovers[0].data.items[0].image.data.height >
-          this.imageCovers[0].data.items[0].image.data.width,
-        cover_wide:
-          this.imageCovers[0].data.items[0].image.data.width > 640 &&
-          !this.imageCovers[0].data.with_background,
-        cover_thin:
-          this.imageCovers[0].data.items[0].image.data.width < 640 &&
-          !this.imageCovers[0].data.with_background,
-        cover_highlighted: this.imageCovers[0].data.with_background,
-      };
+      if (this.imageCovers.length > 0) {
+        return {
+          "entry-content__cover_vertical":
+            this.imageCovers[0].data.items[0].image.data.height >
+            this.imageCovers[0].data.items[0].image.data.width,
+          "entry-content__cover_wide":
+            this.imageCovers[0].data.items[0].image.data.width >= 640 &&
+            !this.imageCovers[0].data.with_background,
+          "entry-content__cover_thin":
+            this.imageCovers[0].data.items[0].image.data.width <= 640 &&
+            !this.imageCovers[0].data.with_background,
+          "entry-content__cover_highlighted":
+            this.imageCovers[0].data.with_background,
+        };
+      }
     },
 
     videoClassObject() {
-      return {
-        cover_vertical:
-          this.videoCovers[0]?.data.video.data.height >
-          this.videoCovers[0]?.data.video.data.width,
-        cover_wide:
-          this.videoCovers[0]?.data.video.data.width > 640 &&
-          !this.videoCovers[0]?.data.with_background,
-        cover_thin:
-          this.videoCovers[0]?.data.video.data.width < 640 &&
-          !this.videoCovers[0]?.data.with_background,
-        cover_highlighted: this.videoCovers[0]?.data.with_background,
-      };
+      if (this.videoCovers.length > 0) {
+        return {
+          "entry-content__cover_vertical":
+            this.videoCovers[0].data.video.data.height >
+            this.videoCovers[0].data.video.data.width,
+          "entry-content__cover_wide":
+            this.videoCovers[0].data.video.data.width >= 640 &&
+            !this.videoCovers[0].data.with_background,
+          "entry-content__cover_thin":
+            this.videoCovers[0].data.video.data.width <= 640 &&
+            !this.videoCovers[0].data.with_background &&
+            !Object.keys(this.videoCovers[0].data.video.data.external_service)
+              .length,
+          "entry-content__cover_highlighted":
+            this.videoCovers[0].data.with_background,
+        };
+      }
     },
 
     gifClassObject() {
-      return {
-        cover_vertical:
-          this.gifCovers[0].data.items[0].image.data.height >
-          this.gifCovers[0].data.items[0].image.data.width,
-        cover_wide:
-          this.videoCovers[0]?.data.video.data.width > 640 &&
-          !this.gifCovers[0].data.items[0].image.data.width,
-        cover_thin:
-          this.gifCovers[0].data.items[0].image.data.width < 640 &&
-          !this.gifCovers[0].data.with_background,
-        cover_highlighted: this.gifCovers[0].data.with_background,
-      };
+      if (this.gifCovers.length > 0) {
+        return {
+          "entry-content__cover_vertical":
+            this.gifCovers[0].data.items[0].image.data.height >
+            this.gifCovers[0].data.items[0].image.data.width,
+          "entry-content__cover_wide":
+            this.gifCovers[0].data.items[0].image.data.width >= 640 &&
+            !this.gifCovers[0].data.items[0].image.data.width,
+          "entry-content__cover_thin":
+            this.gifCovers[0].data.items[0].image.data.width <= 640 &&
+            !this.gifCovers[0].data.with_background,
+          "entry-content__cover_highlighted":
+            this.gifCovers[0].data.with_background,
+        };
+      }
     },
-  },
-
-  components: {
-    EntryHeader,
-    EntryTitle,
-    EntryFooter,
-    Image,
-    Video,
-    LinkBlock,
-    TwitterEmbed,
-    TelegramEmbed,
-    RepostIcon,
   },
 
   props: {
@@ -230,7 +250,6 @@ export default {
   color: var(--black-color);
   background: var(--entry-bg-color);
   border-radius: 8px;
-  user-select: none;
 
   & .entry-header {
     margin-top: 15px;
@@ -304,6 +323,39 @@ export default {
   }
 }
 
+.entry-content__cover {
+  &:not(:first-child) {
+    margin-top: 12px;
+  }
+
+  &_thin {
+    padding: 0 20px;
+  }
+
+  &_wide {
+    width: 100%;
+  }
+
+  &_vertical {
+    padding: 0 20px;
+
+    &.entry-content__cover_highlighted {
+      & > div {
+        max-width: 55% !important;
+      }
+    }
+  }
+
+  &_highlighted {
+    padding: 30px;
+    background: var(--highlight-block-color);
+
+    & > div {
+      margin: 0 auto;
+    }
+  }
+}
+
 .entry__link {
   position: absolute;
   width: 100%;
@@ -313,6 +365,16 @@ export default {
 .e-island {
   padding-left: 20px;
   padding-right: 20px;
+}
+
+@media (hover: hover) {
+  .entry {
+    &:hover {
+      & .entry-header__subsite-data {
+        z-index: 2;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {

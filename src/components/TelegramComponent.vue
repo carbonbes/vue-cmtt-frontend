@@ -32,33 +32,12 @@ export default {
   components: { DateTime, TelegramLogo },
 
   props: {
-    data: Object,
-  },
-
-  computed: {
-    authorAvatar() {
-      return this.data[0].data.telegram.data.tg_data.author.avatar_url;
-    },
-
-    authorName() {
-      return this.data[0].data.telegram.data.tg_data.author.name;
-    },
-
-    dateTime() {
-      return this.data[0].data.telegram.data.tg_data.datetime;
-    },
-
-    text() {
-      return this.data[0].data.telegram.data.tg_data.text;
-    },
-
-    imgCover() {
-      return this.data[0].data.telegram.data.tg_data.photos[0]?.leonardo_url;
-    },
-
-    videoCover() {
-      return this.data[0].data.telegram.data.tg_data.videos[0]?.src;
-    },
+    authorAvatar: String,
+    authorName: String,
+    dateTime: [String, Number],
+    text: String,
+    imgCover: String,
+    videoCover: String,
   },
 };
 </script>

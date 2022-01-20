@@ -1,13 +1,21 @@
 <template>
   <div class="entry-header">
-    <div class="entry-header__subsite-data entry-header__item">
+    <div
+      class="entry-header__subsite-data entry-header__item"
+      @mouseenter="showPopup"
+      @mouseleave="hidePopup"
+    >
       <div
         class="entry-header__subsite-avatar"
         :style="{
           'background-image': `url(https://leonardo.osnova.io/${subsiteAvatar}/-/scale_crop/64x64/)`,
         }"
-      ></div>
+      />
       <span class="entry-header__subsite-name">{{ subsiteName }}</span>
+      <transition name="entry-header-subsite-data__popup"
+        ><div class="entry-header-subsite-data__popup" v-if="popupVisibled">
+          <author-data-popup :data="this.subsiteData" /></div
+      ></transition>
     </div>
     <div
       class="entry-header__author-name entry-header__item"
@@ -25,13 +33,16 @@
 
 <script>
 import DateTime from "@/components/DateTime.vue";
+import AuthorDataPopup from "../AuthorDataPopup.vue";
 
 export default {
   components: {
     DateTime,
+    AuthorDataPopup,
   },
 
   props: {
+    subsiteData: Object,
     subsiteType: Number,
     subsiteId: Number,
     subsiteAvatar: String,
@@ -42,10 +53,36 @@ export default {
     date: Number,
   },
 
+  data() {
+    return {
+      timeout: null,
+      popupisFocus: false,
+      popupVisibled: false,
+    };
+  },
+
+  methods: {
+    showPopup() {
+      this.popupisFocus = true;
+      this.timeout = setTimeout(() => {
+        if (this.popupisFocus) this.popupVisibled = true;
+      }, 750);
+    },
+
+    hidePopup() {
+      this.popupisFocus = false;
+      this.popupVisibled = false;
+    },
+  },
+
   computed: {
     isSameAuthor() {
       return this.subsiteId === this.authorId;
     },
+  },
+
+  beforeUnmount() {
+    clearTimeout(this.timeout);
   },
 };
 </script>
@@ -66,6 +103,11 @@ export default {
   }
 }
 
+.entry-header__subsite-data {
+  position: relative;
+  justify-content: center;
+}
+
 .entry-header__subsite-avatar {
   margin-right: 10px;
   width: 22px;
@@ -81,16 +123,40 @@ export default {
   font-weight: 500;
 }
 
+.entry-header-subsite-data__popup {
+  position: absolute;
+  top: 100%;
+  margin-top: 10px;
+  width: 325px;
+  min-height: 250px;
+  cursor: auto;
+
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.15s;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+}
+
 .entry-header__author-name,
 .entry-header__date-publish {
   font-size: 15px;
 }
 
-.entry-header__subsite-name,
 .entry-header__author-name,
 .entry-header__date-publish {
   position: relative;
   z-index: 1;
+}
+
+.entry-header__subsite-data,
+.entry-header__author-name,
+.entry-header__date-publish {
+  cursor: pointer;
 }
 
 .entry-header__author-name {
@@ -106,6 +172,30 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--grey-color);
+}
+
+@media (hover: hover) {
+  .entry-header__subsite-data,
+  .entry-header__author-name,
+  .entry-header__date-publish {
+    &:hover {
+      .entry-header__subsite-name {
+        color: var(--blue-color);
+      }
+    }
+  }
+
+  .entry-header__subsite-data {
+    &:hover {
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 50px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {

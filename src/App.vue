@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import LeftSidebar from "@/components/LeftSidebar.vue";
-import RightSidebar from "@/components/RightSidebar.vue";
+import Header from "@/components/Layout/Header.vue";
+import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
+import RightSidebar from "@/components/Layout/RightSidebar.vue";
 
 export default {
   components: {
@@ -39,6 +39,7 @@ export default {
   --entry-bg-color: #fff;
   --embed-bg-color: #fafafa;
   --embed-border-color: #0000001a;
+  --dropdown-bg-color: #fff;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
   --hover-item-color: #ffffff80;
@@ -56,6 +57,7 @@ export default {
   --entry-bg-color: #151515;
   --embed-bg-color: #1c1c1c;
   --embed-border-color: #303030;
+  --dropdown-bg-color: #202020;
   --highlight-block-color: #1d1d1d;
   --hover-item-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
@@ -63,6 +65,12 @@ export default {
 
 * {
   box-sizing: border-box;
+}
+
+.theme-change {
+  & * {
+    transition: background 0.2s, border 0.2s;
+  }
 }
 
 .loader {
@@ -183,39 +191,6 @@ body {
   cursor: pointer;
 }
 
-.cover {
-  &.cover_thin {
-    padding: 0 25px;
-  }
-
-  &.cover_wide {
-    width: 100%;
-  }
-
-  /* &.cover_vertical {
-    padding: 0 25px;
-
-    & > div {
-      max-width: 65% !important;
-    }
-  } */
-
-  &.cover_highlighted {
-    padding: 30px;
-    background: var(--highlight-block-color);
-
-    &.cover_vertical {
-      & > div {
-        max-width: 55% !important;
-      }
-    }
-  }
-
-  &.cover_highlighted > div {
-    margin: 0 auto;
-  }
-}
-
 .embed-text,
 .entry-content-subtitle {
   & a {
@@ -259,6 +234,7 @@ body {
 }
 
 .embed-header__author-name {
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -359,9 +335,19 @@ body {
     margin: 0 15px 15px;
   }
 
-  .cover_vertical {
-    & > div {
-      max-width: 75% !important;
+  .cover {
+    &.cover_vertical {
+      padding: 0 15px;
+
+      &.cover_highlighted {
+        & > div {
+          max-width: 75% !important;
+        }
+      }
+    }
+
+    &.cover_highlighted {
+      padding: 30px;
     }
   }
 }
