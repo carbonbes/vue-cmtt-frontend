@@ -11,6 +11,7 @@
 import Header from "@/components/Layout/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
+import { useMediaQuery } from "@vueuse/core";
 
 export default {
   components: {
@@ -18,6 +19,8 @@ export default {
     LeftSidebar,
     RightSidebar,
   },
+
+  methods: {},
 };
 </script>
 
@@ -57,7 +60,7 @@ export default {
   --entry-bg-color: #151515;
   --embed-bg-color: #1c1c1c;
   --embed-border-color: #303030;
-  --dropdown-bg-color: #202020;
+  --dropdown-bg-color: #2c2c2c;
   --highlight-block-color: #1d1d1d;
   --hover-item-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
@@ -136,18 +139,9 @@ body {
 
 .sidebar {
   position: relative;
+  height: 100%;
   background: var(--sidebar-bg-color);
   z-index: 2;
-}
-
-.sidebar-tint {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1;
 }
 
 .site-logo {
@@ -349,12 +343,6 @@ body {
     &.cover_highlighted {
       padding: 30px;
     }
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .sidebar-tint {
-    display: none;
   }
 }
 </style>

@@ -44,6 +44,10 @@ export default {
     ChevronUpIcon,
   },
 
+  props: {
+    actions: Object,
+  },
+
   computed: {
     ratingValueStyles: function () {
       return {

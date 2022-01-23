@@ -168,7 +168,7 @@ export default {
 }
 
 .entry-page__embed {
-  margin: 0 auto;
+  margin: 30px auto;
   max-width: 680px;
 }
 

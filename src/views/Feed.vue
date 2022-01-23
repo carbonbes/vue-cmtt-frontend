@@ -12,6 +12,7 @@ import { mapGetters } from "vuex";
 import Entry from "@/components/Entry/Entry.vue";
 import store from "@/store";
 import nProgress from "nprogress";
+import { useTitle } from "@vueuse/core";
 
 function requestFeed(routeTo, routeFrom, next) {
   nProgress.start();
@@ -66,6 +67,10 @@ export default {
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
     requestFeed(routeTo, routeFrom, next);
+  },
+
+  mounted() {
+    useTitle("Лента");
   },
 
   unmounted() {

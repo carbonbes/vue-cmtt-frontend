@@ -40,6 +40,7 @@ import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import HotIcon from "@/assets/logos/hot_icon.svg?inline";
 import ClockIcon from "@/assets/logos/clock_icon.svg?inline";
 import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
+import { useMediaQuery } from "@vueuse/core";
 
 export default {
   data() {
@@ -67,9 +68,9 @@ export default {
 
     onResize() {
       this.isVisibled =
-        document.documentElement.clientWidth < 768 ? false : true;
+        document.documentElement.clientWidth < 925 ? false : true;
       this.ignoredOutsideClick =
-        document.documentElement.clientWidth < 768 ? false : true;
+        document.documentElement.clientWidth < 925 ? false : true;
     },
 
     savedSorting(sorting) {
@@ -78,10 +79,14 @@ export default {
   },
 
   computed: {
-    classObject: function () {
+    classObject() {
       return {
         "left-sidebar_hidden": !this.isVisibled,
       };
+    },
+
+    isTablet() {
+      return useMediaQuery("(min-width: 1024px)");
     },
   },
 
@@ -152,11 +157,12 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 925px) {
   .left-sidebar {
     position: fixed;
     top: 0;
     width: 80%;
+    max-width: 300px;
     height: 100%;
     background: var(--sidebar-bg-color);
   }
@@ -173,6 +179,16 @@ export default {
   .left-sidebar__link {
     height: 48px;
     font-size: 18px;
+  }
+
+  .sidebar-tint {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
   }
 }
 
