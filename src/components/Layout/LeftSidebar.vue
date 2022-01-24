@@ -61,22 +61,31 @@ export default {
     savedSorting(sorting) {
       localStorage.setItem("saved-sorting", sorting);
     },
+
+    onResize() {
+      this.width = document.documentElement.clientWidth;
+    },
   },
 
   computed: {
     classObject() {
       return {
-        "left-sidebar_hidden": !this.visibled,
+        "left-sidebar_hidden": !this.visibled || this.width < 925,
       };
     },
   },
 
   mounted() {
     this.emitter.on("left-sidebar-visibled", this.visibilityToggler);
+
+    this.onResize();
+    window.addEventListener("resize", this.onResize);
   },
 
   beforeUnmount() {
     this.emitter.off("left-sidebar-visibled", this.visibilityToggler);
+
+    window.removeEventListener("resize", this.onResize);
   },
 };
 </script>
