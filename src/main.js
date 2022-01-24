@@ -17,7 +17,8 @@ nProgress.configure({
 app.directive("outside-click", {
   beforeMount(el, binding) {
     el.hundleClick = function (e) {
-      if (!binding.arg && !el.contains(e.target)) {
+      if (!el.contains(e.target)) {
+        console.log(binding);
         binding.value();
       }
     };

@@ -1,9 +1,6 @@
 <template>
   <nav class="left-sidebar" :class="classObject">
-    <div
-      class="sidebar"
-      v-outside-click:[this.ignoredOutsideClick]="visibilityHide"
-    >
+    <div class="sidebar">
       <div class="left-sidebar__header">
         <div class="left-sidebar__item">
           <div class="site-burger-btn" @click="visibilityToggler">
@@ -40,16 +37,8 @@ import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import HotIcon from "@/assets/logos/hot_icon.svg?inline";
 import ClockIcon from "@/assets/logos/clock_icon.svg?inline";
 import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
-import { useMediaQuery } from "@vueuse/core";
 
 export default {
-  data() {
-    return {
-      isVisibled: null,
-      ignoredOutsideClick: null,
-    };
-  },
-
   components: {
     SiteLogo,
     MenuIcon,
@@ -57,20 +46,16 @@ export default {
     ClockIcon,
   },
 
+  data() {
+    return {
+      visibled: null,
+      width: null,
+    };
+  },
+
   methods: {
     visibilityToggler() {
-      this.isVisibled = !this.isVisibled;
-    },
-
-    visibilityHide() {
-      this.isVisibled = false;
-    },
-
-    onResize() {
-      this.isVisibled =
-        document.documentElement.clientWidth < 925 ? false : true;
-      this.ignoredOutsideClick =
-        document.documentElement.clientWidth < 925 ? false : true;
+      this.visibled = !this.visibled;
     },
 
     savedSorting(sorting) {
@@ -81,19 +66,9 @@ export default {
   computed: {
     classObject() {
       return {
-        "left-sidebar_hidden": !this.isVisibled,
+        "left-sidebar_hidden": !this.visibled,
       };
     },
-
-    isTablet() {
-      return useMediaQuery("(min-width: 1024px)");
-    },
-  },
-
-  created() {
-    this.onResize();
-
-    window.addEventListener("resize", this.onResize);
   },
 
   mounted() {
@@ -101,7 +76,6 @@ export default {
   },
 
   beforeUnmount() {
-    window.removeEventListener("resize", this.onResize);
     this.emitter.off("left-sidebar-visibled", this.visibilityToggler);
   },
 };

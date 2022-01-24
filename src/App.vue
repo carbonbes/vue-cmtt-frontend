@@ -11,7 +11,6 @@
 import Header from "@/components/Layout/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
-import { useMediaQuery } from "@vueuse/core";
 
 export default {
   components: {

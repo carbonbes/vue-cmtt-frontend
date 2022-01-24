@@ -7,7 +7,6 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@vueuse/core": "^7.5.3",
     "@zhuowenli/vue-feather-icons": "^5.0.2",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",

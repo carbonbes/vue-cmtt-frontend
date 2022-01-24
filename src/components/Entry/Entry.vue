@@ -383,16 +383,18 @@ export default {
     padding-right: 15px;
   }
 
-  .entry {
-    border-radius: 0;
-  }
-
   .entry-content {
     .embed,
     .link-block {
       margin-left: 15px;
       margin-right: 15px;
     }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .entry {
+    border-radius: 0;
   }
 }
 </style>

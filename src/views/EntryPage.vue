@@ -80,7 +80,6 @@ import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
 import TextBlock from "@/components/EntryPage/TextBlock.vue";
 import TwitterComponent from "@/components/TwitterComponent.vue";
 import TelegramComponent from "@/components/TelegramComponent.vue";
-import { useTitle } from "@vueuse/core";
 import store from "@/store";
 import nProgress from "nprogress";
 import { mapGetters } from "vuex";
@@ -116,10 +115,6 @@ export default {
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
     requestEntry(routeTo, next);
-  },
-
-  mounted() {
-    useTitle(this.entry.title);
   },
 
   unmounted() {

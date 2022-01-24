@@ -16,10 +16,4 @@
     display: none;
   }
 }
-
-@media screen and (min-width: 1260px) {
-  .right-sidebar {
-    display: block;
-  }
-}
 </style>
