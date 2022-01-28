@@ -48,7 +48,7 @@ export default {
 
   data() {
     return {
-      visibled: null,
+      visibled: true,
       width: null,
     };
   },
@@ -64,13 +64,22 @@ export default {
 
     onResize() {
       this.width = document.documentElement.clientWidth;
+      this.isVisibled();
+    },
+
+    isVisibled() {
+      if (this.width < 925) {
+        this.visibled = false;
+      } else if (this.width > 925) {
+        this.visibled = true;
+      }
     },
   },
 
   computed: {
     classObject() {
       return {
-        "left-sidebar_hidden": !this.visibled || this.width < 925,
+        "left-sidebar_hidden": !this.visibled,
       };
     },
   },

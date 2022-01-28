@@ -4,7 +4,7 @@
 
 <script>
 import moment from "moment";
-import { declensionWords } from "@/utils/declensionWords";
+import declensionWords from "@/utils/declensionWords";
 
 export default {
   data() {

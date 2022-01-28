@@ -13,8 +13,17 @@
       />
       <span class="entry-header__subsite-name">{{ subsiteName }}</span>
       <transition name="entry-header-subsite-data__popup"
-        ><div class="entry-header-subsite-data__popup" v-if="popupVisibled">
-          <author-data-popup :data="this.subsiteData" /></div
+        ><div
+          class="
+            entry-header-subsite-data__popup
+            entry-header-subsite-data__popup_bottom
+          "
+          v-if="popupVisibled"
+        >
+          <author-data-popup
+            :data="this.subsiteData"
+            :isSubscribed="this.subsiteData.isSubscribed"
+          /></div
       ></transition>
     </div>
     <div
@@ -56,21 +65,21 @@ export default {
   data() {
     return {
       timeout: null,
-      popupisFocus: false,
+      popupIsFocus: false,
       popupVisibled: false,
     };
   },
 
   methods: {
     showPopup() {
-      this.popupisFocus = true;
+      this.popupIsFocus = true;
       this.timeout = setTimeout(() => {
-        if (this.popupisFocus) this.popupVisibled = true;
+        if (this.popupIsFocus) this.popupVisibled = true;
       }, 750);
     },
 
     hidePopup() {
-      this.popupisFocus = false;
+      this.popupIsFocus = false;
       this.popupVisibled = false;
     },
   },
@@ -125,11 +134,18 @@ export default {
 
 .entry-header-subsite-data__popup {
   position: absolute;
-  top: 100%;
-  margin-top: 10px;
   width: 325px;
-  min-height: 250px;
   cursor: auto;
+
+  &_top {
+    bottom: 100%;
+    margin-bottom: 10px;
+  }
+
+  &_bottom {
+    top: 100%;
+    margin-top: 10px;
+  }
 
   &-enter-active,
   &-leave-active {

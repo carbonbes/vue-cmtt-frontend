@@ -7,7 +7,7 @@ export const API_v2 = {
     }
 
     if (!data.sorting) {
-      return instance_v2.get(`timeline?sorting=hotness`);
+      return instance_v2.get("timeline?sorting=hotness");
     }
 
     if (data.sorting && data.lastId) {
@@ -27,5 +27,9 @@ export const API_v2 = {
 
   subsite(id) {
     return instance_v2.get(`subsite?id=${id}`);
+  },
+
+  subsiteMe() {
+    return instance_v2.get("subsite/me");
   },
 };

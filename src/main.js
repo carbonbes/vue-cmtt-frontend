@@ -8,6 +8,7 @@ import nProgress from "nprogress";
 const emitter = mitt();
 const app = createApp(App);
 app.config.globalProperties.emitter = emitter;
+app.config.unwrapInjectedRef = true;
 nProgress.configure({
   showSpinner: false,
   parent: ".loader",

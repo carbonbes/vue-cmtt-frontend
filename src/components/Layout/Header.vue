@@ -17,8 +17,11 @@
       <div class="header__item-bell-btn"><bell-icon class="icon" /></div>
     </div>
     <div class="header__item">
-      <div class="header__item-login-btn">
+      <div class="header__item-login-btn" v-if="!isAuth">
         <user-icon class="icon" />
+      </div>
+      <div class="header__item-avatar-wrapp" v-if="isAuth">
+        <div class="header__item-avatar" :style="avatarStyleObject" />
       </div>
     </div>
     <div class="loader" />
@@ -26,6 +29,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { SunIcon, MoonIcon } from "@zhuowenli/vue-feather-icons";
 import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
 import SiteLogo from "@/assets/logos/site_logo.svg?inline";
@@ -42,12 +46,7 @@ export default {
     SiteLogo,
   },
 
-  data() {
-    return {
-      currentTheme: null,
-      timeout: null,
-    };
-  },
+  inject: ["currentTheme"],
 
   methods: {
     leftSidebarVisibility() {
@@ -55,33 +54,26 @@ export default {
     },
 
     toggleTheme() {
-      document.documentElement.classList.add("theme-change");
-      document.documentElement.setAttribute(
-        "data-theme",
-        this.currentTheme ? "light" : "dark"
-      );
-      localStorage.setItem("theme", this.currentTheme ? "light" : "dark");
-      this.currentTheme = !this.currentTheme;
-      this.timeout = setTimeout(() => {
-        document.documentElement.classList.remove("theme-change");
-      }, 200);
+      this.emitter.emit("theme-toggle");
     },
   },
 
-  created() {
-    let theme = localStorage.getItem("theme");
+  computed: {
+    ...mapGetters(["auth"]),
 
-    if (theme === "light" || !theme) {
-      this.currentTheme = false;
-      document.documentElement.setAttribute("data-theme", "light");
-    } else {
-      this.currentTheme = true;
-      document.documentElement.setAttribute("data-theme", "dark");
-    }
-  },
+    isAuth() {
+      return this.auth.length !== 0;
+    },
 
-  beforeUnmount() {
-    clearTimeout(this.timeout);
+    avatarStyleObject() {
+      if (this.auth.avatar) {
+        return {
+          backgroundImage: `url(
+            https://leonardo.osnova.io/${this.auth.avatar.data.uuid}/-/format/webp/
+          )`,
+        };
+      }
+    },
   },
 };
 </script>
@@ -125,13 +117,30 @@ export default {
 }
 
 .header__item-login-btn {
+  padding-right: 40px;
+
   & .icon {
     margin-right: 8px;
   }
 }
 
-.header__item-login-btn {
+.header__item-avatar-wrapp {
+  margin-left: 5px;
+  padding: 12px;
   padding-right: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header__item-avatar {
+  width: 40px;
+  height: 40px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+  border-radius: 8px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 @media screen and (max-width: 768px) {
@@ -160,7 +169,7 @@ export default {
   .site-burger-btn {
     &:hover {
       .icon {
-        opacity: 0.5;
+        opacity: 0.7;
       }
     }
   }
@@ -172,6 +181,12 @@ export default {
       .icon {
         color: var(--brand-color);
       }
+    }
+  }
+
+  .header__item-avatar-wrapp {
+    &:hover {
+      opacity: 0.7;
     }
   }
 }

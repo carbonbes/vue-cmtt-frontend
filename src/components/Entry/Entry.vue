@@ -35,6 +35,9 @@
           :authorName="telegramData.data.telegram.data.tg_data.author.name"
           :dateTime="telegramData.data.telegram.data.tg_data.datetime"
           :text="telegramData.data.telegram.data.tg_data.text"
+          :imgCover="
+            telegramData.data.telegram.data.tg_data.photos[0]?.leonardo_url
+          "
           :videoCover="telegramData.data.telegram.data.tg_data.videos[0]?.src"
           v-if="telegramCovers.length > 0"
       /></template>
@@ -299,6 +302,8 @@ export default {
   .link-block {
     margin-left: 20px;
     margin-right: 20px;
+    position: relative;
+    z-index: 1;
   }
 }
 

@@ -142,9 +142,14 @@ export default {
 
 .entry-page__title {
   & .entry-title {
+    margin-bottom: 15px;
     font-size: 36px;
     font-weight: 500;
     line-height: 1.3em;
+  }
+
+  & + .entry-page__img-block {
+    margin-top: 0;
   }
 
   & + .entry-page__embed {
@@ -163,8 +168,13 @@ export default {
 }
 
 .entry-page__embed {
-  margin: 30px auto;
+  margin-left: auto;
+  margin-right: auto;
   max-width: 680px;
+
+  &:not(:first-child) {
+    margin-top: 30px;
+  }
 }
 
 .ep-island {

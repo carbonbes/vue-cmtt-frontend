@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { mapActions } from "vuex";
+import mitt from "mitt";
 import Header from "@/components/Layout/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
@@ -19,7 +22,59 @@ export default {
     RightSidebar,
   },
 
-  methods: {},
+  data() {
+    return {
+      currentTheme: null,
+      timeout: null,
+    };
+  },
+
+  provide() {
+    return { currentTheme: computed(() => this.currentTheme) };
+  },
+
+  methods: {
+    ...mapActions(["requestAuth"]),
+
+    setTheme() {
+      let theme = localStorage.getItem("theme");
+
+      if (theme === "light" || !theme) {
+        this.currentTheme = false;
+        document.documentElement.setAttribute("data-theme", "light");
+      } else {
+        this.currentTheme = true;
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    },
+
+    themeToggle() {
+      document.documentElement.classList.add("theme-change");
+      document.documentElement.setAttribute(
+        "data-theme",
+        this.currentTheme ? "light" : "dark"
+      );
+      localStorage.setItem("theme", this.currentTheme ? "light" : "dark");
+      this.currentTheme = !this.currentTheme;
+      this.timeout = setTimeout(() => {
+        document.documentElement.classList.remove("theme-change");
+      }, 200);
+    },
+  },
+
+  created() {
+    this.requestAuth();
+    this.setTheme();
+  },
+
+  mounted() {
+    this.emitter.on("theme-toggle", this.themeToggle);
+  },
+
+  beforeUnmount() {
+    clearTimeout(this.timeout);
+    this.emitter.off("theme-toggle", this.themeToggle);
+  },
 };
 </script>
 
@@ -39,13 +94,14 @@ export default {
   --header-bg-color: #fff4e2;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
-  --embed-bg-color: #fafafa;
   --embed-border-color: #0000001a;
   --dropdown-bg-color: #fff;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
   --hover-item-color: #ffffff80;
   --active-item-color: #fff;
+  --box-shadow-border: 0 0 0 var(--border-width) #fff,
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="dark"] {
@@ -57,12 +113,13 @@ export default {
   --bg-color: #000;
   --header-bg-color: #202020;
   --entry-bg-color: #151515;
-  --embed-bg-color: #1c1c1c;
   --embed-border-color: #303030;
   --dropdown-bg-color: #2c2c2c;
   --highlight-block-color: #1d1d1d;
   --hover-item-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
+  --box-shadow-border: 0 0 0 var(--border-width) #fff,
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -103,6 +160,50 @@ h4,
 h5,
 h6 {
   margin: 0;
+}
+
+.button {
+  margin: 0;
+  padding: 0;
+  height: 36px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  user-select: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &_a {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%), inset 0 0 0 1px rgb(0 0 0 / 6%),
+      inset 0 -1px 0 rgb(0 0 0 / 12%), inset 1px 0 0 rgb(0 0 0 / 6%),
+      inset -1px 0 0 rgb(0 0 0 / 6%);
+  }
+
+  &_b {
+    background: #4683d9;
+    color: #fff;
+    box-shadow: 0 1px 2px rgb(70 131 217 / 48%), inset 0 -1px 0 rgb(0 0 0 / 12%);
+
+    &:hover {
+      background: #437cce;
+    }
+
+    &:active {
+      box-shadow: inset 0 -1px 0 rgb(0 0 0 / 12%);
+    }
+  }
+
+  &__label,
+  &__icon {
+    padding: 0 15px;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 }
 
 body {
@@ -193,14 +294,11 @@ body {
 }
 
 .embed {
-  position: relative;
   display: flex;
   flex-flow: column;
-  background: var(--embed-bg-color);
   border: 1px solid var(--embed-border-color);
   border-radius: 8px;
   line-height: normal;
-  z-index: 1;
 
   & + .embed {
     margin-top: 12px;
