@@ -15,14 +15,20 @@
     </div>
     <div class="spacer" />
     <div class="entry-footer__rating">
-      <div class="entry-footer__vote-btn vote-dislike">
+      <div
+        class="entry-footer__vote-btn vote-dislike"
+        :class="voteDislikeButtonClassObject"
+      >
         <chevron-down-icon class="icon" />
       </div>
       <div class="entry-footer__rating-value" :class="ratingValueStyles">
         <template v-if="entryRating.summ < 0">–</template
         >{{ entryRating.counter }}
       </div>
-      <div class="entry-footer__vote-btn vote-like">
+      <div
+        class="entry-footer__vote-btn vote-like"
+        :class="voteLikeButtonClassObject"
+      >
         <chevron-up-icon class="icon" />
       </div>
     </div>
@@ -56,6 +62,18 @@ export default {
         "entry-footer__rating-value_positive": this.entryRating.summ > 0,
       };
     },
+
+    voteLikeButtonClassObject() {
+      return {
+        "vote-like_active": this.entryRating.isLiked === 1,
+      };
+    },
+
+    voteDislikeButtonClassObject() {
+      return {
+        "vote-dislike_active": this.entryRating.isLiked === -1,
+      };
+    },
   },
 
   props: {
@@ -76,10 +94,10 @@ export default {
 .entry-footer__item {
   display: flex;
   align-items: center;
-}
 
-.entry-footer__item:not(:last-child) {
-  margin-right: 33px;
+  &:not(:last-child) {
+    margin-right: 33px;
+  }
 }
 
 .entry-footer__comments-btn,
@@ -111,38 +129,54 @@ export default {
 }
 
 .entry-footer__vote-btn {
+  width: 32px;
+  height: 32px;
   display: flex;
-}
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 
-.entry-footer__vote-btn .icon {
-  width: 28px;
-  height: 28px;
-  color: inherit;
-}
+  & .icon {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+  }
 
-.entry-footer__vote-btn.vote-dislike {
-  margin-right: 5px;
-}
+  &.vote-dislike {
+    margin-right: 4px;
 
-.entry-footer__vote-btn.vote-like {
-  margin-left: 5px;
+    &_active {
+      background: rgba(211, 79, 87, 0.1) !important;
+      color: var(--red-color);
+    }
+  }
+
+  &.vote-like {
+    margin-left: 4px;
+
+    &_active {
+      background: rgba(79, 167, 87, 0.1) !important;
+      color: var(--green-color);
+    }
+  }
 }
 
 .entry-footer__rating-value {
   padding: 0 4px;
   font-weight: 500;
-}
 
-.entry-footer__rating-value_negative {
-  color: var(--red-color);
-}
+  &_negative {
+    color: var(--red-color);
+  }
 
-.entry-footer__rating-value_neutral {
-  color: var(--grey-color);
-}
+  &_neutral {
+    color: var(--grey-color);
+  }
 
-.entry-footer__rating-value_positive {
-  color: var(--green-color);
+  &_positive {
+    color: var(--green-color);
+  }
 }
 
 @media (hover: hover) {
@@ -155,8 +189,7 @@ export default {
   }
 
   .entry-footer__vote-btn:hover {
-    border-radius: 50%;
-    background: #0000000d;
+    background: var(--rating-button-hover);
   }
 }
 

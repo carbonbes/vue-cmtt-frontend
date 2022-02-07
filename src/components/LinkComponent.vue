@@ -8,7 +8,7 @@
     <div class="link-block__content">
       <span class="link-block__title">{{ title }}</span>
       <span class="link-block__description">{{ description }}</span>
-      <div class="link-block__link"><link-icon />{{ url[1] }}</div>
+      <div class="link-block__link"><link-icon />{{ shortUrl[1] }}</div>
     </div>
     <div class="link-block__logo">
       <!-- <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" /> -->
@@ -36,10 +36,14 @@ export default {
       return this.data[0].data.link.data.description;
     },
 
-    url() {
+    shortUrl() {
       let regex = /https?\:\/\/(.+?)(?=\/)/gi;
       let srcUrl = this.data[0].data.link.data.url;
       return regex.exec(srcUrl);
+    },
+
+    url() {
+      return this.data[0].data.link.data.url;
     },
 
     sourceIcon() {

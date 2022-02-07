@@ -11,6 +11,20 @@ export default {
     return {
       dateTime: null,
       interval: null,
+      months: [
+        "янв",
+        "фев",
+        "мар",
+        "апр",
+        "мая",
+        "июн",
+        "июл",
+        "авг",
+        "сен",
+        "окт",
+        "ноя",
+        "дек",
+      ],
       minutesWords: ["минута", "минуты", "минут"],
       hoursWords: ["час", "часа", "часов"],
     };
@@ -22,29 +36,36 @@ export default {
 
   methods: {
     setDateTime() {
-      let secondsAgo = moment().diff(this.date * 1000, "seconds");
+      let secondsAgo = moment().diff(this.date, "seconds");
 
-      let minutesAgo = moment().diff(this.date * 1000, "minutes");
+      let minutesAgo = moment().diff(this.date, "minutes");
 
-      let hoursAgo = moment().diff(this.date * 1000, "hours");
+      let hoursAgo = moment().diff(this.date, "hours");
 
       let currentDay = moment().format("DD");
 
-      let srcDay = moment(this.date * 1000).format("DD");
+      let srcDay = moment(this.date).format("DD");
+
+      let srcDatWithoutZero = moment(this.date).format("D");
 
       let currentMonth = moment().format("MM");
 
-      let srcMonth = moment(this.date * 1000).format("MM");
+      let srcMonth = moment(this.date).format("MM");
+
+      let srcMonthWithoutZero = moment(this.date).format("M");
 
       let currentYear = moment().year();
 
-      let srcYear = moment(this.date * 1000).year();
+      let srcYear = moment(this.date).year();
 
-      let time = moment(this.date * 1000).format("HH:mm");
+      let time = moment(this.date).format("HH:mm");
 
-      let shortDate = moment(this.date * 1000).format("DD.MM");
+      let shortDate = moment(this.date).format("DD.MM");
 
-      let fullDate = moment(this.date * 1000).format("DD.MM.YY");
+      let shortDateWithMonth =
+        srcDatWithoutZero + " " + this.months[srcMonthWithoutZero - 1];
+
+      let fullDate = moment(this.date).format("DD.MM.YY");
 
       if (currentYear == srcYear) {
         if (currentMonth == srcMonth) {
@@ -63,9 +84,13 @@ export default {
             }
           } else if (currentDay - 1 == srcDay) {
             this.dateTime = "вчера";
+          } else {
+            this.dateTime = shortDateWithMonth;
           }
+        } else if (currentMonth - srcMonth === 1) {
+          this.dateTime = shortDateWithMonth;
         } else {
-          this.dateTime = shortDate;
+          this.dateTime = fullDate;
         }
       } else {
         this.dateTime = fullDate;

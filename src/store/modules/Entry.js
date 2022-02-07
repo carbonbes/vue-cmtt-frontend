@@ -1,9 +1,11 @@
 import { API_v2 } from "../../api/API_v2";
+import axios from "axios";
 
 const entryModule = {
   state: () => ({
     entry: [],
     subsiteData: [],
+    likesList: [],
   }),
 
   getters: {

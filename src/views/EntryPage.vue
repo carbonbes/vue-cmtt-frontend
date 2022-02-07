@@ -8,6 +8,7 @@
           :subsiteId="entry.subsite.id"
           :subsiteAvatar="entry.subsite.avatar.data.uuid"
           :subsiteName="entry.subsite.name"
+          :authorData="entry.author"
           :authorType="entry.author.type"
           :authorId="entry.author.id"
           :authorName="entry.author.name"
@@ -164,7 +165,8 @@ export default {
 }
 
 .entry-page__footer {
-  padding: 30px 0;
+  padding-top: 15px;
+  padding-bottom: 30px;
 }
 
 .entry-page__embed {
@@ -190,6 +192,12 @@ export default {
   .entry-page__title {
     & .entry-title {
       font-size: 28px;
+    }
+  }
+
+  .entry-page__embed {
+    &:not(:first-child) {
+      margin-top: 15px;
     }
   }
 

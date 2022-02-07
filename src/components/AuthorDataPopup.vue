@@ -34,6 +34,10 @@
           v-if="isNotSubsite"
           ><template v-if="isPositiveRating">+</template> {{ rating }}</span
         >
+        <div
+          class="author-data-popup_author-rating-loader"
+          v-if="!rating && isNotSubsite"
+        />
       </div>
       <div class="author-data-popup__description" v-if="description">
         {{ description }}
@@ -68,7 +72,7 @@ export default {
     this.requestSubsiteData(this.data.id);
   },
 
-  unmounted() {
+  beforeUnmount() {
     this.clearSubsiteData();
   },
 
@@ -95,7 +99,7 @@ export default {
     },
 
     isNotSubsite() {
-      return this.subsiteData.type === 1;
+      return this.data.type === 1;
     },
 
     avatar() {
@@ -211,23 +215,24 @@ export default {
 }
 
 .author-data-popup__author-data {
-  margin-top: 15px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   font-weight: 700;
 }
 
 .author-data-popup__name {
-  max-width: 200px;
+  max-width: 225px;
+  color: var(--black-color);
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .author-data-popup_author-rating {
   margin-left: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 
   &_positive {
@@ -243,24 +248,37 @@ export default {
   }
 }
 
+.author-data-popup_author-rating-loader {
+  margin-left: 5px;
+  width: 55px;
+  height: 15px;
+  background: var(--loader-grey-color);
+  border-radius: 2px;
+}
+
 .author-data-popup__actions {
   display: flex;
 }
 
 .author-data-popup__subscribe-btn {
   margin-left: auto;
+  & .button {
+    height: 35px;
+  }
 }
 
 .author-data-popup__description {
   margin-top: 5px;
   color: var(--grey-color);
+  font-size: 16px;
   line-height: 22px;
   white-space: normal;
   word-break: break-word;
 }
 
 .author-data-popup__subs-count {
-  margin-top: 15px;
+  margin-top: 25px;
+  color: var(--black-color);
   font-size: 15px;
   font-weight: 700;
   line-height: 15px;
@@ -272,10 +290,10 @@ export default {
 }
 
 .author-data-popup__subs-loader {
-  margin-top: 15px;
+  margin-top: 25px;
   width: 125px;
   height: 15px;
-  background: var(--grey-color);
+  background: var(--loader-grey-color);
   border-radius: 2px;
 }
 </style>

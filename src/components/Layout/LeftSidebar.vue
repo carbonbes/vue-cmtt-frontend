@@ -48,30 +48,25 @@ export default {
 
   data() {
     return {
-      visibled: true,
-      width: null,
+      isVisibled: null,
+      isMobile: null,
     };
   },
 
   methods: {
     visibilityToggler() {
-      this.visibled = !this.visibled;
+      this.isVisibled = !this.isVisibled;
     },
 
     savedSorting(sorting) {
       localStorage.setItem("saved-sorting", sorting);
     },
 
-    onResize() {
-      this.width = document.documentElement.clientWidth;
-      this.isVisibled();
-    },
-
-    isVisibled() {
-      if (this.width < 925) {
-        this.visibled = false;
-      } else if (this.width > 925) {
-        this.visibled = true;
+    visibility(e) {
+      if (e.matches) {
+        this.isVisibled = false;
+      } else {
+        this.isVisibled = true;
       }
     },
   },
@@ -79,22 +74,31 @@ export default {
   computed: {
     classObject() {
       return {
-        "left-sidebar_hidden": !this.visibled,
+        "left-sidebar_hidden": !this.isVisibled,
       };
     },
+  },
+
+  created() {
+    this.isMobile = window.matchMedia("(max-width: 925px)");
+
+    if (this.isMobile.matches) {
+      this.isVisibled = false;
+    } else {
+      this.isVisibled = true;
+    }
   },
 
   mounted() {
     this.emitter.on("left-sidebar-visibled", this.visibilityToggler);
 
-    this.onResize();
-    window.addEventListener("resize", this.onResize);
+    this.isMobile.addListener((e) => this.visibility(e));
   },
 
   beforeUnmount() {
     this.emitter.off("left-sidebar-visibled", this.visibilityToggler);
 
-    window.removeEventListener("resize", this.onResize);
+    this.isMobile.removeListener(() => this.visibility());
   },
 };
 </script>
@@ -186,7 +190,7 @@ export default {
 
 @media (hover: hover) {
   .left-sidebar__link:hover {
-    background: var(--hover-item-color);
+    background: var(--left-sidebar-link-hover-color);
   }
 }
 </style>

@@ -1,52 +1,84 @@
 <template>
   <div :style="styleObject">
     <div class="video-wrapp" :style="wrappStyleObject">
-      <video class="video" playsInline controls v-if="isDefaultVideo">
+      <div
+        class="video__pseudo-player"
+        v-if="!this.isPlaying"
+        :style="pseudoPlayerStyleObject"
+        @click="togglePlaying"
+      >
+        <play-icon class="icon" />
+      </div>
+
+      <video
+        class="video"
+        autoplay
+        playsInline
+        controls
+        v-if="isDefaultVideo && this.isPlaying"
+      >
         <source :src="`https://leonardo.osnova.io/${video}/-/format/mp4/`" />
       </video>
 
       <iframe
         class="video"
-        :src="`https://www.youtube.com/embed/${externalService.id}?controls=2&showinfo=0`"
+        :src="`https://www.youtube.com/embed/${externalService.id}?controls=2&showinfo=0&autoplay=1`"
         frameBorder="0"
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        v-if="isYoutube"
+        v-if="isYoutube && this.isPlaying"
       />
 
       <iframe
         class="video"
-        :src="`https://player.vimeo.com/video/${externalService.id}`"
+        :src="`https://player.vimeo.com/video/${externalService.id}?autoplay=1`"
         frameBorder="0"
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        v-if="isVimeo"
+        v-if="isVimeo && this.isPlaying"
       />
 
-      <video class="video" playsInline controls v-if="isGfycat">
+      <video
+        class="video"
+        autoplay
+        playsInline
+        controls
+        v-if="isGfycat && this.isPlaying"
+      >
         <source :src="`${externalService.mp4_url}`" />
       </video>
 
-      <video class="video" playsInline controls v-if="isGiphy">
+      <video
+        class="video"
+        autoplay
+        playsInline
+        controls
+        v-if="isGiphy && this.isPlaying"
+      >
         <source :src="`${externalService.mp4_url}`" />
       </video>
 
       <iframe
         class="video"
-        :src="`https://coub.com/embed/${externalService.id}`"
+        :src="`https://coub.com/embed/${externalService.id}?autoplay=1`"
         frameBorder="0"
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        v-if="isCoub"
+        v-if="isCoub && this.isPlaying"
       />
     </div>
   </div>
 </template>
 
 <script>
+import PlayIcon from "@/assets/logos/play_icon.svg?inline";
 import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
+  components: {
+    PlayIcon,
+  },
+
   props: {
     video: [String, Object],
     srcWidth: Number,
@@ -54,6 +86,16 @@ export default {
     maxWidth: Number,
     maxHeight: Number,
     externalService: Object,
+  },
+
+  data() {
+    return { isPlaying: false };
+  },
+
+  methods: {
+    togglePlaying() {
+      this.isPlaying = !this.isPlaying;
+    },
   },
 
   computed: {
@@ -88,6 +130,18 @@ export default {
       return width;
     },
 
+    pseudoPlayerStyleObject() {
+      return {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgb(70, 19, 58)",
+        backgroundImage: `url(https://leonardo.osnova.io/${this.video}/-/format/webp/-/preview/700/)`,
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+      };
+    },
+
     isDefaultVideo() {
       return (
         !this.externalService || Object.keys(this.externalService).length === 0
@@ -116,6 +170,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

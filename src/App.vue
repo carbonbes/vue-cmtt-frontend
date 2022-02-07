@@ -1,31 +1,44 @@
 <template>
   <Header />
   <div class="layout">
-    <LeftSidebar />
+    <left-sidebar />
     <main class="content"><router-view /></main>
-    <RightSidebar />
+    <right-sidebar />
   </div>
+  <transition name="login-modal"
+    ><div
+      class="modal"
+      v-if="loginModalVisibility"
+      v-scroll-lock="{ state: this.loginModalVisibility, gap: true }"
+    >
+      <login-modal /></div
+  ></transition>
+  <notification />
 </template>
 
 <script>
 import { computed } from "vue";
 import { mapActions } from "vuex";
-import mitt from "mitt";
-import Header from "@/components/Layout/Header.vue";
+import Header from "@/components/Layout/Header/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
+import LoginModal from "@/components/Layout/LoginModal.vue";
+import Notification from "@/components/Layout/Notification.vue";
 
 export default {
   components: {
     Header,
     LeftSidebar,
     RightSidebar,
+    LoginModal,
+    Notification,
   },
 
   data() {
     return {
       currentTheme: null,
       timeout: null,
+      loginModalVisibility: false,
     };
   },
 
@@ -60,6 +73,10 @@ export default {
         document.documentElement.classList.remove("theme-change");
       }, 200);
     },
+
+    toggleShowLoginModal() {
+      this.loginModalVisibility = !this.loginModalVisibility;
+    },
   },
 
   created() {
@@ -69,11 +86,13 @@ export default {
 
   mounted() {
     this.emitter.on("theme-toggle", this.themeToggle);
+    this.emitter.on("login-modal-toggle", this.toggleShowLoginModal);
   },
 
   beforeUnmount() {
     clearTimeout(this.timeout);
     this.emitter.off("theme-toggle", this.themeToggle);
+    this.emitter.off("login-modal-toggle", this.toggleShowLoginModal);
   },
 };
 </script>
@@ -98,10 +117,15 @@ export default {
   --dropdown-bg-color: #fff;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
-  --hover-item-color: #ffffff80;
+  --left-sidebar-link-hover-color: #ffffff80;
   --active-item-color: #fff;
-  --box-shadow-border: 0 0 0 var(--border-width) #fff,
-    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  --rating-button-hover: #0000000d;
+  --loader-grey-color: #cacaca;
+  --form-bg-color: #f5f5f5;
+  --form-border-color: #e6e6e6;
+  --form-border-color-hover: #bdd6fa;
+  --form-border-color-active: #4683d9;
+  --form-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
 }
 
 [data-theme="dark"] {
@@ -114,12 +138,17 @@ export default {
   --header-bg-color: #202020;
   --entry-bg-color: #151515;
   --embed-border-color: #303030;
-  --dropdown-bg-color: #2c2c2c;
+  --dropdown-bg-color: #353535;
   --highlight-block-color: #1d1d1d;
-  --hover-item-color: #1f1f1fbf;
+  --left-sidebar-link-hover-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
-  --box-shadow-border: 0 0 0 var(--border-width) #fff,
-    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  --rating-button-hover: #ffffff0d;
+  --loader-grey-color: #595959;
+  --form-bg-color: #252525;
+  --form-border-color: #303030;
+  --form-border-color-hover: #3f597c;
+  --form-border-color-active: #608eca;
+  --form-shadow: 0 0 0 3px rgb(70 131 217 / 20%);
 }
 
 * {
@@ -162,17 +191,54 @@ h6 {
   margin: 0;
 }
 
+.v-input,
+.v-textarea {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-internal-autofill-selected {
+    -webkit-text-fill-color: var(--black-color);
+    transition: background-color 5000s 0s;
+  }
+  &::placeholder {
+    color: var(--grey-color);
+  }
+  color: var(--black-color);
+  background-color: var(--form-bg-color);
+  border: 1px solid var(--form-border-color);
+  outline: none;
+  transition: background-color 0.1s, border 0.1s, box-shadow 0.1s;
+
+  &:hover:enabled {
+    background-color: transparent;
+    border: 1px solid var(--form-border-color-hover);
+    box-shadow: var(--form-shadow);
+  }
+
+  &:focus-visible {
+    background-color: transparent;
+    border: 1px solid var(--form-border-color-active) !important;
+    box-shadow: var(--form-shadow);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
 .button {
-  margin: 0;
   padding: 0;
-  height: 36px;
-  font-size: 16px;
   font-weight: 500;
   border: none;
   border-radius: 8px;
   user-select: none;
   white-space: nowrap;
   cursor: pointer;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 
   &_a {
     background: #fff;
@@ -213,6 +279,19 @@ body {
   overflow-y: scroll;
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 3;
+}
+
 .layout {
   display: flex;
   flex-grow: 1;
@@ -239,7 +318,6 @@ body {
 
 .sidebar {
   position: relative;
-  height: 100%;
   background: var(--sidebar-bg-color);
   z-index: 2;
 }
@@ -264,11 +342,11 @@ body {
 
 .img-wrapp {
   overflow: hidden;
-}
 
-.img-wrapp img {
-  width: 100%;
-  display: block;
+  & img {
+    width: 100%;
+    display: block;
+  }
 }
 
 .video-wrapp {
@@ -276,13 +354,20 @@ body {
   z-index: 1;
 }
 
-.video {
+.video,
+.video__pseudo-player {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   cursor: pointer;
+
+  & .icon {
+    width: 48px;
+    height: 48px;
+    fill-opacity: 0.7;
+  }
 }
 
 .embed-text,
@@ -296,7 +381,7 @@ body {
 .embed {
   display: flex;
   flex-flow: column;
-  border: 1px solid var(--embed-border-color);
+  box-shadow: 0 0 0 1px var(--embed-border-color);
   border-radius: 8px;
   line-height: normal;
 
@@ -400,6 +485,14 @@ body {
   .entry-content-subtitle {
     & a:hover {
       color: var(--red-color);
+    }
+  }
+
+  .video__pseudo-player {
+    &:hover {
+      & .icon {
+        fill-opacity: 0.8;
+      }
     }
   }
 }

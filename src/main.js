@@ -4,32 +4,24 @@ import router from "./router";
 import store from "./store";
 import mitt from "mitt";
 import nProgress from "nprogress";
+import bodyScrollLock from "@/plugins/bodyScrollLock";
+import onKeydown from "@/plugins/onKeydown";
+import onClickOutside from "@/plugins/onClickOutside";
 
-const emitter = mitt();
 const app = createApp(App);
+const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 app.config.unwrapInjectedRef = true;
 nProgress.configure({
   showSpinner: false,
   parent: ".loader",
-  trickleSpeed: 75,
+  trickleSpeed: 25,
 });
 
-app.directive("outside-click", {
-  beforeMount(el, binding) {
-    el.hundleClick = function (e) {
-      if (!el.contains(e.target)) {
-        console.log(binding);
-        binding.value();
-      }
-    };
-
-    document.addEventListener("click", el.hundleClick);
-  },
-
-  beforeUnmount(el) {
-    document.removeEventListener("click", el.hundleClick);
-  },
-});
-
-app.use(store).use(router).mount("body");
+app
+  .use(store)
+  .use(router)
+  .use(bodyScrollLock)
+  .use(onKeydown)
+  .use(onClickOutside)
+  .mount("body");

@@ -5,6 +5,10 @@
       <div class="embed-header__data">
         <span class="embed-header__author-name">{{ authorName }}</span>
         <span class="embed-header__author-tag">@{{ authorTag }}</span>
+        <date-time
+          :date="dateTime"
+          :title="new Date(dateTime).toLocaleString()"
+        />
       </div>
       <div class="spacer" />
       <div class="embed-header__logo">
@@ -22,6 +26,7 @@
 </template>
 
 <script>
+import DateTime from "./DateTime.vue";
 import TwitterLogo from "@/assets/logos/twitter_logo.svg?inline";
 
 export default {
@@ -30,6 +35,7 @@ export default {
   },
 
   components: {
+    DateTime,
     TwitterLogo,
   },
 
@@ -46,6 +52,10 @@ export default {
       return this.data.data.tweet.data.tweet_data.user.screen_name;
     },
 
+    dateTime() {
+      return Date.parse(this.data.data.tweet.data.tweet_data.created_at);
+    },
+
     text() {
       return this.data.data.tweet.data.tweet_data.processed_text;
     },
@@ -58,7 +68,8 @@ export default {
         this.data.data.tweet.data.tweet_data.extended_entities.media[0].type ===
           "photo"
       ) {
-        return this.data.data.tweet.data.tweet_data.extended_entities.media[0].media_url_https;
+        return this.data.data.tweet.data.tweet_data.extended_entities.media[0]
+          .media_url_https;
       }
     },
 

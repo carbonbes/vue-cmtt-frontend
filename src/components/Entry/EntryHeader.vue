@@ -2,8 +2,8 @@
   <div class="entry-header">
     <div
       class="entry-header__subsite-data entry-header__item"
-      @mouseenter="showPopup"
-      @mouseleave="hidePopup"
+      @mouseenter="showSubsitePopup"
+      @mouseleave="hideSubsitePopup"
     >
       <div
         class="entry-header__subsite-avatar"
@@ -18,7 +18,7 @@
             entry-header-subsite-data__popup
             entry-header-subsite-data__popup_bottom
           "
-          v-if="popupVisibled"
+          v-if="subsitePopupVisibled"
         >
           <author-data-popup
             :data="this.subsiteData"
@@ -27,20 +27,38 @@
       ></transition>
     </div>
     <div
-      class="entry-header__author-name entry-header__item"
+      class="entry-header__author-data entry-header__item"
+      @mouseenter="showAuthorPopup"
+      @mouseleave="hideAuthorPopup"
       v-if="!isSameAuthor"
     >
-      {{ authorName }}
+      <div class="entry-header__author-name">
+        {{ authorName }}
+      </div>
+      <transition name="entry-header-subsite-data__popup"
+        ><div
+          class="
+            entry-header-subsite-data__popup
+            entry-header-subsite-data__popup_bottom
+          "
+          v-if="authorPopupVisibled"
+        >
+          <author-data-popup
+            :data="this.authorData"
+            :isSubscribed="this.authorData.isSubscribed"
+          /></div
+      ></transition>
     </div>
     <time
       class="entry-header__date-publish entry-header__item"
       :title="new Date(date * 1000).toLocaleString()"
-      ><date-time :date="date"
+      ><date-time :date="date * 1000"
     /></time>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DateTime from "@/components/DateTime.vue";
 import AuthorDataPopup from "../AuthorDataPopup.vue";
 
@@ -56,6 +74,7 @@ export default {
     subsiteId: Number,
     subsiteAvatar: String,
     subsiteName: String,
+    authorData: Object,
     authorType: Number,
     authorId: Number,
     authorName: String,
@@ -65,22 +84,40 @@ export default {
   data() {
     return {
       timeout: null,
-      popupIsFocus: false,
-      popupVisibled: false,
+      subsitePopupIsFocus: false,
+      authorPopupIsFocus: false,
+      subsitePopupVisibled: false,
+      authorPopupVisibled: false,
     };
   },
 
   methods: {
-    showPopup() {
-      this.popupIsFocus = true;
-      this.timeout = setTimeout(() => {
-        if (this.popupIsFocus) this.popupVisibled = true;
-      }, 750);
+    showSubsitePopup() {
+      if (this.isAuth) {
+        this.subsitePopupIsFocus = true;
+        this.timeout = setTimeout(() => {
+          if (this.subsitePopupIsFocus) this.subsitePopupVisibled = true;
+        }, 750);
+      }
     },
 
-    hidePopup() {
-      this.popupIsFocus = false;
-      this.popupVisibled = false;
+    hideSubsitePopup() {
+      this.subsitePopupIsFocus = false;
+      this.subsitePopupVisibled = false;
+    },
+
+    showAuthorPopup() {
+      if (this.isAuth) {
+        this.authorPopupIsFocus = true;
+        this.timeout = setTimeout(() => {
+          if (this.authorPopupIsFocus) this.authorPopupVisibled = true;
+        }, 750);
+      }
+    },
+
+    hideAuthorPopup() {
+      this.authorPopupIsFocus = false;
+      this.authorPopupVisibled = false;
     },
   },
 
@@ -88,6 +125,8 @@ export default {
     isSameAuthor() {
       return this.subsiteId === this.authorId;
     },
+
+    ...mapGetters(["isAuth"]),
   },
 
   beforeUnmount() {
@@ -112,7 +151,8 @@ export default {
   }
 }
 
-.entry-header__subsite-data {
+.entry-header__subsite-data,
+.entry-header__author-data {
   position: relative;
   justify-content: center;
 }
@@ -175,6 +215,10 @@ export default {
   cursor: pointer;
 }
 
+.entry-header__author-data {
+  cursor: pointer;
+}
+
 .entry-header__author-name {
   max-width: 200px;
   display: block;
@@ -192,17 +236,18 @@ export default {
 
 @media (hover: hover) {
   .entry-header__subsite-data,
-  .entry-header__author-name,
+  .entry-header__author-data,
   .entry-header__date-publish {
     &:hover {
-      .entry-header__subsite-name {
-        color: var(--blue-color);
-      }
+      color: var(--blue-color);
     }
   }
 
-  .entry-header__subsite-data {
+  .entry-header__subsite-data,
+  .entry-header__author-data {
     &:hover {
+      z-index: 2;
+
       &::before {
         content: "";
         position: absolute;

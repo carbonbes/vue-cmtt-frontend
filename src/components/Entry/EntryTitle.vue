@@ -1,12 +1,12 @@
 <template>
-  <!-- <h1 class="entry-title" v-if="isEditorial">
+  <h1 class="entry-title" v-if="isEditorial">
     {{ title.substring(0, titleWithoutLastWord) + " " }}
     <div class="entry-title__editorial-icon" title="Статья от редакции">
-      {{ { lastWord } }}
+      {{ lastWord }}
       <check-icon class="icon"></check-icon>
     </div>
-  </h1> -->
-  <h1 class="entry-title">
+  </h1>
+  <h1 class="entry-title" v-if="!isEditorial">
     {{ title }}
   </h1>
 </template>

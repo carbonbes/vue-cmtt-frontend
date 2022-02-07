@@ -13,6 +13,7 @@
       :subsiteId="entry.subsite.id"
       :subsiteAvatar="entry.subsite.avatar.data.uuid"
       :subsiteName="entry.subsite.name"
+      :authorData="entry.author"
       :authorType="entry.author.type"
       :authorId="entry.author.id"
       :authorName="entry.author.name"
@@ -191,7 +192,9 @@ export default {
             this.imageCovers[0].data.items[0].image.data.width >= 640 &&
             !this.imageCovers[0].data.with_background,
           "entry-content__cover_thin":
-            this.imageCovers[0].data.items[0].image.data.width <= 640 &&
+            (this.imageCovers[0].data.items[0].image.data.width <= 640 ||
+              this.imageCovers[0].data.items[0].image.data.width ===
+                this.imageCovers[0].data.items[0].image.data.height) &&
             !this.imageCovers[0].data.with_background,
           "entry-content__cover_highlighted":
             this.imageCovers[0].data.with_background,
@@ -209,7 +212,9 @@ export default {
             this.videoCovers[0].data.video.data.width >= 640 &&
             !this.videoCovers[0].data.with_background,
           "entry-content__cover_thin":
-            this.videoCovers[0].data.video.data.width <= 640 &&
+            (this.videoCovers[0].data.video.data.width <= 640 ||
+              this.videoCovers[0].data.video.data.width ===
+                this.videoCovers[0].data.video.data.height) &&
             !this.videoCovers[0].data.with_background &&
             !Object.keys(this.videoCovers[0].data.video.data.external_service)
               .length,
@@ -229,7 +234,9 @@ export default {
             this.gifCovers[0].data.items[0].image.data.width >= 640 &&
             !this.gifCovers[0].data.items[0].image.data.width,
           "entry-content__cover_thin":
-            this.gifCovers[0].data.items[0].image.data.width <= 640 &&
+            (this.gifCovers[0].data.items[0].image.data.width <= 640 ||
+              this.gifCovers[0].data.items[0].image.data.width ===
+                this.gifCovers[0].data.items[0].image.data.height) &&
             !this.gifCovers[0].data.with_background,
           "entry-content__cover_highlighted":
             this.gifCovers[0].data.with_background,
@@ -255,14 +262,15 @@ export default {
   border-radius: 8px;
 
   & .entry-header {
-    margin-top: 15px;
+    margin-top: 16px;
     margin-bottom: 15px;
   }
 
   & .entry-title {
+    margin-top: -5px;
     font-size: 22px;
     font-weight: 500;
-    line-height: 1.3em;
+    line-height: 32px;
   }
 
   & .entry-footer {
@@ -309,7 +317,7 @@ export default {
 
 .entry-content__title {
   & + .entry-content__subtitle {
-    margin-top: 7px;
+    margin-top: 5px;
   }
 }
 
@@ -375,7 +383,8 @@ export default {
 @media (hover: hover) {
   .entry {
     &:hover {
-      & .entry-header__subsite-data {
+      & .entry-header__subsite-data,
+      .entry-header__author-data {
         z-index: 2;
       }
     }
