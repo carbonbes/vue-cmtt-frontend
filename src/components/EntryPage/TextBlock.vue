@@ -1,6 +1,6 @@
 <template>
   <div class="entry-page__text-block ep-island">
-    <p>{{ item.data.text }}</p>
+    <p>{{ text }}</p>
   </div>
 </template>
 
@@ -8,6 +8,12 @@
 export default {
   props: {
     item: Object,
+  },
+
+  computed: {
+    text() {
+      return this.item.data.text;
+    },
   },
 };
 </script>

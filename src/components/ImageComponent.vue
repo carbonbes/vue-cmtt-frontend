@@ -14,6 +14,7 @@ export default {
   computed: {
     styleObject() {
       return {
+        /* padding: this.calculatedWidth <= this.maxWidth ? "var(--entry-cover-gap)" : null, */
         maxWidth:
           (this.srcWidth >= this.maxWidth &&
             (this.srcHeight > this.maxHeight ||

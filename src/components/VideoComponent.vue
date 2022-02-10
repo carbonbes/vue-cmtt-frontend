@@ -136,7 +136,7 @@ export default {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "rgb(70, 19, 58)",
-        backgroundImage: `url(https://leonardo.osnova.io/${this.video}/-/format/webp/-/preview/700/)`,
+        backgroundImage: this.coverPseudoPlayer,
         backgroundSize: "cover",
         backgroundPosition: "center center",
       };
@@ -166,6 +166,16 @@ export default {
 
     isCoub() {
       return this.externalService?.name === "coub";
+    },
+
+    coverPseudoPlayer() {
+      if (this.isDefaultVideo) {
+        return `url(https://leonardo.osnova.io/${this.video}/-/format/webp/-/preview/700/)`;
+      } else if (this.isCoub) {
+        return `url(https://leonardo.osnova.io/${this.video.data.thumbnail.data.uuid}/-/format/webp/-/preview/700/)`
+      } else if (this.isYoutube) {
+        return `url(https://leonardo.osnova.io/${this.video.data.video.data.thumbnail.data.uuid}/-/format/webp/-/preview/700/)`
+      }
     },
   },
 };

@@ -45,7 +45,7 @@
 
 <script>
 import { markRaw } from "vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 import { Field, Form } from "vee-validate";
 import { object, string } from "yup";
 
@@ -82,10 +82,17 @@ export default {
     },
 
     ...mapActions(["requestLogin"]),
+
+    ...mapMutations(["setIsError", "setError"]),
   },
 
   computed: {
     ...mapGetters(["isLoginRequested", "isError", "error"]),
+  },
+
+  beforeUnmount() {
+    this.setIsError(false);
+    this.setError([]);
   },
 };
 </script>

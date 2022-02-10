@@ -7,6 +7,7 @@
         <span class="embed-header__author-tag">@{{ authorTag }}</span>
         <date-time
           :date="dateTime"
+          :type="1"
           :title="new Date(dateTime).toLocaleString()"
         />
       </div>

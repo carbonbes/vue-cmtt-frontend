@@ -55,7 +55,7 @@ export default {
 @media (hover: hover) {
   .header-popup__item {
     &:hover {
-      background: var(--hover-item-color);
+      background: var(--dropdown-item-hover-bg-color);
     }
   }
 }

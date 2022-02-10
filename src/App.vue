@@ -115,6 +115,7 @@ export default {
   --entry-bg-color: #fff;
   --embed-border-color: #0000001a;
   --dropdown-bg-color: #fff;
+  --dropdown-item-hover-bg-color: #f4f5f6;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
   --left-sidebar-link-hover-color: #ffffff80;
@@ -126,6 +127,7 @@ export default {
   --form-border-color-hover: #bdd6fa;
   --form-border-color-active: #4683d9;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
+  --entry-thin-cover-gap: 0 20px;
 }
 
 [data-theme="dark"] {
@@ -139,6 +141,7 @@ export default {
   --entry-bg-color: #151515;
   --embed-border-color: #303030;
   --dropdown-bg-color: #353535;
+  --dropdown-item-hover-bg-color: #4d4d4d;
   --highlight-block-color: #1d1d1d;
   --left-sidebar-link-hover-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
@@ -498,6 +501,10 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+  :root {
+    --entry-cover-gap: 0 15px;
+  }
+
   .site-logo {
     margin-left: 16px;
   }

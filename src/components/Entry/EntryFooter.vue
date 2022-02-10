@@ -129,8 +129,8 @@ export default {
 }
 
 .entry-footer__vote-btn {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;

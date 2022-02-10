@@ -226,10 +226,6 @@ export default {
     margin-left: 0px;
   }
 
-  .header__item-avatar-more-wrapp {
-    padding-right: 15px;
-  }
-
   .header__item-login-btn {
     & .icon {
       margin-right: 0px;

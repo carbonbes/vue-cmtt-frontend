@@ -18,6 +18,7 @@
       :authorId="entry.author.id"
       :authorName="entry.author.name"
       :date="entry.date"
+      :dateType="0"
     />
     <div class="entry-content">
       <div class="entry-content__title e-island" v-if="entry.title">
@@ -342,7 +343,7 @@ export default {
   }
 
   &_thin {
-    padding: 0 20px;
+    padding: var(--entry-thin-cover-gap);
   }
 
   &_wide {
@@ -350,7 +351,7 @@ export default {
   }
 
   &_vertical {
-    padding: 0 20px;
+    padding: var(--entry-thin-cover-gap);
 
     &.entry-content__cover_highlighted {
       & > div {

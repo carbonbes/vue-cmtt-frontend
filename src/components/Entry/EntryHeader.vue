@@ -52,7 +52,7 @@
     <time
       class="entry-header__date-publish entry-header__item"
       :title="new Date(date * 1000).toLocaleString()"
-      ><date-time :date="date * 1000"
+      ><date-time :date="date * 1000" :type="dateType"
     /></time>
   </div>
 </template>
@@ -79,6 +79,7 @@ export default {
     authorId: Number,
     authorName: String,
     date: Number,
+    dateType: String,
   },
 
   data() {
@@ -284,7 +285,7 @@ export default {
 
   .entry-header__date-publish {
     white-space: nowrap;
-    max-width: 100px;
+    max-width: 125px;
     overflow: hidden;
     text-overflow: ellipsis;
   }

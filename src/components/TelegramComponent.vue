@@ -6,6 +6,7 @@
         <span class="embed-header__author-name">{{ authorName }}</span>
         <date-time
           :date="dateTime * 1000"
+          :type="1"
           :title="new Date(dateTime * 1000).toLocaleString()"
         />
       </div>

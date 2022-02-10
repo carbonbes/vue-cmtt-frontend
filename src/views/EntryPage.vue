@@ -13,6 +13,7 @@
           :authorId="entry.author.id"
           :authorName="entry.author.name"
           :date="entry.date"
+          :dateType="1"
         />
       </div>
       <div class="entry-page__content">
@@ -40,10 +41,7 @@
           <video-block
             :item="block"
             type="video"
-            v-if="
-              block.type === 'media' &&
-              block.data.items[0].image.data.type === 'video'
-            "
+            v-if="block.type === 'video'"
           />
           <text-block :item="block" v-if="block.type === 'text'" />
           <div class="entry-page__embed" v-if="block.type === 'telegram'">
@@ -88,10 +86,16 @@ import { mapGetters } from "vuex";
 function requestEntry(routeTo, next) {
   nProgress.start();
 
-  store.dispatch("requestEntry", routeTo.params.id).then(() => {
-    nProgress.done();
-    next();
-  });
+  store
+    .dispatch("requestEntry", routeTo.params.id)
+    .then(() => {
+      nProgress.done();
+      next();
+    })
+    .catch((error) => {
+      nProgress.done();
+      next(false);
+    });
 }
 
 export default {
