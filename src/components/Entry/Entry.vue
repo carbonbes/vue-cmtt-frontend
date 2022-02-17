@@ -69,7 +69,7 @@
         v-if="videoCovers.length > 0"
       >
         <video-component
-          :video="videoCovers"
+          :srcVideo="videoCovers[0].data.video.data.thumbnail.data.uuid"
           :srcWidth="videoCovers[0].data.video.data.width"
           :srcHeight="videoCovers[0].data.video.data.height"
           :maxWidth="640"
@@ -83,7 +83,7 @@
         v-if="gifCovers.length > 0"
       >
         <video-component
-          :video="gifCovers[0].data.items[0].image.data.uuid"
+          :srcVideo="gifCovers[0].data.items[0].image.data.uuid"
           :srcWidth="gifCovers[0].data.items[0].image.data.width"
           :srcHeight="gifCovers[0].data.items[0].image.data.height"
           :maxWidth="640"

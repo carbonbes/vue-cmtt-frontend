@@ -1,9 +1,9 @@
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="icon icon--andropov_play_default"
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns="http://www.w3.org/2000/svg" width="24" height="24">
   <defs>
     <symbol viewBox="0 0 300 300" id="andropov_play_default">
       <path d="M150 300c82.843 0 150-67.157 150-150S232.843 0 150 0 0 67.157 0 150s67.157 150 150 150z"></path>
-      <path d="M232.57 144.199c5.16 3.204 5.152 8.403 0 11.602l-118.227 73.398c-5.16 3.204-9.343.874-9.343-5.189V75.99c0-6.07 4.191-8.388 9.343-5.19L232.57 144.2z" fill="#fff"></path>
+      <path d="M232.57 144.199c5.16 3.204 5.152 8.403 0 11.602l-118.227 73.398c-5.16 3.204-9.343.874-9.343-5.189V75.99c0-6.07 4.191-8.388 9.343-5.19L232.57 144.2z" fill="#fff" fill-opacity="1"></path>
     </symbol>
   </defs>
   <use xlink:href="#andropov_play_default" fill-opacity="inherit" fill="inherit"></use>

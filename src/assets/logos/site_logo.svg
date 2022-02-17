@@ -1,10 +1,10 @@
 <svg xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns="http://www.w3.org/2000/svg" height="50" width="32">
+  xmlns="http://www.w3.org/2000/svg" height="50" width="32" class="icon icon--site_logo">
   <defs>
     <symbol viewBox="0 0 24 25" id="site_logo">
-      <path class="st0" fill="currentColor" d="M0 19h8.5v6H0v-6z"></path>
-      <path class="st1" fill="currentColor" d="M0 7h8.5v18l6.5-6V7h9V0H0v7z"></path>
-      <path class="st2" fill="currentColor" d="M7.5 19h1v6l-1-6z"></path>
+      <path fill="#e8a427" class="st0" d="M0 19h8.5v6H0v-6z"></path>
+      <path fill="var(--black-color)" class="st1" d="M0 7h8.5v18l6.5-6V7h9V0H0v7z"></path>
+      <path fill="rgba(0,0,0,0.15)" class="st2" d="M7.5 19h1v6l-1-6z"></path>
     </symbol>
   </defs>
   <use xlink:href="#site_logo"></use>

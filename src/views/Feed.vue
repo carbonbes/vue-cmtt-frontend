@@ -2,7 +2,18 @@
   <div class="feed-page">
     <div class="feed-page__header"></div>
     <div class="feed-page__content">
-      <entry v-for="entry in feed" :entry="entry" :key="entry.id" />
+      <entry
+        v-for="(entry, index) in feed"
+        :entry="entry"
+        :key="entry.id"
+        v-on-view="
+          feed.length === index + 1 && {
+            requestState: feedIsRequested,
+            callback: this.requestNextPage,
+          }
+        "
+      />
+      <div class="feed-loader"><loader /></div>
     </div>
   </div>
 </template>
@@ -12,6 +23,7 @@ import { mapGetters } from "vuex";
 import Entry from "@/components/Entry/Entry.vue";
 import store from "@/store";
 import nProgress from "nprogress";
+import Loader from "@/components/Loader";
 
 function requestFeed(routeTo, routeFrom, next) {
   nProgress.start();
@@ -28,35 +40,26 @@ function requestFeed(routeTo, routeFrom, next) {
 }
 
 export default {
-  data() {
-    return {
-      currentSorting: null,
-      currentPage: 1,
-    };
-  },
-
   components: {
     Entry,
+    Loader,
   },
 
   methods: {
     requestNextPage() {
       store.dispatch("requestFeed", {
         sorting: this.currentSorting,
-        lastId,
+        lastId: this.lastId,
+        nextPage: true,
       });
     },
   },
 
   computed: {
-    ...mapGetters(["feed", "lastId"]),
+    ...mapGetters(["feed", "lastId", "feedIsRequested"]),
 
-    savedSorting() {
-      let sorting = localStorage.getItem("saved-sorting");
-
-      if (sorting === "" || !sorting) {
-        return "hotness";
-      } else return "date";
+    currentSorting() {
+      return this.$route.params.sorting;
     },
   },
 
@@ -83,7 +86,8 @@ export default {
   margin: 0 auto;
   max-width: 640px;
 
-  & .entry {
+  & .entry,
+  .feed-loader {
     margin-bottom: 30px;
   }
 }

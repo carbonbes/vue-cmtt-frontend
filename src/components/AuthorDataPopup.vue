@@ -32,7 +32,7 @@
           class="author-data-popup_author-rating"
           :class="ratingClassObject"
           v-if="isNotSubsite"
-          ><template v-if="isPositiveRating">+</template> {{ rating }}</span
+          ><template v-if="isPositiveRating">+</template>{{ rating }}</span
         >
         <div
           class="author-data-popup_author-rating-loader"

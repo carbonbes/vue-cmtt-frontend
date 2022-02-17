@@ -30,6 +30,7 @@
                 block.data.items[0].image.data.type === 'webp')
             "
           />
+
           <video-block
             :item="block"
             type="default"
@@ -38,12 +39,15 @@
               block.data.items[0].image.data.type === 'gif'
             "
           />
+
           <video-block
             :item="block"
             type="video"
             v-if="block.type === 'video'"
           />
+
           <text-block :item="block" v-if="block.type === 'text'" />
+
           <div class="entry-page__embed" v-if="block.type === 'telegram'">
             <telegram-component
               :authorAvatar="block.data.telegram.data.tg_data.author.avatar_url"

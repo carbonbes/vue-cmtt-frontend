@@ -1,7 +1,7 @@
 <template>
   <div class="entry-page__video-block" :class="classObject">
     <video-component
-      :video="item.data.items[0].image.data.uuid"
+      :srcVideo="item.data.items[0].image.data.uuid"
       :srcWidth="item.data.items[0].image.data.width"
       :srcHeight="item.data.items[0].image.data.height"
       :maxWidth="1020"
@@ -11,7 +11,7 @@
     />
 
     <video-component
-      :video="item.data.video"
+      :srcVideo="item.data.video.data.thumbnail.data.uuid"
       :srcWidth="item.data.video.data.width"
       :srcHeight="item.data.video.data.height"
       :maxWidth="1020"
@@ -63,11 +63,12 @@ export default {
 
 <style lang="scss">
 .entry-page__video-block {
-  margin: 30px auto;
+  margin-left: auto;
+  margin-right: auto;
   width: 680px;
 
-  &:first-child {
-    margin-top: 0;
+  &:last-child {
+    margin-bottom: 15px;
   }
 
   &_wide {

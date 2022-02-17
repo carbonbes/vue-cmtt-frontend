@@ -7,7 +7,9 @@
         :style="pseudoPlayerStyleObject"
         @click="togglePlaying"
       >
-        <play-icon class="icon" />
+        <play-icon class="default-icon icon" v-if="isDefaultVideo" />
+        <youtube-icon class="youtube-icon icon" v-if="isYoutube" />
+        <coub-icon class="coub-icon icon" v-if="isCoub" />
       </div>
 
       <video
@@ -17,12 +19,12 @@
         controls
         v-if="isDefaultVideo && this.isPlaying"
       >
-        <source :src="`https://leonardo.osnova.io/${video}/-/format/mp4/`" />
+        <source :src="`https://leonardo.osnova.io/${srcVideo}/-/format/mp4/`" />
       </video>
 
       <iframe
         class="video"
-        :src="`https://www.youtube.com/embed/${externalService.id}?controls=2&showinfo=0&autoplay=1`"
+        :src="`https://www.youtube.com/embed/${externalService.id}?controls=2&autoplay=1`"
         frameBorder="0"
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -72,15 +74,19 @@
 
 <script>
 import PlayIcon from "@/assets/logos/play_icon.svg?inline";
+import YoutubeIcon from "@/assets/logos/youtube_icon.svg?inline";
+import CoubIcon from "@/assets/logos/coub_icon.svg?inline";
 import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
   components: {
     PlayIcon,
+    YoutubeIcon,
+    CoubIcon,
   },
 
   props: {
-    video: [String, Object],
+    srcVideo: String,
     srcWidth: Number,
     srcHeight: Number,
     maxWidth: Number,
@@ -169,13 +175,7 @@ export default {
     },
 
     coverPseudoPlayer() {
-      if (this.isDefaultVideo) {
-        return `url(https://leonardo.osnova.io/${this.video}/-/format/webp/-/preview/700/)`;
-      } else if (this.isCoub) {
-        return `url(https://leonardo.osnova.io/${this.video.data.thumbnail.data.uuid}/-/format/webp/-/preview/700/)`
-      } else if (this.isYoutube) {
-        return `url(https://leonardo.osnova.io/${this.video.data.video.data.thumbnail.data.uuid}/-/format/webp/-/preview/700/)`
-      }
+      return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/700/)`;
     },
   },
 };

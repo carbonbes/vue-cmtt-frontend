@@ -329,18 +329,18 @@ body {
   margin-left: 18px;
   align-self: center;
   user-select: none;
+}
 
-  & .st0 {
-    fill: #e8a427;
-  }
-
-  & .st1 {
-    fill: var(--black-color);
-  }
-
-  & .st2 {
-    fill: #00000026;
-  }
+.feed-loader {
+  padding: 20px;
+  max-width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--entry-bg-color);
+  color: var(--black-color);
+  border-radius: 8px;
+  user-select: none;
 }
 
 .img-wrapp {
@@ -367,9 +367,36 @@ body {
   cursor: pointer;
 
   & .icon {
+    transition: fill-opacity 0.15s, color 0.15s;
+    z-index: 1;
+  }
+
+  & .default-icon {
     width: 48px;
     height: 48px;
-    fill-opacity: 0.7;
+    fill-opacity: 0.6;
+  }
+
+  & .youtube-icon {
+    color: rgba(31, 31, 30, 0.81);
+  }
+
+  & .coub-icon {
+    width: 90px;
+    height: 90px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.video__pseudo-player {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -493,8 +520,16 @@ body {
 
   .video__pseudo-player {
     &:hover {
-      & .icon {
+      & .default-icon {
         fill-opacity: 0.8;
+      }
+
+      & .youtube-icon {
+        color: #ff0000;
+      }
+
+      & .coub-icon {
+        color: #0332ff;
       }
     }
   }
