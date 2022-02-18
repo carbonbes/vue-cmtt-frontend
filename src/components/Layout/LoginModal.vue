@@ -34,7 +34,7 @@
         :disabled="!(meta.valid && meta.dirty) || isLoginRequested"
       >
         <template v-if="!isLoginRequested">Войти</template>
-        <template v-if="isLoginRequested">Ожидание...</template>
+        <template v-if="isLoginRequested"><loader /></template>
       </button>
       <div class="login-modal__error-msg" v-if="!isLoginRequested && isError">
         Ошибка: {{ error.message }}
@@ -48,9 +48,10 @@ import { markRaw } from "vue";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import { Field, Form } from "vee-validate";
 import { object, string } from "yup";
+import Loader from "@/components/Loader.vue";
 
 export default {
-  components: { Field, Form },
+  components: { Field, Form, Loader },
 
   data() {
     const initialValues = {
@@ -61,8 +62,8 @@ export default {
 
     const schema = markRaw(
       object({
-        email: string().email().required(),
-        password: string().required(),
+        email: string().email().trim().required(),
+        password: string().trim().required(),
       })
     );
 
@@ -116,37 +117,37 @@ export default {
   &-leave-to {
     opacity: 0;
   }
-}
 
-.login-modal__form {
-  width: 250px;
-  display: flex;
-  flex-flow: column;
-}
-
-.login-modal__title {
-  color: var(--black-color);
-  text-align: center;
-}
-
-.login-modal__input {
-  padding: 12px;
-  height: 46px;
-  border-radius: 8px;
-
-  &:not(:first-child) {
-    margin-top: 30px;
+  &__form {
+    width: 250px;
+    display: flex;
+    flex-flow: column;
   }
-}
 
-.login-modal__button {
-  margin-top: 30px;
-  height: 46px;
-  font-size: 15px;
-}
+  &__title {
+    color: var(--black-color);
+    text-align: center;
+  }
 
-.login-modal__error-msg {
-  margin-top: 30px;
-  color: var(--red-color);
+  &__input {
+    padding: 12px;
+    height: 46px;
+    border-radius: 8px;
+
+    &:not(:first-child) {
+      margin-top: 30px;
+    }
+  }
+
+  &__button {
+    margin-top: 30px;
+    height: 46px;
+    font-size: 15px;
+  }
+
+  &__error-msg {
+    margin-top: 30px;
+    color: var(--red-color);
+  }
 }
 </style>

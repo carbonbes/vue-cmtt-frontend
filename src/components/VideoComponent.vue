@@ -121,7 +121,7 @@ export default {
 
     wrappStyleObject() {
       return {
-        paddingTop: (this.srcHeight / this.srcWidth) * 100 + "%",
+        paddingTop: Math.round((this.srcHeight / this.srcWidth) * 100) + "%",
       };
     },
 
@@ -175,7 +175,7 @@ export default {
     },
 
     coverPseudoPlayer() {
-      return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/700/)`;
+      return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/1200/)`;
     },
   },
 };

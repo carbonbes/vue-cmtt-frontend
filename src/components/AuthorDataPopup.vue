@@ -13,7 +13,7 @@
       loop
       muted
       v-if="isGifCover"
-    ></video>
+    />
     <div class="author-data-popup__content">
       <div class="author-data-popup__actions">
         <div class="author-data-popup__avatar" :style="avatar" />
@@ -29,13 +29,13 @@
           {{ name }}
         </span>
         <span
-          class="author-data-popup_author-rating"
+          class="author-data-popup__author-rating"
           :class="ratingClassObject"
           v-if="isNotSubsite"
           ><template v-if="isPositiveRating">+</template>{{ rating }}</span
         >
         <div
-          class="author-data-popup_author-rating-loader"
+          class="author-data-popup__author-rating-loader"
           v-if="!rating && isNotSubsite"
         />
       </div>
@@ -149,9 +149,9 @@ export default {
 
     ratingClassObject() {
       return {
-        "author-data-popup_author-rating_positive": this.isPositiveRating,
-        "author-data-popup_author-rating_neutral": this.isNeutralRating,
-        "author-data-popup_author-rating_negative": this.isNegativeRating,
+        "author-data-popup__author-rating_positive": this.isPositiveRating,
+        "author-data-popup__author-rating_neutral": this.isNeutralRating,
+        "author-data-popup__author-rating_negative": this.isNegativeRating,
       };
     },
 
@@ -167,133 +167,133 @@ export default {
   background: var(--dropdown-bg-color);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 7%), 0 4px 8px 0 rgb(0 0 0 / 7%);
   border-radius: 8px;
-}
 
-.author-data-popup__content {
-  padding: 15px;
-}
+  &__content {
+    padding: 15px;
+  }
 
-.author-data-popup__cover {
-  & + .author-data-popup__content {
-    & .author-data-popup__avatar {
-      margin-top: -70px;
+  &__cover {
+    & + .author-data-popup__content {
+      & .author-data-popup__avatar {
+        margin-top: -70px;
+      }
     }
   }
-}
 
-.author-data-popup__img-cover {
-  height: 100px;
-  background-size: cover;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-.author-data-popup__video-cover {
-  width: 100%;
-  height: 100px;
-  display: block;
-  object-fit: cover;
-  object-position: 50%;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
-.author-data-popup__avatar {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
-  border: 5px solid var(--dropdown-bg-color);
-  box-sizing: initial;
-  background: var(--dropdown-bg-color);
-  background-size: cover;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-}
-
-.author-data-popup__author-data {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-}
-
-.author-data-popup__name {
-  max-width: 225px;
-  color: var(--black-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.author-data-popup_author-rating {
-  margin-left: 10px;
-  font-size: 14px;
-  font-weight: 700;
-
-  &_positive {
-    color: var(--green-color);
+  &__img-cover {
+    height: 100px;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
 
-  &_neutral {
+  &__video-cover {
+    width: 100%;
+    height: 100px;
+    display: block;
+    object-fit: cover;
+    object-position: 50%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  &__avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+    border: 5px solid var(--dropdown-bg-color);
+    box-sizing: initial;
+    background: var(--dropdown-bg-color);
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+  }
+
+  &__author-data {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  &__name {
+    max-width: 225px;
+    color: var(--black-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  &__author-rating {
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 700;
+
+    &_positive {
+      color: var(--green-color);
+    }
+
+    &_neutral {
+      color: var(--grey-color);
+    }
+
+    &_negative {
+      color: var(--red-color);
+    }
+  }
+
+  &__author-rating-loader {
+    margin-left: 5px;
+    width: 55px;
+    height: 15px;
+    background: var(--loader-grey-color);
+    border-radius: 2px;
+  }
+
+  &__actions {
+    display: flex;
+  }
+
+  &__subscribe-btn {
+    margin-left: auto;
+    & .button {
+      height: 35px;
+    }
+  }
+
+  &__description {
+    margin-top: 5px;
+    color: var(--grey-color);
+    font-size: 16px;
+    line-height: 22px;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  &__subs-count {
+    margin-top: 25px;
+    color: var(--black-color);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 15px;
+  }
+
+  &__subs-label {
+    font-weight: normal;
     color: var(--grey-color);
   }
 
-  &_negative {
-    color: var(--red-color);
+  &__subs-loader {
+    margin-top: 25px;
+    width: 125px;
+    height: 15px;
+    background: var(--loader-grey-color);
+    border-radius: 2px;
   }
-}
-
-.author-data-popup_author-rating-loader {
-  margin-left: 5px;
-  width: 55px;
-  height: 15px;
-  background: var(--loader-grey-color);
-  border-radius: 2px;
-}
-
-.author-data-popup__actions {
-  display: flex;
-}
-
-.author-data-popup__subscribe-btn {
-  margin-left: auto;
-  & .button {
-    height: 35px;
-  }
-}
-
-.author-data-popup__description {
-  margin-top: 5px;
-  color: var(--grey-color);
-  font-size: 16px;
-  line-height: 22px;
-  white-space: normal;
-  word-break: break-word;
-}
-
-.author-data-popup__subs-count {
-  margin-top: 25px;
-  color: var(--black-color);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 15px;
-}
-
-.author-data-popup__subs-label {
-  font-weight: normal;
-  color: var(--grey-color);
-}
-
-.author-data-popup__subs-loader {
-  margin-top: 25px;
-  width: 125px;
-  height: 15px;
-  background: var(--loader-grey-color);
-  border-radius: 2px;
 }
 </style>

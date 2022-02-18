@@ -334,9 +334,6 @@ body {
 .feed-loader {
   padding: 20px;
   max-width: 640px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--entry-bg-color);
   color: var(--black-color);
   border-radius: 8px;
@@ -575,6 +572,10 @@ body {
     &.cover_highlighted {
       padding: 30px;
     }
+  }
+
+  .feed-loader {
+    border-radius: 0;
   }
 }
 </style>
