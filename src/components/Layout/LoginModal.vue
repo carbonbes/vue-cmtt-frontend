@@ -40,6 +40,10 @@
         Ошибка: {{ error.message }}
       </div>
     </Form>
+    <close-icon
+      class="login-modal__close-btn"
+      @click="this.toggleShowLoginModal"
+    />
   </div>
 </template>
 
@@ -48,10 +52,11 @@ import { markRaw } from "vue";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import { Field, Form } from "vee-validate";
 import { object, string } from "yup";
+import CloseIcon from "@/assets/logos/close_icon.svg?inline";
 import Loader from "@/components/Loader.vue";
 
 export default {
-  components: { Field, Form, Loader },
+  components: { Field, Form, CloseIcon, Loader },
 
   data() {
     const initialValues = {
@@ -100,6 +105,7 @@ export default {
 
 <style lang="scss">
 .login-modal {
+  position: relative;
   width: 500px;
   height: 500px;
   display: flex;
@@ -143,11 +149,49 @@ export default {
     margin-top: 30px;
     height: 46px;
     font-size: 15px;
+
+    & .custom-loader {
+      &__loader-1,
+      &__loader-2,
+      &__loader-3 {
+        background-color: #fff;
+      }
+    }
   }
 
   &__error-msg {
     margin-top: 30px;
     color: var(--red-color);
+  }
+
+  &__close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+    width: 26px;
+    height: 26px;
+    color: var(--black-color);
+    opacity: 0.5;
+    cursor: pointer;
+  }
+}
+
+@media (hover: hover) {
+  .login-modal {
+    &__close-btn {
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-modal {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
   }
 }
 </style>

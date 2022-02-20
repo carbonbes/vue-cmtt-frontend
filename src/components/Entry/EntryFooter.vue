@@ -191,6 +191,20 @@ export default {
   .entry-footer__vote-btn:hover {
     background: var(--rating-button-hover);
   }
+
+  .entry-footer__vote-btn {
+    &.vote-like_active {
+      &:hover {
+        background: #4fa75733 !important;
+      }
+    }
+
+    &.vote-dislike_active {
+      &:hover {
+        background: #d34f5733 !important;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {

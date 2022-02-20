@@ -19,7 +19,13 @@
         controls
         v-if="isDefaultVideo && this.isPlaying"
       >
-        <source :src="`https://leonardo.osnova.io/${srcVideo}/-/format/mp4/`" />
+        <source
+          :src="
+            this.type === 'telegram'
+              ? srcVideo
+              : `https://leonardo.osnova.io/${srcVideo}/-/format/mp4/`
+          "
+        />
       </video>
 
       <iframe
@@ -89,9 +95,31 @@ export default {
     srcVideo: String,
     srcWidth: Number,
     srcHeight: Number,
-    maxWidth: Number,
-    maxHeight: Number,
-    externalService: Object,
+
+    maxWidth: {
+      type: Number,
+      required: false,
+    },
+
+    maxHeight: {
+      type: Number,
+      required: false,
+    },
+
+    externalService: {
+      type: Object,
+      required: false,
+    },
+
+    embedCover: {
+      type: String,
+      required: false,
+    },
+
+    type: {
+      type: String,
+      required: false,
+    },
   },
 
   data() {
@@ -138,13 +166,7 @@ export default {
 
     pseudoPlayerStyleObject() {
       return {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "rgb(70, 19, 58)",
         backgroundImage: this.coverPseudoPlayer,
-        backgroundSize: "cover",
-        backgroundPosition: "center center",
       };
     },
 
@@ -175,7 +197,11 @@ export default {
     },
 
     coverPseudoPlayer() {
-      return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/1200/)`;
+      if (this.type === "telegram") {
+        return `url(${this.embedCover})`;
+      } else {
+        return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/1200/)`;
+      }
     },
   },
 };

@@ -30,4 +30,8 @@ export const API_v2 = {
   subsiteMe() {
     return instance_v2.get("subsite/me");
   },
+
+  subscriptions(myId) {
+    return instance_v2.get(`subsite/subscriptions?subsiteId=${myId}`);
+  },
 };

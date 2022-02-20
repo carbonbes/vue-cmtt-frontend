@@ -78,7 +78,7 @@ export default {
     authorType: Number,
     authorId: Number,
     authorName: String,
-    date: Number,
+    date: [String, Number],
     dateType: String,
   },
 

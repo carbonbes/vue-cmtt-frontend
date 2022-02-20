@@ -32,7 +32,7 @@ export default {
 
   props: {
     date: [String, Number],
-    type: String,
+    type: [String, Number],
   },
 
   methods: {

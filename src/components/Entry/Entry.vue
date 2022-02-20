@@ -40,7 +40,7 @@
           :imgCover="
             telegramData.data.telegram.data.tg_data.photos[0]?.leonardo_url
           "
-          :videoCover="telegramData.data.telegram.data.tg_data.videos[0]?.src"
+          :videoCover="telegramData.data.telegram.data.tg_data.videos[0]"
           v-if="telegramCovers.length > 0"
       /></template>
       <template
@@ -317,6 +317,12 @@ export default {
 }
 
 .entry-content__title {
+  & .entry-title__editorial-icon {
+    & .icon {
+      margin-left: 4px;
+    }
+  }
+
   & + .entry-content__subtitle {
     margin-top: 5px;
   }

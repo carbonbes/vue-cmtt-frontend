@@ -1,5 +1,5 @@
-import { API_v2 } from "../../api/API_v2";
 import { API_v1 } from "../../api/API_v1";
+import { API_v2 } from "../../api/API_v2";
 
 const entryModule = {
   state: () => ({
@@ -64,7 +64,7 @@ const entryModule = {
   },
 
   actions: {
-    requestAuth({ commit }) {
+    requestAuth({ commit, dispatch }) {
       commit("setAuthIsRequested", true);
 
       API_v2.subsiteMe()
@@ -72,6 +72,7 @@ const entryModule = {
           commit("setAuth", response.data.result);
           commit("setIsAuth", true);
           commit("setAuthIsRequested", false);
+          dispatch("mySubscriptions", response.data.result.id);
         })
         .catch(() => {
           commit("setIsAuth", false);
@@ -100,7 +101,6 @@ const entryModule = {
               response.data.result["user_hash"]
             );
           }
-
           location.reload();
         })
         .catch((error) => {
@@ -108,6 +108,15 @@ const entryModule = {
           commit("setIsError", true);
           commit("setError", error.response.data);
         });
+    },
+
+    mySubscriptions({}, myId) {
+      API_v2.subscriptions(myId).then((response) => {
+        localStorage.setItem(
+          "my-subscriptions",
+          JSON.stringify(response.data.result.items)
+        );
+      });
     },
 
     logout() {

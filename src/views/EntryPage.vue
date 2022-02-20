@@ -155,6 +155,12 @@ export default {
     font-size: 36px;
     font-weight: 500;
     line-height: 1.3em;
+
+    &__editorial-icon {
+      & .icon {
+        margin-left: 7px;
+      }
+    }
   }
 
   & + .entry-page__img-block {

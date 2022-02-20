@@ -28,20 +28,21 @@
         <span class="author-data-popup__name">
           {{ name }}
         </span>
-        <span
-          class="author-data-popup__author-rating"
-          :class="ratingClassObject"
-          v-if="isNotSubsite"
-          ><template v-if="isPositiveRating">+</template>{{ rating }}</span
-        >
-        <div
-          class="author-data-popup__author-rating-loader"
-          v-if="!rating && isNotSubsite"
-        />
       </div>
       <div class="author-data-popup__description" v-if="description">
         {{ description }}
       </div>
+      <div
+        class="author-data-popup__author-rating"
+        :class="ratingClassObject"
+        v-if="isNotSubsite"
+      >
+        <template v-if="isPositiveRating">+</template>{{ rating }}
+      </div>
+      <div
+        class="author-data-popup__author-rating-loader"
+        v-if="!rating && isNotSubsite"
+      />
       <div class="author-data-popup__subs-count" v-if="subsCount">
         {{ subsCount }}
         <span class="author-data-popup__subs-label">{{ subsLabel }}</span>
@@ -214,14 +215,22 @@ export default {
   }
 
   &__author-data {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     align-items: center;
-    font-weight: 700;
+
+    & + .author-data-popup__author-rating,
+    .author-data-popup__author-rating-loader {
+      margin-top: 25px;
+    }
+
+    & + .author-data-popup__subs-count,
+    .author-data-popup__subs-loader {
+      margin-top: 25px;
+    }
   }
 
   &__name {
-    max-width: 225px;
     color: var(--black-color);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -230,7 +239,6 @@ export default {
   }
 
   &__author-rating {
-    margin-left: 10px;
     font-size: 14px;
     font-weight: 700;
 
@@ -248,7 +256,6 @@ export default {
   }
 
   &__author-rating-loader {
-    margin-left: 5px;
     width: 55px;
     height: 15px;
     background: var(--loader-grey-color);
@@ -273,10 +280,20 @@ export default {
     line-height: 22px;
     white-space: normal;
     word-break: break-word;
+
+    & + .author-data-popup__author-rating,
+    .author-data-popup__author-rating-loader {
+      margin-top: 25px;
+    }
+
+    & + .author-data-popup__subs-count,
+    .author-data-popup__subs-loader {
+      margin-top: 25px;
+    }
   }
 
   &__subs-count {
-    margin-top: 25px;
+    margin-top: 10px;
     color: var(--black-color);
     font-size: 15px;
     font-weight: 700;
@@ -289,7 +306,7 @@ export default {
   }
 
   &__subs-loader {
-    margin-top: 25px;
+    margin-top: 10px;
     width: 125px;
     height: 15px;
     background: var(--loader-grey-color);

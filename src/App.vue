@@ -168,7 +168,7 @@ export default {
   position: absolute;
   top: 100%;
   width: 100%;
-  height: 3px;
+  height: 2px;
 }
 
 #nprogress .bar {
@@ -357,10 +357,15 @@ body {
 .video,
 .video__pseudo-player {
   position: absolute;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center center;
   cursor: pointer;
 
   & .icon {
@@ -408,7 +413,7 @@ body {
 .embed {
   display: flex;
   flex-flow: column;
-  box-shadow: 0 0 0 1px var(--embed-border-color);
+  border: 1px solid var(--embed-border-color);
   border-radius: 8px;
   line-height: normal;
 
@@ -425,46 +430,47 @@ body {
   margin: 15px 20px;
   display: flex;
   align-items: center;
-}
 
-.embed-header__data {
-  margin-left: 10px;
+  &__data {
+    margin-left: 10px;
 
-  & .date-time {
-    font-size: 13px;
+    & .date-time {
+      margin-top: 2px;
+      font-size: 13px;
+      color: var(--grey-color);
+    }
+  }
+
+  &__author-name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  &__author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &__author-tag {
+    margin-left: 10px;
+    font-size: 15px;
     color: var(--grey-color);
   }
-}
 
-.embed-header__author-name {
-  font-size: 16px;
-  font-weight: 700;
-}
+  &__logo {
+    align-self: flex-start;
 
-.embed-header__author-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
+    & .telegram-logo,
+    .twitter-logo {
+      width: 24px;
+      height: 24px;
+    }
 
-.embed-header__author-tag {
-  margin-left: 10px;
-  font-size: 15px;
-  color: var(--grey-color);
-}
-
-.embed-header__logo {
-  align-self: flex-start;
-
-  & .telegram-logo,
-  .twitter-logo {
-    width: 24px;
-    height: 24px;
-  }
-
-  & .twitter-logo {
-    fill: #1d9bf0;
+    & .twitter-logo {
+      fill: #1d9bf0;
+    }
   }
 }
 
@@ -483,8 +489,12 @@ body {
 }
 
 .embed-cover {
-  & img,
-  video {
+  background-color: #333;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  & img {
+    margin-top: 7px;
     width: 100%;
     display: block;
 
@@ -494,16 +504,8 @@ body {
     }
   }
 
-  & img {
-    & + video {
-      margin-top: 7px;
-    }
-  }
-
-  & video {
-    max-height: 600px;
-    background: var(--grey-color);
-    cursor: pointer;
+  &_video {
+    margin: 0 auto;
   }
 }
 

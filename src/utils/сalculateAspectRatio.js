@@ -6,5 +6,8 @@ export const сalculateAspectRatio = (
 ) => {
   let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
-  return { width: srcWidth * ratio, height: srcHeight * ratio };
+  return {
+    width: Math.round(srcWidth * ratio),
+    height: Math.round(srcHeight * ratio),
+  };
 };

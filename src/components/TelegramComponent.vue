@@ -18,19 +18,28 @@
     <div class="embed-text" v-html="text" v-if="text"></div>
     <div class="embed-cover" v-if="imgCover || videoCover">
       <img :src="imgCover" alt="" v-if="imgCover" />
-      <video controls playsinline v-if="videoCover">
-        <source :src="videoCover" />
-      </video>
+      <video-component
+        class="embed-cover_video"
+        :srcVideo="videoSrc"
+        :srcWidth="videoCoverWidth"
+        :srcHeight="videoCoverHeight"
+        :maxWidth="1400"
+        :maxHeight="600"
+        :embedCover="coverSrc"
+        type="telegram"
+        v-if="videoCover"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import DateTime from "./DateTime.vue";
+import VideoComponent from "./VideoComponent.vue";
 import TelegramLogo from "@/assets/logos/telegram_logo.svg?inline";
 
 export default {
-  components: { DateTime, TelegramLogo },
+  components: { DateTime, VideoComponent, TelegramLogo },
 
   props: {
     authorAvatar: String,
@@ -38,7 +47,25 @@ export default {
     dateTime: [String, Number],
     text: String,
     imgCover: String,
-    videoCover: String,
+    videoCover: Object,
+  },
+
+  computed: {
+    videoSrc() {
+      return this.videoCover.src;
+    },
+
+    videoCoverWidth() {
+      return this.videoCover.width;
+    },
+
+    videoCoverHeight() {
+      return this.videoCover.height;
+    },
+
+    coverSrc() {
+      return this.videoCover.thumbnail_url;
+    },
   },
 };
 </script>

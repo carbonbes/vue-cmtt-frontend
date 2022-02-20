@@ -23,15 +23,28 @@ export default {
     title: String,
     isEditorial: Boolean,
   },
+
+  computed: {
+    titleWithoutLastWord() {
+      if (this.isEditorial) {
+        return this.title.lastIndexOf(" ");
+      }
+    },
+
+    lastWord() {
+      if (this.isEditorial) {
+        return this.title.split(" ").pop();
+      }
+    },
+  },
 };
 </script>
 
 <style>
 .entry-title__editorial-icon {
-  margin-top: -4px;
-  display: inline-block;
-  line-height: 0;
-  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .entry-title__editorial-icon .icon {
