@@ -208,7 +208,9 @@ export default {
         return {
           "entry-content__cover_vertical":
             this.videoCovers[0].data.video.data.height >
-            this.videoCovers[0].data.video.data.width,
+              this.videoCovers[0].data.video.data.width &&
+            !this.videoCovers[0].data.with_background &&
+            !Object.keys(this.videoCovers[0].data.video.data.external_service),
           "entry-content__cover_wide":
             this.videoCovers[0].data.video.data.width >= 640 &&
             !this.videoCovers[0].data.with_background,

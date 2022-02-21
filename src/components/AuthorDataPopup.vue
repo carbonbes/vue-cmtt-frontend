@@ -168,6 +168,7 @@ export default {
   background: var(--dropdown-bg-color);
   box-shadow: 0 0 0 1px rgb(0 0 0 / 7%), 0 4px 8px 0 rgb(0 0 0 / 7%);
   border-radius: 8px;
+  overflow: hidden;
 
   &__content {
     padding: 15px;
@@ -186,8 +187,6 @@ export default {
     background-size: cover;
     background-position: 50% 50%;
     background-repeat: no-repeat;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
   }
 
   &__video-cover {
@@ -215,19 +214,9 @@ export default {
   }
 
   &__author-data {
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
-
-    & + .author-data-popup__author-rating,
-    .author-data-popup__author-rating-loader {
-      margin-top: 25px;
-    }
-
-    & + .author-data-popup__subs-count,
-    .author-data-popup__subs-loader {
-      margin-top: 25px;
-    }
   }
 
   &__name {
@@ -275,21 +264,12 @@ export default {
 
   &__description {
     margin-top: 5px;
+    margin-bottom: 25px;
     color: var(--grey-color);
     font-size: 16px;
     line-height: 22px;
     white-space: normal;
     word-break: break-word;
-
-    & + .author-data-popup__author-rating,
-    .author-data-popup__author-rating-loader {
-      margin-top: 25px;
-    }
-
-    & + .author-data-popup__subs-count,
-    .author-data-popup__subs-loader {
-      margin-top: 25px;
-    }
   }
 
   &__subs-count {

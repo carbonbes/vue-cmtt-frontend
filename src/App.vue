@@ -416,6 +416,7 @@ body {
   border: 1px solid var(--embed-border-color);
   border-radius: 8px;
   line-height: normal;
+  overflow: hidden;
 
   & + .embed {
     margin-top: 12px;
@@ -435,7 +436,7 @@ body {
     margin-left: 10px;
 
     & .date-time {
-      margin-top: 2px;
+      margin-top: 3px;
       font-size: 13px;
       color: var(--grey-color);
     }
@@ -464,8 +465,8 @@ body {
 
     & .telegram-logo,
     .twitter-logo {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
     }
 
     & .twitter-logo {
@@ -490,18 +491,12 @@ body {
 
 .embed-cover {
   background-color: #333;
-  border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px;
 
   & img {
-    margin-top: 7px;
-    width: 100%;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 600px;
     display: block;
-
-    &:last-child {
-      border-bottom-right-radius: 8px;
-      border-bottom-left-radius: 8px;
-    }
   }
 
   &_video {
