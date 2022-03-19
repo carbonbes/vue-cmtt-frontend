@@ -1,0 +1,10 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg" width="300" height="198">
+  <defs>
+    <symbol viewBox="0 0 300 198" id="andropov_play_vimeo">
+      <path d="M264 0H36C16.119 0 0 16.119 0 36v126c0 19.881 16.119 36 36 36h228c19.881 0 36-16.119 36-36V36c0-19.881-16.119-36-36-36z"></path>
+      <path d="M198 97.5L126 138V57l72 40.5z" fill="#fff"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#andropov_play_vimeo" fill="currentColor"></use>
+</svg>

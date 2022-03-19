@@ -17,73 +17,76 @@
       </div>
     </div>
     <div class="embed-text" v-html="text" v-if="text"></div>
-    <div class="embed-cover" v-if="imgCover || videoCover">
-      <img :src="imgCover" alt="" v-if="imgCover" />
-      <video controls playsinline v-if="videoCover">
-        <source :src="videoCover" />
-      </video>
+    <div class="embed-cover" v-if="imgSrc || videoSrc">
+      <img :src="imgSrc" alt="" v-if="imgSrc" />
+      <video-component
+        class="embed-cover_video"
+        :srcVideo="videoSrc"
+        :srcWidth="videoSrcWidth"
+        :srcHeight="videoSrcHeight"
+        :maxWidth="1400"
+        :maxHeight="600"
+        :embedCover="videoCover"
+        type="embed"
+        v-if="videoSrc"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import DateTime from "./DateTime.vue";
+import VideoComponent from "./VideoComponent.vue";
 import TwitterLogo from "@/assets/logos/twitter_logo.svg?inline";
 
 export default {
   props: {
-    data: Object,
+    authorAvatar: String,
+    authorName: String,
+    authorTag: String,
+    dateTime: [String, Number],
+    text: String,
+    media: Object,
   },
 
   components: {
     DateTime,
+    VideoComponent,
     TwitterLogo,
   },
 
   computed: {
-    authorAvatar() {
-      return this.data.data.tweet.data.tweet_data.user.profile_image_url_https;
-    },
-
-    authorName() {
-      return this.data.data.tweet.data.tweet_data.user.name;
-    },
-
-    authorTag() {
-      return this.data.data.tweet.data.tweet_data.user.screen_name;
-    },
-
     dateTime() {
-      return Date.parse(this.data.data.tweet.data.tweet_data.created_at);
+      return Date.parse(this.dateTime);
     },
 
-    text() {
-      return this.data.data.tweet.data.tweet_data.processed_text;
+    imgSrc() {
+      if (this.media && this.media[0].type === "photo") {
+        return this.media[0].media_url_https;
+      }
     },
 
-    imgCover() {
-      if (
-        Object.keys(this.data.data.tweet.data.tweet_data.extended_entities)
-          .length !== 0 &&
-        this.data.data.tweet.data.tweet_data.extended_entities.media &&
-        this.data.data.tweet.data.tweet_data.extended_entities.media[0].type ===
-          "photo"
-      ) {
-        return this.data.data.tweet.data.tweet_data.extended_entities.media[0]
-          .media_url_https;
+    videoSrc() {
+      if (this.media && this.media[0].type === "video") {
+        return this.media[0].video_info.variants[0].url;
       }
     },
 
     videoCover() {
-      if (
-        Object.keys(this.data.data.tweet.data.tweet_data.extended_entities)
-          .length !== 0 &&
-        this.data.data.tweet.data.tweet_data.extended_entities.media &&
-        this.data.data.tweet.data.tweet_data.extended_entities.media[0].type ===
-          "video"
-      ) {
-        return this.data.data.tweet.data.tweet_data.extended_entities.media[0]
-          .video_info.variants[0].url;
+      if (this.media && this.media[0].type === "video") {
+        return this.media[0].media_url_https;
+      }
+    },
+
+    videoSrcWidth() {
+      if (this.media && this.media[0].type === "video") {
+        return this.media[0].sizes.large.w;
+      }
+    },
+
+    videoSrcHeight() {
+      if (this.media && this.media[0].type === "video") {
+        return this.media[0].sizes.large.h;
       }
     },
   },

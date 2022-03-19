@@ -128,6 +128,8 @@ export default {
   --form-border-color-active: #4683d9;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
   --entry-thin-cover-gap: 0 20px;
+  --embed-cover-bg: #333;
+  --embed-collapse-btn-color: #fff;
 }
 
 [data-theme="dark"] {
@@ -152,6 +154,8 @@ export default {
   --form-border-color-hover: #3f597c;
   --form-border-color-active: #608eca;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 20%);
+  --embed-cover-bg: #232323;
+  --embed-collapse-btn-color: #252525;
 }
 
 * {
@@ -190,8 +194,14 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+blockquote {
   margin: 0;
+}
+
+iframe {
+  width: 100%;
+  display: block;
 }
 
 .v-input,
@@ -361,11 +371,6 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  background-position: center center;
   cursor: pointer;
 
   & .icon {
@@ -388,9 +393,21 @@ body {
     height: 90px;
     color: rgba(0, 0, 0, 0.6);
   }
+
+  & .vimeo-icon {
+    width: 66px;
+    height: 40px;
+    color: #172223bf;
+  }
 }
 
 .video__pseudo-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center center;
+
   &::before {
     content: "";
     position: absolute;
@@ -411,6 +428,7 @@ body {
 }
 
 .embed {
+  position: relative;
   display: flex;
   flex-flow: column;
   border: 1px solid var(--embed-border-color);
@@ -418,7 +436,38 @@ body {
   line-height: normal;
   overflow: hidden;
 
-  & + .embed {
+  &_collapsed {
+    max-height: 250px;
+  }
+
+  &__collapse-btn {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 35px;
+    background: var(--embed-collapse-btn-color);
+    text-align: center;
+    color: var(--blue-color);
+    z-index: 1;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 100%;
+      width: 100%;
+      height: 75px;
+      background: linear-gradient(
+        0deg,
+        var(--embed-collapse-btn-color) 10%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+  }
+
+  & + .embed,
+  .link-block {
     margin-top: 12px;
   }
 
@@ -436,22 +485,23 @@ body {
     margin-left: 10px;
 
     & .date-time {
-      margin-top: 3px;
+      line-height: 20px;
       font-size: 13px;
       color: var(--grey-color);
     }
-  }
-
-  &__author-name {
-    font-size: 16px;
-    font-weight: 700;
   }
 
   &__author-avatar {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+    background-size: cover;
+  }
+
+  &__author-name {
+    font-size: 16px;
+    font-weight: 500;
   }
 
   &__author-tag {
@@ -465,8 +515,8 @@ body {
 
     & .telegram-logo,
     .twitter-logo {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
 
     & .twitter-logo {
@@ -477,7 +527,7 @@ body {
 
 .embed-text {
   margin: 0 20px 15px;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 26px;
 
   & b {
@@ -490,7 +540,7 @@ body {
 }
 
 .embed-cover {
-  background-color: #333;
+  background-color: var(--embed-cover-bg);
 
   & img {
     margin: 0 auto;
@@ -504,10 +554,69 @@ body {
   }
 }
 
+.quote-component {
+  padding: 20px 0 35px;
+  background-color: var(--highlight-block-color);
+
+  &__content {
+    position: relative;
+    margin: 0 auto;
+    max-width: 450px;
+
+    & .icon {
+      position: absolute;
+      top: 0.25em;
+      left: -57px;
+    }
+
+    & .text {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 32px;
+      white-space: pre-line;
+    }
+
+    & .author {
+      display: flex;
+      align-items: center;
+
+      & .avatar {
+        margin-right: 15px;
+        width: 48px;
+        height: 48px;
+        background-size: cover;
+        border-radius: 50%;
+      }
+
+      & .data {
+        display: flex;
+        flex-direction: column;
+      }
+
+      & .name {
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.35em;
+      }
+
+      & .desctiption {
+        font-size: 17px;
+        line-height: 1.35em;
+      }
+    }
+  }
+}
+
 @media (hover: hover) {
   .embed-text,
   .entry-content-subtitle {
     & a:hover {
+      color: var(--red-color);
+    }
+  }
+
+  .embed__collapse-btn {
+    &:hover {
       color: var(--red-color);
     }
   }
@@ -524,6 +633,10 @@ body {
 
       & .coub-icon {
         color: #0332ff;
+      }
+
+      & .vimeo-icon {
+        color: #0faef1;
       }
     }
   }
@@ -553,6 +666,12 @@ body {
 
   .embed-text {
     margin: 0 15px 15px;
+  }
+
+  .quote-component {
+    &__content {
+      max-width: 225px;
+    }
   }
 
   .cover {

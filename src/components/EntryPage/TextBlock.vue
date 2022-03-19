@@ -19,9 +19,17 @@ export default {
 </script>
 
 <style lang="scss">
-.entry-page__text-block:first-child {
-  & p {
-    margin-top: 0;
+.entry-page__text-block {
+  &:first-child {
+    & p {
+      margin-top: 0;
+    }
+  }
+
+  &:last-child {
+    & p {
+      margin-bottom: 0;
+    }
   }
 }
 </style>

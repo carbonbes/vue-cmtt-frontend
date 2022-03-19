@@ -19,7 +19,7 @@
         class="entry-footer__vote-btn vote-dislike"
         :class="voteDislikeButtonClassObject"
       >
-        <chevron-down-icon class="icon" />
+        <vote-icon class="icon" />
       </div>
       <div class="entry-footer__rating-value" :class="ratingValueStyles">
         <template v-if="entryRating.summ < 0">–</template
@@ -29,25 +29,24 @@
         class="entry-footer__vote-btn vote-like"
         :class="voteLikeButtonClassObject"
       >
-        <chevron-up-icon class="icon" />
+        <vote-icon class="icon" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ChevronDownIcon, ChevronUpIcon } from "@zhuowenli/vue-feather-icons";
 import CommentIcon from "@/assets/logos/comment_icon.svg?inline";
 import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
 import BookmarkIcon from "@/assets/logos/bookmark_icon.svg?inline";
+import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
 
 export default {
   components: {
     CommentIcon,
     RepostIcon,
     BookmarkIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
+    VoteIcon,
   },
 
   props: {
@@ -129,22 +128,21 @@ export default {
 }
 
 .entry-footer__vote-btn {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
 
   & .icon {
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
+    width: 20px;
+    height: 20px;
   }
 
   &.vote-dislike {
     margin-right: 4px;
+    transform: rotate(180deg);
 
     &_active {
       background: rgba(211, 79, 87, 0.1) !important;

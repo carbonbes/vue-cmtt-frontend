@@ -1,7 +1,7 @@
 <template>
-  <div class="embed">
+  <div class="embed" ref="embed" :class="embedStyleObj">
     <div class="embed-header">
-      <img class="embed-header__author-avatar" :src="authorAvatar" alt="" />
+      <div class="embed-header__author-avatar" :style="authorAvatar" />
       <div class="embed-header__data">
         <span class="embed-header__author-name">{{ authorName }}</span>
         <date-time
@@ -21,14 +21,17 @@
       <video-component
         class="embed-cover_video"
         :srcVideo="videoSrc"
-        :srcWidth="videoCoverWidth"
-        :srcHeight="videoCoverHeight"
+        :srcWidth="videoSrcWidth"
+        :srcHeight="videoSrcHeight"
         :maxWidth="1400"
         :maxHeight="600"
         :embedCover="coverSrc"
-        type="telegram"
+        type="embed"
         v-if="videoCover"
       />
+    </div>
+    <div class="embed__collapse-btn" v-if="collapsed" @click="toggleCollapse">
+      Раскрыть
     </div>
   </div>
 </template>
@@ -42,7 +45,7 @@ export default {
   components: { DateTime, VideoComponent, TelegramLogo },
 
   props: {
-    authorAvatar: String,
+    authorAvatarSrc: String,
     authorName: String,
     dateTime: [String, Number],
     text: String,
@@ -50,22 +53,52 @@ export default {
     videoCover: Object,
   },
 
+  data() {
+    return {
+      collapsed: null,
+    };
+  },
+
   computed: {
+    authorAvatar() {
+      return {
+        backgroundImage: `url(${this.authorAvatarSrc})`,
+      };
+    },
+
     videoSrc() {
       return this.videoCover.src;
     },
 
-    videoCoverWidth() {
+    videoSrcWidth() {
       return this.videoCover.width;
     },
 
-    videoCoverHeight() {
+    videoSrcHeight() {
       return this.videoCover.height;
     },
 
     coverSrc() {
       return this.videoCover.thumbnail_url;
     },
+
+    embedStyleObj() {
+      return {
+        embed_collapsed: this.collapsed,
+      };
+    },
+  },
+
+  methods: {
+    toggleCollapse() {
+      this.collapsed = !this.collapsed;
+    },
+  },
+
+  mounted() {
+    if (this.$refs.embed.clientHeight > 700) {
+      this.collapsed = true;
+    }
   },
 };
 </script>

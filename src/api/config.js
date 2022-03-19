@@ -1,7 +1,10 @@
 import axios from "axios";
 
 export const instance_v1 = axios.create({
-  baseURL: "http://localhost:8080/v1.9",
+  baseURL:
+    process.env.NODE_ENV == "production"
+      ? "https://happy-yonath-c3d5de.netlify.app/v1.9"
+      : "http://localhost:8080/v1.9",
   headers: {
     "X-Device-Token": localStorage.getItem("token")
       ? localStorage.getItem("token")
@@ -10,7 +13,10 @@ export const instance_v1 = axios.create({
 });
 
 export const instance_v2 = axios.create({
-  baseURL: "http://localhost:8080/v2.1",
+  baseURL:
+    process.env.NODE_ENV == "production"
+      ? "https://happy-yonath-c3d5de.netlify.app/v2.1"
+      : "http://localhost:8080/v2.1",
   headers: {
     "X-Device-Token": localStorage.getItem("token")
       ? localStorage.getItem("token")

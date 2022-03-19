@@ -10,6 +10,7 @@
         <play-icon class="default-icon icon" v-if="isDefaultVideo" />
         <youtube-icon class="youtube-icon icon" v-if="isYoutube" />
         <coub-icon class="coub-icon icon" v-if="isCoub" />
+        <vimeo-icon class="vimeo-icon icon" v-if="isVimeo" />
       </div>
 
       <video
@@ -17,11 +18,12 @@
         autoplay
         playsInline
         controls
+        loop
         v-if="isDefaultVideo && this.isPlaying"
       >
         <source
           :src="
-            this.type === 'telegram'
+            this.type === 'embed'
               ? srcVideo
               : `https://leonardo.osnova.io/${srcVideo}/-/format/mp4/`
           "
@@ -82,6 +84,7 @@
 import PlayIcon from "@/assets/logos/play_icon.svg?inline";
 import YoutubeIcon from "@/assets/logos/youtube_icon.svg?inline";
 import CoubIcon from "@/assets/logos/coub_icon.svg?inline";
+import VimeoIcon from "@/assets/logos/vimeo_icon.svg?inline";
 import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
@@ -89,6 +92,7 @@ export default {
     PlayIcon,
     YoutubeIcon,
     CoubIcon,
+    VimeoIcon,
   },
 
   props: {
@@ -197,7 +201,7 @@ export default {
     },
 
     coverPseudoPlayer() {
-      if (this.type === "telegram") {
+      if (this.type === "embed") {
         return `url(${this.embedCover})`;
       } else {
         return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/1200/)`;

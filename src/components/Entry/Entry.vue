@@ -27,11 +27,12 @@
       <div class="entry-content__subtitle e-island" v-if="subtitle.length > 0">
         {{ subtitle[0].data.text }}
       </div>
+
       <template
         v-for="telegramData in telegramCovers"
         :key="telegramData.data.telegram.data.tg_data.id"
         ><telegram-component
-          :authorAvatar="
+          :authorAvatarSrc="
             telegramData.data.telegram.data.tg_data.author.avatar_url
           "
           :authorName="telegramData.data.telegram.data.tg_data.author.name"
@@ -43,12 +44,39 @@
           :videoCover="telegramData.data.telegram.data.tg_data.videos[0]"
           v-if="telegramCovers.length > 0"
       /></template>
+
       <template
         v-for="twitterData in twitterCovers"
         :key="twitterData.data.tweet.data.tweet_data.id"
-        ><twitter-component :data="twitterData" v-if="twitterCovers.length > 0"
+        ><twitter-component
+          :authorAvatar="
+            twitterData.data.tweet.data.tweet_data.user.profile_image_url_https
+          "
+          :authorName="twitterData.data.tweet.data.tweet_data.user.name"
+          :authorTag="twitterData.data.tweet.data.tweet_data.user.screen_name"
+          :dateTime="twitterData.data.tweet.data.tweet_data.created_at"
+          :text="twitterData.data.tweet.data.tweet_data.processed_text"
+          :media="
+            twitterData.data.tweet.data.tweet_data.extended_entities.media
+          "
+          v-if="twitterCovers.length > 0"
       /></template>
+
+      <template v-for="(instagramData, index) in instagramCovers" :key="index"
+        ><instagram-embed :url="instagramData.data.instagram.data.box_data.url"
+      /></template>
+
       <link-component :data="linkCovers" v-if="linkCovers.length > 0" />
+
+      <template v-for="(quoteData, index) in quoteCovers" :key="index">
+        <quote-component
+          :avatarSrc="quoteData.data.image?.data.uuid"
+          :author="quoteData.data.subline1"
+          :bio="quoteData.data.subline2"
+          :text="quoteData.data.text"
+        />
+      </template>
+
       <div
         class="entry-content__cover"
         :class="imageClassObject"
@@ -110,8 +138,10 @@ import ImageComponent from "@/components/ImageComponent.vue";
 import VideoComponent from "@/components/VideoComponent.vue";
 import TelegramComponent from "@/components/TelegramComponent.vue";
 import TwitterComponent from "@/components/TwitterComponent.vue";
+import InstagramEmbed from "@/components/InstagramEmbed.vue";
 import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
 import LinkComponent from "@/components/LinkComponent.vue";
+import QuoteComponent from "@/components/QuoteComponent.vue";
 
 export default {
   components: {
@@ -123,7 +153,9 @@ export default {
     LinkComponent,
     TwitterComponent,
     TelegramComponent,
+    InstagramEmbed,
     RepostIcon,
+    QuoteComponent,
   },
 
   computed: {
@@ -177,9 +209,21 @@ export default {
       );
     },
 
+    instagramCovers() {
+      return this.entry.blocks.filter(
+        (cover) => cover.type === "instagram" && cover.cover === true
+      );
+    },
+
     linkCovers() {
       return this.entry.blocks.filter(
         (cover) => cover.type === "link" && cover.cover === true
+      );
+    },
+
+    quoteCovers() {
+      return this.entry.blocks.filter(
+        (cover) => cover.type === "quote" && cover.cover === true
       );
     },
 
@@ -277,8 +321,8 @@ export default {
   }
 
   & .entry-footer {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 11px;
+    padding-bottom: 11px;
     z-index: 1;
   }
 }
@@ -307,7 +351,7 @@ export default {
 
 .entry-content {
   word-break: break-word;
-  line-height: 1.5em;
+  line-height: 1.6em;
 
   & .embed,
   .link-block {
@@ -328,6 +372,10 @@ export default {
   & + .entry-content__subtitle {
     margin-top: 5px;
   }
+}
+
+.entry-content__subtitle {
+  font-size: 17px;
 }
 
 .entry-content__title,
@@ -418,6 +466,12 @@ export default {
 @media screen and (max-width: 640px) {
   .entry {
     border-radius: 0;
+  }
+}
+
+@media screen and (max-width: 1430px) {
+  .entry-header__subsite-data {
+    justify-content: flex-start;
   }
 }
 </style>

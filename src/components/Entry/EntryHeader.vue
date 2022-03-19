@@ -20,7 +20,7 @@
           "
           v-if="subsitePopupVisibled"
         >
-          <author-data-popup
+          <profile-popup
             :data="this.subsiteData"
             :isSubscribed="this.subsiteData.isSubscribed"
           /></div
@@ -43,7 +43,7 @@
           "
           v-if="authorPopupVisibled"
         >
-          <author-data-popup
+          <profile-popup
             :data="this.authorData"
             :isSubscribed="this.authorData.isSubscribed"
           /></div
@@ -60,12 +60,12 @@
 <script>
 import { mapGetters } from "vuex";
 import DateTime from "@/components/DateTime.vue";
-import AuthorDataPopup from "../AuthorDataPopup.vue";
+import ProfilePopup from "../ProfilePopup.vue";
 
 export default {
   components: {
     DateTime,
-    AuthorDataPopup,
+    ProfilePopup,
   },
 
   props: {
@@ -140,37 +140,66 @@ export default {
 .entry-header {
   display: flex;
   align-items: center;
-}
 
-.entry-header__item {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
+  &__item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 
-  &:not(:last-child) {
-    margin-right: 20px;
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
   }
-}
 
-.entry-header__subsite-data,
-.entry-header__author-data {
-  position: relative;
-  justify-content: center;
-}
+  &__subsite-data,
+  &__author-data {
+    position: relative;
+    justify-content: center;
+  }
 
-.entry-header__subsite-avatar {
-  margin-right: 10px;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  image-rendering: -webkit-optimize-contrast;
-}
+  &__subsite-avatar {
+    margin-right: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    image-rendering: -webkit-optimize-contrast;
+  }
 
-.entry-header__subsite-name {
-  font-weight: 500;
+  &__subsite-name {
+    font-weight: 500;
+  }
+
+  &__author-name,
+  &__date-publish {
+    position: relative;
+    font-size: 15px;
+    z-index: 1;
+  }
+
+  &__subsite-data,
+  &__author-data,
+  &__author-name,
+  &__date-publish {
+    cursor: pointer;
+  }
+
+  &__author-name {
+    max-width: 200px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__date-publish {
+    max-width: 125px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--grey-color);
+  }
 }
 
 .entry-header-subsite-data__popup {
@@ -197,42 +226,6 @@ export default {
   &-leave-to {
     opacity: 0;
   }
-}
-
-.entry-header__author-name,
-.entry-header__date-publish {
-  font-size: 15px;
-}
-
-.entry-header__author-name,
-.entry-header__date-publish {
-  position: relative;
-  z-index: 1;
-}
-
-.entry-header__subsite-data,
-.entry-header__author-name,
-.entry-header__date-publish {
-  cursor: pointer;
-}
-
-.entry-header__author-data {
-  cursor: pointer;
-}
-
-.entry-header__author-name {
-  max-width: 200px;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.entry-header__date-publish {
-  max-width: 125px;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--grey-color);
 }
 
 @media (hover: hover) {

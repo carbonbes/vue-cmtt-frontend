@@ -48,18 +48,39 @@
 
           <text-block :item="block" v-if="block.type === 'text'" />
 
-          <div class="entry-page__embed" v-if="block.type === 'telegram'">
-            <telegram-component
-              :authorAvatar="block.data.telegram.data.tg_data.author.avatar_url"
-              :authorName="block.data.telegram.data.tg_data.author.name"
-              :dateTime="block.data.telegram.data.tg_data.datetime"
-              :text="block.data.telegram.data.tg_data.text"
-              :imgCover="
-                block.data.telegram.data.tg_data.photos[0]?.leonardo_url
-              "
-              :videoCover="block.data.telegram.data.tg_data.videos[0]?.src"
-            />
-          </div>
+          <quote-block
+            :avatarSrc="block.data.image?.data.uuid"
+            :text="block.data.text"
+            :author="block.data.subline1"
+            :bio="block.data.subline2"
+            v-if="block.type === 'quote'"
+          />
+
+          <telegram-component
+            class="entry-page__embed ep-island"
+            :authorAvatarSrc="
+              block.data.telegram.data.tg_data.author.avatar_url
+            "
+            :authorName="block.data.telegram.data.tg_data.author.name"
+            :dateTime="block.data.telegram.data.tg_data.datetime"
+            :text="block.data.telegram.data.tg_data.text"
+            :imgCover="block.data.telegram.data.tg_data.photos[0]?.leonardo_url"
+            :videoCover="block.data.telegram.data.tg_data.videos[0]"
+            v-if="block.type === 'telegram'"
+          />
+
+          <twitter-component
+            class="entry-page__embed ep-island"
+            :authorAvatar="
+              block.data.tweet.data.tweet_data.user.profile_image_url_https
+            "
+            :authorName="block.data.tweet.data.tweet_data.user.name"
+            :authorTag="block.data.tweet.data.tweet_data.user.screen_name"
+            :dateTime="block.data.tweet.data.tweet_data.created_at"
+            :text="block.data.tweet.data.tweet_data.processed_text"
+            :media="block.data.tweet.data.tweet_data.extended_entities.media"
+            v-if="block.type === 'tweet'"
+          />
         </template>
       </div>
       <div class="entry-page__footer ep-island">
@@ -81,6 +102,7 @@ import EntryFooter from "@/components/Entry/EntryFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
 import TextBlock from "@/components/EntryPage/TextBlock.vue";
+import QuoteBlock from "@/components/EntryPage/QuoteBlock.vue";
 import TwitterComponent from "@/components/TwitterComponent.vue";
 import TelegramComponent from "@/components/TelegramComponent.vue";
 import store from "@/store";
@@ -110,6 +132,7 @@ export default {
     ImageBlock,
     VideoBlock,
     TextBlock,
+    QuoteBlock,
     TwitterComponent,
     TelegramComponent,
   },
@@ -151,7 +174,6 @@ export default {
 
 .entry-page__title {
   & .entry-title {
-    margin-bottom: 15px;
     font-size: 36px;
     font-weight: 500;
     line-height: 1.3em;
@@ -179,15 +201,10 @@ export default {
 }
 
 .entry-page__footer {
-  padding-top: 15px;
-  padding-bottom: 30px;
+  padding: 15px 0;
 }
 
 .entry-page__embed {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 680px;
-
   &:not(:first-child) {
     margin-top: 30px;
   }
@@ -201,6 +218,7 @@ export default {
 @media screen and (max-width: 768px) {
   .entry-page {
     padding-top: 15px;
+    border-radius: 0;
   }
 
   .entry-page__title {

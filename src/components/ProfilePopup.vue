@@ -1,12 +1,12 @@
 <template>
-  <div class="author-data-popup">
+  <div class="profile-popup">
     <div
-      class="author-data-popup__img-cover author-data-popup__cover"
+      class="profile-popup__img-cover profile-popup__cover"
       :style="imgCover"
       v-if="isImgCover"
     />
     <video
-      class="author-data-popup__video-cover author-data-popup__cover"
+      class="profile-popup__video-cover profile-popup__cover"
       :src="`https://leonardo.osnova.io/${this.data.cover.data.uuid}/-/format/mp4/`"
       autoPlay
       playsInline
@@ -14,40 +14,47 @@
       muted
       v-if="isGifCover"
     />
-    <div class="author-data-popup__content">
-      <div class="author-data-popup__actions">
-        <div class="author-data-popup__avatar" :style="avatar" />
-        <div class="author-data-popup__subscribe-btn">
+    <div class="profile-popup__content">
+      <div class="profile-popup__actions">
+        <div class="profile-popup__avatar" :style="avatar" />
+        <div class="profile-popup__subscribe-btn">
           <button class="button button_b">
             <span class="button__label" v-if="!isSubscribed">Подписаться</span>
             <span class="button__label" v-if="isSubscribed">Отписаться</span>
           </button>
         </div>
       </div>
-      <div class="author-data-popup__author-data">
-        <span class="author-data-popup__name">
+      <div class="profile-popup__author-data">
+        <div class="profile-popup__name">
           {{ name }}
-        </span>
+        </div>
+        <div class="profile-popup__description" v-if="description">
+          {{ description }}
+        </div>
       </div>
-      <div class="author-data-popup__description" v-if="description">
-        {{ description }}
+      <div class="profile-popup__info">
+        <div
+          class="profile-popup__author-rating"
+          :class="ratingClassObject"
+          v-if="isNotSubsite"
+        >
+          <template v-if="isPositiveRating">+</template>{{ rating }}
+        </div>
+        <div
+          class="profile-popup__author-rating-loader"
+          v-if="(!rating || rating === 0) && isNotSubsite"
+        />
+        <div class="profile-popup__subs-count" v-if="subsCount">
+          {{ subsCount }}
+          <span class="profile-popup__subs-label">{{ subsLabel }}</span>
+        </div>
+        <div class="profile-popup__subs-loader" v-if="!subsCount" />
+        <div class="profile-popup__date-created" v-if="isNotSubsite">
+          <span class="label"
+            ><template v-if="isNotSubsite">Дата регистрации: </template></span
+          >{{ dateCreated }}
+        </div>
       </div>
-      <div
-        class="author-data-popup__author-rating"
-        :class="ratingClassObject"
-        v-if="isNotSubsite"
-      >
-        <template v-if="isPositiveRating">+</template>{{ rating }}
-      </div>
-      <div
-        class="author-data-popup__author-rating-loader"
-        v-if="!rating && isNotSubsite"
-      />
-      <div class="author-data-popup__subs-count" v-if="subsCount">
-        {{ subsCount }}
-        <span class="author-data-popup__subs-label">{{ subsLabel }}</span>
-      </div>
-      <div class="author-data-popup__subs-loader" v-if="!subsCount" />
     </div>
   </div>
 </template>
@@ -66,10 +73,24 @@ export default {
   data() {
     return {
       subsWords: ["подписчик", "подписчика", "подписчиков"],
+      months: [
+        "янв",
+        "фев",
+        "мар",
+        "апр",
+        "мая",
+        "июн",
+        "июл",
+        "авг",
+        "сен",
+        "окт",
+        "ноя",
+        "дек",
+      ],
     };
   },
 
-  mounted() {
+  created() {
     this.requestSubsiteData(this.data.id);
   },
 
@@ -94,7 +115,7 @@ export default {
     imgCover() {
       if (this.data.cover.data.uuid && this.data.cover.data.type === "jpg") {
         return {
-          backgroundImage: `url(https://leonardo.osnova.io/${this.data.cover.data.uuid}/-/scale_crop/1920/-/format/webp/)`,
+          backgroundImage: `url(https://leonardo.osnova.io/${this.data.cover.data.uuid}/-/scale_crop/720/-/format/webp/)`,
         };
       }
     },
@@ -150,10 +171,20 @@ export default {
 
     ratingClassObject() {
       return {
-        "author-data-popup__author-rating_positive": this.isPositiveRating,
-        "author-data-popup__author-rating_neutral": this.isNeutralRating,
-        "author-data-popup__author-rating_negative": this.isNegativeRating,
+        "profile-popup__author-rating_positive": this.isPositiveRating,
+        "profile-popup__author-rating_neutral": this.isNeutralRating,
+        "profile-popup__author-rating_negative": this.isNegativeRating,
       };
+    },
+
+    dateCreated() {
+      let dateCreatedFormatted = new Date(this.subsiteData.created * 1000);
+
+      let day = dateCreatedFormatted.getDate();
+      let month = dateCreatedFormatted.getMonth();
+      let year = dateCreatedFormatted.getFullYear();
+
+      return `${day} ${this.months[month]} ${year} г.`;
     },
 
     ...mapGetters(["subsiteData"]),
@@ -162,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss">
-.author-data-popup {
+.profile-popup {
   width: 100%;
   height: 100%;
   background: var(--dropdown-bg-color);
@@ -175,8 +206,8 @@ export default {
   }
 
   &__cover {
-    & + .author-data-popup__content {
-      & .author-data-popup__avatar {
+    & + .profile-popup__content {
+      & .profile-popup__avatar {
         margin-top: -70px;
       }
     }
@@ -214,9 +245,7 @@ export default {
   }
 
   &__author-data {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
+    margin-top: 10px;
   }
 
   &__name {
@@ -229,6 +258,7 @@ export default {
 
   &__author-rating {
     font-size: 14px;
+    line-height: 14px;
     font-weight: 700;
 
     &_positive {
@@ -246,7 +276,7 @@ export default {
 
   &__author-rating-loader {
     width: 55px;
-    height: 15px;
+    height: 14px;
     background: var(--loader-grey-color);
     border-radius: 2px;
   }
@@ -257,6 +287,7 @@ export default {
 
   &__subscribe-btn {
     margin-left: auto;
+
     & .button {
       height: 35px;
     }
@@ -264,18 +295,30 @@ export default {
 
   &__description {
     margin-top: 5px;
-    margin-bottom: 25px;
     color: var(--grey-color);
     font-size: 16px;
     line-height: 22px;
     white-space: normal;
     word-break: break-word;
+
+    & + .profile-popup__author-rating {
+      margin-top: 20px;
+    }
+  }
+
+  &__info {
+    margin-top: 15px;
+
+    & > div {
+      &:not(:first-child) {
+        margin-top: 10px;
+      }
+    }
   }
 
   &__subs-count {
-    margin-top: 10px;
     color: var(--black-color);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     line-height: 15px;
   }
@@ -286,11 +329,20 @@ export default {
   }
 
   &__subs-loader {
-    margin-top: 10px;
     width: 125px;
     height: 15px;
     background: var(--loader-grey-color);
     border-radius: 2px;
+  }
+
+  &__date-created {
+    font-size: 14px;
+    color: var(--grey-color);
+
+    & .label {
+      color: var(--black-color);
+      font-weight: 700;
+    }
   }
 }
 </style>
