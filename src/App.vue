@@ -129,7 +129,6 @@ export default {
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
   --entry-thin-cover-gap: 0 20px;
   --embed-cover-bg: #333;
-  --embed-collapse-btn-color: #fff;
 }
 
 [data-theme="dark"] {
@@ -155,7 +154,6 @@ export default {
   --form-border-color-active: #608eca;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 20%);
   --embed-cover-bg: #232323;
-  --embed-collapse-btn-color: #252525;
 }
 
 * {
@@ -436,36 +434,6 @@ body {
   line-height: normal;
   overflow: hidden;
 
-  &_collapsed {
-    max-height: 250px;
-  }
-
-  &__collapse-btn {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 35px;
-    background: var(--embed-collapse-btn-color);
-    text-align: center;
-    color: var(--blue-color);
-    z-index: 1;
-    cursor: pointer;
-
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 100%;
-      width: 100%;
-      height: 75px;
-      background: linear-gradient(
-        0deg,
-        var(--embed-collapse-btn-color) 10%,
-        rgba(255, 255, 255, 0) 100%
-      );
-    }
-  }
-
   & + .embed,
   .link-block {
     margin-top: 12px;
@@ -491,6 +459,11 @@ body {
     }
   }
 
+  &__author-wrap {
+    display: flex;
+    align-items: center;
+  }
+
   &__author-avatar {
     width: 36px;
     height: 36px;
@@ -500,6 +473,10 @@ body {
   }
 
   &__author-name {
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 16px;
     font-weight: 500;
   }
@@ -525,10 +502,24 @@ body {
   }
 }
 
-.embed-text {
+.embed-text__wrap {
   margin: 0 20px 15px;
   font-size: 17px;
   line-height: 26px;
+}
+
+.embed-text {
+  & br {
+    display: block;
+    content: "";
+    height: 4px;
+  }
+
+  &__collapsed-btn {
+    margin-left: 5px;
+    color: var(--blue-color);
+    cursor: pointer;
+  }
 
   & b {
     font-weight: 400;
@@ -615,7 +606,7 @@ body {
     }
   }
 
-  .embed__collapse-btn {
+  .embed-text__collapsed-btn {
     &:hover {
       color: var(--red-color);
     }
@@ -643,10 +634,6 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  :root {
-    --entry-cover-gap: 0 15px;
-  }
-
   .site-logo {
     margin-left: 16px;
   }
@@ -662,9 +649,20 @@ body {
 
   .embed-header {
     margin: 15px 15px;
+
+    &__author-name {
+      max-width: 175px;
+    }
+
+    &__author-tag {
+      max-width: 50px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
-  .embed-text {
+  .embed-text__wrap {
     margin: 0 15px 15px;
   }
 

@@ -207,6 +207,7 @@ export default {
 .entry-page__embed {
   &:not(:first-child) {
     margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 
@@ -230,12 +231,13 @@ export default {
   .entry-page__embed {
     &:not(:first-child) {
       margin-top: 15px;
+      margin-bottom: 15px;
     }
   }
 
   .ep-island {
-    padding-left: 15px;
-    padding-right: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
   }
 }
 </style>

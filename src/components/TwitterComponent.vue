@@ -3,8 +3,10 @@
     <div class="embed-header">
       <img class="embed-header__author-avatar" :src="authorAvatar" alt="" />
       <div class="embed-header__data">
-        <span class="embed-header__author-name">{{ authorName }}</span>
-        <span class="embed-header__author-tag">@{{ authorTag }}</span>
+        <div class="embed-header__author-wrap">
+          <div class="embed-header__author-name">{{ authorName }}</div>
+          <span class="embed-header__author-tag">@{{ authorTag }}</span>
+        </div>
         <date-time
           :date="dateTime"
           :type="1"
@@ -16,7 +18,9 @@
         <twitter-logo class="twitter-logo" />
       </div>
     </div>
-    <div class="embed-text" v-html="text" v-if="text"></div>
+    <div class="embed-text__wrap">
+      <div class="embed-text" v-html="text" v-if="text"></div>
+    </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
       <img :src="imgSrc" alt="" v-if="imgSrc" />
       <video-component

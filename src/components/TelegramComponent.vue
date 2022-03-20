@@ -1,5 +1,5 @@
 <template>
-  <div class="embed" ref="embed" :class="embedStyleObj">
+  <div class="embed">
     <div class="embed-header">
       <div class="embed-header__author-avatar" :style="authorAvatar" />
       <div class="embed-header__data">
@@ -15,7 +15,15 @@
         <telegram-logo class="telegram-logo" />
       </div>
     </div>
-    <div class="embed-text" v-html="text" v-if="text"></div>
+    <div class="embed-text__wrap" v-if="text">
+      <span class="embed-text" v-html="collapsed ? collapsedText : text"></span>
+      <span
+        class="embed-text__collapsed-btn"
+        @click="this.toggleCollapse"
+        v-if="collapsed"
+        >Раскрыть</span
+      >
+    </div>
     <div class="embed-cover" v-if="imgCover || videoCover">
       <img :src="imgCover" alt="" v-if="imgCover" />
       <video-component
@@ -29,9 +37,6 @@
         type="embed"
         v-if="videoCover"
       />
-    </div>
-    <div class="embed__collapse-btn" v-if="collapsed" @click="toggleCollapse">
-      Раскрыть
     </div>
   </div>
 </template>
@@ -56,6 +61,7 @@ export default {
   data() {
     return {
       collapsed: null,
+      collapsedText: null,
     };
   },
 
@@ -81,12 +87,6 @@ export default {
     coverSrc() {
       return this.videoCover.thumbnail_url;
     },
-
-    embedStyleObj() {
-      return {
-        embed_collapsed: this.collapsed,
-      };
-    },
   },
 
   methods: {
@@ -96,7 +96,8 @@ export default {
   },
 
   mounted() {
-    if (this.$refs.embed.clientHeight > 700) {
+    if (this.text && this.text.length > 325) {
+      this.collapsedText = this.text.slice(0, 325) + "...";
       this.collapsed = true;
     }
   },
