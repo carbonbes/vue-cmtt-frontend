@@ -129,6 +129,8 @@ export default {
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
   --entry-thin-cover-gap: 0 20px;
   --embed-cover-bg: #333;
+  --link-text-decoration-color: #bed0ea;
+  --link-text-decoration-color-hover: #f6b4bc;
 }
 
 [data-theme="dark"] {
@@ -154,6 +156,8 @@ export default {
   --form-border-color-active: #608eca;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 20%);
   --embed-cover-bg: #232323;
+  --link-text-decoration-color: #3c434d;
+  --link-text-decoration-color-hover: #503b3d;
 }
 
 * {
@@ -406,14 +410,27 @@ body {
   background-size: cover;
   background-position: center center;
 
-  &::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+  &.default-player {
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  &.embed-player {
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
   }
 }
 

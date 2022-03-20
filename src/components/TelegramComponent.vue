@@ -96,8 +96,8 @@ export default {
   },
 
   mounted() {
-    if (this.text && this.text.length > 325) {
-      this.collapsedText = this.text.slice(0, 325) + "...";
+    if (this.text && this.text.length > 300) {
+      this.collapsedText = this.text.slice(0, 300) + "...";
       this.collapsed = true;
     }
   },

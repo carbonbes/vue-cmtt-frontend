@@ -3,6 +3,7 @@
     <div class="video-wrapp" :style="wrappStyleObject">
       <div
         class="video__pseudo-player"
+        :class="typePlayer"
         v-if="!this.isPlaying"
         :style="pseudoPlayerStyleObject"
         @click="togglePlaying"
@@ -198,6 +199,18 @@ export default {
 
     isCoub() {
       return this.externalService?.name === "coub";
+    },
+
+    typePlayer() {
+      return {
+        "default-player":
+          !this.externalService ||
+          Object.keys(this.externalService).length === 0,
+
+        "embed-player":
+          this.externalService?.name ===
+          ("youtube" || "vimeo" || "gfycat" || "giphy" || "coub"),
+      };
     },
 
     coverPseudoPlayer() {
