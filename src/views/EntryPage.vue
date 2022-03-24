@@ -53,7 +53,15 @@
             :text="block.data.text"
             :author="block.data.subline1"
             :bio="block.data.subline2"
+            :textSize="block.data.text_size"
             v-if="block.type === 'quote'"
+          />
+
+          <person-block
+            :avatar="block.data.image?.data.uuid"
+            :name="block.data.title"
+            :description="block.data.description"
+            v-if="block.type === 'person'"
           />
 
           <telegram-component
@@ -89,6 +97,7 @@
           :repostsCount="entry.counters.reposts"
           :favoritesCount="entry.counters.favorites"
           :entryRating="entry.likes"
+          :entryId="entryId"
         />
       </div>
     </div>
@@ -103,6 +112,7 @@ import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
 import TextBlock from "@/components/EntryPage/TextBlock.vue";
 import QuoteBlock from "@/components/EntryPage/QuoteBlock.vue";
+import PersonBlock from "@/components/EntryPage/PersonBlock.vue";
 import TwitterComponent from "@/components/TwitterComponent.vue";
 import TelegramComponent from "@/components/TelegramComponent.vue";
 import store from "@/store";
@@ -133,11 +143,16 @@ export default {
     VideoBlock,
     TextBlock,
     QuoteBlock,
+    PersonBlock,
     TwitterComponent,
     TelegramComponent,
   },
 
   computed: {
+    entryId() {
+      return this.entry.id;
+    },
+
     ...mapGetters(["entry"]),
   },
 
@@ -212,7 +227,8 @@ export default {
 }
 
 .ep-island {
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   max-width: 680px;
 }
 

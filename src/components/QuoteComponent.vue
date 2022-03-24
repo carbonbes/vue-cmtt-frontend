@@ -2,8 +2,12 @@
   <blockquote class="quote-component">
     <div class="quote-component__content">
       <quoute-icon class="icon" />
-      <p class="text" v-text="text"></p>
-      <div class="author" v-if="avatarSrc || bio">
+      <div class="text" :class="textSize">
+        <template v-for="(p, i) in processedText" :key="i"
+          ><p v-text="p"></p
+        ></template>
+      </div>
+      <div class="author" v-if="avatarSrc || author || bio">
         <div class="avatar" :style="avatar" v-if="avatarSrc" />
         <div class="data">
           <span class="name" v-text="author"></span
@@ -27,6 +31,7 @@ export default {
     author: String,
     bio: String,
     text: String,
+    textSize: String,
   },
 
   computed: {
@@ -38,6 +43,16 @@ export default {
         )`,
         };
       }
+    },
+
+    processedText() {
+      return this.text.replace(/\\/g, "").split("\n\n");
+    },
+
+    textSize() {
+      return {
+        text_small: this.textSize === "small",
+      };
     },
   },
 };

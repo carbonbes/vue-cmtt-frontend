@@ -21,9 +21,19 @@
       >
         <vote-icon class="icon" />
       </div>
-      <div class="entry-footer__rating-value" :class="ratingValueStyles">
-        <template v-if="entryRating.summ < 0">–</template
-        >{{ entryRating.counter }}
+      <div
+        class="entry-footer__rating-wrapp"
+        @mouseenter="getLikes"
+        @mouseleave="closeLikesPopup"
+      >
+        <div class="entry-footer__rating-value" :class="ratingValueStyles">
+          <template v-if="entryRating.summ < 0">–</template
+          >{{ entryRating.counter }}
+        </div>
+        <transition name="entry-footer__likes-popup"
+          ><div class="entry-footer__likes-popup" v-if="likesPopupIsOpen">
+            <likes-popup :likes="this.likesList" type="entry" /></div
+        ></transition>
       </div>
       <div
         class="entry-footer__vote-btn vote-like"
@@ -36,6 +46,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import LikesPopup from "@/components/LikesPopup.vue";
 import CommentIcon from "@/assets/logos/comment_icon.svg?inline";
 import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
 import BookmarkIcon from "@/assets/logos/bookmark_icon.svg?inline";
@@ -43,6 +55,7 @@ import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
 
 export default {
   components: {
+    LikesPopup,
     CommentIcon,
     RepostIcon,
     BookmarkIcon,
@@ -50,11 +63,23 @@ export default {
   },
 
   props: {
+    commentsCount: Number,
+    repostsCount: Number,
+    favoritesCount: Number,
+    entryRating: Object,
+    entryId: Number,
     actions: Object,
   },
 
+  data() {
+    return {
+      likesPopupIsFocused: false,
+      likesPopupIsOpen: false,
+    };
+  },
+
   computed: {
-    ratingValueStyles: function () {
+    ratingValueStyles() {
       return {
         "entry-footer__rating-value_negative": this.entryRating.summ < 0,
         "entry-footer__rating-value_neutral": this.entryRating.summ === 0,
@@ -73,13 +98,26 @@ export default {
         "vote-dislike_active": this.entryRating.isLiked === -1,
       };
     },
+
+    ...mapGetters(["likesList"]),
   },
 
-  props: {
-    commentsCount: Number,
-    repostsCount: Number,
-    favoritesCount: Number,
-    entryRating: Object,
+  methods: {
+    getLikes() {
+      this.likesPopupIsFocused = true;
+      this.requestLikesList(this.entryId).then(() => {
+        if (this.likesPopupIsFocused && Object.keys(this.likesList).length !== 0) {
+          this.likesPopupIsOpen = true;
+        }
+      });
+    },
+
+    closeLikesPopup() {
+      this.likesPopupIsFocused = false;
+      this.likesPopupIsOpen = false;
+    },
+
+    ...mapActions(["requestLikesList"]),
   },
 };
 </script>
@@ -160,6 +198,12 @@ export default {
   }
 }
 
+.entry-footer__rating-wrapp {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
 .entry-footer__rating-value {
   padding: 0 4px;
   font-weight: 500;
@@ -174,6 +218,23 @@ export default {
 
   &_positive {
     color: var(--green-color);
+  }
+}
+
+.entry-footer__likes-popup {
+  position: absolute;
+  top: 100%;
+  margin-top: 10px;
+  z-index: 2;
+
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.1s;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
   }
 }
 
@@ -200,6 +261,18 @@ export default {
     &.vote-dislike_active {
       &:hover {
         background: #d34f5733 !important;
+      }
+    }
+  }
+
+  .entry-footer__rating-wrapp {
+    &:hover {
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 35px;
+        height: 30px;
       }
     }
   }

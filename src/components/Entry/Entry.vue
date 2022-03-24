@@ -24,8 +24,14 @@
       <div class="entry-content__title e-island" v-if="entry.title">
         <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
       </div>
-      <div class="entry-content__subtitle e-island" v-if="subtitle.length > 0">
-        {{ subtitle[0].data.text }}
+
+      <div
+        class="entry-content__subtitle e-island"
+        v-if="subtitleArr.length > 0"
+      >
+        <template v-for="(subtitle, i) in subtitleArr" :key="i">{{
+          subtitle.data.text
+        }}</template>
       </div>
 
       <template
@@ -118,15 +124,17 @@
           :maxHeight="600"
         />
       </div>
+      <router-link class="entry__link" :to="entry.id.toString()"></router-link>
     </div>
+
     <entry-footer
       class="e-island"
       :commentsCount="entry.counters.comments"
       :repostsCount="entry.counters.reposts"
       :favoritesCount="entry.counters.favorites"
       :entryRating="entry.likes"
+      :entryId="entryId"
     />
-    <router-link class="entry__link" :to="entry.id.toString()"></router-link>
   </div>
 </template>
 
@@ -159,7 +167,7 @@ export default {
   },
 
   computed: {
-    subtitle() {
+    subtitleArr() {
       return this.entry.blocks.filter(
         (block) => block.type === "text" && block.cover === true
       );
@@ -290,6 +298,10 @@ export default {
         };
       }
     },
+
+    entryId() {
+      return this.entry.id;
+    },
   },
 
   props: {
@@ -323,7 +335,6 @@ export default {
   & .entry-footer {
     padding-top: 11px;
     padding-bottom: 11px;
-    z-index: 1;
   }
 }
 
@@ -350,6 +361,7 @@ export default {
 }
 
 .entry-content {
+  position: relative;
   word-break: break-word;
   line-height: 1.6em;
 
@@ -391,6 +403,10 @@ export default {
   & + .link-block {
     margin-top: 12px;
   }
+
+  & + .quote-component {
+    margin-top: 12px;
+  }
 }
 
 .entry-content__cover {
@@ -428,6 +444,7 @@ export default {
 
 .entry__link {
   position: absolute;
+  top: 0;
   width: 100%;
   height: 100%;
 }
@@ -435,17 +452,6 @@ export default {
 .e-island {
   padding-left: 20px;
   padding-right: 20px;
-}
-
-@media (hover: hover) {
-  .entry {
-    &:hover {
-      & .entry-header__subsite-data,
-      .entry-header__author-data {
-        z-index: 2;
-      }
-    }
-  }
 }
 
 @media screen and (max-width: 768px) {

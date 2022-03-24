@@ -28,4 +28,18 @@ export default function (app) {
       },
     })
   );
+
+  app.use(
+    "/entry/rating",
+    createProxyMiddleware({
+      target:
+        process.env.NODE_ENV == "production"
+          ? "https://happy-yonath-c3d5de.netlify.app"
+          : "https://tjournal.ru",
+      changeOrigin: true,
+      pathRewrite: {
+        "^/entry/rating": "",
+      },
+    })
+  );
 }

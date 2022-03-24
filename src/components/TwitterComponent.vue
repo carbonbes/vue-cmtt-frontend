@@ -71,25 +71,37 @@ export default {
     },
 
     videoSrc() {
-      if (this.media && this.media[0].type === "video") {
+      if (
+        (this.media && this.media[0].type === "video") ||
+        (this.media && this.media[0].type === "animated_gif")
+      ) {
         return this.media[0].video_info.variants[0].url;
       }
     },
 
     videoCover() {
-      if (this.media && this.media[0].type === "video") {
+      if (
+        (this.media && this.media[0].type === "video") ||
+        (this.media && this.media[0].type === "animated_gif")
+      ) {
         return this.media[0].media_url_https;
       }
     },
 
     videoSrcWidth() {
-      if (this.media && this.media[0].type === "video") {
+      if (
+        (this.media && this.media[0].type === "video") ||
+        (this.media && this.media[0].type === "animated_gif")
+      ) {
         return this.media[0].sizes.large.w;
       }
     },
 
     videoSrcHeight() {
-      if (this.media && this.media[0].type === "video") {
+      if (
+        (this.media && this.media[0].type === "video") ||
+        (this.media && this.media[0].type === "animated_gif")
+      ) {
         return this.media[0].sizes.large.h;
       }
     },

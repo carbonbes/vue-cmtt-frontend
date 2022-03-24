@@ -206,6 +206,7 @@ export default {
   position: absolute;
   width: 325px;
   cursor: auto;
+  z-index: 2;
 
   &_top {
     bottom: 100%;

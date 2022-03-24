@@ -1,5 +1,12 @@
 import axios from "axios";
 
+export const entryRatingInstance = axios.create({
+  baseURL:
+    process.env.NODE_ENV == "production"
+      ? "https://happy-yonath-c3d5de.netlify.app/entry/rating"
+      : "http://localhost:8080/entry/rating",
+});
+
 export const instance_v1 = axios.create({
   baseURL:
     process.env.NODE_ENV == "production"

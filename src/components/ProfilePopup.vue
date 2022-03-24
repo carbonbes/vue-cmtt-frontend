@@ -18,9 +18,20 @@
       <div class="profile-popup__actions">
         <div class="profile-popup__avatar" :style="avatar" />
         <div class="profile-popup__subscribe-btn">
-          <button class="button button_b">
-            <span class="button__label" v-if="!isSubscribed">Подписаться</span>
-            <span class="button__label" v-if="isSubscribed">Отписаться</span>
+          <button
+            class="button button_a"
+            @mouseenter="toggleButtonFocus"
+            @mouseleave="toggleButtonFocus"
+          >
+            <user-add-icon class="icon" v-if="!isSubscribed" />
+            <check-icon
+              class="icon icon_subscribed"
+              v-if="isSubscribed && !buttonFocus"
+            />
+            <close-icon
+              class="icon icon_unsubscribed"
+              v-if="isSubscribed && buttonFocus"
+            />
           </button>
         </div>
       </div>
@@ -28,9 +39,11 @@
         <div class="profile-popup__name">
           {{ name }}
         </div>
-        <div class="profile-popup__description" v-if="description">
-          {{ description }}
-        </div>
+        <div
+          class="profile-popup__description"
+          v-if="description"
+          v-html="description"
+        ></div>
       </div>
       <div class="profile-popup__info">
         <div
@@ -63,8 +76,13 @@
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import declensionWords from "@/utils/declensionWords";
 import numberWithSpaces from "@/utils/numberWithSpaces";
+import UserAddIcon from "@/assets/logos/user_add.svg?inline";
+import CheckIcon from "@/assets/logos/check_icon.svg?inline";
+import CloseIcon from "@/assets/logos/close_icon.svg?inline";
 
 export default {
+  components: { UserAddIcon, CheckIcon, CloseIcon },
+
   props: {
     data: Object,
     isSubscribed: Boolean,
@@ -87,6 +105,7 @@ export default {
         "ноя",
         "дек",
       ],
+      buttonFocus: false,
     };
   },
 
@@ -99,6 +118,10 @@ export default {
   },
 
   methods: {
+    toggleButtonFocus() {
+      this.buttonFocus = !this.buttonFocus;
+    },
+
     ...mapMutations(["clearSubsiteData"]),
     ...mapActions(["requestSubsiteData"]),
   },
@@ -135,7 +158,10 @@ export default {
     },
 
     description() {
-      return this.data.description;
+      return this.data.description.replace(
+        /(https?.*?(?=\s|,))/g,
+        '<a href="$1" target="_blank">$1</a>'
+      );
     },
 
     subsCount() {
@@ -289,7 +315,24 @@ export default {
     margin-left: auto;
 
     & .button {
+      width: 35px;
       height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & .icon {
+        width: 18px;
+        height: 18px;
+
+        &_subscribed {
+          color: var(--green-color);
+        }
+
+        &_unsubscribed {
+          color: var(--red-color);
+        }
+      }
     }
   }
 

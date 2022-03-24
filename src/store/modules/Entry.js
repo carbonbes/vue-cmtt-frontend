@@ -1,11 +1,11 @@
 import { API_v2 } from "../../api/API_v2";
-import axios from "axios";
+import { entryRatingInstance } from "../../api/config";
 
 const entryModule = {
   state: () => ({
     entry: [],
     subsiteData: [],
-    likesList: [],
+    likesList: null,
   }),
 
   getters: {
@@ -15,6 +15,10 @@ const entryModule = {
 
     subsiteData(state) {
       return state.subsiteData;
+    },
+
+    likesList(state) {
+      return state.likesList;
     },
   },
 
@@ -34,6 +38,14 @@ const entryModule = {
     clearSubsiteData(state) {
       state.subsiteData = [];
     },
+
+    setLikesList(state, data) {
+      state.likesList = data;
+    },
+
+    clearLikesList(state) {
+      state.likesList = [];
+    },
   },
 
   actions: {
@@ -47,6 +59,14 @@ const entryModule = {
       return API_v2.subsite(id).then((response) => {
         commit("setSubsiteData", response.data.result);
       });
+    },
+
+    requestLikesList({ commit }, id) {
+      return entryRatingInstance
+        .get(`vote/get_likers?id=${id}&type=1`)
+        .then((response) => {
+          commit("setLikesList", response.data.data.likers);
+        });
     },
   },
 };

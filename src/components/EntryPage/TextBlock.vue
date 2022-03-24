@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import stringReplacement from "@/utils/stringReplacement";
+
 export default {
   props: {
     item: Object,
@@ -12,14 +14,11 @@ export default {
 
   computed: {
     text() {
-      return this.item.data.text;
+      return this.item.data.text.replace(/\\/g, "");
     },
 
     processed() {
-      return this.text.replace(
-        /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
-        '<a href="$3" target="_blank">$2</a>'
-      );
+      return stringReplacement(this.text);
     },
   },
 };
@@ -36,23 +35,6 @@ export default {
   &:last-child {
     & p {
       margin-bottom: 0;
-    }
-  }
-
-  & a {
-    color: var(--blue-color);
-    border-bottom: 1px solid var(--link-text-decoration-color);
-    cursor: pointer;
-  }
-}
-
-@media (hover: hover) {
-  .entry-page__text-block {
-    & a {
-      &:hover {
-        color: var(--red-color);
-        border-bottom: 1px solid var(--link-text-decoration-color-hover);
-      }
     }
   }
 }
