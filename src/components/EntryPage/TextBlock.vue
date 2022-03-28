@@ -14,7 +14,7 @@ export default {
 
   computed: {
     text() {
-      return this.item.data.text.replace(/\\/g, "");
+      return this.item.data.text.replace(/\\/g, "").replace(/\n/g, "<br>");
     },
 
     processed() {

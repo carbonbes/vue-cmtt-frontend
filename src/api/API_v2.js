@@ -23,6 +23,14 @@ export const API_v2 = {
     return instance_v2.get(`content?id=${id}`);
   },
 
+  getComments(data) {
+    if (data.subsiteId) {
+      return instance_v2.get(`comments?subsiteId=${data.subsiteId}`);
+    } else {
+      return instance_v2.get(`comments?contentId=${data.contentId}`);
+    }
+  },
+
   subsite(id) {
     return instance_v2.get(`subsite?id=${id}`);
   },

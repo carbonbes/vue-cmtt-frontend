@@ -384,6 +384,8 @@ body {
     width: 48px;
     height: 48px;
     fill-opacity: 0.6;
+    transform: scale(1);
+    transition: transform 0.1s;
   }
 
   & .youtube-icon {
@@ -437,7 +439,9 @@ body {
 .embed-text,
 .entry-content-subtitle,
 .entry-page__text-block,
-.profile-popup__description {
+.profile-popup__description,
+.quote-component__content .author .name,
+.entry-content__subtitle p {
   & a {
     color: var(--blue-color);
     border-bottom: 1px solid var(--link-text-decoration-color);
@@ -454,8 +458,11 @@ body {
   line-height: normal;
   overflow: hidden;
 
-  & + .embed,
-  .link-block {
+  & + .embed {
+    margin-top: 12px;
+  }
+
+  & + .link-block {
     margin-top: 12px;
   }
 
@@ -471,8 +478,10 @@ body {
 
   &__data {
     margin-left: 10px;
+    overflow: hidden;
 
     & .date-time {
+      display: inline-block;
       line-height: 20px;
       font-size: 13px;
       color: var(--grey-color);
@@ -487,13 +496,13 @@ body {
   &__author-avatar {
     width: 36px;
     height: 36px;
+    min-width: 36px;
     border-radius: 50%;
     box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
     background-size: cover;
   }
 
   &__author-name {
-    max-width: 350px;
     overflow: hidden;
     line-height: 20px;
     text-overflow: ellipsis;
@@ -504,11 +513,16 @@ body {
 
   &__author-tag {
     margin-left: 10px;
+    min-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 15px;
     color: var(--grey-color);
   }
 
   &__logo {
+    padding-left: 15px;
     align-self: flex-start;
 
     & .telegram-logo,
@@ -582,14 +596,16 @@ body {
     }
 
     & .text {
-      font-size: 24px;
-      font-weight: 500;
-      line-height: 34px;
-
       &_small {
         font-size: 22px;
         font-weight: 400;
         line-height: 32px;
+      }
+
+      &_medium {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 34px;
       }
 
       & p {
@@ -632,7 +648,7 @@ body {
         line-height: 1.35em;
       }
 
-      & .desctiption {
+      & .description {
         font-size: 16px;
         line-height: 1.35em;
       }
@@ -669,7 +685,9 @@ body {
   .embed-text,
   .entry-content-subtitle,
   .entry-page__text-block,
-  .profile-popup__description {
+  .profile-popup__description,
+  .quote-component__content .author .name,
+  .entry-content__subtitle p {
     & a {
       &:hover {
         color: var(--red-color);
@@ -687,6 +705,7 @@ body {
   .video__pseudo-player {
     &:hover {
       & .default-icon {
+        transform: scale(1.05);
         fill-opacity: 0.8;
       }
 
@@ -722,15 +741,8 @@ body {
   .embed-header {
     margin: 15px 15px;
 
-    &__author-name {
-      max-width: 175px;
-    }
-
     &__author-tag {
-      max-width: 50px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      min-width: 50px;
     }
   }
 

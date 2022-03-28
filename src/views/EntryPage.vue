@@ -48,10 +48,18 @@
 
           <text-block :item="block" v-if="block.type === 'text'" />
 
+          <link-block
+            :title="block.data.link.data.title"
+            :description="block.data.link.data.description"
+            :urlSrc="block.data.link.data.url"
+            :sourceIcon="block.data.link.data.image.data.uuid"
+            v-if="block.type === 'link'"
+          />
+
           <quote-block
             :avatarSrc="block.data.image?.data.uuid"
             :text="block.data.text"
-            :author="block.data.subline1"
+            :authorSrc="block.data.subline1"
             :bio="block.data.subline2"
             :textSize="block.data.text_size"
             v-if="block.type === 'quote'"
@@ -101,6 +109,12 @@
         />
       </div>
     </div>
+
+    <div class="entry-page__comments">
+      <div class="entry-page__comments-content">
+        <comments-block :comments="this.commentsTree" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,24 +125,28 @@ import EntryFooter from "@/components/Entry/EntryFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
 import TextBlock from "@/components/EntryPage/TextBlock.vue";
+import LinkBlock from "@/components/EntryPage/LinkBlock.vue";
 import QuoteBlock from "@/components/EntryPage/QuoteBlock.vue";
 import PersonBlock from "@/components/EntryPage/PersonBlock.vue";
 import TwitterComponent from "@/components/TwitterComponent.vue";
 import TelegramComponent from "@/components/TelegramComponent.vue";
+import CommentsBlock from "@/components/EntryPage/CommentsComponents/CommentsBlock.vue";
+import { mapGetters } from "vuex";
 import store from "@/store";
 import nProgress from "nprogress";
-import { mapGetters } from "vuex";
 
 function requestEntry(routeTo, next) {
   nProgress.start();
 
-  store
-    .dispatch("requestEntry", routeTo.params.id)
+  Promise.all([
+    store.dispatch("requestEntry", routeTo.params.id),
+    store.dispatch("requestCommentsList", { contentId: routeTo.params.id }),
+  ])
     .then(() => {
       nProgress.done();
       next();
     })
-    .catch((error) => {
+    .catch(() => {
       nProgress.done();
       next(false);
     });
@@ -142,10 +160,12 @@ export default {
     ImageBlock,
     VideoBlock,
     TextBlock,
+    LinkBlock,
     QuoteBlock,
     PersonBlock,
     TwitterComponent,
     TelegramComponent,
+    CommentsBlock,
   },
 
   computed: {
@@ -153,7 +173,37 @@ export default {
       return this.entry.id;
     },
 
-    ...mapGetters(["entry"]),
+    commentsTree() {
+      return this.flatCommentsToTree(this.commentsList);
+    },
+
+    ...mapGetters(["entry", "commentsList"]),
+  },
+
+  methods: {
+    flatCommentsToTree(comments) {
+      var map = {},
+        node,
+        roots = [],
+        i;
+
+      for (i = 0; i < comments.length; i += 1) {
+        map[comments[i].id] = i;
+        comments[i].replies = [];
+      }
+
+      for (i = 0; i < comments.length; i += 1) {
+        node = comments[i];
+        if (node.replyTo !== 0) {
+          if (comments[map[node.replyTo]]) {
+            comments[map[node.replyTo]].replies.push(node);
+          } else return;
+        } else {
+          roots.push(node);
+        }
+      }
+      return roots;
+    },
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
@@ -204,8 +254,12 @@ export default {
     margin-top: 0;
   }
 
+  & + .entry-page__video-block {
+    margin-top: 15px;
+  }
+
   & + .entry-page__embed {
-    margin-top: 12px;
+    margin-top: 12px !important;
   }
 }
 
@@ -224,6 +278,19 @@ export default {
     margin-top: 30px;
     margin-bottom: 30px;
   }
+}
+
+.entry-page__comments {
+  margin-top: 30px;
+  color: var(--black-color);
+  background: var(--entry-bg-color);
+  border-radius: 8px 8px 0 0;
+}
+
+.entry-page__comments-content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 680px;
 }
 
 .ep-island {

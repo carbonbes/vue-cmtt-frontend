@@ -1,59 +1,61 @@
 <template>
   <div class="entry-header">
-    <div
-      class="entry-header__subsite-data entry-header__item"
-      @mouseenter="showSubsitePopup"
-      @mouseleave="hideSubsitePopup"
-    >
+    <div class="entry-header__data">
       <div
-        class="entry-header__subsite-avatar"
-        :style="{
-          'background-image': `url(https://leonardo.osnova.io/${subsiteAvatar}/-/scale_crop/64x64/)`,
-        }"
-      />
-      <span class="entry-header__subsite-name">{{ subsiteName }}</span>
-      <transition name="entry-header-subsite-data__popup"
-        ><div
-          class="
-            entry-header-subsite-data__popup
-            entry-header-subsite-data__popup_bottom
-          "
-          v-if="subsitePopupVisibled"
-        >
-          <profile-popup
-            :data="this.subsiteData"
-            :isSubscribed="this.subsiteData.isSubscribed"
-          /></div
-      ></transition>
-    </div>
-    <div
-      class="entry-header__author-data entry-header__item"
-      @mouseenter="showAuthorPopup"
-      @mouseleave="hideAuthorPopup"
-      v-if="!isSameAuthor"
-    >
-      <div class="entry-header__author-name">
-        {{ authorName }}
+        class="entry-header__subsite-data entry-header__item"
+        @mouseenter="showSubsitePopup"
+        @mouseleave="hideSubsitePopup"
+      >
+        <div
+          class="entry-header__subsite-avatar"
+          :style="{
+            'background-image': `url(https://leonardo.osnova.io/${subsiteAvatar}/-/scale_crop/64x64/)`,
+          }"
+        />
+        <span class="entry-header__subsite-name">{{ subsiteName }}</span>
+        <transition name="entry-header-subsite-data__popup"
+          ><div
+            class="
+              entry-header-subsite-data__popup
+              entry-header-subsite-data__popup_bottom
+            "
+            v-if="subsitePopupVisibled"
+          >
+            <profile-popup
+              :data="this.subsiteData"
+              :isSubscribed="this.subsiteData.isSubscribed"
+            /></div
+        ></transition>
       </div>
-      <transition name="entry-header-subsite-data__popup"
-        ><div
-          class="
-            entry-header-subsite-data__popup
-            entry-header-subsite-data__popup_bottom
-          "
-          v-if="authorPopupVisibled"
-        >
-          <profile-popup
-            :data="this.authorData"
-            :isSubscribed="this.authorData.isSubscribed"
-          /></div
-      ></transition>
+      <div
+        class="entry-header__author-data entry-header__item"
+        @mouseenter="showAuthorPopup"
+        @mouseleave="hideAuthorPopup"
+        v-if="!isSameAuthor"
+      >
+        <div class="entry-header__author-name">
+          {{ authorName }}
+        </div>
+        <transition name="entry-header-subsite-data__popup"
+          ><div
+            class="
+              entry-header-subsite-data__popup
+              entry-header-subsite-data__popup_bottom
+            "
+            v-if="authorPopupVisibled"
+          >
+            <profile-popup
+              :data="this.authorData"
+              :isSubscribed="this.authorData.isSubscribed"
+            /></div
+        ></transition>
+      </div>
+      <time
+        class="entry-header__date-publish entry-header__item"
+        :title="new Date(date * 1000).toLocaleString()"
+        ><date-time :date="date * 1000" :type="dateType"
+      /></time>
     </div>
-    <time
-      class="entry-header__date-publish entry-header__item"
-      :title="new Date(date * 1000).toLocaleString()"
-      ><date-time :date="date * 1000" :type="dateType"
-    /></time>
   </div>
 </template>
 
@@ -140,6 +142,7 @@ export default {
 .entry-header {
   display: flex;
   align-items: center;
+  line-height: 22px;
 
   &__item {
     display: flex;
@@ -149,6 +152,11 @@ export default {
     &:not(:last-child) {
       margin-right: 20px;
     }
+  }
+
+  &__data {
+    display: flex;
+    align-items: center;
   }
 
   &__subsite-data,

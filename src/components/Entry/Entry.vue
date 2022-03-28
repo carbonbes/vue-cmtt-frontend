@@ -29,9 +29,9 @@
         class="entry-content__subtitle e-island"
         v-if="subtitleArr.length > 0"
       >
-        <template v-for="(subtitle, i) in subtitleArr" :key="i">{{
-          subtitle.data.text
-        }}</template>
+        <template v-for="(subtitle, i) in subtitleArr" :key="i">
+          <entry-subtitle :string="subtitle.data.text" />
+        </template>
       </div>
 
       <template
@@ -68,18 +68,31 @@
           v-if="twitterCovers.length > 0"
       /></template>
 
-      <template v-for="(instagramData, index) in instagramCovers" :key="index"
-        ><instagram-embed :url="instagramData.data.instagram.data.box_data.url"
-      /></template>
+      <template v-for="(instagramData, index) in instagramCovers" :key="index">
+        <instagram-embed
+          :url="instagramData.data.instagram.data.box_data.url"
+          v-if="instagramCovers.length > 0"
+        />
+      </template>
 
-      <link-component :data="linkCovers" v-if="linkCovers.length > 0" />
+      <template v-for="(linkData, index) in linkCovers" :key="index">
+        <link-component
+          :title="linkData.data.link.data.title"
+          :description="linkData.data.link.data.description"
+          :urlSrc="linkData.data.link.data.url"
+          :sourceIcon="linkData.data.link.data.image.data.uuid"
+          v-if="linkCovers.length > 0"
+        />
+      </template>
 
       <template v-for="(quoteData, index) in quoteCovers" :key="index">
         <quote-component
           :avatarSrc="quoteData.data.image?.data.uuid"
-          :author="quoteData.data.subline1"
+          :authorSrc="quoteData.data.subline1"
           :bio="quoteData.data.subline2"
           :text="quoteData.data.text"
+          :textSize="quoteData.data.text_size"
+          v-if="quoteCovers.length > 0"
         />
       </template>
 
@@ -141,6 +154,7 @@
 <script>
 import EntryHeader from "@/components/Entry/EntryHeader.vue";
 import EntryTitle from "@/components/Entry/EntryTitle.vue";
+import EntrySubtitle from "@/components/Entry/EntrySubtitle.vue";
 import EntryFooter from "@/components/Entry/EntryFooter.vue";
 import ImageComponent from "@/components/ImageComponent.vue";
 import VideoComponent from "@/components/VideoComponent.vue";
@@ -150,11 +164,13 @@ import InstagramEmbed from "@/components/InstagramEmbed.vue";
 import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
 import LinkComponent from "@/components/LinkComponent.vue";
 import QuoteComponent from "@/components/QuoteComponent.vue";
+import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 export default {
   components: {
     EntryHeader,
     EntryTitle,
+    EntrySubtitle,
     EntryFooter,
     ImageComponent,
     VideoComponent,
@@ -242,13 +258,11 @@ export default {
             this.imageCovers[0].data.items[0].image.data.height >
             this.imageCovers[0].data.items[0].image.data.width,
           "entry-content__cover_wide":
-            this.imageCovers[0].data.items[0].image.data.width >= 640 &&
-            !this.imageCovers[0].data.with_background,
+            this.imageCovers[0].data.items[0].image.data.width >=
+              this.calculatedWidth && !this.imageCovers[0].data.with_background,
           "entry-content__cover_thin":
-            (this.imageCovers[0].data.items[0].image.data.width <= 640 ||
-              this.imageCovers[0].data.items[0].image.data.width ===
-                this.imageCovers[0].data.items[0].image.data.height) &&
-            !this.imageCovers[0].data.with_background,
+            this.imageCovers[0].data.items[0].image.data.width < 640 ||
+            this.calculatedWidth < 640,
           "entry-content__cover_highlighted":
             this.imageCovers[0].data.with_background,
         };
@@ -299,6 +313,19 @@ export default {
       }
     },
 
+    calculatedWidth() {
+      if (this.imageCovers.length > 0) {
+        const { width } = сalculateAspectRatio(
+          this.imageCovers[0].data.items[0].image.data.width,
+          this.imageCovers[0].data.items[0].image.data.height,
+          640,
+          600
+        );
+
+        return width;
+      }
+    },
+
     entryId() {
       return this.entry.id;
     },
@@ -326,7 +353,7 @@ export default {
   }
 
   & .entry-title {
-    margin-top: -5px;
+    margin-top: -4px;
     font-size: 22px;
     font-weight: 500;
     line-height: 32px;
@@ -334,6 +361,7 @@ export default {
 
   & .entry-footer {
     padding-top: 11px;
+    padding-right: 16px;
     padding-bottom: 11px;
   }
 }
@@ -388,6 +416,21 @@ export default {
 
 .entry-content__subtitle {
   font-size: 17px;
+
+  & p {
+    & a {
+      position: relative;
+      z-index: 1;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .entry-content__title,

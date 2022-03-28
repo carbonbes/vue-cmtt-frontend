@@ -1,10 +1,5 @@
 <template>
-  <a
-    class="link-block"
-    :href="url"
-    target="_blank
-"
-  >
+  <a class="link-block" :href="urlSrc" target="_blank">
     <div class="link-block__content">
       <span class="link-block__title">{{ title }}</span>
       <span class="link-block__description">{{ description }}</span>
@@ -22,32 +17,18 @@ import LinkIcon from "@/assets/logos/link_icon.svg?inline";
 
 export default {
   props: {
-    data: Object,
+    title: String,
+    description: String,
+    urlSrc: String,
+    sourceIcon: String,
   },
 
   components: { LinkIcon },
 
   computed: {
-    title() {
-      return this.data[0].data.link.data.title;
-    },
-
-    description() {
-      return this.data[0].data.link.data.description;
-    },
-
     shortUrl() {
       let regex = /https?\:\/\/(.+?)(?=\/)/gi;
-      let srcUrl = this.data[0].data.link.data.url;
-      return regex.exec(srcUrl);
-    },
-
-    url() {
-      return this.data[0].data.link.data.url;
-    },
-
-    sourceIcon() {
-      return this.data[0].data.link.data.image.data.uuid;
+      return regex.exec(this.urlSrc);
     },
   },
 };

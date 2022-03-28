@@ -106,7 +106,10 @@ export default {
     getLikes() {
       this.likesPopupIsFocused = true;
       this.requestLikesList(this.entryId).then(() => {
-        if (this.likesPopupIsFocused && Object.keys(this.likesList).length !== 0) {
+        if (
+          this.likesPopupIsFocused &&
+          Object.keys(this.likesList).length !== 0
+        ) {
           this.likesPopupIsOpen = true;
         }
       });
@@ -224,7 +227,7 @@ export default {
 .entry-footer__likes-popup {
   position: absolute;
   top: 100%;
-  margin-top: 10px;
+  margin-top: 13px;
   z-index: 2;
 
   &-enter-active,
@@ -271,8 +274,8 @@ export default {
         content: "";
         position: absolute;
         top: 0;
-        width: 35px;
-        height: 30px;
+        width: 30px;
+        height: 35px;
       }
     }
   }
@@ -281,6 +284,14 @@ export default {
 @media screen and (max-width: 768px) {
   .entry-footer__item:not(:last-child) {
     margin-right: 20px;
+  }
+
+  .entry-footer__rating-wrapp {
+    justify-content: flex-end;
+  }
+
+  .entry-footer__likes-popup {
+    transform: translateX(35px);
   }
 }
 </style>

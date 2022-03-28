@@ -3,7 +3,7 @@
     <quote-component
       :text="text"
       :avatarSrc="avatarSrc"
-      :author="author"
+      :authorSrc="authorSrc"
       :bio="bio"
       :textSize="textSize"
     />
@@ -18,7 +18,7 @@ export default {
 
   props: {
     avatarSrc: String,
-    author: String,
+    authorSrc: String,
     bio: String,
     text: String,
     textSize: String,

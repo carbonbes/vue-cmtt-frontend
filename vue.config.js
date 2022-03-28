@@ -25,6 +25,14 @@ module.exports = {
           "^/entry/rating": "",
         },
       },
+
+      "/entry/reposts": {
+        target: "https://tjournal.ru",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/entry/reposts": "",
+        },
+      },
     },
   },
 };

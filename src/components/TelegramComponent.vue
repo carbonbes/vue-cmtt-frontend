@@ -3,7 +3,7 @@
     <div class="embed-header">
       <div class="embed-header__author-avatar" :style="authorAvatar" />
       <div class="embed-header__data">
-        <span class="embed-header__author-name">{{ authorName }}</span>
+        <div class="embed-header__author-name">{{ authorName }}</div>
         <date-time
           :date="dateTime * 1000"
           :type="1"
@@ -73,19 +73,19 @@ export default {
     },
 
     videoSrc() {
-      return this.videoCover.src;
+      if (this.videoCover) return this.videoCover.src;
     },
 
     videoSrcWidth() {
-      return this.videoCover.width;
+      if (this.videoCover) return this.videoCover.width;
     },
 
     videoSrcHeight() {
-      return this.videoCover.height;
+      if (this.videoCover) return this.videoCover.height;
     },
 
     coverSrc() {
-      return this.videoCover.thumbnail_url;
+      if (this.videoCover) return this.videoCover.thumbnail_url;
     },
   },
 
@@ -97,8 +97,8 @@ export default {
 
   mounted() {
     if (this.text && this.text.length > 300) {
-      this.collapsedText = this.text.slice(0, 300) + "...";
       this.collapsed = true;
+      this.collapsedText = this.text.slice(0, 300) + "...";
     }
   },
 };

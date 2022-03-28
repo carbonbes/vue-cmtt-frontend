@@ -3,15 +3,15 @@
     <div class="quote-component__content">
       <quoute-icon class="icon" />
       <div class="text" :class="textSize">
-        <template v-for="(p, i) in processedText" :key="i"
-          ><p v-text="p"></p
-        ></template>
+        <template v-for="(p, i) in processedText" :key="i">
+          <p v-text="p"></p>
+        </template>
       </div>
       <div class="author" v-if="avatarSrc || author || bio">
         <div class="avatar" :style="avatar" v-if="avatarSrc" />
         <div class="data">
-          <span class="name" v-text="author"></span
-          ><span class="desctiption" v-text="bio" v-if="bio"></span>
+          <span class="name" v-html="author"></span>
+          <span class="desctiption" v-text="bio" v-if="bio"></span>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@ export default {
 
   props: {
     avatarSrc: String,
-    author: String,
+    authorSrc: String,
     bio: String,
     text: String,
     textSize: String,
@@ -45,6 +45,13 @@ export default {
       }
     },
 
+    author() {
+      return this.authorSrc.replace(
+        /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
+        '<a href="$3" target="_blank">$2</a>'
+      );
+    },
+
     processedText() {
       return this.text.replace(/\\/g, "").split("\n\n");
     },
@@ -52,6 +59,7 @@ export default {
     textSize() {
       return {
         text_small: this.textSize === "small",
+        text_medium: this.textSize === "medium",
       };
     },
   },

@@ -18,8 +18,8 @@
         <twitter-logo class="twitter-logo" />
       </div>
     </div>
-    <div class="embed-text__wrap">
-      <div class="embed-text" v-html="text" v-if="text"></div>
+    <div class="embed-text__wrap" v-if="text">
+      <div class="embed-text" v-html="text"></div>
     </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
       <img :src="imgSrc" alt="" v-if="imgSrc" />

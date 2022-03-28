@@ -59,10 +59,10 @@ export default {
 .likes-popup {
   padding: 5px;
   width: 215px;
-  max-height: 285px;
+  max-height: 264px;
   border-radius: 8px;
   background: var(--dropdown-bg-color);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07), 0 4px 8px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
   overflow-y: scroll;
   scrollbar-width: none;
 

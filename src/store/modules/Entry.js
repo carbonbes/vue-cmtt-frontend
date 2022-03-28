@@ -1,11 +1,13 @@
 import { API_v2 } from "../../api/API_v2";
-import { entryRatingInstance } from "../../api/config";
+import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
 
 const entryModule = {
   state: () => ({
     entry: [],
     subsiteData: [],
     likesList: null,
+    repostsList: null,
+    commentsList: null,
   }),
 
   getters: {
@@ -19,6 +21,14 @@ const entryModule = {
 
     likesList(state) {
       return state.likesList;
+    },
+
+    repostsList(state) {
+      return state.repostsList;
+    },
+
+    commentsList(state) {
+      return state.commentsList;
     },
   },
 
@@ -43,8 +53,12 @@ const entryModule = {
       state.likesList = data;
     },
 
-    clearLikesList(state) {
-      state.likesList = [];
+    setRepostsList(state, data) {
+      state.repostsList = data;
+    },
+
+    setCommentsList(state, data) {
+      state.commentsList = data;
     },
   },
 
@@ -67,6 +81,20 @@ const entryModule = {
         .then((response) => {
           commit("setLikesList", response.data.data.likers);
         });
+    },
+
+    requestRepostsList({ commit }, id) {
+      return entryRepostsInstance
+        .get(`reposts/getreposted?content_id=${id}`)
+        .then((response) => {
+          commit("setRepostsList", response.data.data.items);
+        });
+    },
+
+    requestCommentsList({ commit }, data) {
+      return API_v2.getComments(data).then((response) => {
+        commit("setCommentsList", response.data.result.items);
+      });
     },
   },
 };
