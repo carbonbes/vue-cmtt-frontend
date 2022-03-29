@@ -1,47 +1,50 @@
 <template>
-  <div class="entry-page__comment">
-    <div class="entry-page__parent-comment">
-      <div class="entry-page__comment-self">
-        <div class="content">
-          <div class="content__text" v-html="commentText"></div>
-        </div>
+  <div class="entry-page__comment" :class="replyCommentClassObj">
+    <div class="comment-content" :class="replyCommentContentClassObj">
+      <a class="avatar" :style="avatarStyleObj" :href="`u/${authorId}`"></a>
+      <a class="author" v-text="author" :href="`u/${authorId}`"></a>
+      <div class="break"></div>
+      <a class="date-created" href="">
+        <date-time :date="dateCreated" type="0" />
+      </a>
+      <div class="text" v-if="text">
+        <comment-text :string="text" />
       </div>
     </div>
-    <div class="entry-page__child-comments">
-      <div
-        class="branch-collapse-btn"
-        :class="branchCollapseBtnClassObj"
-        title="Свернуть эту ветку"
-        @click="toggleBranchCollapse"
-      />
-      <div
-        class="branch-expand-btn"
-        v-if="branchIsCollapsed"
-        @click="toggleBranchCollapse"
-      >
-        Развернуть
-      </div>
-      <div
-        class="entry-page__child-comment"
-        :class="childCommentClassObj"
-        v-if="this.comment.replies.length > 0"
-      >
+    <template v-if="this.comment.replies.length > 0">
+      <div class="comment-replies" :class="repliesCollapseClassObj">
+        <div class="branch-collapse-btn" @click="toggleBranchCollapse" />
         <comment-block
           v-for="comment in this.comment.replies"
           :comment="comment"
           :key="comment.id"
         />
       </div>
-    </div>
+      <span
+        class="branch-expand-btn"
+        v-if="branchIsCollapsed"
+        @click="toggleBranchCollapse"
+      >
+        Раскрыть
+      </span>
+    </template>
   </div>
 </template>
 
 <script>
+import DateTime from "@/components/DateTime.vue";
+import CommentText from "@/components/EntryPage/CommentsComponents/CommentText.vue";
+
 export default {
   name: "comment-block",
 
   props: {
     comment: Object,
+  },
+
+  components: {
+    DateTime,
+    CommentText,
   },
 
   data() {
@@ -51,19 +54,43 @@ export default {
   },
 
   computed: {
-    commentText() {
-      return this.comment.text;
-    },
-
-    childCommentClassObj() {
+    avatarStyleObj() {
       return {
-        "entry-page__child-comment_collapsed": this.branchIsCollapsed,
+        backgroundImage: `url(https://leonardo.osnova.io/${this.comment.author.avatar.data.uuid}/-/scale_crop/64x64/)`,
       };
     },
 
-    branchCollapseBtnClassObj() {
+    author() {
+      return this.comment.author.name;
+    },
+
+    authorId() {
+      return this.comment.author.id;
+    },
+
+    dateCreated() {
+      return this.comment.date * 1000;
+    },
+
+    text() {
+      return this.comment.text;
+    },
+
+    replyCommentContentClassObj() {
       return {
-        "branch-collapse-btn_hidden": this.branchIsCollapsed,
+        "comment-content_reply": this.comment.level > 0,
+      };
+    },
+
+    replyCommentClassObj() {
+      return {
+        "entry-page__comment_reply": this.comment.level > 0,
+      };
+    },
+
+    repliesCollapseClassObj() {
+      return {
+        "comment-replies_collapse": this.branchIsCollapsed,
       };
     },
   },
@@ -79,48 +106,125 @@ export default {
 <style lang="scss">
 .entry-page {
   &__comment {
-    &:not(:last-child) {
-      margin-bottom: 30px;
-    }
-  }
+    margin-top: 30px;
+    font-size: 16px;
+    line-height: 1.5em;
 
-  &__parent-comment {
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
-  }
+    &_reply {
+      margin-top: 0;
 
-  &__comment-self {
-    & .content {
-      padding-right: 85px;
+      &::before {
+        content: "";
+        position: absolute;
+        margin-left: -21px;
+        width: 12px;
+        height: 35px;
+        border: solid var(--branch-color);
+        border-width: 0 0 1px 1px;
+        border-bottom-left-radius: 8px;
+      }
     }
-  }
 
-  &__child-comments {
-    position: relative;
+    & .comment-content {
+      display: flex;
+      flex-wrap: wrap;
+
+      &_reply {
+        padding-top: 18px;
+      }
+
+      & .avatar {
+        margin-right: 10px;
+        width: 32px;
+        height: 32px;
+        display: block;
+        border-radius: 50%;
+        box-shadow: var(--box-shadow-avatar);
+        background-size: cover;
+        order: -2;
+      }
+
+      & .author {
+        font-weight: 500;
+        line-height: 20px;
+        order: -2;
+      }
+
+      & .break {
+        flex-basis: 100%;
+      }
+
+      & .date-created {
+        line-height: 16px;
+        font-size: 12px;
+        color: var(--grey-color);
+      }
+
+      & .text {
+        margin: 6px 0;
+        padding-right: 85px;
+        flex-basis: 100%;
+        word-wrap: break-word;
+
+        & p {
+          margin: 0;
+
+          &:not(:last-child) {
+            margin-bottom: 6px;
+          }
+        }
+      }
+    }
+
+    & .comment-replies {
+      position: relative;
+
+      &_collapse {
+        display: none;
+      }
+
+      & .entry-page__comment {
+        padding-left: 21px;
+      }
+    }
 
     & .branch-collapse-btn {
       position: absolute;
+      top: 0;
       left: 0;
-      width: 25px;
+      width: 21px;
       height: 100%;
-      box-shadow: inset 1px 0 0 #e6e6e6;
-
-      &_hidden {
-        display: none;
-      }
+      border-left: 1px solid var(--branch-color);
+      cursor: pointer;
+      z-index: 2;
     }
 
     & .branch-expand-btn {
       color: var(--blue-color);
+      cursor: pointer;
     }
   }
+}
 
-  &__child-comment {
-    padding-left: 25px;
+@media (hover: hover) {
+  .entry-page__comment {
+    & .branch-collapse-btn {
+      &:hover {
+        border-left: 2px solid #4683d9;
 
-    &_collapsed {
-      display: none;
+        & ~ .entry-page__comment_reply {
+          &::before {
+            border: solid #4683d9;
+            border-width: 0 0 2px 2px;
+          }
+        }
+      }
+    }
+
+    & .branch-expand-btn {
+      &:hover {
+        color: var(--red-color);
+      }
     }
   }
 }

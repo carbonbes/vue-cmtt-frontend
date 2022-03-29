@@ -32,7 +32,7 @@ export default {
 
   props: {
     date: [String, Number],
-    type: [String, Number],
+    type: String,
   },
 
   methods: {
@@ -74,27 +74,31 @@ export default {
             if (secondsAgo >= 0 && secondsAgo <= 60) {
               this.dateTime = "только что";
             } else if (secondsAgo > 60 && secondsAgo <= 3600) {
-              if (this.type === 0) {
+              if (this.type === "0") {
                 this.dateTime = minutesAgo + " мин";
               } else {
-                this.dateTime = minutesAgo + " " + declensionWords(minutesAgo, this.minutesWords) + " назад";
+                this.dateTime =
+                  minutesAgo +
+                  " " +
+                  declensionWords(minutesAgo, this.minutesWords) +
+                  " назад";
               }
             } else if (secondsAgo > 3600 && secondsAgo <= 86400) {
               if (secondsAgo <= 18000) {
                 this.dateTime =
                   hoursAgo + " " + declensionWords(hoursAgo, this.hoursWords);
               } else if (secondsAgo > 18000) {
-                if (this.type === 0) {
+                if (this.type === "0") {
                   this.dateTime = time;
-                } else if (this.type === 1) {
+                } else if (this.type === "1") {
                   this.dateTime = "сегодня в " + time;
                 }
               }
             }
           } else if (currentDay - 1 == srcDay) {
-            if (this.type === 0) {
+            if (this.type === "0") {
               this.dateTime = "вчера";
-            } else if (this.type === 1) {
+            } else if (this.type === "1") {
               this.dateTime = "вчера в " + time;
             }
           } else {

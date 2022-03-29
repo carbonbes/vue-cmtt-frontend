@@ -9,7 +9,7 @@
         </div>
         <date-time
           :date="dateTime"
-          :type="1"
+          type="1"
           :title="new Date(dateTime).toLocaleString()"
         />
       </div>

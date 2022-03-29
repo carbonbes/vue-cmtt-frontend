@@ -6,7 +6,7 @@
         <div class="embed-header__author-name">{{ authorName }}</div>
         <date-time
           :date="dateTime * 1000"
-          :type="1"
+          type="1"
           :title="new Date(dateTime * 1000).toLocaleString()"
         />
       </div>
@@ -52,7 +52,7 @@ export default {
   props: {
     authorAvatarSrc: String,
     authorName: String,
-    dateTime: [String, Number],
+    dateTime: String,
     text: String,
     imgCover: String,
     videoCover: Object,

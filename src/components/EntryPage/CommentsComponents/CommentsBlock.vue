@@ -15,6 +15,3 @@ export default {
   components: { CommentBlock },
 };
 </script>
-
-<style lang="scss">
-</style>

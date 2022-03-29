@@ -131,6 +131,8 @@ export default {
   --embed-cover-bg: #333;
   --link-text-decoration-color: #bed0ea;
   --link-text-decoration-color-hover: #f6b4bc;
+  --box-shadow-avatar: inset 0 0 0 1px #0000001a;
+  --branch-color: #dddddd;
 }
 
 [data-theme="dark"] {
@@ -158,6 +160,8 @@ export default {
   --embed-cover-bg: #232323;
   --link-text-decoration-color: #3c434d;
   --link-text-decoration-color-hover: #503b3d;
+  --box-shadow-avatar: inset 0 0 0 1px #ffffff1a;
+  --branch-color: #353535;
 }
 
 * {
@@ -385,7 +389,7 @@ body {
     height: 48px;
     fill-opacity: 0.6;
     transform: scale(1);
-    transition: transform 0.1s;
+    transition: transform 0.1s, fill-opacity 0.1s;
   }
 
   & .youtube-icon {
@@ -441,7 +445,8 @@ body {
 .entry-page__text-block,
 .profile-popup__description,
 .quote-component__content .author .name,
-.entry-content__subtitle p {
+.entry-content__subtitle p,
+.entry-page__comment .text {
   & a {
     color: var(--blue-color);
     border-bottom: 1px solid var(--link-text-decoration-color);
@@ -513,7 +518,7 @@ body {
 
   &__author-tag {
     margin-left: 10px;
-    min-width: 100px;
+    min-width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -687,7 +692,8 @@ body {
   .entry-page__text-block,
   .profile-popup__description,
   .quote-component__content .author .name,
-  .entry-content__subtitle p {
+  .entry-content__subtitle p,
+  .entry-page__comment .text {
     & a {
       &:hover {
         color: var(--red-color);
@@ -705,7 +711,7 @@ body {
   .video__pseudo-player {
     &:hover {
       & .default-icon {
-        transform: scale(1.05);
+        transform: scale(1.025);
         fill-opacity: 0.8;
       }
 

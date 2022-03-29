@@ -18,7 +18,7 @@
       :authorId="entry.author.id"
       :authorName="entry.author.name"
       :date="entry.date"
-      :dateType="0"
+      dateType="0"
     />
     <div class="entry-content">
       <div class="entry-content__title e-island" v-if="entry.title">

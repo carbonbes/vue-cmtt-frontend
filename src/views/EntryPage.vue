@@ -13,7 +13,7 @@
           :authorId="entry.author.id"
           :authorName="entry.author.name"
           :date="entry.date"
-          :dateType="1"
+          dateType="1"
         />
       </div>
       <div class="entry-page__content">
@@ -239,13 +239,13 @@ export default {
 
 .entry-page__title {
   & .entry-title {
-    font-size: 36px;
+    font-size: 22px;
     font-weight: 500;
     line-height: 1.3em;
 
     &__editorial-icon {
       & .icon {
-        margin-left: 7px;
+        margin-left: 4px;
       }
     }
   }
@@ -264,7 +264,7 @@ export default {
 }
 
 .entry-page__content {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.6em;
   word-break: break-word;
 }
@@ -281,22 +281,23 @@ export default {
 }
 
 .entry-page__comments {
-  margin-top: 30px;
+  margin: 30px 0;
   color: var(--black-color);
   background: var(--entry-bg-color);
-  border-radius: 8px 8px 0 0;
+  border-radius: 8px;
 }
 
 .entry-page__comments-content {
   margin-left: auto;
   margin-right: auto;
-  width: 680px;
+  padding-top: 30px;
+  max-width: 640px;
 }
 
 .ep-island {
   margin-left: auto;
   margin-right: auto;
-  max-width: 680px;
+  max-width: 640px;
 }
 
 @media screen and (max-width: 768px) {
