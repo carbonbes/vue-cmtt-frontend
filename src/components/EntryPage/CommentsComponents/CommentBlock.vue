@@ -25,9 +25,11 @@
             @mouseenter="getLikes"
             @mouseleave="closeLikesPopup"
           >
-            <div class="value" :class="ratingValueClassObj">
-              {{ commentRating }}
-            </div>
+            <div
+              class="value"
+              :class="ratingValueClassObj"
+              v-text="commentRatingFormatted"
+            ></div>
             <transition name="popup">
               <div class="popup" v-if="likesPopupIsOpen">
                 <likes-popup :likes="this.likesList" type="comment" />
@@ -177,13 +179,13 @@ export default {
       return this.comment.likes.summ;
     },
 
-    /* commentRatingFormatted() {
+    commentRatingFormatted() {
       if (this.comment.likes.summ < 0) {
-        return this.comment.likes.summ.replace(/\-/g, "—");
+        return this.comment.likes.summ.toString().replace(/\-/g, "—");
       } else {
         return this.comment.likes.summ;
       }
-    }, */
+    },
 
     ...mapGetters(["entryAuthorId", "likesList"]),
   },
