@@ -1,8 +1,8 @@
 <template>
   <div class="entry-page__img-block" :class="classObject">
     <Image
-      :image="this.item.data.items[0].image"
-      :type="2"
+      :image="this.item.data.items[0].image.data.uuid"
+      type="2"
       :srcWidth="this.item.data.items[0].image.data.width"
       :srcHeight="this.item.data.items[0].image.data.height"
       :maxWidth="1020"
@@ -81,7 +81,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
-    max-width: 680px;
+    max-width: 640px;
     background: var(--highlight-block-color);
 
     & > div {

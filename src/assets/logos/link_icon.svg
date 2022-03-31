@@ -1,1 +1,9 @@
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="icon icon--ui_external" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><defs><symbol viewBox="0 0 11 11" id="ui_external"><path d="M8.5 5a.5.5 0 01.5.5v5a.5.5 0 01-.5.5h-8a.5.5 0 01-.5-.5v-8A.5.5 0 01.5 2h5a.5.5 0 110 1H1v7h7V5.5a.5.5 0 01.5-.5zm2-5a.5.5 0 01.5.5v4a.5.5 0 01-1 0V1.707L4.854 6.854a.498.498 0 01-.708 0 .5.5 0 010-.708L9.293 1H6.5a.5.5 0 010-1h4z"></path></symbol></defs><use xlink:href="#ui_external" fill="#595959"></use></svg>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol fill="none" viewBox="0 0 24 24" id="v_go_to">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M7 4.997A2.003 2.003 0 004.998 7v10c0 1.106.896 2.002 2.002 2.002h10A2.002 2.002 0 0019.003 17v-4a.998.998 0 011.995 0v4A3.997 3.997 0 0117 20.997H7A3.997 3.997 0 013.003 17V7A3.997 3.997 0 017 3.002h4a.998.998 0 010 1.995H7zM14.003 4c0-.551.447-.998.997-.998h5c.551 0 .998.447.998.998v5a.997.997 0 11-1.995 0V6.408l-5.297 5.297a.998.998 0 01-1.41-1.41l5.296-5.298H15A.997.997 0 0114.003 4z" fill="currentColor"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_go_to" fill="currentColor"></use>
+</svg>

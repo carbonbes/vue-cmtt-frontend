@@ -3,7 +3,9 @@
     <div class="link-block__content">
       <span class="link-block__title">{{ title }}</span>
       <span class="link-block__description">{{ description }}</span>
-      <div class="link-block__link"><link-icon />{{ shortUrl[1] }}</div>
+      <div class="link-block__url">
+        <link-icon class="icon" />{{ shortUrl[1] }}
+      </div>
     </div>
     <div class="link-block__logo">
       <!-- <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" /> -->
@@ -42,7 +44,7 @@ export default {
   flex-flow: row;
   background: var(--link-block-bg-color);
   border: 1px solid var(--embed-border-color);
-  border-radius: 4px;
+  border-radius: 6px;
   z-index: 1;
 }
 
@@ -53,7 +55,6 @@ export default {
 }
 
 .link-block__description {
-  margin-bottom: 5px;
   font-size: 15px;
   line-height: 22px;
 }
@@ -80,16 +81,17 @@ export default {
   }
 }
 
-.link-block__link {
-  font-size: 12px;
-  line-height: 17px;
+.link-block__url {
+  margin-top: 15px;
+  display: flex;
+  font-size: 13px;
+  line-height: 16px;
   color: var(--grey-color);
-  text-transform: uppercase;
 
   & .icon {
     margin-right: 7px;
-    width: 11px;
-    height: 11px;
+    width: 16px;
+    height: 16px;
   }
 }
 

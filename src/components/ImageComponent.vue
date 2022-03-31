@@ -1,7 +1,7 @@
 <template>
   <div class="img-wrapp" :style="styleObject">
     <img
-      :src="`https://leonardo.osnova.io/${this.image.data.uuid}/-/preview/1200/-/format/webp/`"
+      :src="`https://leonardo.osnova.io/${image}/-/preview/1200/-/format/webp/`"
       alt=""
     />
   </div>
@@ -38,7 +38,7 @@ export default {
   },
 
   props: {
-    image: Object,
+    image: String,
     type: Number,
     srcWidth: Number,
     srcHeight: Number,

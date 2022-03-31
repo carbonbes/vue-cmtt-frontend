@@ -8,4 +8,8 @@ export const API_v1 = {
 
     return instance_v1.post("auth/login", formData);
   },
+
+  getCommentLikes(id) {
+    return instance_v1.get(`comment/likers/${id}`);
+  },
 };

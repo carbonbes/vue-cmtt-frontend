@@ -153,9 +153,15 @@ export default {
     },
 
     wrappStyleObject() {
-      return {
-        paddingTop: Math.round((this.srcHeight / this.srcWidth) * 100) + "%",
-      };
+      if (this.isYoutube) {
+        return {
+          paddingTop: "56.25%",
+        };
+      } else {
+        return {
+          paddingTop: Math.round((this.srcHeight / this.srcWidth) * 100) + "%",
+        };
+      }
     },
 
     calculatedWidth() {
@@ -217,7 +223,9 @@ export default {
       if (this.type === "embed") {
         return `url(${this.embedCover})`;
       } else {
-        return `url(https://leonardo.osnova.io/${this.srcVideo}/-/format/webp/-/preview/1200/)`;
+        return `url(https://leonardo.osnova.io/${
+          this.srcVideo || this.embedCover
+        }/-/format/webp/-/preview/1200/)`;
       }
     },
   },

@@ -10,9 +10,12 @@ export default {
 
   computed: {
     replacedString() {
-      return this.string
-        .replace(/(\[\@(\d+)\|([^\]]+)\])/g, "<a href='u/$2'>@$3</a>")
-        .split("\n\n");
+      return this.string.split("\n\n").map((item) =>
+        item
+          .replace(/(https?.+)(?=\s)/g, "<a href='$1' target='_blank'>$1</a>")
+          .replace(/(\[\@(\d+)\|([^\]]+)\])/g, "<a href='u/$2'>@$3</a>")
+          .replace(/\n/g, "</br>")
+      );
     },
   },
 };

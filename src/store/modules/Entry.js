@@ -1,3 +1,4 @@
+import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
 
@@ -5,7 +6,7 @@ const entryModule = {
   state: () => ({
     entry: [],
     subsiteData: [],
-    likesList: null,
+    entrylikesList: null,
     repostsList: null,
     commentsList: null,
   }),
@@ -13,6 +14,10 @@ const entryModule = {
   getters: {
     entry(state) {
       return state.entry;
+    },
+
+    entryAuthorId(state) {
+      return state.entry.author.id;
     },
 
     subsiteData(state) {
@@ -75,12 +80,18 @@ const entryModule = {
       });
     },
 
-    requestLikesList({ commit }, id) {
-      return entryRatingInstance
-        .get(`vote/get_likers?id=${id}&type=1`)
-        .then((response) => {
-          commit("setLikesList", response.data.data.likers);
+    requestLikesList({ commit }, data) {
+      if (data.type === "entry") {
+        return entryRatingInstance
+          .get(`vote/get_likers?id=${data.id}&type=1`)
+          .then((response) => {
+            commit("setLikesList", response.data.data.likers);
+          });
+      } else if (data.type === "comment") {
+        return API_v1.getCommentLikes(data.id).then((response) => {
+          commit("setLikesList", response.data.result);
         });
+      }
     },
 
     requestRepostsList({ commit }, id) {

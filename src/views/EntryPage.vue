@@ -93,8 +93,11 @@
             :authorName="block.data.tweet.data.tweet_data.user.name"
             :authorTag="block.data.tweet.data.tweet_data.user.screen_name"
             :dateTime="block.data.tweet.data.tweet_data.created_at"
-            :text="block.data.tweet.data.tweet_data.processed_text"
-            :media="block.data.tweet.data.tweet_data.extended_entities.media"
+            :text="
+              block.data.tweet.data.tweet_data.processed_text ||
+              block.data.tweet.data.tweet_data.full_text
+            "
+            :media="block.data.tweet.data.tweet_data.extended_entities?.media"
             v-if="block.type === 'tweet'"
           />
         </template>
@@ -241,7 +244,7 @@ export default {
   & .entry-title {
     font-size: 22px;
     font-weight: 500;
-    line-height: 1.3em;
+    line-height: 30px;
 
     &__editorial-icon {
       & .icon {
@@ -269,6 +272,11 @@ export default {
   word-break: break-word;
 }
 
+.entry-page__link-block {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .entry-page__footer {
   padding: 15px 0;
 }
@@ -290,8 +298,14 @@ export default {
 .entry-page__comments-content {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 30px;
+  padding: 30px 0;
   max-width: 640px;
+
+  & > .entry-page__comment {
+    &:not(:first-child) {
+      margin-top: 30px;
+    }
+  }
 }
 
 .ep-island {
@@ -304,11 +318,11 @@ export default {
   .entry-page {
     padding-top: 15px;
     border-radius: 0;
-  }
 
-  .entry-page__title {
-    & .entry-title {
-      font-size: 28px;
+    &__comments {
+      padding-left: 15px;
+      padding-right: 15px;
+      border-radius: 0;
     }
   }
 

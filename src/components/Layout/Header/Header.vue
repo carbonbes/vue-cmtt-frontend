@@ -181,7 +181,7 @@ export default {
 .header__item-avatar {
   width: 40px;
   height: 40px;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+  box-shadow: var(--box-shadow-avatar);
   border-radius: 8px;
   background-position: 50% 50%;
   background-repeat: no-repeat;

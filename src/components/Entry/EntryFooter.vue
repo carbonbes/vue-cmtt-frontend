@@ -105,7 +105,8 @@ export default {
   methods: {
     getLikes() {
       this.likesPopupIsFocused = true;
-      this.requestLikesList(this.entryId).then(() => {
+
+      this.requestLikesList({ id: this.entryId, type: "entry" }).then(() => {
         if (
           this.likesPopupIsFocused &&
           Object.keys(this.likesList).length !== 0

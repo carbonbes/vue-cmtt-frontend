@@ -87,6 +87,7 @@ export default {
       background-position: 50% 50%;
       background-repeat: no-repeat;
       background-size: cover;
+      box-shadow: var(--box-shadow-avatar);
       border-radius: 6px;
     }
 

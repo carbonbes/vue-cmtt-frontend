@@ -132,7 +132,11 @@ export default {
   --link-text-decoration-color: #bed0ea;
   --link-text-decoration-color-hover: #f6b4bc;
   --box-shadow-avatar: inset 0 0 0 1px #0000001a;
-  --branch-color: #dddddd;
+  --branch-color: #e6e6e6;
+  --self-author-highlight-color: #f9edd9;
+  --comment-rating-value-wrapp-bg-positive: #eefbf3;
+  --comment-rating-value-wrapp-bg-neutral: #5959591a;
+  --comment-rating-value-wrapp-bg-negative: #fff1f1;
 }
 
 [data-theme="dark"] {
@@ -162,6 +166,10 @@ export default {
   --link-text-decoration-color-hover: #503b3d;
   --box-shadow-avatar: inset 0 0 0 1px #ffffff1a;
   --branch-color: #353535;
+  --self-author-highlight-color: #303030;
+  --comment-rating-value-wrapp-bg-positive: #468b6126;
+  --comment-rating-value-wrapp-bg-neutral: #202020;
+  --comment-rating-value-wrapp-bg-negative: #98484840;
 }
 
 * {
@@ -582,86 +590,6 @@ body {
 
   &_video {
     margin: 0 auto;
-  }
-}
-
-.quote-component {
-  padding: 35px 0;
-  background-color: var(--highlight-block-color);
-
-  &__content {
-    position: relative;
-    margin: 0 auto;
-    max-width: 450px;
-
-    & .icon {
-      position: absolute;
-      top: 0.25em;
-      left: -57px;
-    }
-
-    & .text {
-      &_small {
-        font-size: 22px;
-        font-weight: 400;
-        line-height: 32px;
-      }
-
-      &_medium {
-        font-size: 24px;
-        font-weight: 500;
-        line-height: 34px;
-      }
-
-      & p {
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-
-        &:first-child {
-          margin-top: 0;
-          margin-bottom: 0.5em;
-        }
-
-        &:last-child {
-          margin-top: 0.5em;
-          margin-bottom: 0;
-        }
-      }
-    }
-
-    & .author {
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-
-      & .avatar {
-        margin-right: 15px;
-        width: 48px;
-        height: 48px;
-        background-size: cover;
-        border-radius: 50%;
-      }
-
-      & .data {
-        display: flex;
-        flex-direction: column;
-      }
-
-      & .name {
-        font-size: 17px;
-        font-weight: 600;
-        line-height: 1.35em;
-      }
-
-      & .description {
-        font-size: 16px;
-        line-height: 1.35em;
-      }
-    }
-
-    & p {
-      margin: 0;
-    }
   }
 }
 

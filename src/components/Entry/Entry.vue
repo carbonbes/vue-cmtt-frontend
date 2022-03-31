@@ -102,12 +102,12 @@
         v-if="imageCovers.length > 0"
       >
         <image-component
-          :image="imageCovers[0].data.items[0].image"
+          :image="imageCovers[0].data.items[0].image.data.uuid"
           :srcWidth="imageCovers[0].data.items[0].image.data.width"
           :srcHeight="imageCovers[0].data.items[0].image.data.height"
           :maxWidth="640"
           :maxHeight="600"
-          :type="1"
+          type="1"
         />
       </div>
       <div

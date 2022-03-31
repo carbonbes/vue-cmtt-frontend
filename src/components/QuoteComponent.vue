@@ -4,14 +4,14 @@
       <quoute-icon class="icon" />
       <div class="text" :class="textSize">
         <template v-for="(p, i) in processedText" :key="i">
-          <p v-text="p"></p>
+          <p v-html="p"></p>
         </template>
       </div>
       <div class="author" v-if="avatarSrc || author || bio">
         <div class="avatar" :style="avatar" v-if="avatarSrc" />
         <div class="data">
           <span class="name" v-html="author"></span>
-          <span class="desctiption" v-text="bio" v-if="bio"></span>
+          <span class="description" v-text="bio" v-if="bio"></span>
         </div>
       </div>
     </div>
@@ -53,7 +53,15 @@ export default {
     },
 
     processedText() {
-      return this.text.replace(/\\/g, "").split("\n\n");
+      return this.text.split("\n\n").map((item) =>
+        item
+          .replace(/\\/g, "")
+          .replace(/\*(.*?)(?:\*)/gm, "<i>$1</i>")
+          .replace(
+            /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
+            '<a href="$3" target="_blank">$2</a>'
+          )
+      );
     },
 
     textSize() {
@@ -65,3 +73,86 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.quote-component {
+  padding: 35px 0;
+  background-color: var(--highlight-block-color);
+
+  &__content {
+    position: relative;
+    margin: 0 auto;
+    max-width: 450px;
+
+    & .icon {
+      position: absolute;
+      top: 0.25em;
+      left: -57px;
+    }
+
+    & .text {
+      &_small {
+        font-size: 22px;
+        font-weight: 400;
+        line-height: 32px;
+      }
+
+      &_medium {
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 34px;
+      }
+
+      & p {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+
+        &:first-child {
+          margin-top: 0;
+          margin-bottom: 0.5em;
+        }
+
+        &:last-child {
+          margin-top: 0.5em;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    & .author {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+
+      & .avatar {
+        margin-right: 15px;
+        width: 48px;
+        height: 48px;
+        align-self: flex-start;
+        background-size: cover;
+        border-radius: 50%;
+      }
+
+      & .data {
+        display: flex;
+        flex-direction: column;
+
+        & .name {
+          font-size: 17px;
+          font-weight: 600;
+          line-height: 1.35em;
+        }
+
+        & .description {
+          font-size: 16px;
+          line-height: 1.35em;
+        }
+      }
+    }
+
+    & p {
+      margin: 0;
+    }
+  }
+}
+</style>
