@@ -52,7 +52,7 @@ export default {
   props: {
     authorAvatarSrc: String,
     authorName: String,
-    dateTime: String,
+    dateTime: [String, Number],
     text: String,
     imgCover: String,
     videoCover: Object,

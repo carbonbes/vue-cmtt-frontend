@@ -1,17 +1,11 @@
 <template>
-  <p v-html="collapsedString || replacedString"></p>
+  <p v-html="collapsedStringFormatted || replacedString"></p>
 </template>
 
 <script>
 export default {
   props: {
     string: String,
-  },
-
-  data() {
-    return {
-      collapsedString: null,
-    };
   },
 
   computed: {
@@ -24,9 +18,9 @@ export default {
         );
     },
 
-    collapsedString() {
+    collapsedStringFormatted() {
       if (this.replacedString.length > 300) {
-        return this.collapsedString = this.replacedString.slice(0, 300) + "...";
+        return this.replacedString.slice(0, 300) + "...";
       }
     },
   },

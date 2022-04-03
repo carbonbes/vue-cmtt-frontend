@@ -8,9 +8,9 @@
           <span class="embed-header__author-tag">@{{ authorTag }}</span>
         </div>
         <date-time
-          :date="dateTime"
+          :date="dateTimeFormatted"
           type="1"
-          :title="new Date(dateTime).toLocaleString()"
+          :title="new Date(dateTimeFormatted).toLocaleString()"
         />
       </div>
       <div class="spacer" />
@@ -60,7 +60,7 @@ export default {
   },
 
   computed: {
-    dateTime() {
+    dateTimeFormatted() {
       return Date.parse(this.dateTime);
     },
 

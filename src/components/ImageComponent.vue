@@ -42,8 +42,8 @@ export default {
     type: [String, Number],
     srcWidth: Number,
     srcHeight: Number,
-    maxWidth: String,
-    maxHeight: String,
+    maxWidth: [String, Number],
+    maxHeight: [String, Number],
   },
 };
 </script>

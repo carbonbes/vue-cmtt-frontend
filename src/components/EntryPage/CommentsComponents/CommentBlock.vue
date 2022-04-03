@@ -1,8 +1,8 @@
 <template>
   <div
     class="entry-page__comment"
+    :id="this.commentId"
     :class="replyCommentClassObj"
-    ref="commentRef"
   >
     <div class="comment-content" :class="commentContentClassObj">
       <a class="avatar" :style="avatarStyleObj" :href="`u/${authorId}`"></a>
@@ -15,9 +15,13 @@
       <router-link
         class="up-arrow"
         :title="this.replyToAuthorName"
-        :to="{ query: { comment: this.comment.replyTo } }"
+        :to="{
+          query: { comment: this.replyTo },
+          meta: { smooth: true },
+        }"
         v-if="isReply"
-        @mouseenter="highlightParentComment(this.comment.replyTo)"
+        @click="highlightFocusedComment(this.replyTo)"
+        @mouseenter="highlightParentComment(this.replyTo)"
         @mouseleave="clearHighlightParentComment()"
       >
         <up-arrow-icon />
@@ -70,7 +74,6 @@
         v-for="comment in this.comment.replies"
         :comment="comment"
         :replyToAuthorName="authorName"
-        :queryCommentId="queryCommentId"
         :key="comment.id"
       />
     </div>
@@ -99,7 +102,6 @@ export default {
   props: {
     comment: Object,
     replyToAuthorName: String,
-    queryCommentId: String,
   },
 
   components: {
@@ -116,12 +118,17 @@ export default {
       branchIsCollapsed: false,
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
+      timeout: false,
     };
   },
 
   computed: {
     isReply() {
       return this.comment.replyTo !== 0;
+    },
+
+    replyTo() {
+      return this.comment.replyTo;
     },
 
     replyCommentClassObj() {
@@ -133,7 +140,8 @@ export default {
     commentContentClassObj() {
       return {
         "comment-content_highlighted":
-          this.commentId == this.idCommentHighlight,
+          this.commentId == this.hoveredHighlightComment ||
+          this.commentId == this.temporaryHightlightComment,
       };
     },
 
@@ -215,7 +223,16 @@ export default {
       }
     },
 
-    ...mapGetters(["entryAuthorId", "likesList", "idCommentHighlight"]),
+    queryCommentId() {
+      return this.$route.query.comment;
+    },
+
+    ...mapGetters([
+      "entryAuthorId",
+      "likesList",
+      "hoveredHighlightComment",
+      "temporaryHightlightComment",
+    ]),
   },
 
   methods: {
@@ -244,20 +261,33 @@ export default {
     },
 
     highlightParentComment(id) {
-      this.setIdCommentHighlight(id);
+      this.setHoveredHighlightComment(id);
     },
 
     clearHighlightParentComment() {
-      this.clearIdCommentHighlight();
+      this.clearHoveredHighlightComment();
+    },
+
+    highlightFocusedComment(id) {
+      this.setTemporaryHightlightComment(id);
+      this.timeout = setTimeout(() => {
+        this.clearTemporaryHightlightComment();
+        clearTimeout(this.timeout);
+      }, 3000);
     },
 
     ...mapActions(["requestLikesList"]),
-    ...mapMutations(["setIdCommentHighlight", "clearIdCommentHighlight"]),
+    ...mapMutations([
+      "setHoveredHighlightComment",
+      "clearHoveredHighlightComment",
+      "setTemporaryHightlightComment",
+      "clearTemporaryHightlightComment",
+    ]),
   },
 
   mounted() {
-    if (this.queryCommentId && this.queryCommentId === this.commentId) {
-      this.$refs.commentRef.scrollIntoView();
+    if (this.commentId == this.queryCommentId) {
+      this.highlightFocusedComment(this.queryCommentId);
     }
   },
 };
@@ -308,7 +338,7 @@ export default {
           position: absolute;
           padding: 5px 23px;
           top: 0;
-          right: -24px;
+          right: -25px;
           width: 100%;
           height: 100%;
           background: var(--comment-highlight-bg);

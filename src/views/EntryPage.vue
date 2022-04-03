@@ -220,7 +220,9 @@ export default {
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
-    requestEntry(routeTo, next);
+    if (routeTo.params.id !== routeFrom.params.id) {
+      requestEntry(routeTo, next);
+    } else next();
   },
 
   unmounted() {

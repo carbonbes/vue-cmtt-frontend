@@ -28,11 +28,28 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      return { top: 0 };
-    }
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (
+          from.name === "EntryPage" &&
+          to.name === "EntryPage" &&
+          to.query.comment
+        )
+          resolve({ el: "#" + to.query.comment, top: 100, behavior: "smooth" });
+
+        if (
+          from.name !== "EntryPage" &&
+          to.name === "EntryPage" &&
+          to.query &&
+          to.query.comment
+        )
+          resolve({ el: "#" + to.query.comment, top: 100 });
+
+        if (savedPosition) resolve(savedPosition);
+
+        if (!savedPosition) resolve({ top: 0 });
+      }, 0);
+    });
   },
 });
 

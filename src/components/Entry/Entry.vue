@@ -77,7 +77,7 @@
 
       <template v-for="(linkData, index) in linkCovers" :key="index">
         <link-component
-          :title="linkData.data.link.data.title"
+          :title="linkData.data?.link.data?.title"
           :description="linkData.data.link.data.description"
           :urlSrc="linkData.data.link.data.url"
           :sourceIcon="linkData.data.link.data.image.data.uuid"

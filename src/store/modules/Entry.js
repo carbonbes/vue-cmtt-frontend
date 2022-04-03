@@ -9,7 +9,8 @@ const entryModule = {
     entrylikesList: null,
     repostsList: null,
     commentsList: null,
-    idCommentHighlight: null,
+    hoveredHighlightComment: null,
+    temporaryHightlightComment: null,
   }),
 
   getters: {
@@ -18,7 +19,7 @@ const entryModule = {
     },
 
     entryId(state) {
-      return state.entry.id
+      return state.entry.id;
     },
 
     entryAuthorId(state) {
@@ -41,8 +42,12 @@ const entryModule = {
       return state.commentsList;
     },
 
-    idCommentHighlight(state) {
-      return state.idCommentHighlight;
+    hoveredHighlightComment(state) {
+      return state.hoveredHighlightComment;
+    },
+
+    temporaryHightlightComment(state) {
+      return state.temporaryHightlightComment;
     },
   },
 
@@ -75,12 +80,20 @@ const entryModule = {
       state.commentsList = data;
     },
 
-    setIdCommentHighlight(state, id) {
-      state.idCommentHighlight = id;
+    setHoveredHighlightComment(state, id) {
+      state.hoveredHighlightComment = id;
     },
 
-    clearIdCommentHighlight(state) {
-      state.idCommentHighlight = null;
+    clearHoveredHighlightComment(state) {
+      state.hoveredHighlightComment = null;
+    },
+
+    setTemporaryHightlightComment(state, id) {
+      state.temporaryHightlightComment = id;
+    },
+
+    clearTemporaryHightlightComment(state) {
+      state.temporaryHightlightComment = null;
     },
   },
 
