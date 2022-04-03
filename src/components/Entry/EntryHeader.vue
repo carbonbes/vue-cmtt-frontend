@@ -166,7 +166,7 @@ export default {
   }
 
   &__subsite-avatar {
-    margin-right: 10px;
+    margin-right: 8px;
     width: 22px;
     height: 22px;
     border-radius: 6px;

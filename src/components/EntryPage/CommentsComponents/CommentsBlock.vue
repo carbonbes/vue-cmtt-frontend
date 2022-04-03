@@ -1,6 +1,6 @@
 <template>
   <template v-for="comment in comments" :key="comment.id">
-    <comment-block :comment="comment" />
+    <comment-block :comment="comment" :queryCommentId="queryCommentId" />
   </template>
 </template>
 
@@ -13,5 +13,11 @@ export default {
   },
 
   components: { CommentBlock },
+
+  computed: {
+    queryCommentId() {
+      return this.$route.query.comment;
+    },
+  },
 };
 </script>

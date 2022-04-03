@@ -31,7 +31,7 @@ export default {
     authorSrc: String,
     bio: String,
     text: String,
-    textSize: String,
+    textSizeSrc: String,
   },
 
   computed: {
@@ -66,8 +66,8 @@ export default {
 
     textSize() {
       return {
-        text_small: this.textSize === "small",
-        text_medium: this.textSize === "medium",
+        text_small: this.textSizeSrc === "small",
+        text_medium: this.textSizeSrc === "medium",
       };
     },
   },
@@ -128,6 +128,8 @@ export default {
         margin-right: 15px;
         width: 48px;
         height: 48px;
+        min-width: 48px;
+        min-height: 48px;
         align-self: flex-start;
         background-size: cover;
         border-radius: 50%;

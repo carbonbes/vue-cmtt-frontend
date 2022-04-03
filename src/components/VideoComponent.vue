@@ -98,33 +98,13 @@ export default {
 
   props: {
     srcVideo: String,
-    srcWidth: Number,
-    srcHeight: Number,
-
-    maxWidth: {
-      type: Number,
-      required: false,
-    },
-
-    maxHeight: {
-      type: Number,
-      required: false,
-    },
-
-    externalService: {
-      type: Object,
-      required: false,
-    },
-
-    embedCover: {
-      type: String,
-      required: false,
-    },
-
-    type: {
-      type: String,
-      required: false,
-    },
+    srcWidth: [String, Number],
+    srcHeight: [String, Number],
+    maxWidth: [String, Number],
+    maxHeight: [String, Number],
+    externalService: Object,
+    embedCover: String,
+    type: String,
   },
 
   data() {

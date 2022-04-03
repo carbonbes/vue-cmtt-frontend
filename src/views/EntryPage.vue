@@ -52,7 +52,7 @@
             :title="block.data.link.data.title"
             :description="block.data.link.data.description"
             :urlSrc="block.data.link.data.url"
-            :sourceIcon="block.data.link.data.image.data.uuid"
+            :sourceIcon="block.data.link.data.image?.data.uuid"
             v-if="block.type === 'link'"
           />
 
@@ -73,7 +73,7 @@
           />
 
           <telegram-component
-            class="entry-page__embed ep-island"
+            class="entry-page__embed"
             :authorAvatarSrc="
               block.data.telegram.data.tg_data.author.avatar_url
             "
@@ -86,7 +86,7 @@
           />
 
           <twitter-component
-            class="entry-page__embed ep-island"
+            class="entry-page__embed"
             :authorAvatar="
               block.data.tweet.data.tweet_data.user.profile_image_url_https
             "
@@ -137,6 +137,7 @@ import CommentsBlock from "@/components/EntryPage/CommentsComponents/CommentsBlo
 import { mapGetters } from "vuex";
 import store from "@/store";
 import nProgress from "nprogress";
+import { notify } from "@kyvg/vue3-notification";
 
 function requestEntry(routeTo, next) {
   nProgress.start();
@@ -149,9 +150,14 @@ function requestEntry(routeTo, next) {
       nProgress.done();
       next();
     })
-    .catch(() => {
+    .catch((error) => {
       nProgress.done();
       next(false);
+      notify({
+        title: "Ошибка " + error.response.data.error.code,
+        type: "error",
+        text: error.response.data.message,
+      });
     });
 }
 
@@ -282,6 +288,10 @@ export default {
 }
 
 .entry-page__embed {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 640px;
+
   &:not(:first-child) {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -300,12 +310,6 @@ export default {
   margin-right: auto;
   padding: 30px 0;
   max-width: 640px;
-
-  & > .entry-page__comment {
-    &:not(:first-child) {
-      margin-top: 30px;
-    }
-  }
 }
 
 .ep-island {

@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol viewBox="0 0 16 16" id="v_arrow_long_up">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 2.335a.66.66 0 01.49.216l4 4.375a.665.665 0 01-.98.898L8.664 4.713V13a.665.665 0 01-1.33 0V4.713L4.49 7.823a.665.665 0 11-.982-.897l4-4.375A.665.665 0 018 2.335z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_arrow_long_up" fill="currentColor"></use>
+</svg>

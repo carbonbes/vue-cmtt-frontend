@@ -65,7 +65,7 @@ export default {
 .entry-page__video-block {
   margin-left: auto;
   margin-right: auto;
-  width: 680px;
+  width: 640px;
 
   &:last-child {
     margin-bottom: 15px;

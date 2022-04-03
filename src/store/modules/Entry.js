@@ -9,11 +9,16 @@ const entryModule = {
     entrylikesList: null,
     repostsList: null,
     commentsList: null,
+    idCommentHighlight: null,
   }),
 
   getters: {
     entry(state) {
       return state.entry;
+    },
+
+    entryId(state) {
+      return state.entry.id
     },
 
     entryAuthorId(state) {
@@ -34,6 +39,10 @@ const entryModule = {
 
     commentsList(state) {
       return state.commentsList;
+    },
+
+    idCommentHighlight(state) {
+      return state.idCommentHighlight;
     },
   },
 
@@ -64,6 +73,14 @@ const entryModule = {
 
     setCommentsList(state, data) {
       state.commentsList = data;
+    },
+
+    setIdCommentHighlight(state, id) {
+      state.idCommentHighlight = id;
+    },
+
+    clearIdCommentHighlight(state) {
+      state.idCommentHighlight = null;
     },
   },
 

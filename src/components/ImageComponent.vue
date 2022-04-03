@@ -39,11 +39,11 @@ export default {
 
   props: {
     image: String,
-    type: Number,
+    type: [String, Number],
     srcWidth: Number,
     srcHeight: Number,
-    maxWidth: Number,
-    maxHeight: Number,
+    maxWidth: String,
+    maxHeight: String,
   },
 };
 </script>

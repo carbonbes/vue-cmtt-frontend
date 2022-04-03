@@ -13,7 +13,7 @@
     >
       <login-modal /></div
   ></transition>
-  <notification />
+  <notifications />
 </template>
 
 <script>
@@ -137,6 +137,7 @@ export default {
   --comment-rating-value-wrapp-bg-positive: #eefbf3;
   --comment-rating-value-wrapp-bg-neutral: #5959591a;
   --comment-rating-value-wrapp-bg-negative: #fff1f1;
+  --comment-highlight-bg: #fffaf1;
 }
 
 [data-theme="dark"] {
@@ -170,6 +171,7 @@ export default {
   --comment-rating-value-wrapp-bg-positive: #468b6126;
   --comment-rating-value-wrapp-bg-neutral: #202020;
   --comment-rating-value-wrapp-bg-negative: #98484840;
+  --comment-highlight-bg: #252525;
 }
 
 * {
@@ -297,6 +299,10 @@ iframe {
   &:active {
     transform: translateY(1px);
   }
+}
+
+.vue-notification-group {
+  top: 72px !important;
 }
 
 body {

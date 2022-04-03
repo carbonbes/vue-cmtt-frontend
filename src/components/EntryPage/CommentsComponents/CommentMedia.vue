@@ -14,21 +14,22 @@
       "
     />
 
-    <!-- <video-component
+    <video-component
+      :srcVideo="media.data.uuid"
       :srcWidth="media.data.width"
-      :srcHeight="media.data.width"
+      :srcHeight="media.data.height"
       maxWidth="400"
       maxHeight="300"
       v-if="
         (media.type === 'image' || media.type === 'movie') &&
         (media.data.type === 'gif' || media.data.type === 'mp4')
       "
-    /> -->
+    />
 
     <video-component
       :srcVideo="media.data.uuid"
       :srcWidth="media.data.width"
-      :srcHeight="media.data.width"
+      :srcHeight="media.data.height"
       maxWidth="400"
       maxHeight="300"
       :externalService="media.data.external_service"

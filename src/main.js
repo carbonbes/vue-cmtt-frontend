@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import Notifications from "@kyvg/vue3-notification";
 import mitt from "mitt";
 import nProgress from "nprogress";
 import bodyScrollLock from "@/plugins/bodyScrollLock";
@@ -22,6 +23,7 @@ nProgress.configure({
 app
   .use(store)
   .use(router)
+  .use(Notifications)
   .use(bodyScrollLock)
   .use(onKeydown)
   .use(onClickOutside)

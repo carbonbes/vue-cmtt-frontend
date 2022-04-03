@@ -5,8 +5,8 @@
       type="2"
       :srcWidth="this.item.data.items[0].image.data.width"
       :srcHeight="this.item.data.items[0].image.data.height"
-      :maxWidth="1020"
-      :maxHeight="1500"
+      maxWidth="1020"
+      maxHeight="1500"
     />
   </div>
 </template>
@@ -52,8 +52,8 @@ export default {
 
 <style lang="scss">
 .entry-page__img-block {
-  margin: 30px auto;
-  width: 680px;
+  margin: 24px auto;
+  width: 640px;
 
   &:first-child {
     margin-top: 0;
