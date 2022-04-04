@@ -35,7 +35,7 @@ const router = createRouter({
           to.name === "EntryPage" &&
           to.query.comment
         )
-          resolve({ el: "#" + to.query.comment, top: 100, behavior: "smooth" });
+          resolve({ el: "#" + to.query.comment, top: 75, behavior: "smooth" });
 
         if (
           from.name !== "EntryPage" &&
@@ -43,7 +43,7 @@ const router = createRouter({
           to.query &&
           to.query.comment
         )
-          resolve({ el: "#" + to.query.comment, top: 100 });
+          resolve({ el: "#" + to.query.comment, top: 75 });
 
         if (savedPosition) resolve(savedPosition);
 

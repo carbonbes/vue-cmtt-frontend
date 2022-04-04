@@ -331,6 +331,7 @@ body {
 }
 
 .content {
+  min-width: 0;
   flex-grow: 1;
 }
 

@@ -1,7 +1,7 @@
 export default function stringReplacement(string) {
   return string
     .replace(
-      /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
+      /(\[(.+?)\])\((https?\:\/\/.+?)\)/g,
       '<a href="$3" target="_blank">$2</a>'
     )
     .replace(/(?:\*)\*(.*?)\*(?:\*)/g, "<b>$1</b>")

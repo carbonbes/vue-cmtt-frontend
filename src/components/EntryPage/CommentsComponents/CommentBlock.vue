@@ -82,7 +82,7 @@
       v-if="branchIsCollapsed"
       @click="toggleBranchCollapse"
     >
-      Раскрыть
+      Раскрыть ветку
     </span>
   </div>
 </template>
@@ -134,6 +134,7 @@ export default {
     replyCommentClassObj() {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
+        /* "entry-page__comment_max-lvl": this.comment.level > 3, */
       };
     },
 
@@ -290,18 +291,27 @@ export default {
       this.highlightFocusedComment(this.queryCommentId);
     }
   },
+
+  beforeUnmount() {},
 };
 </script>
 
 <style lang="scss">
 .entry-page {
   &__comment {
+    --branch-gap: 21px;
+    --text-right-gap: 85px;
+    --padding-highlighted: 5px 23px;
+    --right-gap-highlighted: -25px;
+    --width-highlighted: 100%;
+
     margin-top: 9px;
     font-size: 16px;
     line-height: 1.5em;
 
     &_reply {
       margin-top: 0;
+      padding-left: var(--branch-gap);
 
       &::before {
         content: "";
@@ -316,12 +326,20 @@ export default {
         border-bottom-left-radius: 8px;
       }
 
-      &:not(:last-child) {
+      &:not(.entry-page__comment_max-lvl):not(:last-child) {
         border-left: 1px solid var(--branch-color);
       }
 
       &:last-child {
         border-left: 1px solid transparent;
+      }
+    }
+
+    &_max-lvl {
+      padding-left: 0;
+
+      &::before {
+        border-color: transparent;
       }
     }
 
@@ -336,10 +354,10 @@ export default {
         &::before {
           content: "";
           position: absolute;
-          padding: 5px 23px;
+          padding: var(--padding-highlighted);
           top: 0;
-          right: -25px;
-          width: 100%;
+          right: var(--right-gap-highlighted);
+          width: var(--width-highlighted);
           height: 100%;
           background: var(--comment-highlight-bg);
         }
@@ -497,7 +515,7 @@ export default {
 
       & .text {
         margin: 6px 0;
-        padding-right: 85px;
+        padding-right: var(--text-right-gap);
         max-width: 100%;
         flex-basis: 100%;
         word-wrap: break-word;
@@ -558,13 +576,9 @@ export default {
         display: none;
       }
 
-      & .entry-page__comment {
-        padding-left: 21px;
-      }
-
       & .branch-collapse-btn {
         position: absolute;
-        width: 21px;
+        width: var(--branch-gap);
         height: 100%;
         cursor: pointer;
         z-index: 1;
@@ -650,6 +664,18 @@ export default {
 @media screen and (max-width: 768px) {
   .entry-page {
     &__comment {
+      --branch-gap: 19px;
+      --text-right-gap: 0;
+      --padding-highlighted: 8px 0;
+      --right-gap-highlighted: -15px;
+      --width-highlighted: 100vh;
+
+      &_reply {
+        &::before {
+          margin-left: -20px;
+        }
+      }
+
       & .comment-content {
         & .rating-wrapp {
           order: 1;

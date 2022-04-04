@@ -5,7 +5,7 @@
       :avatarSrc="avatarSrc"
       :authorSrc="authorSrc"
       :bio="bio"
-      :textSize="textSize"
+      :textSizeSrc="textSizeSrc"
     />
   </div>
 </template>
@@ -21,17 +21,29 @@ export default {
     authorSrc: String,
     bio: String,
     text: String,
-    textSize: String,
+    textSizeSrc: String,
   },
 };
 </script>
 
 <style lang="scss">
 .entry-page__quote-block {
+  --border-radius: 8px;
+
   margin-top: 15px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 15px;
   max-width: 640px;
+
+  & .quote-component {
+    border-radius: var(--border-radius);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .entry-page__quote-block {
+    --border-radius: 0;
+  }
 }
 </style>

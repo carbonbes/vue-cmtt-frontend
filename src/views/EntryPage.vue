@@ -61,7 +61,7 @@
             :text="block.data.text"
             :authorSrc="block.data.subline1"
             :bio="block.data.subline2"
-            :textSize="block.data.text_size"
+            :textSizeSrc="block.data.text_size"
             v-if="block.type === 'quote'"
           />
 
@@ -225,6 +225,10 @@ export default {
     } else next();
   },
 
+  created() {
+    document.title = this.entry.title;
+  },
+
   unmounted() {
     store.commit("clearEntry");
   },
@@ -332,7 +336,18 @@ export default {
     }
   }
 
+  .entry-page__comments {
+    margin-bottom: 0;
+  }
+
+  .entry-page__comments-content {
+    padding-bottom: 15px;
+  }
+
   .entry-page__embed {
+    margin-left: 15px;
+    margin-right: 15px;
+
     &:not(:first-child) {
       margin-top: 15px;
       margin-bottom: 15px;

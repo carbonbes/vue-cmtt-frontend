@@ -76,7 +76,11 @@ export default {
 
 <style lang="scss">
 .quote-component {
-  padding: 35px 0;
+  --quote-padding: 45px 0 35px 25px;
+  --font-size-small: 22px;
+  --line-height-small: 32px;
+
+  padding: var(--quote-padding);
   background-color: var(--highlight-block-color);
 
   &__content {
@@ -92,9 +96,9 @@ export default {
 
     & .text {
       &_small {
-        font-size: 22px;
+        font-size: var(--font-size-small);
         font-weight: 400;
-        line-height: 32px;
+        line-height: var(--line-height-small);
       }
 
       &_medium {
@@ -154,6 +158,22 @@ export default {
 
     & p {
       margin: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .quote-component {
+    --quote-padding: 15px 25px 15px 50px;
+    --font-size-small: 18px;
+    --line-height-small: 1.6em;
+
+    &__content {
+      & .icon {
+        width: 21px;
+        height: auto;
+        left: -35px;
+      }
     }
   }
 }
