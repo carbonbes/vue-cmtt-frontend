@@ -58,6 +58,10 @@ export default {
       this.isVisibled = !this.isVisibled;
     },
 
+    hideLeftSidebar() {
+      this.isVisibled = false;
+    },
+
     savedSorting(sorting) {
       localStorage.setItem("saved-sorting", sorting);
     },
@@ -91,12 +95,14 @@ export default {
 
   mounted() {
     this.emitter.on("left-sidebar-visibled", this.visibilityToggler);
+    this.emitter.on("left-sidebar-hide", this.hideLeftSidebar);
 
     this.isMobile.addListener((e) => this.visibility(e));
   },
 
   beforeUnmount() {
     this.emitter.off("left-sidebar-visibled", this.visibilityToggler);
+    this.emitter.off("left-sidebar-hide", this.hideLeftSidebar);
 
     this.isMobile.removeListener(() => this.visibility());
   },

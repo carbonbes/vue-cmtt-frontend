@@ -1,6 +1,7 @@
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
+import store from "../index";
 
 const entryModule = {
   state: () => ({
@@ -11,6 +12,7 @@ const entryModule = {
     commentsList: null,
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
+    idCommentVisibledReplyForm: null,
   }),
 
   getters: {
@@ -48,6 +50,10 @@ const entryModule = {
 
     temporaryHightlightComment(state) {
       return state.temporaryHightlightComment;
+    },
+
+    idCommentVisibledReplyForm(state) {
+      return state.idCommentVisibledReplyForm;
     },
   },
 
@@ -94,6 +100,52 @@ const entryModule = {
 
     clearTemporaryHightlightComment(state) {
       state.temporaryHightlightComment = null;
+    },
+
+    setIdCommentVisibledReplyForm(state, id) {
+      state.idCommentVisibledReplyForm = id;
+    },
+
+    clearIdCommentVisibledReplyForm(state) {
+      state.idCommentVisibledReplyForm = null;
+    },
+
+    apiChannelContentVoted(state, data) {
+      if (state.entry.id === data.id) {
+        state.entry.likes.summ = data.count;
+      }
+    },
+
+    entryCommentsChannelVoted(state, data) {
+      state.commentsList.find((comment) => {
+        if (comment.id === data.id) {
+          comment.likes.summ = data.count;
+          if (store.state.auth.auth.id === data.subsite_id) {
+            comment.likes.isLiked = data.state;
+          }
+        }
+      });
+    },
+
+    entryCommentsChannelCreated(state, data) {
+      let newComment = data.comment;
+      newComment.replies = [];
+      newComment.likes.isLiked = data.comment.likes.is_liked;
+      newComment.isIgnored = data.comment.is_ignored;
+      newComment.isRemoved = data.comment.is_removed;
+      newComment.media = [...data.comment.attaches];
+
+      state.commentsList.push(newComment);
+    },
+
+    entryCommentsChannelEdited(state, data) {
+      state.commentsList.find((comment) => {
+        if (comment.id === data.comment.id) {
+          comment.isEdited = data.comment.isEdited;
+          comment.text = data.comment.text;
+          comment.media = [...data.comment.attaches];
+        }
+      });
     },
   },
 

@@ -9,9 +9,7 @@ const feedModule = {
 
   getters: {
     feed(state) {
-      return state.feed
-        .filter((entry) => entry.type === "entry")
-        .map((entry) => entry.data);
+      return state.feed;
     },
 
     lastId(state) {
@@ -25,7 +23,11 @@ const feedModule = {
 
   mutations: {
     setFeed(state, data) {
-      state.feed.push(...data);
+      state.feed.push(
+        ...data
+          .filter((entry) => entry.type === "entry")
+          .map((entry) => entry.data)
+      );
     },
 
     setLastId(state, id) {
@@ -39,6 +41,14 @@ const feedModule = {
     clearFeed(state) {
       state.feed = [];
       state.lastId = null;
+    },
+
+    apiChannelContentVoted(state, data) {
+      state.feed.find((entry) => {
+        if (entry.id === data.id) {
+          entry.likes.summ = data.count;
+        }
+      });
     },
   },
 

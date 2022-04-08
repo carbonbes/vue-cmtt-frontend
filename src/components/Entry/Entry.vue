@@ -91,7 +91,7 @@
           :authorSrc="quoteData.data.subline1"
           :bio="quoteData.data.subline2"
           :text="quoteData.data.text"
-          :textSize="quoteData.data.text_size"
+          :textSizeSrc="quoteData.data.text_size"
           v-if="quoteCovers.length > 0"
         />
       </template>

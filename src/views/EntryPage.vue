@@ -266,7 +266,7 @@ export default {
   }
 
   & + .entry-page__img-block {
-    margin-top: 0;
+    margin-top: 15px;
   }
 
   & + .entry-page__video-block {

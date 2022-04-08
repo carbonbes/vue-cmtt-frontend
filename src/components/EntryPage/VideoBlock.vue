@@ -101,4 +101,10 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .entry-page__video-block {
+    width: 100%;
+  }
+}
 </style>

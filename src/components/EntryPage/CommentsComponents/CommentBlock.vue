@@ -6,12 +6,7 @@
   >
     <div class="comment-content" :class="commentContentClassObj">
       <a class="avatar" :style="avatarStyleObj" :href="`u/${authorId}`"></a>
-      <a
-        class="author-name"
-        :class="isAuthorOfCommentClassObj"
-        v-text="author"
-        :href="`u/${authorId}`"
-      ></a>
+      <a class="author-name" v-text="author" :href="`u/${authorId}`"></a>
       <router-link
         class="up-arrow"
         :title="this.replyToAuthorName"
@@ -30,28 +25,34 @@
       <a class="date-created" href="#">
         <date-time :date="dateCreated" type="0" />
       </a>
+      <span class="is-author" v-if="isAuthorOfComment">автор</span>
 
       <div class="rating-wrapp">
         <div class="rating">
-          <vote-icon class="icon dislike-icon" />
+          <vote-icon class="icon dislike-icon" :class="dislikeBtnClassObj" />
           <div
             class="value-wrapp"
             :class="ratingValueWrappClassObj"
             @mouseenter="getLikes"
             @mouseleave="closeLikesPopup"
           >
-            <div
+            <transition-group
               class="value"
               :class="ratingValueClassObj"
-              v-text="commentRatingFormatted"
-            ></div>
+              :name="this.animationType === 'up' ? 'value_up' : 'value_down'"
+              tag="div"
+              ><div
+                v-text="commentRatingFormatted"
+                :key="commentRatingFormatted"
+              ></div
+            ></transition-group>
             <transition name="popup">
               <div class="popup" v-if="likesPopupIsOpen">
                 <likes-popup :likes="this.likesList" type="comment" />
               </div>
             </transition>
           </div>
-          <vote-icon class="icon like-icon" />
+          <vote-icon class="icon like-icon" :class="likeBtnClassObj" />
         </div>
       </div>
 
@@ -62,7 +63,33 @@
       <div class="media" v-if="media.length > 0">
         <comment-media :attachments="media" />
       </div>
-      <span class="reply-btn">Ответить</span>
+
+      <span class="reply-btn" @click="this.openReplyFrom(this.commentId)"
+        >Ответить</span
+      >
+
+      <div
+        class="reply-form"
+        :class="replyFormClassObj"
+        v-if="this.idCommentVisibledReplyForm === this.commentId"
+      >
+        <div
+          class="content-editable"
+          contenteditable="true"
+          autofocus
+          @click="this.focusReplyForm"
+          v-on-click-outside="this.unfocusReplyForm"
+        ></div>
+        <div class="content-actions">
+          <div class="attaches-actions"></div>
+          <div class="reply-actions">
+            <div class="cancel-btn" @click="this.closeReplyForm">Отменить</div>
+            <button class="button button_b">
+              <div class="button__label">Ответить</div>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="comment-replies"
@@ -119,6 +146,10 @@ export default {
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
       timeout: false,
+      replyFormFocusTimeout: false,
+      replyFormFocused: false,
+      isReplying: false,
+      animationType: null,
     };
   },
 
@@ -143,6 +174,7 @@ export default {
         "comment-content_highlighted":
           this.commentId == this.hoveredHighlightComment ||
           this.commentId == this.temporaryHightlightComment,
+        /* "comment-content_replying": this.isReplying, */
       };
     },
 
@@ -153,9 +185,14 @@ export default {
     },
 
     avatarStyleObj() {
-      return {
-        backgroundImage: `url(https://leonardo.osnova.io/${this.comment.author.avatar.data.uuid}/-/scale_crop/64x64/)`,
-      };
+      if (this.comment.author.avatar_url) {
+        return {
+          backgroundImage: `url(${this.comment.author.avatar_url})`,
+        };
+      } else
+        return {
+          backgroundImage: `url(https://leonardo.osnova.io/${this.comment.author.avatar.data.uuid})`,
+        };
     },
 
     author() {
@@ -172,12 +209,6 @@ export default {
 
     isAuthorOfComment() {
       return this.authorId === this.entryAuthorId;
-    },
-
-    isAuthorOfCommentClassObj() {
-      return {
-        "author-name_highlighted": this.isAuthorOfComment,
-      };
     },
 
     dateCreated() {
@@ -208,6 +239,22 @@ export default {
       };
     },
 
+    likeBtnClassObj() {
+      return {
+        "like-icon_pressed": this.commentIsLiked === 1,
+      };
+    },
+
+    dislikeBtnClassObj() {
+      return {
+        "dislike-icon_pressed": this.commentIsLiked === -1,
+      };
+    },
+
+    commentIsLiked() {
+      return this.comment.likes.isLiked;
+    },
+
     commentId() {
       return this.comment.id;
     },
@@ -224,6 +271,12 @@ export default {
       }
     },
 
+    replyFormClassObj() {
+      return {
+        "reply-form_focused": this.replyFormFocused,
+      };
+    },
+
     queryCommentId() {
       return this.$route.query.comment;
     },
@@ -233,6 +286,7 @@ export default {
       "likesList",
       "hoveredHighlightComment",
       "temporaryHightlightComment",
+      "idCommentVisibledReplyForm",
     ]),
   },
 
@@ -277,13 +331,48 @@ export default {
       }, 3000);
     },
 
+    openReplyFrom(id) {
+      this.setIdCommentVisibledReplyForm(id);
+      this.replyFormFocusTimeout = setTimeout(() => {
+        this.focusReplyForm();
+      }, 50);
+      this.isReplying = true;
+    },
+
+    closeReplyForm() {
+      this.clearIdCommentVisibledReplyForm();
+      clearTimeout(this.replyFormFocusTimeout);
+      this.isReplying = false;
+    },
+
+    focusReplyForm() {
+      this.replyFormFocused = true;
+    },
+
+    unfocusReplyForm() {
+      this.replyFormFocused = false;
+    },
+
     ...mapActions(["requestLikesList"]),
+
     ...mapMutations([
       "setHoveredHighlightComment",
       "clearHoveredHighlightComment",
       "setTemporaryHightlightComment",
       "clearTemporaryHightlightComment",
+      "setIdCommentVisibledReplyForm",
+      "clearIdCommentVisibledReplyForm",
     ]),
+  },
+
+  watch: {
+    commentRating(newValue, oldValue) {
+      if (newValue > oldValue) {
+        this.animationType = "up";
+      } else {
+        this.animationType = "down";
+      }
+    },
   },
 
   mounted() {
@@ -292,7 +381,10 @@ export default {
     }
   },
 
-  beforeUnmount() {},
+  beforeUnmount() {
+    clearTimeout(this.timeout);
+    clearTimeout(this.replyFormFocusTimeout);
+  },
 };
 </script>
 
@@ -324,6 +416,7 @@ export default {
         border: solid var(--branch-color);
         border-width: 0 0 1px 1px;
         border-bottom-left-radius: 8px;
+        z-index: 1;
       }
 
       &:not(.entry-page__comment_max-lvl):not(:last-child) {
@@ -354,10 +447,22 @@ export default {
         &::before {
           content: "";
           position: absolute;
-          padding: var(--padding-highlighted);
           top: 0;
           right: var(--right-gap-highlighted);
+          padding: var(--padding-highlighted);
           width: var(--width-highlighted);
+          height: 100%;
+          background: var(--comment-highlight-bg);
+        }
+      }
+
+      &_replying {
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -21px;
+          width: calc(100% + 42px);
           height: 100%;
           background: var(--comment-highlight-bg);
         }
@@ -382,12 +487,6 @@ export default {
         font-weight: 500;
         line-height: 20px;
         order: -2;
-
-        &_highlighted {
-          padding: 0 3px;
-          border-radius: 2px;
-          background: var(--self-author-highlight-color);
-        }
       }
 
       & .up-arrow {
@@ -413,6 +512,14 @@ export default {
         line-height: 16px;
         font-size: 12px;
         color: var(--grey-color);
+      }
+
+      & .is-author {
+        margin-left: 8px;
+        white-space: nowrap;
+        line-height: 16px;
+        font-size: 12px;
+        color: #4683d9;
       }
 
       & .rating-wrapp {
@@ -491,6 +598,28 @@ export default {
               &_negative {
                 color: var(--red-color);
               }
+
+              &_up {
+                &-enter-active {
+                  animation: rating-anim-up-enter 0.2s;
+                }
+
+                &-leave-active {
+                  position: absolute;
+                  animation: rating-anim-up-leave 0.2s;
+                }
+              }
+
+              &_down {
+                &-enter-active {
+                  animation: rating-anim-down-enter 0.2s;
+                }
+
+                &-leave-active {
+                  position: absolute;
+                  animation: rating-anim-down-leave 0.2s;
+                }
+              }
             }
 
             & .popup {
@@ -549,10 +678,67 @@ export default {
         cursor: pointer;
       }
 
+      & .reply-form {
+        position: relative;
+        margin-top: 12px;
+        margin-bottom: 18px;
+        padding: 12px;
+        flex-basis: 100%;
+        max-width: 100%;
+        border-radius: 10px;
+        color: var(--black-color);
+        background-color: var(--form-bg-color);
+        border: 1px solid var(--form-border-color);
+        transition: background-color 0.15s, border 0.15s, box-shadow 0.15s;
+        order: 2;
+        z-index: 1;
+
+        &:hover {
+          background-color: transparent;
+          border: 1px solid var(--form-border-color-hover);
+          box-shadow: var(--form-shadow);
+        }
+
+        &_focused {
+          background-color: transparent;
+          border: 1px solid var(--form-border-color-active) !important;
+          box-shadow: var(--form-shadow);
+          transition: border 0.2s;
+        }
+
+        & .content-editable {
+          padding-bottom: 40px;
+          outline: none;
+        }
+
+        & .content-actions {
+          margin-top: 12px;
+          display: flex;
+
+          & .reply-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+
+            & .cancel-btn {
+              margin-right: 15px;
+              color: var(--grey-color);
+              cursor: pointer;
+            }
+
+            & .button {
+              height: 40px;
+            }
+          }
+        }
+      }
+
       & .avatar,
       .author-name,
       .up-arrow,
       .date-created,
+      .like-icon,
+      .dislike-icon,
       .text,
       .media,
       .reply-btn {
@@ -581,7 +767,7 @@ export default {
         width: var(--branch-gap);
         height: 100%;
         cursor: pointer;
-        z-index: 1;
+        z-index: 2;
       }
     }
 
@@ -637,19 +823,18 @@ export default {
           color: var(--green-color);
         }
       }
+
+      & .cancel-btn {
+        &:hover {
+          opacity: 0.8;
+        }
+      }
     }
 
     /* & .branch-collapse-btn {
       &:hover {
-        border-left: 2px solid #4683d9;
-
-        & ~ .entry-page__comment_reply {
-          & .comment-reply {
-            &::before {
-              border-color: #4683d9;
-            }
-          }
-        }
+        background: var(--branch-collapse-btn-bg);
+        border-radius: 4px;
       }
     } */
 
@@ -697,6 +882,10 @@ export default {
               }
             }
           }
+        }
+
+        & .up-arrow {
+          opacity: 1;
         }
       }
     }

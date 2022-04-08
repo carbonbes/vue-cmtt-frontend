@@ -17,21 +17,45 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 import { mapActions } from "vuex";
+import store from "@/store";
+import io from "socket.io-client";
 import Header from "@/components/Layout/Header/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
 import LoginModal from "@/components/Layout/LoginModal.vue";
-import Notification from "@/components/Layout/Notification.vue";
 
 export default {
+  setup() {
+    let socket = io("https://ws-sio.tjournal.ru", {
+      transports: ["websocket"],
+    });
+
+    onMounted(() => {
+      socket.emit("subscribe", { channel: "api" });
+
+      socket.on("event", (data) => {
+        if (data.data.type === "content voted") {
+          store.commit("apiChannelContentVoted", data.data);
+        }
+
+        /* if (data.data.type === "new_entry_published") {
+        store.commit("apiChannelNewEntry", data.data);
+      } */
+      });
+    });
+
+    onUnmounted(() => {
+      socket.disconnect();
+    });
+  },
+
   components: {
     Header,
     LeftSidebar,
     RightSidebar,
     LoginModal,
-    Notification,
   },
 
   data() {
@@ -47,8 +71,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(["requestAuth"]),
-
     setTheme() {
       let theme = localStorage.getItem("theme");
 
@@ -77,6 +99,8 @@ export default {
     toggleShowLoginModal() {
       this.loginModalVisibility = !this.loginModalVisibility;
     },
+
+    ...mapActions(["requestAuth"]),
   },
 
   created() {
@@ -133,6 +157,7 @@ export default {
   --link-text-decoration-color-hover: #f6b4bc;
   --box-shadow-avatar: inset 0 0 0 1px #0000001a;
   --branch-color: #e6e6e6;
+  --branch-collapse-btn-bg: #e4e4e480;
   --self-author-highlight-color: #f9edd9;
   --comment-rating-value-wrapp-bg-positive: #eefbf3;
   --comment-rating-value-wrapp-bg-neutral: #5959591a;
@@ -145,7 +170,7 @@ export default {
   --blue-color: #6794cc;
   --green-color: #5fb668;
   --red-color: #c2646d;
-  --black-color: #f2f2f2;
+  --black-color: #efefef;
   --bg-color: #000;
   --header-bg-color: #202020;
   --entry-bg-color: #151515;
@@ -167,11 +192,12 @@ export default {
   --link-text-decoration-color-hover: #503b3d;
   --box-shadow-avatar: inset 0 0 0 1px #ffffff1a;
   --branch-color: #353535;
+  --branch-collapse-btn-bg: #2b2b2b80;
   --self-author-highlight-color: #303030;
   --comment-rating-value-wrapp-bg-positive: #468b6126;
   --comment-rating-value-wrapp-bg-neutral: #202020;
   --comment-rating-value-wrapp-bg-negative: #98484840;
-  --comment-highlight-bg: #252525;
+  --comment-highlight-bg: #202020;
 }
 
 * {
@@ -232,6 +258,8 @@ iframe {
   &::placeholder {
     color: var(--grey-color);
   }
+
+  display: block;
   color: var(--black-color);
   background-color: var(--form-bg-color);
   border: 1px solid var(--form-border-color);
@@ -244,14 +272,14 @@ iframe {
     box-shadow: var(--form-shadow);
   }
 
-  &:focus-visible {
+  &:disabled {
+    opacity: 0.7;
+  }
+
+  &_focused {
     background-color: transparent;
     border: 1px solid var(--form-border-color-active) !important;
     box-shadow: var(--form-shadow);
-  }
-
-  &:disabled {
-    opacity: 0.7;
   }
 }
 
@@ -727,6 +755,54 @@ body {
     & .description {
       font-size: 14px;
     }
+  }
+}
+
+@keyframes rating-anim-up-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-12.5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rating-anim-up-leave {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(12.5px);
+  }
+}
+
+@keyframes rating-anim-down-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(12.5px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rating-anim-down-leave {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-12.5px);
   }
 }
 </style>

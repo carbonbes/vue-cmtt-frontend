@@ -28,7 +28,7 @@ import Loader from "@/components/Loader";
 function requestFeed(routeTo, routeFrom, next) {
   nProgress.start();
 
-  store
+  return store
     .dispatch("requestFeed", {
       sorting: routeTo.params.sorting,
       prevSorting: routeFrom.params.sorting,
@@ -68,7 +68,11 @@ export default {
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
-    requestFeed(routeTo, routeFrom, next);
+    requestFeed(routeTo, routeFrom, next).then(() => {
+      if (window.matchMedia("(max-width: 925px)").matches) {
+        this.emitter.emit("left-sidebar-hide");
+      }
+    });
   },
 
   unmounted() {

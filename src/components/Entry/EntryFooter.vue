@@ -26,10 +26,18 @@
         @mouseenter="getLikes"
         @mouseleave="closeLikesPopup"
       >
-        <div class="entry-footer__rating-value" :class="ratingValueStyles">
-          <template v-if="entryRating.summ < 0">–</template
-          >{{ entryRating.counter }}
-        </div>
+        <transition-group
+          class="entry-footer__rating-value"
+          :class="ratingValueStyles"
+          :name="
+            this.animationType === 'up'
+              ? 'entry-footer__rating-value_up'
+              : 'entry-footer__rating-value_down'
+          "
+          tag="div"
+        >
+          <div v-text="ratingFormatted" :key="ratingFormatted"></div>
+        </transition-group>
         <transition name="entry-footer__likes-popup"
           ><div class="entry-footer__likes-popup" v-if="likesPopupIsOpen">
             <likes-popup :likes="this.likesList" type="entry" /></div
@@ -75,6 +83,7 @@ export default {
     return {
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
+      animationType: null,
     };
   },
 
@@ -97,6 +106,18 @@ export default {
       return {
         "vote-dislike_active": this.entryRating.isLiked === -1,
       };
+    },
+
+    rating() {
+      return this.entryRating.summ;
+    },
+
+    ratingFormatted() {
+      if (this.entryRating.summ < 0) {
+        return this.entryRating.summ.toString().replace(/\-/g, "—");
+      } else {
+        return this.entryRating.summ;
+      }
     },
 
     ...mapGetters(["likesList"]),
@@ -122,6 +143,16 @@ export default {
     },
 
     ...mapActions(["requestLikesList"]),
+  },
+
+  watch: {
+    rating(newValue, oldValue) {
+      if (newValue > oldValue) {
+        this.animationType = "up";
+      } else {
+        this.animationType = "down";
+      }
+    },
   },
 };
 </script>
@@ -222,6 +253,28 @@ export default {
 
   &_positive {
     color: var(--green-color);
+  }
+
+  &_up {
+    &-enter-active {
+      animation: rating-anim-up-enter 0.2s;
+    }
+
+    &-leave-active {
+      position: absolute;
+      animation: rating-anim-up-leave 0.2s;
+    }
+  }
+
+  &_down {
+    &-enter-active {
+      animation: rating-anim-down-enter 0.2s;
+    }
+
+    &-leave-active {
+      position: absolute;
+      animation: rating-anim-down-leave 0.2s;
+    }
   }
 }
 
