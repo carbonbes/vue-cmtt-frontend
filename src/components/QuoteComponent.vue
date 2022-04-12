@@ -46,10 +46,12 @@ export default {
     },
 
     author() {
-      return this.authorSrc.replace(
-        /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
-        '<a href="$3" target="_blank">$2</a>'
-      );
+      return this.authorSrc
+        .replace(
+          /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
+          '<a href="$3" target="_blank">$2</a>'
+        )
+        .replace(/\\/g, "");
     },
 
     processedText() {
@@ -68,6 +70,7 @@ export default {
       return {
         text_small: this.textSizeSrc === "small",
         text_medium: this.textSizeSrc === "medium",
+        text_big: this.textSizeSrc === "big",
       };
     },
   },
@@ -79,6 +82,10 @@ export default {
   --quote-padding: 45px 0 35px 25px;
   --font-size-small: 22px;
   --line-height-small: 32px;
+  --font-size-medium: 24px;
+  --line-height-medium: 34px;
+  --font-size-big: 29px;
+  --line-height-big: 37px;
 
   padding: var(--quote-padding);
   background-color: var(--highlight-block-color);
@@ -102,9 +109,15 @@ export default {
       }
 
       &_medium {
-        font-size: 24px;
+        font-size: var(--font-size-medium);
         font-weight: 500;
-        line-height: 34px;
+        line-height: var(--line-height-medium);
+      }
+
+      &_big {
+        font-size: var(--font-size-big);
+        font-weight: 500;
+        line-height: var(--line-height-big);
       }
 
       & p {
@@ -146,7 +159,7 @@ export default {
         & .name {
           font-size: 17px;
           font-weight: 600;
-          line-height: 1.35em;
+          line-height: 1.45em;
         }
 
         & .description {
@@ -167,6 +180,10 @@ export default {
     --quote-padding: 15px 25px 15px 50px;
     --font-size-small: 18px;
     --line-height-small: 1.6em;
+    --font-size-medium: 18px;
+    --line-height-medium: 25px;
+    --font-size-big: 22px;
+    --line-height-big: 28px;
 
     &__content {
       & .icon {

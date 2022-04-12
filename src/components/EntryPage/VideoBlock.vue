@@ -93,7 +93,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
-    max-width: 680px;
+    max-width: 640px;
     background: var(--highlight-block-color);
 
     & > div {

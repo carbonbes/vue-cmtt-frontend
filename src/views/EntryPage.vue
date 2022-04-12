@@ -13,7 +13,7 @@
           :authorId="entry.author.id"
           :authorName="entry.author.name"
           :date="entry.date"
-          dateType="1"
+          dateType="0"
         />
       </div>
       <div class="entry-page__content">
@@ -104,7 +104,7 @@
       </div>
       <div class="entry-page__footer ep-island">
         <entry-footer
-          :commentsCount="entry.counters.comments"
+          :commentsCount="commentsList.length"
           :repostsCount="entry.counters.reposts"
           :favoritesCount="entry.counters.favorites"
           :entryRating="entry.likes"
@@ -114,14 +114,51 @@
     </div>
 
     <div class="entry-page__comments">
+      <div class="entry-page__comments-header">
+        <div class="comments-count">
+          {{ commentsList.length }} {{ commentsWordDecl }}
+        </div>
+      </div>
+      <div class="entry-page__comments-reply-form">
+        <reply-form
+          type="root"
+          :closeReplyForm="this.closeReplyForm"
+          v-if="replyTopFormVisible"
+        />
+        <div
+          class="entry-page__comments-pseudo-reply-form"
+          @click="openTopReplyForm"
+          v-if="!replyTopFormVisible"
+        >
+          Написать комментарий...
+        </div>
+      </div>
       <div class="entry-page__comments-content">
         <comments-block :comments="this.commentsTree" />
+      </div>
+      <div
+        class="entry-page__comments-reply-form bottom"
+        v-if="commentsList.length > 10"
+      >
+        <reply-form
+          type="root"
+          :closeReplyForm="this.closeReplyForm"
+          v-if="replyBottomFormVisible"
+        />
+        <div
+          class="entry-page__comments-pseudo-reply-form"
+          @click="openBottomReplyForm"
+          v-if="!replyBottomFormVisible"
+        >
+          Написать комментарий...
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import EntryHeader from "@/components/Entry/EntryHeader.vue";
 import EntryTitle from "@/components/Entry/EntryTitle.vue";
 import EntryFooter from "@/components/Entry/EntryFooter.vue";
@@ -134,10 +171,11 @@ import PersonBlock from "@/components/EntryPage/PersonBlock.vue";
 import TwitterComponent from "@/components/TwitterComponent.vue";
 import TelegramComponent from "@/components/TelegramComponent.vue";
 import CommentsBlock from "@/components/EntryPage/CommentsComponents/CommentsBlock.vue";
-import { mapGetters } from "vuex";
+import ReplyForm from "@/components/EntryPage/CommentsComponents/ReplyForm.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import { notify } from "@kyvg/vue3-notification";
+import declensionWords from "@/utils/declensionWords";
 
 function requestEntry(routeTo, next) {
   nProgress.start();
@@ -175,6 +213,15 @@ export default {
     TwitterComponent,
     TelegramComponent,
     CommentsBlock,
+    ReplyForm,
+  },
+
+  data() {
+    return {
+      commentWords: ["комментарий", "комментария", "комментариев"],
+      replyTopFormVisible: false,
+      replyBottomFormVisible: false,
+    };
   },
 
   computed: {
@@ -184,6 +231,10 @@ export default {
 
     commentsTree() {
       return this.flatCommentsToTree(this.commentsList);
+    },
+
+    commentsWordDecl() {
+      return declensionWords(this.commentsList.length, this.commentWords);
     },
 
     ...mapGetters(["entry", "commentsList"]),
@@ -213,6 +264,26 @@ export default {
       }
       return roots;
     },
+
+    openTopReplyForm() {
+      this.replyTopFormVisible = true;
+      this.replyBottomFormVisible = false;
+    },
+
+    closeTopReplyForm() {
+      this.replyTopFormVisible = false;
+    },
+
+    openBottomReplyForm() {
+      this.replyBottomFormVisible = true;
+      this.replyTopFormVisible = false;
+    },
+
+    closeBottomReplyForm() {
+      this.replyBottomFormVisible = false;
+    },
+
+    ...mapMutations(["setEntryPrevLiked"]),
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
@@ -229,6 +300,10 @@ export default {
     document.title = this.entry.title;
   },
 
+  mounted() {
+    this.setEntryPrevLiked(this.entry.likes.isLiked);
+  },
+
   unmounted() {
     store.commit("clearEntry");
   },
@@ -242,13 +317,13 @@ export default {
 }
 
 .entry-page {
-  padding-top: 30px;
   color: var(--black-color);
   background: var(--entry-bg-color);
   border-radius: 0 0 8px 8px;
 }
 
 .entry-page__header {
+  padding-top: 30px;
   padding-bottom: 15px;
 }
 
@@ -302,6 +377,14 @@ export default {
     margin-top: 30px;
     margin-bottom: 30px;
   }
+
+  &:last-child {
+    margin-bottom: 15px;
+  }
+
+  & + .entry-page__video-block {
+    margin-top: 12px;
+  }
 }
 
 .entry-page__comments {
@@ -309,13 +392,149 @@ export default {
   color: var(--black-color);
   background: var(--entry-bg-color);
   border-radius: 8px;
+
+  &-header {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 30px;
+    padding-bottom: 15px;
+    max-width: 640px;
+
+    & .comments-count {
+      font-size: 20px;
+      line-height: 1.4em;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &-content {
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 30px;
+    max-width: 640px;
+
+    & > .entry-page__comment:not(:first-child) {
+      margin-top: 25px;
+    }
+  }
+
+  &-pseudo-reply-form {
+    padding: 0 17px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    color: var(--grey-color);
+    background-color: var(--form-bg-color);
+    border: 1px solid var(--form-border-color);
+    cursor: pointer;
+  }
+
+  &-reply-form {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 15px;
+    padding-bottom: 30px;
+    max-width: 640px;
+
+    &.bottom {
+      padding-top: 0;
+      padding-bottom: 30px;
+    }
+  }
 }
 
-.entry-page__comments-content {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 30px 0;
-  max-width: 640px;
+.reply-form {
+  position: relative;
+  padding: 12px;
+  flex-basis: 100%;
+  max-width: 100%;
+  border-radius: 10px;
+  color: var(--black-color);
+  background-color: var(--form-bg-color);
+  border: 1px solid var(--form-border-color);
+  transition: background-color 0.15s, border 0.15s, box-shadow 0.15s;
+  order: 2;
+  z-index: 1;
+
+  &:hover {
+    background-color: transparent;
+    border: 1px solid var(--form-border-color-hover);
+    box-shadow: var(--form-shadow);
+  }
+
+  &_focused {
+    background-color: transparent;
+    border: 1px solid var(--form-border-color-active) !important;
+    box-shadow: var(--form-shadow);
+    transition: border 0.2s;
+  }
+
+  &_sending {
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__text-field {
+    position: relative;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 40px;
+    width: 100%;
+    display: inline-block;
+    outline: none;
+
+    &_writes-0 {
+      &::after {
+        content: "Написать комментарий...";
+      }
+    }
+
+    &_writes-1 {
+      &::after {
+        content: "Написать ответ...";
+      }
+    }
+
+    &_writes-0,
+    &_writes-1 {
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: var(--grey-color);
+        cursor: text;
+      }
+    }
+  }
+
+  &__actions {
+    margin-top: 12px;
+    display: flex;
+
+    & .reply-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+
+      & .cancel-btn {
+        margin-right: 15px;
+        color: var(--grey-color);
+        cursor: pointer;
+      }
+
+      & .button {
+        width: 100px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
 }
 
 .ep-island {
@@ -326,8 +545,11 @@ export default {
 
 @media screen and (max-width: 768px) {
   .entry-page {
-    padding-top: 15px;
     border-radius: 0;
+
+    &__header {
+      padding-top: 15px;
+    }
 
     &__comments {
       padding-left: 15px;

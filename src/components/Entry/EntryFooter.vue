@@ -18,6 +18,7 @@
       <div
         class="entry-footer__vote-btn vote-dislike"
         :class="voteDislikeButtonClassObject"
+        @click="like('dislike')"
       >
         <vote-icon class="icon" />
       </div>
@@ -46,6 +47,7 @@
       <div
         class="entry-footer__vote-btn vote-like"
         :class="voteLikeButtonClassObject"
+        @click="like('like')"
       >
         <vote-icon class="icon" />
       </div>
@@ -76,7 +78,6 @@ export default {
     favoritesCount: Number,
     entryRating: Object,
     entryId: Number,
-    actions: Object,
   },
 
   data() {
@@ -98,18 +99,22 @@ export default {
 
     voteLikeButtonClassObject() {
       return {
-        "vote-like_active": this.entryRating.isLiked === 1,
+        "vote-like_active": this.isLiked === 1,
       };
     },
 
     voteDislikeButtonClassObject() {
       return {
-        "vote-dislike_active": this.entryRating.isLiked === -1,
+        "vote-dislike_active": this.isLiked === -1,
       };
     },
 
     rating() {
       return this.entryRating.summ;
+    },
+
+    isLiked() {
+      return this.entryRating.isLiked;
     },
 
     ratingFormatted() {
@@ -142,7 +147,23 @@ export default {
       this.likesPopupIsOpen = false;
     },
 
-    ...mapActions(["requestLikesList"]),
+    like(actionType) {
+      if (actionType === "like") {
+        this.postEntryLike({
+          id: this.entryId,
+          type: "content",
+          sign: this.isLiked === 1 ? 0 : -1 ? 1 : 1,
+        });
+      } else if (actionType === "dislike") {
+        this.postEntryLike({
+          id: this.entryId,
+          type: "content",
+          sign: this.isLiked === -1 ? 0 : 1 ? -1 : -1,
+        });
+      }
+    },
+
+    ...mapActions(["requestLikesList", "postEntryLike"]),
   },
 
   watch: {
@@ -209,8 +230,8 @@ export default {
   border-radius: 50%;
 
   & .icon {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
   }
 
   &.vote-dislike {

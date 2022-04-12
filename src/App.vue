@@ -37,7 +37,9 @@ export default {
 
       socket.on("event", (data) => {
         if (data.data.type === "content voted") {
-          store.commit("apiChannelContentVoted", data.data);
+          if (store.state.auth.auth.id !== data.data.subsite_id) {
+            store.commit("apiChannelContentVoted", data.data);
+          }
         }
 
         /* if (data.data.type === "new_entry_published") {
@@ -158,7 +160,7 @@ export default {
   --box-shadow-avatar: inset 0 0 0 1px #0000001a;
   --branch-color: #e6e6e6;
   --branch-collapse-btn-bg: #e4e4e480;
-  --self-author-highlight-color: #f9edd9;
+  --self-author-badge-color: #4683d9;
   --comment-rating-value-wrapp-bg-positive: #eefbf3;
   --comment-rating-value-wrapp-bg-neutral: #5959591a;
   --comment-rating-value-wrapp-bg-negative: #fff1f1;
@@ -193,7 +195,7 @@ export default {
   --box-shadow-avatar: inset 0 0 0 1px #ffffff1a;
   --branch-color: #353535;
   --branch-collapse-btn-bg: #2b2b2b80;
-  --self-author-highlight-color: #303030;
+  --self-author-badge-color: #6794cc;
   --comment-rating-value-wrapp-bg-positive: #468b6126;
   --comment-rating-value-wrapp-bg-neutral: #202020;
   --comment-rating-value-wrapp-bg-negative: #98484840;
@@ -297,6 +299,11 @@ iframe {
     opacity: 0.5;
   }
 
+  &_disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   &_a {
     background: #fff;
     color: #000;
@@ -331,6 +338,7 @@ iframe {
 
 .vue-notification-group {
   top: 72px !important;
+  cursor: pointer;
 }
 
 body {

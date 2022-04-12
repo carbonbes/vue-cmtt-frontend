@@ -1,8 +1,7 @@
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
-import { notify } from "@kyvg/vue3-notification";
 
-const entryModule = {
+const authModule = {
   state: () => ({
     auth: [],
     isAuth: false,
@@ -129,4 +128,4 @@ const entryModule = {
   },
 };
 
-export default entryModule;
+export default authModule;

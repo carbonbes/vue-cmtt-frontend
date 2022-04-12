@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@formkit/vue": "^1.0.0-beta.6",
     "@kyvg/vue3-notification": "^2.3.4",
     "@zhuowenli/vue-feather-icons": "^5.0.2",
     "axios": "^0.24.0",

@@ -1,11 +1,12 @@
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
-import store from "../index";
+import { notify } from "@kyvg/vue3-notification";
 
-const entryModule = {
+const entryPageModule = {
   state: () => ({
     entry: [],
+    entryPrevLiked: null,
     subsiteData: [],
     entrylikesList: null,
     repostsList: null,
@@ -13,6 +14,7 @@ const entryModule = {
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
     idCommentVisibledReplyForm: null,
+    commentIsSended: false,
   }),
 
   getters: {
@@ -54,6 +56,10 @@ const entryModule = {
 
     idCommentVisibledReplyForm(state) {
       return state.idCommentVisibledReplyForm;
+    },
+
+    commentIsSended(state) {
+      return state.commentIsSended;
     },
   },
 
@@ -110,6 +116,95 @@ const entryModule = {
       state.idCommentVisibledReplyForm = null;
     },
 
+    setCommentIsSended(state, value) {
+      state.commentIsSended = value;
+    },
+
+    setEntryPrevLiked(state, value) {
+      state.entryPrevLiked = value;
+    },
+
+    setEntryIsLiked(state, data) {
+      if (state.entry.id === data.id) {
+        let sign = data.sign;
+        let summ = state.entry.likes.summ;
+
+        if (data.reset) {
+          state.entry.likes.isLiked = state.entryPrevLiked;
+
+          state.entry.likes.summ =
+            sign === -1 && (summ <= 0 || summ >= 0)
+              ? ++state.entry.likes.summ
+              : sign === 0 && summ <= 0
+              ? --state.entry.likes.summ
+              : sign === 0 && summ >= 0
+              ? ++state.entry.likes.summ
+              : sign === 1 && (summ <= 0 || summ >= 0)
+              ? --state.entry.likes.summ
+              : null;
+        } else {
+          state.entry.likes.isLiked = data.sign;
+
+          state.entry.likes.summ =
+            sign === -1 && (summ <= 0 || summ >= 0)
+              ? --state.entry.likes.summ
+              : sign === 0 && summ <= 0
+              ? ++state.entry.likes.summ
+              : sign === 0 && summ >= 0
+              ? --state.entry.likes.summ
+              : sign === 1 && (summ <= 0 || summ >= 0)
+              ? ++state.entry.likes.summ
+              : null;
+        }
+      }
+    },
+
+    setCommentPrevLiked(state, data) {
+      state.commentsList.find((comment) => {
+        if (comment.id == data.id) {
+          comment.likes.prevIsLiked = null;
+          comment.likes.prevIsLiked = data.sign;
+        }
+      });
+    },
+
+    setCommentIsLiked(state, data) {
+      state.commentsList.find((comment) => {
+        if (comment.id == data.id) {
+          let sign = data.sign;
+          let summ = comment.likes.summ;
+
+          if (data.reset) {
+            comment.likes.isLiked = comment.likes.prevIsLiked;
+
+            comment.likes.summ =
+              sign === -1 && (summ <= 0 || summ >= 0)
+                ? ++comment.likes.summ
+                : sign === 0 && summ <= 0
+                ? --comment.likes.summ
+                : sign === 0 && summ >= 0
+                ? ++comment.likes.summ
+                : sign === 1 && (summ <= 0 || summ >= 0)
+                ? --comment.likes.summ
+                : null;
+          } else {
+            comment.likes.isLiked = data.sign;
+
+            comment.likes.summ =
+              sign === -1 && (summ <= 0 || summ >= 0)
+                ? --comment.likes.summ
+                : sign === 0 && summ <= 0
+                ? ++comment.likes.summ
+                : sign === 0 && summ >= 0
+                ? --comment.likes.summ
+                : sign === 1 && (summ <= 0 || summ >= 0)
+                ? ++comment.likes.summ
+                : null;
+          }
+        }
+      });
+    },
+
     apiChannelContentVoted(state, data) {
       if (state.entry.id === data.id) {
         state.entry.likes.summ = data.count;
@@ -120,9 +215,6 @@ const entryModule = {
       state.commentsList.find((comment) => {
         if (comment.id === data.id) {
           comment.likes.summ = data.count;
-          if (store.state.auth.auth.id === data.subsite_id) {
-            comment.likes.isLiked = data.state;
-          }
         }
       });
     },
@@ -162,6 +254,42 @@ const entryModule = {
       });
     },
 
+    postEntryLike({ commit }, data) {
+      commit("setEntryIsLiked", data);
+
+      return API_v1.postLike(data).catch((error) => {
+        commit("setEntryIsLiked", {
+          id: data.id,
+          content: data.content,
+          sign: data.sign,
+          reset: true,
+        });
+
+        notify({
+          title: "Ошибка " + error.response.data.error.code,
+          text: error.response.data.message,
+        });
+      });
+    },
+
+    postCommentLike({ commit }, data) {
+      commit("setCommentIsLiked", data);
+
+      return API_v1.postLike(data).catch((error) => {
+        commit("setCommentIsLiked", {
+          id: data.id,
+          content: data.content,
+          sign: data.sign,
+          reset: true,
+        });
+
+        notify({
+          title: "Ошибка " + error.response.data.error.code,
+          text: error.response.data.message,
+        });
+      });
+    },
+
     requestLikesList({ commit }, data) {
       if (data.type === "entry") {
         return entryRatingInstance
@@ -189,7 +317,15 @@ const entryModule = {
         commit("setCommentsList", response.data.result.items);
       });
     },
+
+    postComment({ commit }, data) {
+      commit("setCommentIsSended", true);
+
+      return API_v1.postComment(data).then(() => {
+        commit("setCommentIsSended", false);
+      });
+    },
   },
 };
 
-export default entryModule;
+export default entryPageModule;

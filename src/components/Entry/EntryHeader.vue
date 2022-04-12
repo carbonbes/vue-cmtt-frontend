@@ -170,7 +170,7 @@ export default {
     width: 22px;
     height: 22px;
     border-radius: 6px;
-    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+    box-shadow: var(--box-shadow-avatar);
     background-size: 100% auto;
     background-repeat: no-repeat;
     image-rendering: -webkit-optimize-contrast;

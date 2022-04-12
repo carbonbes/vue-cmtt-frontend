@@ -29,7 +29,11 @@
 
       <div class="rating-wrapp">
         <div class="rating">
-          <vote-icon class="icon dislike-icon" :class="dislikeBtnClassObj" />
+          <vote-icon
+            class="icon dislike-icon"
+            :class="dislikeBtnClassObj"
+            @click="like('dislike')"
+          />
           <div
             class="value-wrapp"
             :class="ratingValueWrappClassObj"
@@ -52,7 +56,11 @@
               </div>
             </transition>
           </div>
-          <vote-icon class="icon like-icon" :class="likeBtnClassObj" />
+          <vote-icon
+            class="icon like-icon"
+            :class="likeBtnClassObj"
+            @click="like('like')"
+          />
         </div>
       </div>
 
@@ -68,28 +76,11 @@
         >Ответить</span
       >
 
-      <div
-        class="reply-form"
-        :class="replyFormClassObj"
+      <reply-form
+        :parentCommentId="this.commentId"
+        type="reply"
         v-if="this.idCommentVisibledReplyForm === this.commentId"
-      >
-        <div
-          class="content-editable"
-          contenteditable="true"
-          autofocus
-          @click="this.focusReplyForm"
-          v-on-click-outside="this.unfocusReplyForm"
-        ></div>
-        <div class="content-actions">
-          <div class="attaches-actions"></div>
-          <div class="reply-actions">
-            <div class="cancel-btn" @click="this.closeReplyForm">Отменить</div>
-            <button class="button button_b">
-              <div class="button__label">Ответить</div>
-            </button>
-          </div>
-        </div>
-      </div>
+      />
     </div>
     <div
       class="comment-replies"
@@ -121,6 +112,7 @@ import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
 import LikesPopup from "@/components/LikesPopup.vue";
 import CommentText from "@/components/EntryPage/CommentsComponents/CommentText.vue";
 import CommentMedia from "@/components/EntryPage/CommentsComponents/CommentMedia.vue";
+import ReplyForm from "@/components/EntryPage/CommentsComponents/ReplyForm.vue";
 import UpArrowIcon from "@/assets/logos/up_arrow.svg?inline";
 
 export default {
@@ -137,6 +129,7 @@ export default {
     LikesPopup,
     CommentText,
     CommentMedia,
+    ReplyForm,
     UpArrowIcon,
   },
 
@@ -146,9 +139,6 @@ export default {
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
       timeout: false,
-      replyFormFocusTimeout: false,
-      replyFormFocused: false,
-      isReplying: false,
       animationType: null,
     };
   },
@@ -174,7 +164,6 @@ export default {
         "comment-content_highlighted":
           this.commentId == this.hoveredHighlightComment ||
           this.commentId == this.temporaryHightlightComment,
-        /* "comment-content_replying": this.isReplying, */
       };
     },
 
@@ -256,7 +245,7 @@ export default {
     },
 
     commentId() {
-      return this.comment.id;
+      return this.comment.id.toString();
     },
 
     commentRating() {
@@ -271,17 +260,12 @@ export default {
       }
     },
 
-    replyFormClassObj() {
-      return {
-        "reply-form_focused": this.replyFormFocused,
-      };
-    },
-
     queryCommentId() {
       return this.$route.query.comment;
     },
 
     ...mapGetters([
+      "entryId",
       "entryAuthorId",
       "likesList",
       "hoveredHighlightComment",
@@ -333,27 +317,25 @@ export default {
 
     openReplyFrom(id) {
       this.setIdCommentVisibledReplyForm(id);
-      this.replyFormFocusTimeout = setTimeout(() => {
-        this.focusReplyForm();
-      }, 50);
-      this.isReplying = true;
     },
 
-    closeReplyForm() {
-      this.clearIdCommentVisibledReplyForm();
-      clearTimeout(this.replyFormFocusTimeout);
-      this.isReplying = false;
+    like(actionType) {
+      if (actionType === "like") {
+        this.postCommentLike({
+          id: this.commentId,
+          type: "comment",
+          sign: this.commentIsLiked === 1 ? 0 : -1 ? 1 : 1,
+        });
+      } else if (actionType === "dislike") {
+        this.postCommentLike({
+          id: this.commentId,
+          type: "comment",
+          sign: this.commentIsLiked === -1 ? 0 : 1 ? -1 : -1,
+        });
+      }
     },
 
-    focusReplyForm() {
-      this.replyFormFocused = true;
-    },
-
-    unfocusReplyForm() {
-      this.replyFormFocused = false;
-    },
-
-    ...mapActions(["requestLikesList"]),
+    ...mapActions(["requestLikesList", "postCommentLike"]),
 
     ...mapMutations([
       "setHoveredHighlightComment",
@@ -361,7 +343,7 @@ export default {
       "setTemporaryHightlightComment",
       "clearTemporaryHightlightComment",
       "setIdCommentVisibledReplyForm",
-      "clearIdCommentVisibledReplyForm",
+      "setCommentPrevLiked",
     ]),
   },
 
@@ -379,6 +361,8 @@ export default {
     if (this.commentId == this.queryCommentId) {
       this.highlightFocusedComment(this.queryCommentId);
     }
+
+    this.setCommentPrevLiked({ id: this.commentId, sign: this.commentIsLiked });
   },
 
   beforeUnmount() {
@@ -397,7 +381,6 @@ export default {
     --right-gap-highlighted: -25px;
     --width-highlighted: 100%;
 
-    margin-top: 9px;
     font-size: 16px;
     line-height: 1.5em;
 
@@ -426,6 +409,10 @@ export default {
       &:last-child {
         border-left: 1px solid transparent;
       }
+
+      & .comment-content {
+        padding-top: 18px;
+      }
     }
 
     &_max-lvl {
@@ -438,7 +425,6 @@ export default {
 
     & .comment-content {
       position: relative;
-      padding-top: 18px;
       padding-bottom: 5px;
       display: flex;
       flex-wrap: wrap;
@@ -478,6 +464,7 @@ export default {
         border-radius: 50%;
         box-shadow: var(--box-shadow-avatar);
         background-size: cover;
+        background-position: 50% 50%;
         order: -2;
       }
 
@@ -519,7 +506,8 @@ export default {
         white-space: nowrap;
         line-height: 16px;
         font-size: 12px;
-        color: #4683d9;
+        color: var(--self-author-badge-color);
+        z-index: 1;
       }
 
       & .rating-wrapp {
@@ -656,6 +644,23 @@ export default {
             margin-bottom: 6px;
           }
         }
+
+        & .quote {
+          padding-top: 6px;
+          padding-bottom: 6px;
+          display: flex;
+
+          & .icon {
+            min-width: 16px;
+            min-height: 12px;
+            margin-right: 10px;
+            color: #9b9b9b;
+          }
+
+          &-content {
+            min-width: 0;
+          }
+        }
       }
 
       & .media {
@@ -676,61 +681,6 @@ export default {
         line-height: 20px;
         color: var(--grey-color);
         cursor: pointer;
-      }
-
-      & .reply-form {
-        position: relative;
-        margin-top: 12px;
-        margin-bottom: 18px;
-        padding: 12px;
-        flex-basis: 100%;
-        max-width: 100%;
-        border-radius: 10px;
-        color: var(--black-color);
-        background-color: var(--form-bg-color);
-        border: 1px solid var(--form-border-color);
-        transition: background-color 0.15s, border 0.15s, box-shadow 0.15s;
-        order: 2;
-        z-index: 1;
-
-        &:hover {
-          background-color: transparent;
-          border: 1px solid var(--form-border-color-hover);
-          box-shadow: var(--form-shadow);
-        }
-
-        &_focused {
-          background-color: transparent;
-          border: 1px solid var(--form-border-color-active) !important;
-          box-shadow: var(--form-shadow);
-          transition: border 0.2s;
-        }
-
-        & .content-editable {
-          padding-bottom: 40px;
-          outline: none;
-        }
-
-        & .content-actions {
-          margin-top: 12px;
-          display: flex;
-
-          & .reply-actions {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-
-            & .cancel-btn {
-              margin-right: 15px;
-              color: var(--grey-color);
-              cursor: pointer;
-            }
-
-            & .button {
-              height: 40px;
-            }
-          }
-        }
       }
 
       & .avatar,

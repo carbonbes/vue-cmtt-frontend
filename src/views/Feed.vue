@@ -35,7 +35,11 @@ function requestFeed(routeTo, routeFrom, next) {
     })
     .then(() => {
       nProgress.done();
-      next();
+      next((vm) => {
+        if (window.matchMedia("(max-width: 925px)").matches) {
+          vm.emitter.emit("left-sidebar-hide");
+        }
+      });
     });
 }
 
@@ -73,6 +77,10 @@ export default {
         this.emitter.emit("left-sidebar-hide");
       }
     });
+  },
+
+  mounted() {
+    document.title = "Лента";
   },
 
   unmounted() {
