@@ -3,6 +3,7 @@
     class="entry-page__comment"
     :id="this.commentId"
     :class="replyCommentClassObj"
+    :style="{ '--level': this.comment.level }"
   >
     <div class="comment-content" :class="commentContentClassObj">
       <a class="avatar" :style="avatarStyleObj" :href="`u/${authorId}`"></a>
@@ -12,12 +13,11 @@
         :title="this.replyToAuthorName"
         :to="{
           query: { comment: this.replyTo },
-          meta: { smooth: true },
         }"
         v-if="isReply"
         @click="highlightFocusedComment(this.replyTo)"
         @mouseenter="highlightParentComment(this.replyTo)"
-        @mouseleave="clearHighlightParentComment()"
+        @mouseleave="clearHighlightParentComment"
       >
         <up-arrow-icon />
       </router-link>
@@ -39,6 +39,8 @@
             :class="ratingValueWrappClassObj"
             @mouseenter="getLikes"
             @mouseleave="closeLikesPopup"
+            @touchstart="getLikes"
+            v-on-click-outside="this.closeLikesPopup"
           >
             <transition-group
               class="value"
@@ -75,6 +77,10 @@
       <span class="reply-btn" @click="this.openReplyFrom(this.commentId)"
         >Ответить</span
       >
+
+      <div class="more-items-btn">
+        <more-item-icon class="icon" />
+      </div>
 
       <reply-form
         :parentCommentId="this.commentId"
@@ -114,6 +120,7 @@ import CommentText from "@/components/EntryPage/CommentsComponents/CommentText.v
 import CommentMedia from "@/components/EntryPage/CommentsComponents/CommentMedia.vue";
 import ReplyForm from "@/components/EntryPage/CommentsComponents/ReplyForm.vue";
 import UpArrowIcon from "@/assets/logos/up_arrow.svg?inline";
+import MoreItemIcon from "@/assets/logos/more-item_icon.svg?inline";
 
 export default {
   name: "comment-block",
@@ -131,6 +138,7 @@ export default {
     CommentMedia,
     ReplyForm,
     UpArrowIcon,
+    MoreItemIcon,
   },
 
   data() {
@@ -140,6 +148,7 @@ export default {
       likesPopupIsOpen: false,
       timeout: false,
       animationType: null,
+      unread: null,
     };
   },
 
@@ -163,7 +172,8 @@ export default {
       return {
         "comment-content_highlighted":
           this.commentId == this.hoveredHighlightComment ||
-          this.commentId == this.temporaryHightlightComment,
+          this.commentId == this.temporaryHightlightComment ||
+          this.unread,
       };
     },
 
@@ -381,6 +391,7 @@ export default {
     --right-gap-highlighted: -25px;
     --width-highlighted: 100%;
 
+    margin-top: 9px;
     font-size: 16px;
     line-height: 1.5em;
 
@@ -409,10 +420,6 @@ export default {
       &:last-child {
         border-left: 1px solid transparent;
       }
-
-      & .comment-content {
-        padding-top: 18px;
-      }
     }
 
     &_max-lvl {
@@ -425,6 +432,7 @@ export default {
 
     & .comment-content {
       position: relative;
+      padding-top: 18px;
       padding-bottom: 5px;
       display: flex;
       flex-wrap: wrap;
@@ -511,7 +519,10 @@ export default {
       }
 
       & .rating-wrapp {
+        --action-gap: 8px;
+
         margin-left: auto;
+        padding-left: 25px;
         display: flex;
         order: -2;
 
@@ -523,7 +534,6 @@ export default {
           line-height: 20px;
 
           & .icon {
-            --action-gap: 10px;
             width: 18px;
             height: 18px;
             color: var(--grey-color);
@@ -683,6 +693,20 @@ export default {
         cursor: pointer;
       }
 
+      & .more-items-btn {
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        line-height: 20px;
+        color: var(--grey-color);
+        cursor: pointer;
+
+        & .icon {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
       & .avatar,
       .author-name,
       .up-arrow,
@@ -691,7 +715,8 @@ export default {
       .dislike-icon,
       .text,
       .media,
-      .reply-btn {
+      .reply-btn,
+      .more-items-btn {
         z-index: 1;
       }
 
@@ -744,7 +769,8 @@ export default {
         }
       }
 
-      & .reply-btn {
+      & .reply-btn,
+      .more-items-btn {
         &:hover {
           color: var(--blue-color);
         }
@@ -813,6 +839,8 @@ export default {
 
       & .comment-content {
         & .rating-wrapp {
+          --action-gap: 2px;
+
           order: 1;
 
           & .rating {
@@ -822,7 +850,7 @@ export default {
             }
 
             & .value-wrapp {
-              padding: 0 2px;
+              padding: 0 10px;
               min-width: unset;
               justify-content: flex-end;
               background: none;

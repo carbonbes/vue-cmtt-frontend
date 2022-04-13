@@ -11,6 +11,7 @@ const entryPageModule = {
     entrylikesList: null,
     repostsList: null,
     commentsList: null,
+    unreadComments: null,
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
     idCommentVisibledReplyForm: null,
@@ -44,6 +45,10 @@ const entryPageModule = {
 
     commentsList(state) {
       return state.commentsList;
+    },
+
+    unreadComments(state) {
+      return state.unreadComments;
     },
 
     hoveredHighlightComment(state) {
@@ -90,6 +95,10 @@ const entryPageModule = {
 
     setCommentsList(state, data) {
       state.commentsList = data;
+    },
+
+    setUnreadComments(state, data) {
+      state.unreadComments = data;
     },
 
     setHoveredHighlightComment(state, id) {

@@ -197,7 +197,7 @@ export default {
   --branch-collapse-btn-bg: #2b2b2b80;
   --self-author-badge-color: #6794cc;
   --comment-rating-value-wrapp-bg-positive: #468b6126;
-  --comment-rating-value-wrapp-bg-neutral: #202020;
+  --comment-rating-value-wrapp-bg-neutral: #1d1d1d;
   --comment-rating-value-wrapp-bg-negative: #98484840;
   --comment-highlight-bg: #202020;
 }

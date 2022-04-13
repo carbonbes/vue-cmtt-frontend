@@ -172,7 +172,7 @@ export default {
     width: 26px;
     height: 26px;
     color: var(--black-color);
-    opacity: 0.5;
+    opacity: 0.7;
     cursor: pointer;
   }
 }

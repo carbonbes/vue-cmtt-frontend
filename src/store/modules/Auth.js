@@ -87,19 +87,13 @@ const authModule = {
       API_v1.requestLogin(data)
         .then((response) => {
           if (data.rememberMe) {
-            localStorage.setItem("token", response.headers["x-device-token"]);
-            localStorage.setItem("m_hash", response.data.result["m_hash"]);
-            localStorage.setItem(
-              "user_hash",
-              response.data.result["user_hash"]
-            );
+            localStorage.token = response.headers["x-device-token"];
+            localStorage.m_hash = response.data.result["m_hash"];
+            localStorage.user_hash = response.data.result["user_hash"];
           } else {
-            sessionStorage.setItem("token", response.headers["x-device-token"]);
-            sessionStorage.setItem("m_hash", response.data.result["m_hash"]);
-            sessionStorage.setItem(
-              "user_hash",
-              response.data.result["user_hash"]
-            );
+            sessionStorage.token = response.headers["x-device-token"];
+            sessionStorage.m_hash = response.data.result["m_hash"];
+            sessionStorage.user_hash = response.data.result["user_hash"];
           }
           location.reload();
         })
@@ -112,9 +106,8 @@ const authModule = {
 
     mySubscriptions({}, myId) {
       API_v2.subscriptions(myId).then((response) => {
-        localStorage.setItem(
-          "my-subscriptions",
-          JSON.stringify(response.data.result.items)
+        localStorage["my-subscriptions"] = JSON.stringify(
+          response.data.result.items
         );
       });
     },

@@ -1,1 +1,9 @@
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="icon icon--v_etc" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><defs><symbol viewBox="0 0 24 24" id="v_etc"><path d="M5 14a2 2 0 100-4 2 2 0 000 4zM12 14a2 2 0 100-4 2 2 0 000 4zM19 14a2 2 0 100-4 2 2 0 000 4z"></path></symbol></defs><use xlink:href="#v_etc" fill="#595959"></use></svg>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_etc">
+      <path d="M5 14a2 2 0 100-4 2 2 0 000 4zM12 14a2 2 0 100-4 2 2 0 000 4zM19 14a2 2 0 100-4 2 2 0 000 4z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_etc" fill="currentColor"></use>
+</svg>

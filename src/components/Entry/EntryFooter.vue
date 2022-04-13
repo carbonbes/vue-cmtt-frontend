@@ -26,6 +26,8 @@
         class="entry-footer__rating-wrapp"
         @mouseenter="getLikes"
         @mouseleave="closeLikesPopup"
+        @touchstart="getLikes"
+        v-on-click-outside="this.closeLikesPopup"
       >
         <transition-group
           class="entry-footer__rating-value"

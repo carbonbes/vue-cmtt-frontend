@@ -13,7 +13,7 @@
           :authorId="entry.author.id"
           :authorName="entry.author.name"
           :date="entry.date"
-          dateType="0"
+          dateType="1"
         />
       </div>
       <div class="entry-page__content">
@@ -122,7 +122,7 @@
       <div class="entry-page__comments-reply-form">
         <reply-form
           type="root"
-          :closeReplyForm="this.closeReplyForm"
+          :closeReplyForm="this.closeTopReplyForm"
           v-if="replyTopFormVisible"
         />
         <div
@@ -142,7 +142,7 @@
       >
         <reply-form
           type="root"
-          :closeReplyForm="this.closeReplyForm"
+          :closeReplyForm="this.closeBottomReplyForm"
           v-if="replyBottomFormVisible"
         />
         <div
@@ -221,6 +221,7 @@ export default {
       commentWords: ["комментарий", "комментария", "комментариев"],
       replyTopFormVisible: false,
       replyBottomFormVisible: false,
+      unreadComments: null,
     };
   },
 
@@ -283,6 +284,43 @@ export default {
       this.replyBottomFormVisible = false;
     },
 
+    setUnreadComments() {
+      const lastViewed = localStorage.getItem(`${this.entryId}-last-viewed`);
+      const readIds = JSON.parse(
+        localStorage.getItem(`${this.entryId}-read-comments`)
+      );
+      const unreadIds = JSON.parse(
+        localStorage.getItem(`${this.entryId}-unread-comments`)
+      );
+
+      this.unreadComments = unreadIds;
+
+      if (!lastViewed) {
+        localStorage.setItem(`${this.entryId}-last-viewed`, Date.now());
+        localStorage.setItem(
+          `${this.entryId}-read-comments`,
+          JSON.stringify(this.commentsList.map((comment) => comment.id))
+        );
+        localStorage.setItem(
+          `${this.entryId}-unread-comments`,
+          JSON.stringify([])
+        );
+      } else {
+        localStorage.setItem(
+          `${this.entryId}-unread-comments`,
+          JSON.stringify(
+            this.commentsList
+              .filter(
+                (comment) =>
+                  comment.date * 1000 > lastViewed &&
+                  !readIds.includes(comment.id)
+              )
+              .map((comment) => comment.id)
+          )
+        );
+      }
+    },
+
     ...mapMutations(["setEntryPrevLiked"]),
   },
 
@@ -297,7 +335,8 @@ export default {
   },
 
   created() {
-    document.title = this.entry.title;
+    document.title =
+      this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
   },
 
   mounted() {
@@ -388,6 +427,10 @@ export default {
 }
 
 .entry-page__comments {
+  --header-pt: 30px;
+  --header-pb: 15px;
+  --header-label-fs: 20px;
+
   margin: 30px 0;
   color: var(--black-color);
   background: var(--entry-bg-color);
@@ -396,12 +439,12 @@ export default {
   &-header {
     margin-left: auto;
     margin-right: auto;
-    padding-top: 30px;
-    padding-bottom: 15px;
+    padding-top: var(--header-pt);
+    padding-bottom: var(--header-pb);
     max-width: 640px;
 
     & .comments-count {
-      font-size: 20px;
+      font-size: var(--header-label-fs);
       line-height: 1.4em;
       font-weight: 500;
       white-space: nowrap;
@@ -416,8 +459,8 @@ export default {
     padding-bottom: 30px;
     max-width: 640px;
 
-    & > .entry-page__comment:not(:first-child) {
-      margin-top: 25px;
+    & .entry-page__comment:first-child {
+      margin-top: 0;
     }
   }
 
@@ -437,7 +480,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     padding-top: 15px;
-    padding-bottom: 30px;
+    padding-bottom: 12px;
     max-width: 640px;
 
     &.bottom {
@@ -449,7 +492,7 @@ export default {
 
 .reply-form {
   position: relative;
-  padding: 12px;
+  padding: 13.5px 12px 12px 17px;
   flex-basis: 100%;
   max-width: 100%;
   border-radius: 10px;
@@ -552,6 +595,10 @@ export default {
     }
 
     &__comments {
+      --header-pt: 20px;
+      --header-pb: 5px;
+      --header-label-fs: 18px;
+
       padding-left: 15px;
       padding-right: 15px;
       border-radius: 0;

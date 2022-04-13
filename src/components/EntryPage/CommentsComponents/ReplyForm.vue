@@ -41,6 +41,7 @@ import LoaderIcon from "@/components/Loader.vue";
 const props = defineProps({
   parentCommentId: String,
   type: String,
+  closeReplyForm: Function,
 });
 
 const store = useStore();
