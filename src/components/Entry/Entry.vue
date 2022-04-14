@@ -80,7 +80,7 @@
           :title="linkData.data?.link.data?.title"
           :description="linkData.data.link.data.description"
           :urlSrc="linkData.data.link.data.url"
-          :sourceIcon="linkData.data.link.data.image.data.uuid"
+          :sourceIcon="linkData.data.link.data.image?.data.uuid"
           v-if="linkCovers.length > 0"
         />
       </template>
@@ -263,8 +263,6 @@ export default {
           "entry-content__cover_thin":
             this.imageCovers[0].data.items[0].image.data.width < 640 ||
             this.calculatedWidth < 640,
-          "entry-content__cover_highlighted":
-            this.imageCovers[0].data.with_background,
         };
       }
     },
@@ -466,21 +464,12 @@ export default {
   }
 
   &_vertical {
-    padding: var(--entry-thin-cover-gap);
-
-    &.entry-content__cover_highlighted {
-      & > div {
-        max-width: 55% !important;
-      }
-    }
-  }
-
-  &_highlighted {
     padding: 30px;
-    background: var(--highlight-block-color);
+    background: var(--entry-block-highlight);
 
     & > div {
       margin: 0 auto;
+      max-width: 55% !important;
     }
   }
 }

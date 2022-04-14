@@ -113,7 +113,7 @@
       </div>
     </div>
 
-    <div class="entry-page__comments">
+    <div class="entry-page__comments" id="entry-page__comments">
       <div class="entry-page__comments-header">
         <div class="comments-count">
           {{ commentsList.length }} {{ commentsWordDecl }}
@@ -558,6 +558,23 @@ export default {
   &__actions {
     margin-top: 12px;
     display: flex;
+
+    & .attaches-actions {
+      display: flex;
+      align-items: center;
+
+      & .media-attach-btn {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        color: #2ea83a;
+        cursor: pointer;
+      }
+
+      & .media-attach-btn-hidden {
+        display: none;
+      }
+    }
 
     & .reply-actions {
       margin-left: auto;

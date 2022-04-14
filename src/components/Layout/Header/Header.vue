@@ -139,7 +139,6 @@ export default {
 .header__item-bell-btn,
 .header__item-login-btn,
 .header__item-theme-toggle-btn {
-  margin-left: 5px;
   padding: 0 12px;
   display: flex;
   align-items: center;

@@ -6,12 +6,21 @@
       :contenteditable="commentIsSended ? false : true"
       @click="focusReplyForm"
       @input="replyTextHandler"
+      @paste="onPasteHandler"
       v-on-click-outside="unfocusReplyForm"
       ref="textFieldRef"
       v-text="props.text"
     />
     <div class="reply-form__actions">
-      <div class="attaches-actions"></div>
+      <div class="attaches-actions">
+        <label for="file"><media-icon class="media-attach-btn" /></label>
+        <input
+          class="media-attach-btn-hidden"
+          id="file"
+          type="file"
+          tabindex="-1"
+        />
+      </div>
       <div class="reply-actions">
         <div
           class="cancel-btn"
@@ -34,8 +43,9 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, onMounted } from "vue";
+import { computed, reactive, ref, onMounted, inject } from "vue";
 import { useStore } from "vuex";
+import MediaIcon from "@/assets/logos/media_icon.svg?inline";
 import LoaderIcon from "@/components/Loader.vue";
 
 const props = defineProps({
@@ -45,6 +55,7 @@ const props = defineProps({
 });
 
 const store = useStore();
+const emitter = inject("emitter");
 
 const state = reactive({
   replyFormFocused: null,
@@ -55,6 +66,8 @@ const state = reactive({
 const textFieldRef = ref(null);
 
 // getters
+const isAuth = computed(() => store.getters.isAuth);
+
 const entryId = computed(() => store.getters.entryId);
 
 const commentIsSended = computed(() => store.getters.commentIsSended);
@@ -91,21 +104,27 @@ const replyTextHandler = (e) => {
   state.text = e.target.innerText.trim();
 };
 
+const onPasteHandler = (e) => {};
+
 const postComment = () => {
-  store
-    .dispatch("postComment", {
-      id: entryId.value,
-      text: state.text,
-      reply_to: props.parentCommentId || 0,
-      attachments: state.attachments,
-    })
-    .then(() => {
-      if (props.type === "reply") {
-        closeReplyForm();
-      } else if (props.type === "root") {
-        props.closeReplyForm();
-      }
-    });
+  if (isAuth.value) {
+    store
+      .dispatch("postComment", {
+        id: entryId.value,
+        text: state.text,
+        reply_to: props.parentCommentId || 0,
+        attachments: state.attachments,
+      })
+      .then(() => {
+        if (props.type === "reply") {
+          closeReplyForm();
+        } else if (props.type === "root") {
+          props.closeReplyForm();
+        }
+      });
+  } else {
+    emitter.emit("login-modal-toggle");
+  }
 };
 
 onMounted(() => {

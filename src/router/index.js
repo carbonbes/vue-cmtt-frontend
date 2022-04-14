@@ -45,6 +45,20 @@ const router = createRouter({
         )
           resolve({ el: "#" + to.query.comment, top: 75 });
 
+        if (
+          from.name === "EntryPage" &&
+          to.name === "EntryPage" &&
+          to.query.comments === null
+        )
+          resolve({ el: "#entry-page__comments", top: 90, behavior: "smooth" });
+
+        if (
+          from.name !== "EntryPage" &&
+          to.name === "EntryPage" &&
+          to.query.comments === null
+        )
+          resolve({ el: "#entry-page__comments", top: 90 });
+
         if (savedPosition) resolve(savedPosition);
 
         if (!savedPosition) resolve({ top: 0 });

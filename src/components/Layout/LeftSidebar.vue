@@ -1,6 +1,16 @@
 <template>
-  <nav class="left-sidebar" :class="classObject">
-    <div class="sidebar">
+  <nav
+    class="left-sidebar"
+    :class="classObject"
+    v-scroll-lock:[isMobile.matches]="this.isVisibled"
+  >
+    <div
+      class="sidebar"
+      v-on-click-outside:[isMobile.matches]="{
+        state: this.isVisibled,
+        callback: this.hideLeftSidebar,
+      }"
+    >
       <div class="left-sidebar__header">
         <div class="left-sidebar__item">
           <div class="site-burger-btn" @click="visibilityToggler">

@@ -6,12 +6,8 @@
     <right-sidebar />
   </div>
   <transition name="login-modal"
-    ><div
-      class="modal"
-      v-if="loginModalVisibility"
-      v-scroll-lock="{ state: this.loginModalVisibility, gap: true }"
-    >
-      <login-modal /></div
+    ><div class="modal" v-if="loginModalVisibility">
+      <login-modal :isShow="this.loginModalVisibility" /></div
   ></transition>
   <notifications />
 </template>
@@ -144,6 +140,7 @@ export default {
   --dropdown-item-hover-bg-color: #f4f5f6;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
+  --entry-block-highlight: #00000014;
   --left-sidebar-link-hover-color: #ffffff80;
   --active-item-color: #fff;
   --rating-button-hover: #0000000d;
@@ -180,6 +177,7 @@ export default {
   --dropdown-bg-color: #272727;
   --dropdown-item-hover-bg-color: #4d4d4d;
   --highlight-block-color: #1d1d1d;
+  --entry-block-highlight: #ffffff14;
   --left-sidebar-link-hover-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
   --rating-button-hover: #ffffff0d;
@@ -339,6 +337,33 @@ iframe {
 .vue-notification-group {
   top: 72px !important;
   cursor: pointer;
+
+  /* & .notification {
+    margin: 0 5px 5px;
+    padding: 10px;
+    font-size: 12px;
+    color: #ffffff;
+    border-left: 5px solid #187fe7;
+
+    &-title {
+      font-size: 14px;
+    }
+
+    &.success {
+      background: #68cd86;
+      border-left-color: #42a85f;
+    }
+
+    &.warn {
+      background: #ffb648;
+      border-left-color: #f48a06;
+    }
+
+    &.error {
+      background: #e54d42;
+      border-left-color: #b82e24;
+    }
+  } */
 }
 
 body {
@@ -496,6 +521,7 @@ body {
 .entry-page__text-block,
 .profile-popup__description,
 .quote-component__content .author .name,
+.quote-component__content .author .description,
 .entry-content__subtitle p,
 .entry-page__comment .text {
   & a {
@@ -663,6 +689,7 @@ body {
   .entry-page__text-block,
   .profile-popup__description,
   .quote-component__content .author .name,
+  .quote-component__content .author .description,
   .entry-content__subtitle p,
   .entry-page__comment .text {
     & a {

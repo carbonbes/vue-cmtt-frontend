@@ -11,7 +11,7 @@
         <div class="avatar" :style="avatar" v-if="avatarSrc" />
         <div class="data">
           <span class="name" v-html="author"></span>
-          <span class="description" v-text="bio" v-if="bio"></span>
+          <span class="description" v-html="processedBio" v-if="bio"></span>
         </div>
       </div>
     </div>
@@ -63,6 +63,13 @@ export default {
             /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
             '<a href="$3" target="_blank">$2</a>'
           )
+      );
+    },
+
+    processedBio() {
+      return this.bio.replace(
+        /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
+        '<a href="$3" target="_blank">$2</a>'
       );
     },
 

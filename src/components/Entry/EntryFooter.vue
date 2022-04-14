@@ -1,10 +1,13 @@
 <template>
   <div class="entry-footer">
-    <div class="entry-footer__comments-btn entry-footer__item">
+    <router-link
+      class="entry-footer__comments-btn entry-footer__item"
+      :to="{ path: `${this.entryId}`, query: { comments: null } }"
+    >
       <comment-icon class="icon" />
       <span class="label" v-if="commentsCount > 0">{{ commentsCount }}</span>
       <span class="label" v-if="commentsCount === 0">Обсудить</span>
-    </div>
+    </router-link>
     <div class="entry-footer__repost-btn entry-footer__item">
       <repost-icon class="icon" />
       <span class="label" v-if="repostsCount > 0">{{ repostsCount }}</span>

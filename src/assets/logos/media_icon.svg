@@ -1,0 +1,10 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_image">
+      <path d="M8 9.5a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"></path>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M7 3a4 4 0 00-4 4v10a4 4 0 004 4h10a4 4 0 004-4V7a4 4 0 00-4-4H7zM5 7a2 2 0 012-2h10a2 2 0 012 2v5.252l-1.478-1.477a2 2 0 00-3.014.214L8.5 19H7a2 2 0 01-2-2V7zm11.108 5.19L19 15.08V17a2 2 0 01-2 2h-6l5.108-6.81z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_image" fill="currentColor"></use>
+</svg>

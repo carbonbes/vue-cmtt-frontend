@@ -65,6 +65,7 @@ export default {
   box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
   overflow-y: scroll;
   scrollbar-width: none;
+  overscroll-behavior: none;
 
   &::-webkit-scrollbar {
     width: 0;

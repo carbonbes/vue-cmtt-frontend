@@ -2,7 +2,11 @@
   <div
     class="login-modal"
     v-on-keydown="{ key: 'Escape', callback: this.toggleShowLoginModal }"
-    v-on-click-outside="this.toggleShowLoginModal"
+    v-scroll-lock:[true]="this.isShow"
+    v-on-click-outside:[true]="{
+      state: this.isShow,
+      callback: this.toggleShowLoginModal,
+    }"
   >
     <Form
       class="login-modal__form"
@@ -57,6 +61,10 @@ import Loader from "@/components/Loader.vue";
 
 export default {
   components: { Field, Form, CloseIcon, Loader },
+
+  props: {
+    isShow: Boolean,
+  },
 
   data() {
     const initialValues = {

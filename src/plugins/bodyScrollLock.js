@@ -8,17 +8,19 @@ export default {
   install: (app, options) => {
     app.directive("scroll-lock", {
       mounted(el, binding) {
-        if (binding.value.state) {
+        if (binding.arg && binding.value) {
           disableBodyScroll(el, {
-            reserveScrollBarGap: binding.value.gap ? true : false,
+            reserveScrollBarGap: true,
           });
+        } else {
+          enableBodyScroll(el);
         }
       },
 
       updated(el, binding) {
-        if (binding.value.state) {
+        if (binding.arg && binding.value) {
           disableBodyScroll(el, {
-            reserveScrollBarGap: binding.value.gap ? true : false,
+            reserveScrollBarGap: true,
           });
         } else {
           enableBodyScroll(el);

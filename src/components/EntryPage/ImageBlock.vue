@@ -31,8 +31,6 @@ export default {
         "entry-page__img-block_vertical":
           this.item.data.items[0].image.data.width <
           this.item.data.items[0].image.data.height,
-        "entry-page__img-block_highlighted": this.item.data.with_background,
-        "entry-page__img-block_with-border": this.item.data.with_border,
       };
     },
 
@@ -63,29 +61,16 @@ export default {
     width: 100%;
   }
 
-  &_with-border {
-    & > div {
-      border: 1px solid var(--embed-border-color);
-    }
-  }
-
   &_vertical {
-    &.entry-page__img-block_highlighted {
-      & > div {
-        max-width: 55% !important;
-      }
-    }
-  }
-
-  &_highlighted {
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
     max-width: 640px;
-    background: var(--highlight-block-color);
+    background: var(--entry-block-highlight);
 
     & > div {
       margin: 0 auto;
+      max-width: 55% !important;
     }
   }
 }

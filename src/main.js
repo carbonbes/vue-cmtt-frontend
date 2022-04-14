@@ -15,6 +15,7 @@ const app = createApp(App);
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 app.config.unwrapInjectedRef = true;
+app.provide("emitter", emitter);
 nProgress.configure({
   showSpinner: false,
   parent: ".loader",
