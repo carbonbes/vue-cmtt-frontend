@@ -21,9 +21,11 @@ export default {
 
 <style lang="scss">
 .header-popup {
+  --right-gap: 20px;
+
   position: fixed;
   top: 60px;
-  right: 20px;
+  right: var(--right-gap);
   padding-top: 7px;
   padding-bottom: 7px;
   width: 175px;
@@ -57,6 +59,12 @@ export default {
     &:hover {
       background: var(--dropdown-item-hover-bg-color);
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header-popup {
+    --right-gap: 15px;
   }
 }
 </style>

@@ -6,8 +6,16 @@
     :style="{ '--level': this.comment.level }"
   >
     <div class="comment-content" :class="commentContentClassObj">
-      <a class="avatar" :style="avatarStyleObj" :href="`u/${authorId}`"></a>
-      <a class="author-name" v-text="author" :href="`u/${authorId}`"></a>
+      <router-link
+        class="avatar"
+        :style="avatarStyleObj"
+        :to="{ path: `/u/${authorId}` }"
+      ></router-link>
+      <router-link
+        class="author-name"
+        v-text="authorName"
+        :to="{ path: `/u/${authorId}` }"
+      ></router-link>
       <router-link
         class="up-arrow"
         :title="this.replyToAuthorName"
@@ -22,9 +30,9 @@
         <up-arrow-icon />
       </router-link>
       <div class="break"></div>
-      <a class="date-created" href="#">
+      <div class="date-created">
         <date-time :date="dateCreated" type="0" />
-      </a>
+      </div>
       <span class="is-author" v-if="isAuthorOfComment">автор</span>
 
       <div class="rating-wrapp">
@@ -74,9 +82,7 @@
         <comment-media :attachments="media" />
       </div>
 
-      <span class="reply-btn" @click="this.openReplyFrom(this.commentId)"
-        >Ответить</span
-      >
+      <span class="reply-btn" @click="this.openReplyForm()">Ответить</span>
 
       <div class="more-items-btn">
         <more-item-icon class="icon" />
@@ -84,8 +90,9 @@
 
       <reply-form
         :parentCommentId="this.commentId"
+        :closeReplyForm="this.closeReplyForm"
         type="reply"
-        v-if="this.idCommentVisibledReplyForm === this.commentId"
+        v-if="replyFormIsOpen"
       />
     </div>
     <div
@@ -128,6 +135,7 @@ export default {
   props: {
     comment: Object,
     replyToAuthorName: String,
+    currentLvl: Number,
   },
 
   components: {
@@ -146,9 +154,9 @@ export default {
       branchIsCollapsed: false,
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
+      replyFormIsOpen: false,
       timeout: false,
       animationType: null,
-      unread: null,
     };
   },
 
@@ -172,8 +180,7 @@ export default {
       return {
         "comment-content_highlighted":
           this.commentId == this.hoveredHighlightComment ||
-          this.commentId == this.temporaryHightlightComment ||
-          this.unread,
+          this.commentId == this.temporaryHightlightComment,
       };
     },
 
@@ -192,10 +199,6 @@ export default {
         return {
           backgroundImage: `url(https://leonardo.osnova.io/${this.comment.author.avatar.data.uuid})`,
         };
-    },
-
-    author() {
-      return this.comment.author.name;
     },
 
     authorId() {
@@ -280,7 +283,6 @@ export default {
       "likesList",
       "hoveredHighlightComment",
       "temporaryHightlightComment",
-      "idCommentVisibledReplyForm",
     ]),
   },
 
@@ -325,8 +327,12 @@ export default {
       }, 3000);
     },
 
-    openReplyFrom(id) {
-      this.setIdCommentVisibledReplyForm(id);
+    openReplyForm() {
+      this.replyFormIsOpen = true;
+    },
+
+    closeReplyForm() {
+      this.replyFormIsOpen = false;
     },
 
     like(actionType) {
@@ -352,7 +358,6 @@ export default {
       "clearHoveredHighlightComment",
       "setTemporaryHightlightComment",
       "clearTemporaryHightlightComment",
-      "setIdCommentVisibledReplyForm",
       "setCommentPrevLiked",
     ]),
   },
@@ -387,9 +392,9 @@ export default {
   &__comment {
     --branch-gap: 21px;
     --text-right-gap: 85px;
-    --padding-highlighted: 5px 23px;
-    --right-gap-highlighted: -25px;
-    --width-highlighted: 100%;
+    --padding-highlighted: 5px 21px;
+    --right-gap-highlighted: -21px;
+    --width-highlighted: calc(var(--level) * var(--branch-gap) + 100%);
 
     margin-top: 9px;
     font-size: 16px;
@@ -447,18 +452,7 @@ export default {
           width: var(--width-highlighted);
           height: 100%;
           background: var(--comment-highlight-bg);
-        }
-      }
-
-      &_replying {
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -21px;
-          width: calc(100% + 42px);
-          height: 100%;
-          background: var(--comment-highlight-bg);
+          z-index: 2;
         }
       }
 
@@ -514,7 +508,7 @@ export default {
         white-space: nowrap;
         line-height: 16px;
         font-size: 12px;
-        color: var(--self-author-badge-color);
+        color: var(--comment-self-author-badge);
         z-index: 1;
       }
 
@@ -584,6 +578,7 @@ export default {
             & .value {
               font-weight: 500;
               font-size: 14px;
+              cursor: default;
 
               &_neutral {
                 color: var(--grey-color);
@@ -624,11 +619,11 @@ export default {
               position: absolute;
               top: 100%;
               margin-top: 5px;
-              z-index: 2;
+              z-index: 3;
 
               &-enter-active,
               &-leave-active {
-                transition: opacity 0.1s;
+                transition: opacity 0.075s;
               }
 
               &-enter-from,
@@ -679,8 +674,8 @@ export default {
         padding-right: 85px;
         flex-basis: 100%;
 
-        & .media-wrapp {
-          & + .media-wrapp {
+        & .img-wrapp {
+          & + .img-wrapp {
             margin-top: 7px;
           }
         }
@@ -713,11 +708,12 @@ export default {
       .date-created,
       .like-icon,
       .dislike-icon,
+      .value,
       .text,
       .media,
       .reply-btn,
       .more-items-btn {
-        z-index: 1;
+        z-index: 2;
       }
 
       & .author-name,
@@ -770,7 +766,8 @@ export default {
       }
 
       & .reply-btn,
-      .more-items-btn {
+      .more-items-btn,
+      .up-arrow svg {
         &:hover {
           color: var(--blue-color);
         }
@@ -829,7 +826,7 @@ export default {
       --text-right-gap: 0;
       --padding-highlighted: 8px 0;
       --right-gap-highlighted: -15px;
-      --width-highlighted: 100vh;
+      --width-highlighted: calc(var(--level) * var(--branch-gap) + 100vh);
 
       &_reply {
         &::before {
@@ -850,7 +847,7 @@ export default {
             }
 
             & .value-wrapp {
-              padding: 0 10px;
+              padding: 0 13px;
               min-width: unset;
               justify-content: flex-end;
               background: none;

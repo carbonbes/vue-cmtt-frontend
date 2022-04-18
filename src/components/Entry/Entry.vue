@@ -137,7 +137,7 @@
           :maxHeight="600"
         />
       </div>
-      <router-link class="entry__link" :to="entry.id.toString()"></router-link>
+      <router-link class="entry__link" :to="{ path: '/' + entry.id.toString() }"></router-link>
     </div>
 
     <entry-footer
@@ -337,8 +337,9 @@ export default {
 
 <style lang="scss">
 .entry {
+  --vertical-cover-max-width: 55%;
+
   position: relative;
-  max-width: 640px;
   display: flex;
   flex-flow: column;
   color: var(--black-color);
@@ -469,7 +470,7 @@ export default {
 
     & > div {
       margin: 0 auto;
-      max-width: 55% !important;
+      max-width: var(--vertical-cover-max-width) !important;
     }
   }
 }
@@ -487,17 +488,21 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  .entry {
+    --vertical-cover-max-width: 75%;
+
+    &-content {
+      .embed,
+      .link-block {
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+    }
+  }
+
   .e-island {
     padding-left: 15px;
     padding-right: 15px;
-  }
-
-  .entry-content {
-    .embed,
-    .link-block {
-      margin-left: 15px;
-      margin-right: 15px;
-    }
   }
 }
 

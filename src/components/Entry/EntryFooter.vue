@@ -2,7 +2,7 @@
   <div class="entry-footer">
     <router-link
       class="entry-footer__comments-btn entry-footer__item"
-      :to="{ path: `${this.entryId}`, query: { comments: null } }"
+      :to="{ path: `/${this.entryId}`, query: { comments: null } }"
     >
       <comment-icon class="icon" />
       <span class="label" v-if="commentsCount > 0">{{ commentsCount }}</span>
@@ -187,6 +187,7 @@ export default {
 .entry-footer {
   display: flex;
   align-items: center;
+  font-size: 15px;
 }
 
 .entry-footer__item {
@@ -202,6 +203,8 @@ export default {
 .entry-footer__repost-btn,
 .entry-footer__favorite-btn {
   & .icon {
+    width: 22px;
+    height: 22px;
     color: inherit;
     stroke-width: 2.25;
   }
@@ -308,11 +311,12 @@ export default {
   position: absolute;
   top: 100%;
   margin-top: 13px;
-  z-index: 2;
+  font-size: 16px;
+  z-index: 3;
 
   &-enter-active,
   &-leave-active {
-    transition: opacity 0.1s;
+    transition: opacity 0.075s;
   }
 
   &-enter-from,
@@ -365,7 +369,9 @@ export default {
   .entry-footer__item:not(:last-child) {
     margin-right: 20px;
   }
+}
 
+@media screen and (max-width: 1080px) {
   .entry-footer__rating-wrapp {
     justify-content: flex-end;
   }

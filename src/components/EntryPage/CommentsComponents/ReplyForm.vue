@@ -1,35 +1,69 @@
 <template>
   <div class="reply-form" :class="replyFormClassObj">
-    <p
-      class="reply-form__text-field"
-      :class="textFieldClassObj"
-      :contenteditable="commentIsSended ? false : true"
-      @click="focusReplyForm"
-      @input="replyTextHandler"
-      @paste="onPasteHandler"
-      v-on-click-outside="unfocusReplyForm"
-      ref="textFieldRef"
-      v-text="props.text"
-    />
+    <div class="content">
+      <div
+        class="placeholder"
+        v-if="props.type === 'root' && !state.text.length"
+      >
+        Написать комментарий...
+      </div>
+      <div
+        class="placeholder"
+        v-if="props.type === 'reply' && !state.text.length"
+      >
+        Написать ответ...
+      </div>
+      <p
+        class="reply-form__text-field"
+        :class="textFieldClassObj"
+        :contenteditable="commentIsSended ? false : true"
+        @click="focusReplyForm"
+        @input="replyTextHandler"
+        @paste="onPasteHandler"
+        v-text="state.text"
+        v-on-click-outside:[true]="{
+          state: state.replyFormFocused,
+          callback: unfocusReplyForm,
+        }"
+        ref="textFieldRef"
+      ></p>
+    </div>
+    <div class="attachments" v-if="state.attachments.length">
+      <div
+        class="attachments__item"
+        v-for="(attachment, index) in state.attachments"
+        :key="index"
+      >
+        <img
+          :src="`https://leonardo.osnova.io/${attachment.data.uuid}/-/preview/200x200/-/format/webp/`"
+          alt=""
+        />
+      </div>
+    </div>
     <div class="reply-form__actions">
       <div class="attaches-actions">
-        <label for="file"><media-icon class="media-attach-btn" /></label>
+        <label for="file"
+          ><media-icon class="media-attach-btn" :class="mediaAttachBtnClassObj"
+        /></label>
         <input
-          class="media-attach-btn-hidden"
+          class="media-attach-input-hidden"
           id="file"
           type="file"
           tabindex="-1"
+          @change="attachmentsHandler"
+          :disabled="state.attachments.length === 2"
         />
+        <div class="attachments-loader" v-if="state.uploadedAttachment">
+          <LoaderIcon />
+        </div>
       </div>
       <div class="reply-actions">
+        <div class="cancel-btn" @click="closeReplyForm">Отменить</div>
         <div
-          class="cancel-btn"
-          v-if="props.type === 'reply'"
-          @click="closeReplyForm"
+          class="button button_b"
+          :class="replyFormBtnClassObj"
+          @click="postComment"
         >
-          Отменить
-        </div>
-        <div class="button button_b" :class="replyFormBtn" @click="postComment">
           <template v-if="!commentIsSended">
             <div class="button__label">Ответить</div>
           </template>
@@ -45,8 +79,12 @@
 <script setup>
 import { computed, reactive, ref, onMounted, inject } from "vue";
 import { useStore } from "vuex";
+import { notify } from "@kyvg/vue3-notification";
 import MediaIcon from "@/assets/logos/media_icon.svg?inline";
 import LoaderIcon from "@/components/Loader.vue";
+
+const store = useStore();
+const emitter = inject("emitter");
 
 const props = defineProps({
   parentCommentId: String,
@@ -54,13 +92,11 @@ const props = defineProps({
   closeReplyForm: Function,
 });
 
-const store = useStore();
-const emitter = inject("emitter");
-
 const state = reactive({
-  replyFormFocused: null,
+  replyFormFocused: false,
   text: "",
-  attachments: null,
+  attachments: [],
+  uploadedAttachment: false,
 });
 
 const textFieldRef = ref(null);
@@ -78,12 +114,15 @@ const replyFormClassObj = computed(() => ({
 }));
 
 const textFieldClassObj = computed(() => ({
-  "reply-form__text-field_writes-0": !state.text && props.type === "root",
-  "reply-form__text-field_writes-1": !state.text && props.type === "reply",
+  "reply-form__text-field_empty": !state.text.length,
 }));
 
-const replyFormBtn = computed(() => ({
-  button_disabled: !state.text.length,
+const replyFormBtnClassObj = computed(() => ({
+  button_disabled: !state.text.length && !state.attachments.length,
+}));
+
+const mediaAttachBtnClassObj = computed(() => ({
+  "media-attach-btn_disabled": state.attachments.length === 2,
 }));
 
 // methods
@@ -97,14 +136,67 @@ const unfocusReplyForm = () => {
 };
 
 const closeReplyForm = () => {
-  store.commit("clearIdCommentVisibledReplyForm");
+  props.closeReplyForm();
 };
 
 const replyTextHandler = (e) => {
-  state.text = e.target.innerText.trim();
+  state.text = e.target.textContent.trim();
 };
 
-const onPasteHandler = (e) => {};
+const onPasteHandler = (e) => {
+  e.preventDefault();
+
+  if (
+    e.clipboardData.files.length > 0 &&
+    state.attachments.length !== 2 &&
+    !state.uploadedAttachment
+  ) {
+    state.uploadedAttachment = true;
+    store
+      .dispatch("uploadFile", e.clipboardData.files[0])
+      .then((result) => {
+        state.uploadedAttachment = false;
+        state.attachments.push(result.data.result[0]);
+      })
+      .catch(() => (state.uploadedAttachment = false));
+  } else if (
+    e.clipboardData.files.length > 0 &&
+    state.attachments.length !== 2 &&
+    state.uploadedAttachment
+  ) {
+    notify({
+      title: "Ошибка",
+      type: "error",
+      text: "Подождите, пока загрузится текущее прикрепление",
+    });
+  } else if (
+    e.clipboardData.files.length > 0 &&
+    state.attachments.length === 2
+  ) {
+    notify({
+      title: "Ошибка",
+      type: "error",
+      text: "Максимально можно прикрепить только два файла к комментарию, удалите один из них и повторите попытку",
+    });
+  }
+
+  if (e.clipboardData.getData("text/plain").trim().length > 0) {
+    state.text = e.clipboardData.getData("text/plain");
+  }
+};
+
+const attachmentsHandler = (e) => {
+  if (e.target.files.length > 0) {
+    state.uploadedAttachment = true;
+    store
+      .dispatch("uploadFile", e.target.files[0])
+      .then((result) => {
+        state.uploadedAttachment = false;
+        state.attachments.push(result.data.result[0]);
+      })
+      .catch(() => (state.uploadedAttachment = false));
+  }
+};
 
 const postComment = () => {
   if (isAuth.value) {
@@ -113,14 +205,10 @@ const postComment = () => {
         id: entryId.value,
         text: state.text,
         reply_to: props.parentCommentId || 0,
-        attachments: state.attachments,
+        attachments: JSON.stringify(state.attachments),
       })
       .then(() => {
-        if (props.type === "reply") {
-          closeReplyForm();
-        } else if (props.type === "root") {
-          props.closeReplyForm();
-        }
+        props.closeReplyForm();
       });
   } else {
     emitter.emit("login-modal-toggle");

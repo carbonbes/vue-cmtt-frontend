@@ -1,3 +1,4 @@
+import store from "../index";
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
@@ -14,7 +15,6 @@ const entryPageModule = {
     unreadComments: null,
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
-    idCommentVisibledReplyForm: null,
     commentIsSended: false,
   }),
 
@@ -57,10 +57,6 @@ const entryPageModule = {
 
     temporaryHightlightComment(state) {
       return state.temporaryHightlightComment;
-    },
-
-    idCommentVisibledReplyForm(state) {
-      return state.idCommentVisibledReplyForm;
     },
 
     commentIsSended(state) {
@@ -115,14 +111,6 @@ const entryPageModule = {
 
     clearTemporaryHightlightComment(state) {
       state.temporaryHightlightComment = null;
-    },
-
-    setIdCommentVisibledReplyForm(state, id) {
-      state.idCommentVisibledReplyForm = id;
-    },
-
-    clearIdCommentVisibledReplyForm(state) {
-      state.idCommentVisibledReplyForm = null;
     },
 
     setCommentIsSended(state, value) {
@@ -236,7 +224,11 @@ const entryPageModule = {
       newComment.isRemoved = data.comment.is_removed;
       newComment.media = [...data.comment.attaches];
 
-      state.commentsList.push(newComment);
+      if (data.comment.author.id === store.state.auth.auth.id) {
+        state.commentsList.unshift(newComment);
+      } else {
+        state.commentsList.push(newComment);
+      }
     },
 
     entryCommentsChannelEdited(state, data) {
@@ -333,6 +325,10 @@ const entryPageModule = {
       return API_v1.postComment(data).then(() => {
         commit("setCommentIsSended", false);
       });
+    },
+
+    uploadFile({}, file) {
+      return API_v1.uploadFile(file);
     },
   },
 };

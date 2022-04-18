@@ -126,7 +126,7 @@
           v-if="replyTopFormVisible"
         />
         <div
-          class="entry-page__comments-pseudo-reply-form"
+          class="pseudo-reply-form"
           @click="openTopReplyForm"
           v-if="!replyTopFormVisible"
         >
@@ -138,7 +138,7 @@
       </div>
       <div
         class="entry-page__comments-reply-form bottom"
-        v-if="commentsList.length > 10"
+        v-if="commentsList.length >= 10"
       >
         <reply-form
           type="root"
@@ -146,8 +146,9 @@
           v-if="replyBottomFormVisible"
         />
         <div
-          class="entry-page__comments-pseudo-reply-form"
+          class="pseudo-reply-form"
           @click="openBottomReplyForm"
+          :closeReplyForm="this.closeBottomReplyForm"
           v-if="!replyBottomFormVisible"
         >
           Написать комментарий...
@@ -243,7 +244,7 @@ export default {
 
   methods: {
     flatCommentsToTree(comments) {
-      var map = {},
+      let map = {},
         node,
         roots = [],
         i;
@@ -464,7 +465,7 @@ export default {
     }
   }
 
-  &-pseudo-reply-form {
+  & .pseudo-reply-form {
     padding: 0 17px;
     height: 48px;
     display: flex;
@@ -522,6 +523,35 @@ export default {
     user-select: none;
   }
 
+  & .content {
+    position: relative;
+  }
+
+  & .attachments {
+    padding-top: 25px;
+    display: flex;
+    flex-direction: row;
+
+    &__item {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      box-shadow: var(--border-a);
+      overflow: hidden;
+
+      &:not(:first-child) {
+        margin-left: 25px;
+      }
+
+      & img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+      }
+    }
+  }
+
   &__text-field {
     position: relative;
     margin: 0;
@@ -530,29 +560,16 @@ export default {
     width: 100%;
     display: inline-block;
     outline: none;
+    user-select: auto;
+  }
 
-    &_writes-0 {
-      &::after {
-        content: "Написать комментарий...";
-      }
-    }
-
-    &_writes-1 {
-      &::after {
-        content: "Написать ответ...";
-      }
-    }
-
-    &_writes-0,
-    &_writes-1 {
-      &::after {
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: var(--grey-color);
-        cursor: text;
-      }
-    }
+  & .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 16px;
+    line-height: 22px;
+    color: var(--grey-color);
   }
 
   &__actions {
@@ -569,9 +586,19 @@ export default {
         display: flex;
         color: #2ea83a;
         cursor: pointer;
+
+        &_disabled {
+          opacity: 0.5;
+          cursor: default;
+          pointer-events: none;
+        }
       }
 
-      & .media-attach-btn-hidden {
+      & .attachments-loader {
+        margin-left: 15px;
+      }
+
+      & .media-attach-input-hidden {
         display: none;
       }
     }
@@ -605,10 +632,20 @@ export default {
 
 @media screen and (max-width: 768px) {
   .entry-page {
-    border-radius: 0;
-
     &__header {
       padding-top: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    &__content {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    &__footer {
+      padding-left: 15px;
+      padding-right: 15px;
     }
 
     &__comments {
@@ -639,10 +676,12 @@ export default {
       margin-bottom: 15px;
     }
   }
+}
 
-  .ep-island {
-    margin-left: 15px;
-    margin-right: 15px;
+@media screen and (max-width: 1021px) {
+  .entry-page,
+  .entry-page__comments {
+    border-radius: 0;
   }
 }
 </style>

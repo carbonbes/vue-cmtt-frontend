@@ -94,7 +94,7 @@ export default {
   },
 
   created() {
-    this.isMobile = window.matchMedia("(max-width: 925px)");
+    this.isMobile = window.matchMedia("(max-width: 1219px)");
 
     if (this.isMobile.matches) {
       this.isVisibled = false;
@@ -169,7 +169,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 925px) {
+@media screen and (max-width: 1219px) {
   .left-sidebar {
     position: fixed;
     top: 0;

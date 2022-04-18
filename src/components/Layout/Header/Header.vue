@@ -32,19 +32,27 @@
       >
         <user-icon class="icon" />
       </div>
-      <div class="header__item-profile-wrapp" v-if="isAuth">
+      <div
+        class="header__item-profile-wrapp"
+        @touchstart="openDropdown"
+        v-if="isAuth"
+      >
         <div class="header__item-avatar-wrapp">
           <div class="header__item-avatar icon" :style="avatarStyleObject" />
         </div>
         <div
           class="header__item-avatar-more-wrapp"
           :class="moreButtonClassObject"
-          @click="toggleDropdownVisibility"
+          @click="toggleDrowdownVisible"
+          v-on-click-outside:[true]="{
+            state: dropdownVisible,
+            callback: closeDropdown,
+          }"
         >
           <chevron-down class="header__item-avatar-more icon" />
         </div>
+        <dropdown v-if="dropdownVisible" />
       </div>
-      <dropdown v-if="dropdownVisible" />
     </div>
     <div class="loader" />
   </header>
@@ -93,8 +101,16 @@ export default {
       this.emitter.emit("login-modal-toggle");
     },
 
-    toggleDropdownVisibility() {
+    toggleDrowdownVisible() {
       this.dropdownVisible = !this.dropdownVisible;
+    },
+
+    openDropdown() {
+      this.dropdownVisible = true;
+    },
+
+    closeDropdown() {
+      this.dropdownVisible = false;
     },
   },
 
@@ -166,7 +182,6 @@ export default {
 }
 
 .header__item-profile-wrapp {
-  margin-left: 5px;
   display: flex;
 }
 
@@ -218,6 +233,10 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  .header__item-avatar-more-wrapp {
+    display: none;
+  }
+
   .header__item-bell-btn,
   .header__item-login-btn,
   .header__item-theme-toggle-btn,

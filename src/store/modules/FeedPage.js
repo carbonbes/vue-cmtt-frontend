@@ -98,6 +98,14 @@ const feedPageModule = {
         }
       });
     },
+
+    entryCommentsChannelCreated(state, data) {
+      state.feed.find((entry) => {
+        if (entry.id === data.comment.id) {
+          entry.counters.comments = ++entry.counters.comments;
+        }
+      });
+    },
   },
 
   actions: {

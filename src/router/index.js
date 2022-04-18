@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Feed from "@/views/Feed.vue";
+import FeedPage from "@/views/FeedPage.vue";
 import EntryPage from "@/views/EntryPage.vue";
+import ProfilePage from "@/views/ProfilePage.vue";
+import ProfileEntries from "@/components/ProfilePage/ProfileEntries.vue";
 
 const routes = [
   {
     path: "/:sorting?",
     name: "FeedPage",
-    component: Feed,
+    component: FeedPage,
     beforeEnter: (to, from, next) => {
       let sorting = localStorage.getItem("saved-sorting");
 
@@ -21,6 +23,18 @@ const routes = [
     path: "/:id(\\d+)",
     name: "EntryPage",
     component: EntryPage,
+  },
+  {
+    path: "/u/:id(\\d+)",
+    name: "ProfilePage",
+    component: ProfilePage,
+    children: [
+      {
+        path: "",
+        component: ProfileEntries,
+        alias: "entries"
+      },
+    ],
   },
 ];
 
@@ -50,14 +64,14 @@ const router = createRouter({
           to.name === "EntryPage" &&
           to.query.comments === null
         )
-          resolve({ el: "#entry-page__comments", top: 90, behavior: "smooth" });
+          resolve({ el: "#entry-page__comments", top: 60, behavior: "smooth" });
 
         if (
           from.name !== "EntryPage" &&
           to.name === "EntryPage" &&
           to.query.comments === null
         )
-          resolve({ el: "#entry-page__comments", top: 90 });
+          resolve({ el: "#entry-page__comments", top: 60 });
 
         if (savedPosition) resolve(savedPosition);
 

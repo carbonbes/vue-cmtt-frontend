@@ -1,8 +1,9 @@
 <template>
   <div class="entry-header">
     <div class="entry-header__data">
-      <div
+      <router-link
         class="entry-header__subsite-data entry-header__item"
+        :to="{ path: `/u/${subsiteId}` }"
         @mouseenter="showSubsitePopup"
         @mouseleave="hideSubsitePopup"
       >
@@ -12,7 +13,7 @@
             'background-image': `url(https://leonardo.osnova.io/${subsiteAvatar}/-/scale_crop/64x64/)`,
           }"
         />
-        <span class="entry-header__subsite-name">{{ subsiteName }}</span>
+        <div class="entry-header__subsite-name">{{ subsiteName }}</div>
         <transition name="entry-header-subsite-data__popup"
           ><div
             class="
@@ -26,9 +27,10 @@
               :isSubscribed="this.subsiteData.isSubscribed"
             /></div
         ></transition>
-      </div>
-      <div
+      </router-link>
+      <router-link
         class="entry-header__author-data entry-header__item"
+        :to="{ path: `/u/${authorId}` }"
         @mouseenter="showAuthorPopup"
         @mouseleave="hideAuthorPopup"
         v-if="!isSameAuthor"
@@ -49,7 +51,7 @@
               :isSubscribed="this.authorData.isSubscribed"
             /></div
         ></transition>
-      </div>
+      </router-link>
       <time
         class="entry-header__date-publish entry-header__item"
         :title="new Date(date * 1000).toLocaleString()"
@@ -142,6 +144,7 @@ export default {
 .entry-header {
   display: flex;
   align-items: center;
+  font-size: 15px;
   line-height: 22px;
 
   &__item {
@@ -184,7 +187,6 @@ export default {
   &__date-publish {
     position: relative;
     font-size: 15px;
-    z-index: 1;
   }
 
   &__subsite-data,

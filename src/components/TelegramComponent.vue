@@ -25,7 +25,7 @@
       >
     </div>
     <div class="embed-cover" v-if="imgCover || videoCover">
-      <img :src="imgCover" alt="" v-if="imgCover" />
+      <img class="embed-cover_img" :src="imgCover" alt="" v-if="imgCover" />
       <video-component
         class="embed-cover_video"
         :srcVideo="videoSrc"

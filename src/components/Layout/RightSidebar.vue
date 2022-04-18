@@ -11,7 +11,7 @@
   flex-shrink: 0;
 }
 
-@media screen and (max-width: 1259px) {
+@media screen and (max-width: 1539px) {
   .right-sidebar {
     display: none;
   }

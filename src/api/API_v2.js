@@ -2,10 +2,6 @@ import { instance_v2 } from "./config";
 
 export const API_v2 = {
   getTimeline(data) {
-    if (!data.sorting && !data.lastId) {
-      return instance_v2.get("timeline?sorting=hotness");
-    }
-
     if (data.sorting === "new" && data.lastId) {
       return instance_v2.get(`timeline?sorting=date&lastId=${data.lastId}`);
     }
@@ -14,8 +10,26 @@ export const API_v2 = {
       return instance_v2.get(`timeline?sorting=date`);
     }
 
+    if (data.sorting === "" && !data.lastId) {
+      return instance_v2.get(`timeline?sorting=hotness`);
+    }
+
     if (data.sorting === "" && data.lastId) {
       return instance_v2.get(`timeline?sorting=hotness&lastId=${data.lastId}`);
+    }
+
+    if (data.sorting && !data.lastId) {
+      return instance_v2.get(`timeline?sorting=${data.sorting}`);
+    }
+
+    if (data.sorting && data.lastId) {
+      return instance_v2.get(
+        `timeline?sorting=${data.sorting}&lastId=${data.lastId}`
+      );
+    }
+
+    if (!data.sorting && !data.lastId && data.subsiteId) {
+      return instance_v2.get(`timeline?subsitesIds=${data.subsiteId}`);
     }
   },
 

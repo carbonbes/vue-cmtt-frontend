@@ -22,7 +22,7 @@
       <div class="embed-text" v-html="text"></div>
     </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
-      <img :src="imgSrc" alt="" v-if="imgSrc" />
+      <img class="embed-cover_img" :src="imgSrc" alt="" v-if="imgSrc" />
       <video-component
         class="embed-cover_video"
         :srcVideo="videoSrc"

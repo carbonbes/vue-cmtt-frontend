@@ -1,5 +1,5 @@
 <template>
-  <template v-for="comment in comments" :key="comment.id">
+  <template v-for="comment in props.comments" :key="comment.id">
     <comment-block
       :comment="comment"
       v-if="comment.isIgnored !== true || comment.isRemoved !== true"
@@ -17,7 +17,7 @@ let socket = io("https://ws-sio.tjournal.ru", {
   transports: ["websocket"],
 });
 
-defineProps({ comments: Array });
+const props = defineProps({ comments: Array });
 
 onMounted(() => {
   socket.emit("subscribe", {
@@ -38,6 +38,12 @@ onMounted(() => {
     if (data.data.type === "comment_edited") {
       store.commit("entryCommentsChannelEdited", data.data);
     }
+  });
+
+  socket.on("reconnect", () => {
+    socket.emit("subscribe", {
+      channel: `api:comments-${store.state.entry.entry.id}`,
+    });
   });
 });
 

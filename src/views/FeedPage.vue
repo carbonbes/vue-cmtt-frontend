@@ -36,7 +36,7 @@ function requestFeed(routeTo, routeFrom, next) {
     .then(() => {
       nProgress.done();
       next((vm) => {
-        if (window.matchMedia("(max-width: 925px)").matches) {
+        if (window.matchMedia("(max-width: 1219px)").matches) {
           vm.emitter.emit("left-sidebar-hide");
         }
       });
@@ -73,7 +73,7 @@ export default {
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
     requestFeed(routeTo, routeFrom, next).then(() => {
-      if (window.matchMedia("(max-width: 925px)").matches) {
+      if (window.matchMedia("(max-width: 1219px)").matches) {
         this.emitter.emit("left-sidebar-hide");
       }
     });
@@ -97,6 +97,10 @@ export default {
 .feed-page__content {
   margin: 0 auto;
   max-width: 640px;
+
+  & .entry {
+    max-width: 640px;
+  }
 
   & .entry,
   .feed-loader {

@@ -15,6 +15,8 @@ const app = createApp(App);
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 app.config.unwrapInjectedRef = true;
+app.config.globalProperties.append = (path, pathToAppend) =>
+  path + (path.endsWith("/") ? "" : "/") + pathToAppend;
 app.provide("emitter", emitter);
 nProgress.configure({
   showSpinner: false,

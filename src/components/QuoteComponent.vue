@@ -86,7 +86,7 @@ export default {
 
 <style lang="scss">
 .quote-component {
-  --quote-padding: 45px 0 35px 25px;
+  --quote-padding: 35px 0 35px 25px;
   --font-size-small: 22px;
   --line-height-small: 32px;
   --font-size-medium: 24px;

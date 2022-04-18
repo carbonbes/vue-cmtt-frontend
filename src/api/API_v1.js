@@ -18,7 +18,7 @@ export const API_v1 = {
     formData.append("id", data.id);
     formData.append("text", data.text);
     formData.append("reply_to", data.reply_to);
-    /* formData.append("attachments", data.attachments); */
+    formData.append("attachments", data.attachments);
 
     return instance_v1.post("comment/add", formData);
   },
@@ -30,5 +30,12 @@ export const API_v1 = {
     formData.append("sign", data.sign);
 
     return instance_v1.post("like", formData);
+  },
+
+  uploadFile(file) {
+    let formData = new FormData();
+    formData.append("file", file);
+
+    return instance_v1.post("uploader/upload", formData);
   },
 };

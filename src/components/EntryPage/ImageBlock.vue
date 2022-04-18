@@ -27,7 +27,9 @@ export default {
       return {
         "entry-page__img-block_wide":
           this.item.data.items[0].image.data.width > 1020,
-        "entry-page__img-block_thin": this.calculatedWidth < 1020,
+        "entry-page__img-block_thin":
+          this.calculatedWidth < 1020 ||
+          this.item.data.items[0].image.data.width < 1020,
         "entry-page__img-block_vertical":
           this.item.data.items[0].image.data.width <
           this.item.data.items[0].image.data.height,
@@ -50,6 +52,8 @@ export default {
 
 <style lang="scss">
 .entry-page__img-block {
+  --vertical-max-width: 55% !important;
+
   margin: 24px auto;
   width: 640px;
 
@@ -61,7 +65,8 @@ export default {
     width: 100%;
   }
 
-  &_vertical {
+  &_vertical,
+  &_thin {
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
@@ -70,7 +75,7 @@ export default {
 
     & > div {
       margin: 0 auto;
-      max-width: 55% !important;
+      max-width: var(--vertical-max-width);
     }
   }
 }

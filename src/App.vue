@@ -42,6 +42,12 @@ export default {
         store.commit("apiChannelNewEntry", data.data);
       } */
       });
+
+      socket.on("reconnect", () => {
+        socket.emit("subscribe", {
+          channel: "api",
+        });
+      });
     });
 
     onUnmounted(() => {
@@ -132,6 +138,7 @@ export default {
   --red-color: #e92a40;
   --black-color: #000;
   --bg-color: #f2f2f2;
+  --border-a: 0 0 0 1px #0000001a;
   --header-bg-color: #fff4e2;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
@@ -157,7 +164,7 @@ export default {
   --box-shadow-avatar: inset 0 0 0 1px #0000001a;
   --branch-color: #e6e6e6;
   --branch-collapse-btn-bg: #e4e4e480;
-  --self-author-badge-color: #4683d9;
+  --comment-self-author-badge: #e5a040;
   --comment-rating-value-wrapp-bg-positive: #eefbf3;
   --comment-rating-value-wrapp-bg-neutral: #5959591a;
   --comment-rating-value-wrapp-bg-negative: #fff1f1;
@@ -171,6 +178,7 @@ export default {
   --red-color: #c2646d;
   --black-color: #efefef;
   --bg-color: #000;
+  --border-a: 0 0 0 1px #ffffff25;
   --header-bg-color: #202020;
   --entry-bg-color: #151515;
   --embed-border-color: #303030;
@@ -193,7 +201,7 @@ export default {
   --box-shadow-avatar: inset 0 0 0 1px #ffffff1a;
   --branch-color: #353535;
   --branch-collapse-btn-bg: #2b2b2b80;
-  --self-author-badge-color: #6794cc;
+  --comment-self-author-badge: #d1924d;
   --comment-rating-value-wrapp-bg-positive: #468b6126;
   --comment-rating-value-wrapp-bg-neutral: #1d1d1d;
   --comment-rating-value-wrapp-bg-negative: #98484840;
@@ -463,9 +471,8 @@ body {
   & .default-icon {
     width: 48px;
     height: 48px;
-    fill-opacity: 0.6;
-    transform: scale(1);
-    transition: transform 0.1s, fill-opacity 0.1s;
+    fill: #1f1f1eb5;
+    transition: fill 0.15s;
   }
 
   & .youtube-icon {
@@ -650,7 +657,7 @@ body {
 .embed-cover {
   background-color: var(--embed-cover-bg);
 
-  & img {
+  &_img {
     margin: 0 auto;
     max-width: 100%;
     max-height: 600px;
@@ -659,6 +666,14 @@ body {
 
   &_video {
     margin: 0 auto;
+  }
+
+  &_img + &_video {
+    margin-top: 7px;
+  }
+
+  &_video + &_img {
+    margin-top: 7px;
   }
 }
 
@@ -709,8 +724,7 @@ body {
   .video__pseudo-player {
     &:hover {
       & .default-icon {
-        transform: scale(1.025);
-        fill-opacity: 0.8;
+        fill: #1f1f1ee6;
       }
 
       & .youtube-icon {
