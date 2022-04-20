@@ -1,5 +1,5 @@
 <template>
-  <div class="entry-page__text-block ep-island">
+  <div class="entry-page__text-block">
     <p v-html="processed"></p>
   </div>
 </template>
@@ -26,6 +26,9 @@ export default {
 
 <style lang="scss">
 .entry-page__text-block {
+  margin: 0 auto;
+  max-width: 640px;
+
   &:first-child {
     & p {
       margin-top: 0;
@@ -40,6 +43,13 @@ export default {
 
   & p {
     margin: 12px 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .entry-page__text-block {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 </style>

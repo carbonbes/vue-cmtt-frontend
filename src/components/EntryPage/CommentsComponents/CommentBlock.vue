@@ -403,7 +403,9 @@ export default {
     --text-right-gap: 85px;
     --padding-highlighted: 5px 21px;
     --right-gap-highlighted: -21px;
-    --width-highlighted: calc(var(--level) * var(--branch-gap) + 100%);
+    --width-highlighted: calc(
+      var(--level) * var(--branch-gap) + (var(--level) * 1px) + 100%
+    );
 
     margin-top: 9px;
     font-size: 16px;

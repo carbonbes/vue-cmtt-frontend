@@ -1,11 +1,13 @@
 <template>
-  <div class="entry-page__link-block ep-island">
-    <link-component
-      :title="title"
-      :description="description"
-      :urlSrc="urlSrc"
-      :sourceIcon="sourceIcon"
-    />
+  <div class="ep-island">
+    <div class="entry-page__link-block">
+      <link-component
+        :title="title"
+        :description="description"
+        :urlSrc="urlSrc"
+        :sourceIcon="sourceIcon"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,4 +27,15 @@ export default {
 </script>
 
 <style lang="scss">
+.entry-page__link-block {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+@media screen and (max-width: 768px) {
+  .entry-page__link-block {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
 </style>

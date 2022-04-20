@@ -460,15 +460,12 @@ export default {
     margin-top: 12px;
   }
 
-  &_thin {
-    padding: var(--entry-thin-cover-gap);
-  }
-
   &_wide {
     width: 100%;
   }
 
-  &_vertical {
+  &_vertical,
+  &_thin {
     padding: 15px 30px;
     background: var(--entry-block-highlight);
 

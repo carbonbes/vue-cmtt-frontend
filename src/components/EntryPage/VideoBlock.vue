@@ -89,6 +89,10 @@ export default {
       max-width: var(--vertical-max-width);
     }
   }
+
+  & + .entry-page__video-block {
+    margin-top: 7px;
+  }
 }
 
 @media screen and (max-width: 768px) {

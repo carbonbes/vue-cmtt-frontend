@@ -30,10 +30,7 @@ export default {
 .entry-page__quote-block {
   --border-radius: 8px;
 
-  margin-top: 15px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 15px;
+  margin: 15px auto;
   max-width: 640px;
 
   & .quote-component {
@@ -41,7 +38,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 641px) {
   .entry-page__quote-block {
     --border-radius: 0;
   }

@@ -17,7 +17,7 @@
         />
       </div>
       <div class="entry-page__content">
-        <div class="entry-page__title ep-island" v-if="entry.title">
+        <div class="entry-page__title" v-if="entry.title">
           <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
         </div>
         <template v-for="(block, index) in entry.blocks" :key="index">
@@ -72,34 +72,38 @@
             v-if="block.type === 'person'"
           />
 
-          <telegram-component
-            class="entry-page__embed"
-            :authorAvatarSrc="
-              block.data.telegram.data.tg_data.author.avatar_url
-            "
-            :authorName="block.data.telegram.data.tg_data.author.name"
-            :dateTime="block.data.telegram.data.tg_data.datetime"
-            :text="block.data.telegram.data.tg_data.text"
-            :imgCover="block.data.telegram.data.tg_data.photos[0]?.leonardo_url"
-            :videoCover="block.data.telegram.data.tg_data.videos[0]"
-            v-if="block.type === 'telegram'"
-          />
+          <div class="ep-island" v-if="block.type === 'telegram'">
+            <telegram-component
+              class="entry-page__embed"
+              :authorAvatarSrc="
+                block.data.telegram.data.tg_data.author.avatar_url
+              "
+              :authorName="block.data.telegram.data.tg_data.author.name"
+              :dateTime="block.data.telegram.data.tg_data.datetime"
+              :text="block.data.telegram.data.tg_data.text"
+              :imgCover="
+                block.data.telegram.data.tg_data.photos[0]?.leonardo_url
+              "
+              :videoCover="block.data.telegram.data.tg_data.videos[0]"
+            />
+          </div>
 
-          <twitter-component
-            class="entry-page__embed"
-            :authorAvatar="
-              block.data.tweet.data.tweet_data.user.profile_image_url_https
-            "
-            :authorName="block.data.tweet.data.tweet_data.user.name"
-            :authorTag="block.data.tweet.data.tweet_data.user.screen_name"
-            :dateTime="block.data.tweet.data.tweet_data.created_at"
-            :text="
-              block.data.tweet.data.tweet_data.processed_text ||
-              block.data.tweet.data.tweet_data.full_text
-            "
-            :media="block.data.tweet.data.tweet_data.extended_entities?.media"
-            v-if="block.type === 'tweet'"
-          />
+          <div class="ep-island" v-if="block.type === 'tweet'">
+            <twitter-component
+              class="entry-page__embed"
+              :authorAvatar="
+                block.data.tweet.data.tweet_data.user.profile_image_url_https
+              "
+              :authorName="block.data.tweet.data.tweet_data.user.name"
+              :authorTag="block.data.tweet.data.tweet_data.user.screen_name"
+              :dateTime="block.data.tweet.data.tweet_data.created_at"
+              :text="
+                block.data.tweet.data.tweet_data.processed_text ||
+                block.data.tweet.data.tweet_data.full_text
+              "
+              :media="block.data.tweet.data.tweet_data.extended_entities?.media"
+            />
+          </div>
         </template>
       </div>
       <div class="entry-page__footer ep-island">
@@ -370,6 +374,9 @@ export default {
 }
 
 .entry-page__title {
+  margin: 0 auto;
+  max-width: 640px;
+
   & .entry-title {
     font-size: 22px;
     font-weight: 500;
@@ -401,20 +408,11 @@ export default {
   word-break: break-word;
 }
 
-.entry-page__link-block {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
 .entry-page__footer {
   padding: 15px 0;
 }
 
 .entry-page__embed {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 640px;
-
   &:not(:first-child) {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -535,11 +533,11 @@ export default {
     flex-direction: row;
 
     &__item {
+      position: relative;
       width: 80px;
       height: 80px;
       border-radius: 8px;
       box-shadow: var(--border-a);
-      overflow: hidden;
 
       &:not(:first-child) {
         margin-left: 25px;
@@ -550,6 +548,27 @@ export default {
         height: 100%;
         display: block;
         object-fit: contain;
+      }
+
+      & .delete-btn {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--dropdown-bg-color);
+        border-radius: 50%;
+        box-shadow: var(--border-a);
+        cursor: pointer;
+
+        & .icon {
+          color: red;
+          width: 18px;
+          height: 18px;
+        }
       }
     }
   }
@@ -636,11 +655,6 @@ export default {
   .entry-page {
     &__header {
       padding-top: 15px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-
-    &__content {
       padding-left: 15px;
       padding-right: 15px;
     }

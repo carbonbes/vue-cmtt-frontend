@@ -37,6 +37,9 @@
           :src="`https://leonardo.osnova.io/${attachment.data.uuid}/-/preview/200x200/-/format/webp/`"
           alt=""
         />
+        <div class="delete-btn" @click="deleteAttachment(index)">
+          <delete-icon class="icon" />
+        </div>
       </div>
     </div>
     <div class="reply-form__actions">
@@ -81,6 +84,7 @@ import { useStore } from "vuex";
 import { notify } from "@kyvg/vue3-notification";
 import MediaIcon from "@/assets/logos/media_icon.svg?inline";
 import LoaderIcon from "@/components/Loader.vue";
+import DeleteIcon from "@/assets/logos/delete_icon.svg?inline";
 
 const store = useStore();
 const emitter = inject("emitter");
@@ -141,7 +145,7 @@ const closeReplyForm = () => {
 const replyTextHandler = (e) => {
   e.preventDefault();
 
-  state.text = e.target.textContent.trim();
+  state.text = e.target.innerText.trim();
 };
 
 const onPasteHandler = (e) => {
@@ -202,6 +206,10 @@ const attachmentsHandler = (e) => {
       })
       .catch(() => (state.uploadedAttachment = false));
   }
+};
+
+const deleteAttachment = (index) => {
+  state.attachments.splice(index, 1);
 };
 
 const postComment = () => {
