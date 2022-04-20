@@ -21,7 +21,10 @@ export default {
           (this.srcWidth < this.maxWidth && this.srcHeight > this.maxHeight)
             ? this.calculatedWidth + "px"
             : this.srcWidth + "px",
-        maxHeight: this.maxHeight + "px",
+        maxHeight:
+          this.srcHeight < this.maxHeight
+            ? this.srcHeight + "px"
+            : this.calculatedHeight + "px",
       };
     },
 
@@ -34,6 +37,17 @@ export default {
       );
 
       return width;
+    },
+
+    calculatedHeight() {
+      const { height } = сalculateAspectRatio(
+        this.srcWidth,
+        this.srcHeight,
+        this.maxWidth,
+        this.maxHeight
+      );
+
+      return height;
     },
   },
 

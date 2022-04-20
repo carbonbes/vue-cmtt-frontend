@@ -137,7 +137,10 @@
           :maxHeight="600"
         />
       </div>
-      <router-link class="entry__link" :to="{ path: '/' + entry.id.toString() }"></router-link>
+      <router-link
+        class="entry__link"
+        :to="{ path: '/' + entry.id.toString() }"
+      ></router-link>
     </div>
 
     <entry-footer
@@ -340,6 +343,7 @@ export default {
   --vertical-cover-max-width: 55%;
 
   position: relative;
+  max-width: 640px;
   display: flex;
   flex-flow: column;
   color: var(--black-color);
@@ -465,12 +469,12 @@ export default {
   }
 
   &_vertical {
-    padding: 30px;
+    padding: 15px 30px;
     background: var(--entry-block-highlight);
 
     & > div {
       margin: 0 auto;
-      max-width: var(--vertical-cover-max-width) !important;
+      max-width: var(--vertical-cover-max-width);
     }
   }
 }

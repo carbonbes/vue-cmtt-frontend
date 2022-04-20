@@ -35,14 +35,14 @@
                   <router-link
                     class="tab"
                     active-class="tab_active"
-                    :to="append($route.path, 'entries')"
+                    :to="{ path: `/u/${$route.params.id}/entries` }"
                   >
                     <span class="tab__label">Статьи</span>
                   </router-link>
                   <router-link
                     class="tab"
                     active-class="tab_active"
-                    :to="append($route.path, 'comments')"
+                    :to="{ path: `/u/${$route.params.id}/comments` }"
                   >
                     <span class="tab__label">Комментарии</span>
                   </router-link>
@@ -67,19 +67,14 @@ import declensionWords from "@/utils/declensionWords";
 import numberWithSpaces from "@/utils/numberWithSpaces";
 import { notify } from "@kyvg/vue3-notification";
 
-function requestProfile(routeTo, next) {
+function requestProfile(routeTo, routeFrom, next) {
   nProgress.start();
 
-  Promise.all([
-    rootStore.dispatch("requestProfile", {
+  return rootStore
+    .dispatch("requestProfile", {
       id: routeTo.params.id,
-    }),
-    rootStore.dispatch("requestProfileEntries", {
-      subsiteId: routeTo.params.id,
-    }),
-  ])
+    })
     .then(() => {
-      nProgress.done();
       next();
     })
     .catch((error) => {
@@ -87,6 +82,7 @@ function requestProfile(routeTo, next) {
       next(false);
       rootStore.commit("setProfileHidden", true);
       rootStore.commit("clearProfileEntries");
+      rootStore.commit("clearProfileComments");
       notify({
         title: "Ошибка " + error.response.data.error.code,
         type: "error",
@@ -204,14 +200,11 @@ export default {
 
   unmounted() {
     rootStore.commit("clearProfileEntries");
+    rootStore.commit("clearProfileComments");
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
-    requestProfile(routeTo, next);
-  },
-
-  beforeRouteUpdate(routeTo, routeFrom, next) {
-    requestProfile(routeTo, next);
+    requestProfile(routeTo, routeFrom, next);
   },
 };
 </script>
@@ -231,8 +224,9 @@ export default {
   --nav-size: 36px;
   --tab-offset: 10px;
 
-  max-width: 960px;
   margin: 0 auto;
+  max-width: 960px;
+  color: var(--black-color);
 
   & .pp-content {
     display: grid;
@@ -246,7 +240,6 @@ export default {
         display: grid;
         font-size: 16px;
         line-height: 1.5em;
-        color: var(--black-color);
         background: var(--entry-bg-color);
         border-radius: var(--subsite-brad);
 
@@ -450,6 +443,10 @@ export default {
             line-height: 1.43em;
           }
         }
+      }
+
+      & .content-content {
+        grid-column: span 2;
       }
     }
   }

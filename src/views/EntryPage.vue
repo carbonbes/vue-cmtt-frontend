@@ -357,6 +357,8 @@ export default {
 }
 
 .entry-page {
+  --vertical-max-width: 55%;
+
   color: var(--black-color);
   background: var(--entry-bg-color);
   border-radius: 0 0 8px 8px;
@@ -505,13 +507,13 @@ export default {
   z-index: 1;
 
   &:hover {
-    background-color: transparent;
+    background-color: var(--entry-bg-color);
     border: 1px solid var(--form-border-color-hover);
     box-shadow: var(--form-shadow);
   }
 
   &_focused {
-    background-color: transparent;
+    background-color: var(--entry-bg-color);
     border: 1px solid var(--form-border-color-active) !important;
     box-shadow: var(--form-shadow);
     transition: border 0.2s;

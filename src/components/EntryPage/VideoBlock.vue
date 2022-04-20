@@ -4,8 +4,8 @@
       :srcVideo="item.data.items[0].image.data.uuid"
       :srcWidth="item.data.items[0].image.data.width"
       :srcHeight="item.data.items[0].image.data.height"
-      :maxWidth="1020"
-      :maxHeight="1500"
+      maxWidth="1020"
+      maxHeight="700"
       :externalService="item.data.items[0].image.data.external_service"
       v-if="type === 'default'"
     />
@@ -14,8 +14,8 @@
       :srcVideo="item.data.video.data.thumbnail.data.uuid"
       :srcWidth="item.data.video.data.width"
       :srcHeight="item.data.video.data.height"
-      :maxWidth="1020"
-      :maxHeight="1500"
+      maxWidth="1020"
+      maxHeight="700"
       :externalService="item.data.video.data.external_service"
       v-if="type === 'video'"
     />
@@ -76,16 +76,17 @@ export default {
     width: 100%;
   }
 
-  &_vertical {
+  &_vertical,
+  &_thin {
     margin-left: auto;
     margin-right: auto;
-    padding: 30px;
+    padding: 15px 30px;
     max-width: 640px;
     background: var(--entry-block-highlight);
 
     & > div {
       margin: 0 auto;
-      max-width: 55% !important;
+      max-width: var(--vertical-max-width);
     }
   }
 }

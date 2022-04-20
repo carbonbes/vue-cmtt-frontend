@@ -136,6 +136,7 @@ export default {
     comment: Object,
     replyToAuthorName: String,
     currentLvl: Number,
+    type: String,
   },
 
   components: {
@@ -277,6 +278,10 @@ export default {
       return this.$route.query.comment;
     },
 
+    isReplyMode() {
+      return this.$route.query.mode === "reply";
+    },
+
     ...mapGetters([
       "entryId",
       "entryAuthorId",
@@ -375,6 +380,10 @@ export default {
   mounted() {
     if (this.commentId == this.queryCommentId) {
       this.highlightFocusedComment(this.queryCommentId);
+    }
+
+    if (this.commentId == this.queryCommentId && this.isReplyMode) {
+      this.openReplyForm();
     }
 
     this.setCommentPrevLiked({ id: this.commentId, sign: this.commentIsLiked });
@@ -706,13 +715,15 @@ export default {
       .author-name,
       .up-arrow,
       .date-created,
+      .is-author,
       .like-icon,
       .dislike-icon,
       .value,
       .text,
       .media,
       .reply-btn,
-      .more-items-btn {
+      .more-items-btn,
+      .reply-form {
         z-index: 2;
       }
 
@@ -762,6 +773,20 @@ export default {
 
         & .up-arrow {
           opacity: 1;
+        }
+      }
+
+      & .avatar {
+        &:hover {
+          & ~ .author-name {
+            color: var(--blue-color);
+          }
+        }
+      }
+
+      & .author-name {
+        &:hover {
+          color: var(--blue-color);
         }
       }
 

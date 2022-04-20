@@ -7,6 +7,8 @@ const profilePageModule = {
     profileHidden: null,
     profileEntries: [],
     profileEntriesIsRequested: false,
+    profileComments: [],
+    profileCommentsIsRequested: false,
   }),
 
   getters: {
@@ -16,6 +18,10 @@ const profilePageModule = {
 
     profileEntries(state) {
       return state.profileEntries;
+    },
+
+    profileComments(state) {
+      return state.profileComments;
     },
   },
 
@@ -39,6 +45,14 @@ const profilePageModule = {
     setProfileEntriesIsRequested(state, value) {
       state.profileEntriesIsRequested = value;
     },
+
+    setProfileComments(state, data) {
+      state.profileComments.push(...data);
+    },
+
+    clearProfileComments(state) {
+      state.profileComments = [];
+    },
   },
 
   actions: {
@@ -53,6 +67,14 @@ const profilePageModule = {
       return API_v2.getTimeline(data).then((response) => {
         if (!state.profileHidden) {
           commit("setProfileEntries", response.data.result.items);
+        }
+      });
+    },
+
+    requestProfileComments({ commit, state }, data) {
+      return API_v2.getComments(data).then((response) => {
+        if (!state.profileHidden) {
+          commit("setProfileComments", response.data.result.items);
         }
       });
     },

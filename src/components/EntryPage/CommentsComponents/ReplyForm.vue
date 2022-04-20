@@ -20,7 +20,6 @@
         @click="focusReplyForm"
         @input="replyTextHandler"
         @paste="onPasteHandler"
-        v-text="state.text"
         v-on-click-outside:[true]="{
           state: state.replyFormFocused,
           callback: unfocusReplyForm,
@@ -140,6 +139,8 @@ const closeReplyForm = () => {
 };
 
 const replyTextHandler = (e) => {
+  e.preventDefault();
+
   state.text = e.target.textContent.trim();
 };
 
@@ -165,8 +166,8 @@ const onPasteHandler = (e) => {
     state.uploadedAttachment
   ) {
     notify({
-      title: "Ошибка",
-      type: "error",
+      title: "Внимание",
+      type: "warn",
       text: "Подождите, пока загрузится текущее прикрепление",
     });
   } else if (
@@ -181,7 +182,12 @@ const onPasteHandler = (e) => {
   }
 
   if (e.clipboardData.getData("text/plain").trim().length > 0) {
-    state.text = e.clipboardData.getData("text/plain");
+    let text = e.clipboardData
+      .getData("text/plain")
+      .replace(/(<([^>]+)>)/gi, "");
+    document.execCommand("insertText", false, text);
+
+    state.text = text;
   }
 };
 

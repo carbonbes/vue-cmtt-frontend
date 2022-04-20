@@ -98,10 +98,6 @@ export default {
   margin: 0 auto;
   max-width: 640px;
 
-  & .entry {
-    max-width: 640px;
-  }
-
   & .entry,
   .feed-loader {
     margin-bottom: 30px;

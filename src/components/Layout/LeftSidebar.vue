@@ -24,14 +24,14 @@
       <div class="left-sidebar__link-list">
         <router-link
           class="left-sidebar__link"
-          active-class="left-sidebar__link_active"
-          to="/"
+          :class="popularBtnClassObj"
+          to="/popular"
           @click="savedSorting('hotness')"
           ><hot-icon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
-          active-class="left-sidebar__link_active"
+          :class="newBtnClassObj"
           to="/new"
           @click="savedSorting('date')"
           ><clock-icon class="icon" />Свежее</router-link
@@ -89,6 +89,25 @@ export default {
     classObject() {
       return {
         "left-sidebar_hidden": !this.isVisibled,
+      };
+    },
+
+    popularBtnClassObj() {
+      return {
+        "left-sidebar__link_active":
+          this.$route.params.sorting === "" ||
+          this.$route.params.sorting === "popular" ||
+          this.$route.params.sorting === "day" ||
+          this.$route.params.sorting === "week" ||
+          this.$route.params.sorting === "month" ||
+          this.$route.params.sorting === "year" ||
+          this.$route.params.sorting === "all",
+      };
+    },
+
+    newBtnClassObj() {
+      return {
+        "left-sidebar__link_active": this.$route.params.sorting === "new",
       };
     },
   },

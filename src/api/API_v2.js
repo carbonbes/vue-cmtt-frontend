@@ -10,11 +10,11 @@ export const API_v2 = {
       return instance_v2.get(`timeline?sorting=date`);
     }
 
-    if (data.sorting === "" && !data.lastId) {
+    if ((data.sorting === "" || data.sorting === "popular") && !data.lastId) {
       return instance_v2.get(`timeline?sorting=hotness`);
     }
 
-    if (data.sorting === "" && data.lastId) {
+    if ((data.sorting === "" || data.sorting === "popular") && data.lastId) {
       return instance_v2.get(`timeline?sorting=hotness&lastId=${data.lastId}`);
     }
 

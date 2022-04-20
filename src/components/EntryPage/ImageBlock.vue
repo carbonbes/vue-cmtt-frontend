@@ -6,7 +6,7 @@
       :srcWidth="this.item.data.items[0].image.data.width"
       :srcHeight="this.item.data.items[0].image.data.height"
       maxWidth="1020"
-      maxHeight="1500"
+      maxHeight="700"
     />
   </div>
 </template>
@@ -41,7 +41,7 @@ export default {
         this.item.data.items[0].image.data.width,
         this.item.data.items[0].image.data.height,
         1020,
-        1500
+        700
       );
 
       return width;
@@ -52,8 +52,6 @@ export default {
 
 <style lang="scss">
 .entry-page__img-block {
-  --vertical-max-width: 55% !important;
-
   margin: 24px auto;
   width: 640px;
 
@@ -69,7 +67,7 @@ export default {
   &_thin {
     margin-left: auto;
     margin-right: auto;
-    padding: 30px;
+    padding: 15px 30px;
     max-width: 640px;
     background: var(--entry-block-highlight);
 

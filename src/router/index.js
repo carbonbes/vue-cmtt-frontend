@@ -3,6 +3,7 @@ import FeedPage from "@/views/FeedPage.vue";
 import EntryPage from "@/views/EntryPage.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import ProfileEntries from "@/components/ProfilePage/ProfileEntries.vue";
+import ProfileComments from "@/components/ProfilePage/ProfileComments.vue";
 
 const routes = [
   {
@@ -30,9 +31,15 @@ const routes = [
     component: ProfilePage,
     children: [
       {
-        path: "",
+        path: "entries",
+        name: "ProfileEntries",
         component: ProfileEntries,
-        alias: "entries"
+        alias: "",
+      },
+      {
+        path: "comments",
+        name: "ProfileComments",
+        component: ProfileComments,
       },
     ],
   },
