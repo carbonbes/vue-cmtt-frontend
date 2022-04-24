@@ -5,7 +5,11 @@
     :class="replyCommentClassObj"
     :style="{ '--level': this.comment.level }"
   >
-    <div class="comment-content" :class="commentContentClassObj">
+    <div
+      class="comment-content"
+      :class="commentContentClassObj"
+      @mouseenter="setIsUnread(false)"
+    >
       <router-link
         class="avatar"
         :style="avatarStyleObj"
@@ -48,7 +52,7 @@
             @mouseenter="getLikes"
             @mouseleave="closeLikesPopup"
             @touchstart="getLikes"
-            v-on-click-outside="this.closeLikesPopup"
+            v-outside-click:[true]="closeLikesPopup"
           >
             <transition-group
               class="value"
@@ -158,6 +162,7 @@ export default {
       replyFormIsOpen: false,
       timeout: false,
       animationType: null,
+      unread: null,
     };
   },
 
@@ -181,7 +186,8 @@ export default {
       return {
         "comment-content_highlighted":
           this.commentId == this.hoveredHighlightComment ||
-          this.commentId == this.temporaryHightlightComment,
+          this.commentId == this.temporaryHightlightComment ||
+          this.unread,
       };
     },
 
@@ -204,6 +210,10 @@ export default {
 
     authorId() {
       return this.comment.author.id;
+    },
+
+    myId() {
+      return this.auth.id;
     },
 
     authorName() {
@@ -282,7 +292,16 @@ export default {
       return this.$route.query.mode === "reply";
     },
 
+    lastViewedEntry() {
+      return localStorage.getItem(`${this.entryId}-last-viewed`);
+    },
+
+    dateCreatedComment() {
+      return this.comment.date * 1000;
+    },
+
     ...mapGetters([
+      "auth",
       "entryId",
       "entryAuthorId",
       "likesList",
@@ -356,6 +375,10 @@ export default {
       }
     },
 
+    setIsUnread(value) {
+      this.unread = value;
+    },
+
     ...mapActions(["requestLikesList", "postCommentLike"]),
 
     ...mapMutations([
@@ -387,6 +410,13 @@ export default {
     }
 
     this.setCommentPrevLiked({ id: this.commentId, sign: this.commentIsLiked });
+
+    if (
+      this.dateCreatedComment > this.lastViewedEntry &&
+      this.authorId !== this.myId
+    ) {
+      this.setIsUnread(true);
+    }
   },
 
   beforeUnmount() {

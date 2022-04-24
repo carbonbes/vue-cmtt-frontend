@@ -408,6 +408,24 @@ export default {
   }
 }
 
+@media (hover: hover) {
+  .pp__wrapp {
+    & .pp-content {
+      & .content-subsite {
+        & .subsite {
+          & .tabs__content {
+            & .tab {
+              &:hover {
+                color: var(--blue-color);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 641px) {
   .pp__wrapp {
     --subsite-brad: 0;

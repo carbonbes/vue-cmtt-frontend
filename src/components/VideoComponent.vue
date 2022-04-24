@@ -98,10 +98,10 @@ export default {
 
   props: {
     srcVideo: String,
-    srcWidth: [String, Number],
-    srcHeight: [String, Number],
-    maxWidth: [String, Number],
-    maxHeight: [String, Number],
+    srcWidth: Number,
+    srcHeight: Number,
+    maxWidth: Number,
+    maxHeight: Number,
     externalService: Object,
     embedCover: String,
     type: String,
@@ -133,15 +133,9 @@ export default {
     },
 
     wrappStyleObject() {
-      if (this.isYoutube) {
-        return {
-          paddingTop: "56.25%",
-        };
-      } else {
-        return {
-          paddingTop: Math.round((this.srcHeight / this.srcWidth) * 100) + "%",
-        };
-      }
+      return {
+        paddingTop: (this.srcHeight / this.srcWidth) * 100 + "%",
+      };
     },
 
     calculatedWidth() {

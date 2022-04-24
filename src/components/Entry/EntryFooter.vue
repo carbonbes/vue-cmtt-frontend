@@ -30,7 +30,7 @@
         @mouseenter="getLikes"
         @mouseleave="closeLikesPopup"
         @touchstart="getLikes"
-        v-on-click-outside="this.closeLikesPopup"
+        v-outside-click:[true]="closeLikesPopup"
       >
         <transition-group
           class="entry-footer__rating-value"

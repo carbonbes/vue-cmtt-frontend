@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { CheckIcon } from "@zhuowenli/vue-feather-icons";
+import CheckIcon from "@/assets/logos/check_icon.svg?inline";
 
 export default {
   components: {

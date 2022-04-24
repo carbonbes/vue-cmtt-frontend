@@ -44,14 +44,13 @@
           class="header__item-avatar-more-wrapp"
           :class="moreButtonClassObject"
           @click="toggleDrowdownVisible"
-          v-on-click-outside:[true]="{
-            state: dropdownVisible,
-            callback: closeDropdown,
-          }"
         >
           <chevron-down class="header__item-avatar-more icon" />
+          <dropdown
+            v-if="dropdownVisible"
+            v-outside-click:[true]="closeDropdown"
+          />
         </div>
-        <dropdown v-if="dropdownVisible" />
       </div>
     </div>
     <div class="loader" />
@@ -60,7 +59,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { SunIcon, MoonIcon } from "@zhuowenli/vue-feather-icons";
+import MoonIcon from "@/assets/logos/moon_icon.svg?inline";
+import SunIcon from "@/assets/logos/sun_icon.svg?inline";
 import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
 import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import BellIcon from "@/assets/logos/bell_icon.svg?inline";

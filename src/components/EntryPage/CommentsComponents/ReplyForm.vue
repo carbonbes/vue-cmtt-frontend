@@ -16,14 +16,11 @@
       <p
         class="reply-form__text-field"
         :class="textFieldClassObj"
-        :contenteditable="commentIsSended ? false : true"
+        :contenteditable="true"
         @click="focusReplyForm"
         @input="replyTextHandler"
         @paste="onPasteHandler"
-        v-on-click-outside:[true]="{
-          state: state.replyFormFocused,
-          callback: unfocusReplyForm,
-        }"
+        v-outside-click:[true]="unfocusReplyForm"
         ref="textFieldRef"
       ></p>
     </div>
@@ -33,10 +30,12 @@
         v-for="(attachment, index) in state.attachments"
         :key="index"
       >
-        <img
-          :src="`https://leonardo.osnova.io/${attachment.data.uuid}/-/preview/200x200/-/format/webp/`"
-          alt=""
-        />
+        <div class="attachment">
+          <img
+            :src="`https://leonardo.osnova.io/${attachment.data.uuid}/-/preview/200x200/-/format/webp/`"
+            alt=""
+          />
+        </div>
         <div class="delete-btn" @click="deleteAttachment(index)">
           <delete-icon class="icon" />
         </div>
@@ -114,6 +113,7 @@ const commentIsSended = computed(() => store.getters.commentIsSended);
 const replyFormClassObj = computed(() => ({
   "reply-form_focused": state.replyFormFocused,
   "reply-form_sending": commentIsSended.value,
+  "reply-form_filled": state.text.length || state.attachments.length,
 }));
 
 const textFieldClassObj = computed(() => ({
@@ -191,7 +191,7 @@ const onPasteHandler = (e) => {
       .replace(/(<([^>]+)>)/gi, "");
     document.execCommand("insertText", false, text);
 
-    state.text = text;
+    state.text = state.text + text;
   }
 };
 

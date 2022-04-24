@@ -1,5 +1,7 @@
 <template>
-  <p v-for="(text, index) in replacedString" :key="index" v-html="text"></p>
+  <template v-for="(text, index) in replacedString" :key="index">
+    <component :is="{ template: '<p>' + text + '</p>' }"></component>
+  </template>
 </template>
 
 <script>
@@ -21,12 +23,12 @@ export default {
         .map((item) =>
           item
             .trim()
+            .replace(/((\s|^)https?\S+)/gm, "<a href='$1' target='_blank'>$1</a>")
             .replace(
-              /((\s|^)https?\S+)/gm,
-              "<a href='$1' target='_blank'>$1</a>"
+              /(\[\@(\d+)\|([^\]]+)\])/g,
+              "<router-link :to='{ path: `/u/$2` }'>@$3</router-link>"
             )
-            .replace(/(\[\@(\d+)\|([^\]]+)\])/g, "<a href='u/$2'>@$3</a>")
-            .replace(/\n/g, "</br>")
+            .replace(/\n/g, "<br>")
         );
     },
   },

@@ -1,12 +1,9 @@
 <template>
   <div
     class="login-modal"
-    v-on-keydown="{ key: 'Escape', callback: this.toggleShowLoginModal }"
+    v-on-keydown="{ key: 'Escape', callback: toggleShowLoginModal }"
     v-scroll-lock:[true]="this.isShow"
-    v-on-click-outside:[true]="{
-      state: this.isShow,
-      callback: this.toggleShowLoginModal,
-    }"
+    v-outside-click:[true]="toggleShowLoginModal"
   >
     <Form
       class="login-modal__form"

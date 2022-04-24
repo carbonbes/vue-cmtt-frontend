@@ -20,7 +20,6 @@
     width: 4px;
     height: 4px;
     display: block;
-    background-color: var(--black-color);
     border-radius: 50%;
     opacity: 0.2;
     animation-name: loader;

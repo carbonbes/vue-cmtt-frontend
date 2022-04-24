@@ -1,19 +1,13 @@
 <template>
   <nav
     class="left-sidebar"
-    :class="classObject"
-    v-scroll-lock:[isMobile.matches]="this.isVisibled"
+    :class="sidebarClassObj"
+    v-scroll-lock:[isMobile]="state.sidebarVisibled"
   >
-    <div
-      class="sidebar"
-      v-on-click-outside:[isMobile.matches]="{
-        state: this.isVisibled,
-        callback: this.hideLeftSidebar,
-      }"
-    >
+    <div class="sidebar" v-outside-click:[isMobile]="sidebarHide">
       <div class="left-sidebar__header">
         <div class="left-sidebar__item">
-          <div class="site-burger-btn" @click="visibilityToggler">
+          <div class="site-burger-btn" @click="sidebarVisibilityToggle">
             <menu-icon class="icon" width="24" height="24" />
           </div>
         </div>
@@ -24,17 +18,25 @@
       <div class="left-sidebar__link-list">
         <router-link
           class="left-sidebar__link"
-          :class="popularBtnClassObj"
-          to="/popular"
-          @click="savedSorting('hotness')"
+          :class="sidebarPopularBtnClassObj"
+          to="/all/popular"
+          @click="saveFeedSorting({ allSite: 'all', sorting: 'hotness' })"
           ><hot-icon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
-          :class="newBtnClassObj"
-          to="/new"
-          @click="savedSorting('date')"
+          :class="sidebarNewBtnClassObj"
+          to="/all/new"
+          @click="saveFeedSorting({ allSite: 'all', sorting: 'date' })"
           ><clock-icon class="icon" />Свежее</router-link
+        >
+        <router-link
+          class="left-sidebar__link"
+          :class="sidebarMyFeedBtnClassObj"
+          @click="saveFeedSorting({ allSite: 'my', sorting: 'hotness' })"
+          to="/my"
+          v-if="myFeedBtnVisibility"
+          ><clock-icon class="icon" />Моя лента</router-link
         >
       </div>
     </div>
@@ -42,100 +44,122 @@
   </nav>
 </template>
 
-<script>
+<script setup>
+import {
+  reactive,
+  markRaw,
+  computed,
+  watch,
+  onBeforeMount,
+  onBeforeUnmount,
+  inject,
+} from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { useMediaQuery } from "@vueuse/core";
 import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import HotIcon from "@/assets/logos/hot_icon.svg?inline";
 import ClockIcon from "@/assets/logos/clock_icon.svg?inline";
 import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
 
-export default {
-  components: {
-    SiteLogo,
-    MenuIcon,
-    HotIcon,
-    ClockIcon,
-  },
+const store = useStore();
+const emitter = inject("emitter");
+const route = useRoute();
+const isMobile = useMediaQuery("(max-width: 1219px)");
+const allFeedRoutes = markRaw([
+  "/all/popular",
+  "/all/day",
+  "/all/week",
+  "/all/month",
+  "/all/year",
+  "/all/all",
+]);
+const myFeedRoutes = markRaw(["/my/new", "/my/popular"]);
 
-  data() {
-    return {
-      isVisibled: null,
-      isMobile: null,
-    };
-  },
+// state
+const state = reactive({
+  sidebarVisibled: null,
+});
 
-  methods: {
-    visibilityToggler() {
-      this.isVisibled = !this.isVisibled;
-    },
-
-    hideLeftSidebar() {
-      this.isVisibled = false;
-    },
-
-    savedSorting(sorting) {
-      localStorage.setItem("saved-sorting", sorting);
-    },
-
-    visibility(e) {
-      if (e.matches) {
-        this.isVisibled = false;
-      } else {
-        this.isVisibled = true;
-      }
-    },
-  },
-
-  computed: {
-    classObject() {
-      return {
-        "left-sidebar_hidden": !this.isVisibled,
-      };
-    },
-
-    popularBtnClassObj() {
-      return {
-        "left-sidebar__link_active":
-          this.$route.params.sorting === "" ||
-          this.$route.params.sorting === "popular" ||
-          this.$route.params.sorting === "day" ||
-          this.$route.params.sorting === "week" ||
-          this.$route.params.sorting === "month" ||
-          this.$route.params.sorting === "year" ||
-          this.$route.params.sorting === "all",
-      };
-    },
-
-    newBtnClassObj() {
-      return {
-        "left-sidebar__link_active": this.$route.params.sorting === "new",
-      };
-    },
-  },
-
-  created() {
-    this.isMobile = window.matchMedia("(max-width: 1219px)");
-
-    if (this.isMobile.matches) {
-      this.isVisibled = false;
-    } else {
-      this.isVisibled = true;
-    }
-  },
-
-  mounted() {
-    this.emitter.on("left-sidebar-visibled", this.visibilityToggler);
-    this.emitter.on("left-sidebar-hide", this.hideLeftSidebar);
-
-    this.isMobile.addListener((e) => this.visibility(e));
-  },
-
-  beforeUnmount() {
-    this.emitter.off("left-sidebar-visibled", this.visibilityToggler);
-    this.emitter.off("left-sidebar-hide", this.hideLeftSidebar);
-
-    this.isMobile.removeListener(() => this.visibility());
-  },
+// methods
+const sidebarVisibilityToggle = () => {
+  state.sidebarVisibled = !state.sidebarVisibled;
 };
+
+const sidebarHide = () => {
+  state.sidebarVisibled = false;
+};
+
+const saveFeedSorting = (data) => {
+  if (data.allSite === "all") {
+    localStorage.setItem("all-saved-sorting", data.sorting);
+    localStorage.setItem("allSite", "all");
+  } else if (data.allSite === "my") {
+    localStorage.setItem("my-saved-sorting", data.sorting);
+    localStorage.setItem("allSite", "my");
+  }
+};
+
+// computed
+const sidebarClassObj = computed(() => ({
+  "left-sidebar_hidden": !state.sidebarVisibled,
+}));
+
+const sidebarPopularBtnClassObj = computed(() => {
+  if (allFeedRoutes.includes(route.path)) {
+    return "left-sidebar__link_active";
+  }
+});
+
+const sidebarNewBtnClassObj = computed(() => {
+  if (route.path === "/all/new") {
+    return "left-sidebar__link_active";
+  }
+});
+
+const sidebarMyFeedBtnClassObj = computed(() => {
+  if (myFeedRoutes.includes(route.path)) {
+    return "left-sidebar__link_active";
+  }
+});
+
+const myFeedBtnVisibility = computed(() => {
+  if (!isAuth.value) {
+    return false;
+  } else return true;
+});
+
+const isAuth = computed(() => store.getters.isAuth);
+
+// watch
+watch(
+  () => isMobile.value,
+  () => {
+    if (isMobile.value) {
+      state.sidebarVisibled = false;
+    } else {
+      state.sidebarVisibled = true;
+    }
+  }
+);
+
+// before mount
+onBeforeMount(() => {
+  if (isMobile.value) {
+    state.sidebarVisibled = false;
+  } else {
+    state.sidebarVisibled = true;
+  }
+
+  emitter.on("left-sidebar-visibled", sidebarVisibilityToggle);
+  emitter.on("left-sidebar-hide", sidebarHide);
+});
+
+// before unmount
+onBeforeUnmount(() => {
+  emitter.off("left-sidebar-visibled", sidebarVisibilityToggle);
+  emitter.off("left-sidebar-hide", sidebarHide);
+});
 </script>
 
 <style lang="scss">
@@ -196,6 +220,10 @@ export default {
     max-width: 300px;
     height: 100%;
     background: var(--sidebar-bg-color);
+
+    & .sidebar {
+      height: 100%;
+    }
   }
 
   .left-sidebar__header {
@@ -218,7 +246,7 @@ export default {
     top: 0;
     width: 100vw;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
 }

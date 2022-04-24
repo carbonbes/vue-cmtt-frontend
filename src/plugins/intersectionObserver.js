@@ -1,6 +1,6 @@
 export default {
   install: (app, options) => {
-    app.directive("on-view", {
+    app.directive("intersect", {
       mounted(el, binding) {
         el.observer = new IntersectionObserver(
           (entries) => {

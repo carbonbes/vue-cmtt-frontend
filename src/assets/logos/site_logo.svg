@@ -1,5 +1,5 @@
 <svg xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns="http://www.w3.org/2000/svg" height="50" width="32" class="icon icon--site_logo">
+  xmlns="http://www.w3.org/2000/svg" height="50" width="32">
   <defs>
     <symbol viewBox="0 0 24 25" id="site_logo">
       <path fill="#e8a427" class="st0" d="M0 19h8.5v6H0v-6z"></path>

@@ -2,7 +2,7 @@
   <div class="likes-popup">
     <template v-for="(like, index) in this.likes" :key="index">
       <template v-if="this.type === 'entry'">
-        <div class="likes-popup__item">
+        <router-link class="likes-popup__item" :to="{ path: `/u/${index}` }">
           <div
             class="item-avatar"
             :style="{
@@ -19,11 +19,11 @@
             }"
             >{{ like.user_name }}</span
           >
-        </div>
+        </router-link>
       </template>
 
       <template v-if="this.type === 'comment'">
-        <div class="likes-popup__item">
+        <router-link class="likes-popup__item" :to="{ path: `/u/${index}` }">
           <div
             class="item-avatar"
             :style="{
@@ -40,7 +40,7 @@
             }"
             >{{ like.name }}</span
           >
-        </div>
+        </router-link>
       </template>
     </template>
   </div>
@@ -105,6 +105,14 @@ export default {
       &_negative {
         color: var(--red-color);
       }
+    }
+  }
+}
+
+@media (hover: hover) {
+  .likes-popup__item {
+    &:hover {
+      background: var(--dropdown-item-hover-bg-color);
     }
   }
 }

@@ -142,9 +142,11 @@ export default {
   --header-bg-color: #fff4e2;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
+  --entry-thin-cover-gap: 0 20px;
   --embed-border-color: #0000001a;
   --dropdown-bg-color: #fff;
   --dropdown-item-hover-bg-color: #f4f5f6;
+  --dropdown-item-active-bg-color: #e3edfd;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
   --entry-block-highlight: #00000014;
@@ -157,8 +159,7 @@ export default {
   --form-border-color-hover: #bdd6fa;
   --form-border-color-active: #4683d9;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 12%);
-  --entry-thin-cover-gap: 0 20px;
-  --embed-cover-bg: #333;
+  --embed-cover-bg: #00000014;
   --link-text-decoration-color: #bed0ea;
   --link-text-decoration-color-hover: #f6b4bc;
   --box-shadow-avatar: inset 0 0 0 1px #0000001a;
@@ -183,9 +184,10 @@ export default {
   --entry-bg-color: #151515;
   --embed-border-color: #303030;
   --dropdown-bg-color: #272727;
-  --dropdown-item-hover-bg-color: #4d4d4d;
+  --dropdown-item-hover-bg-color: #303030;
+  --dropdown-item-active-bg-color: #353f4d;
   --highlight-block-color: #1d1d1d;
-  --entry-block-highlight: #ffffff14;
+  --entry-block-highlight: #ffffff0a;
   --left-sidebar-link-hover-color: #1f1f1fbf;
   --active-item-color: #1e1e1e;
   --rating-button-hover: #ffffff0d;
@@ -195,7 +197,7 @@ export default {
   --form-border-color-hover: #3f597c;
   --form-border-color-active: #608eca;
   --form-shadow: 0 0 0 3px rgb(70 131 217 / 20%);
-  --embed-cover-bg: #232323;
+  --embed-cover-bg: #ffffff0a;
   --link-text-decoration-color: #3c434d;
   --link-text-decoration-color-hover: #503b3d;
   --box-shadow-avatar: inset 0 0 0 1px #ffffff1a;

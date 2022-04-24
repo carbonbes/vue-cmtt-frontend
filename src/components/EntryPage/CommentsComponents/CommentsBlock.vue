@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import { reactive, onMounted, onUnmounted } from "vue";
 import store from "@/store";
 import CommentBlock from "@/components/EntryPage/CommentsComponents/CommentBlock.vue";
 import io from "socket.io-client";

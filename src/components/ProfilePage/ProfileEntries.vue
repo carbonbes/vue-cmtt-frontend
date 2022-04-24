@@ -7,7 +7,7 @@
     />
   </div>
 
-  <div class="profile_entries-empty" v-if="!entriesList.length">
+  <div class="profile__entries_empty" v-if="!entriesList.length">
     <span>Здесь еще нет публикаций</span>
   </div>
 </template>
@@ -47,10 +47,24 @@ export default {
 
 <style lang="scss">
 .profile__entries {
+  &_empty {
+    padding: 88px 0;
+    background: var(--entry-bg-color);
+    border-radius: 8px;
+    color: var(--grey-color);
+    text-align: center;
+  }
+
   & .entry {
     &:not(:last-child) {
       margin-bottom: 30px;
     }
+  }
+}
+
+@media screen and (max-width: 641px) {
+  .profile__entries_empty {
+    border-radius: 0;
   }
 }
 </style>

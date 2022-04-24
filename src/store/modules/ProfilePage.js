@@ -53,6 +53,61 @@ const profilePageModule = {
     clearProfileComments(state) {
       state.profileComments = [];
     },
+
+    apiChannelContentVoted(state, data) {
+      state.profileEntries.find((entry) => {
+        if (entry.id === data.id) {
+          entry.likes.summ = data.count;
+          if (store.state.auth.auth.id === data.subsite_id) {
+            entry.likes.isLiked = data.state;
+          }
+        }
+      });
+    },
+
+    setEntryIsLiked(state, data) {
+      state.profileEntries.find((entry) => {
+        if (entry.id === data.id) {
+          let sign = data.sign;
+          let summ = entry.likes.summ;
+
+          if (data.reset) {
+            entry.likes.isLiked =
+              entry.likes.isLiked === -1 && (data.sign === 0 || data.sign === 1)
+                ? -1
+                : entry.likes.isLiked === 0 &&
+                  (data.sign === -1 || data.sign === 1)
+                ? 0
+                : entry.likes.isLiked === 1 &&
+                  (data.sign === -1 || data.sign === 0)
+                ? 1
+                : null;
+            entry.likes.summ =
+              sign === 1 && (summ <= 0 || summ >= 0)
+                ? --entry.likes.summ
+                : sign === 0 && summ <= 0
+                ? ++entry.likes.summ
+                : sign === 0 && summ >= 0
+                ? --entry.likes.summ
+                : sign === -1 && (summ <= 0 || summ >= 0)
+                ? ++entry.likes.summ
+                : null;
+          } else {
+            entry.likes.isLiked = data.sign;
+            entry.likes.summ =
+              sign === -1 && (summ <= 0 || summ >= 0)
+                ? --entry.likes.summ
+                : sign === 0 && summ <= 0
+                ? ++entry.likes.summ
+                : sign === 0 && summ >= 0
+                ? --entry.likes.summ
+                : sign === 1 && (summ <= 0 || summ >= 0)
+                ? ++entry.likes.summ
+                : null;
+          }
+        }
+      });
+    },
   },
 
   actions: {

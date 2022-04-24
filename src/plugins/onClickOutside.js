@@ -1,12 +1,10 @@
 export default {
   install: (app, options) => {
-    app.directive("on-click-outside", {
+    app.directive("outside-click", {
       mounted(el, binding) {
-        el.onClickOutsideHandler = function (e) {
-          if (!el.contains(e.target)) {
-            if (binding.arg && binding.value.state) {
-              binding.value.callback();
-            }
+        el.onClickOutsideHandler = (e) => {
+          if (e.target !== el && !el.contains(e.target) && binding.arg) {
+            binding.value();
           }
         };
 
@@ -14,18 +12,18 @@ export default {
       },
 
       updated(el, binding) {
-        el.onClickOutsideHandler = function (e) {
-          if (!el.contains(e.target)) {
-            if (binding.arg && binding.value.state) {
-              binding.value.callback();
-            }
+        document.removeEventListener("mousedown", el.onClickOutsideHandler);
+
+        el.onClickOutsideHandler = (e) => {
+          if (e.target !== el && !el.contains(e.target) && binding.arg) {
+            binding.value();
           }
         };
 
         document.addEventListener("mousedown", el.onClickOutsideHandler);
       },
 
-      unmounted(el) {
+      beforeUnmount(el) {
         document.removeEventListener("mousedown", el.onClickOutsideHandler);
       },
     });

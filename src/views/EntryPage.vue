@@ -226,7 +226,6 @@ export default {
       commentWords: ["комментарий", "комментария", "комментариев"],
       replyTopFormVisible: false,
       replyBottomFormVisible: false,
-      unreadComments: null,
     };
   },
 
@@ -289,41 +288,8 @@ export default {
       this.replyBottomFormVisible = false;
     },
 
-    setUnreadComments() {
-      const lastViewed = localStorage.getItem(`${this.entryId}-last-viewed`);
-      const readIds = JSON.parse(
-        localStorage.getItem(`${this.entryId}-read-comments`)
-      );
-      const unreadIds = JSON.parse(
-        localStorage.getItem(`${this.entryId}-unread-comments`)
-      );
-
-      this.unreadComments = unreadIds;
-
-      if (!lastViewed) {
-        localStorage.setItem(`${this.entryId}-last-viewed`, Date.now());
-        localStorage.setItem(
-          `${this.entryId}-read-comments`,
-          JSON.stringify(this.commentsList.map((comment) => comment.id))
-        );
-        localStorage.setItem(
-          `${this.entryId}-unread-comments`,
-          JSON.stringify([])
-        );
-      } else {
-        localStorage.setItem(
-          `${this.entryId}-unread-comments`,
-          JSON.stringify(
-            this.commentsList
-              .filter(
-                (comment) =>
-                  comment.date * 1000 > lastViewed &&
-                  !readIds.includes(comment.id)
-              )
-              .map((comment) => comment.id)
-          )
-        );
-      }
+    setLastViewed() {
+      localStorage.setItem(`${this.entryId}-last-viewed`, Date.now());
     },
 
     ...mapMutations(["setEntryPrevLiked"]),
@@ -342,6 +308,8 @@ export default {
   created() {
     document.title =
       this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
+
+    this.setLastViewed();
   },
 
   mounted() {
@@ -350,6 +318,8 @@ export default {
 
   unmounted() {
     store.commit("clearEntry");
+
+    this.setLastViewed();
   },
 };
 </script>
@@ -389,16 +359,10 @@ export default {
     }
   }
 
-  & + .entry-page__img-block {
+  & + .entry-page__img-block,
+  + .entry-page__video-block,
+  + .ep-island {
     margin-top: 15px;
-  }
-
-  & + .entry-page__video-block {
-    margin-top: 15px;
-  }
-
-  & + .entry-page__embed {
-    margin-top: 12px !important;
   }
 }
 
@@ -416,10 +380,6 @@ export default {
   &:not(:first-child) {
     margin-top: 30px;
     margin-bottom: 30px;
-  }
-
-  &:last-child {
-    margin-bottom: 15px;
   }
 
   & + .entry-page__video-block {
@@ -468,12 +428,11 @@ export default {
   & .pseudo-reply-form {
     padding: 0 17px;
     height: 48px;
-    display: flex;
-    align-items: center;
     border-radius: 10px;
     color: var(--grey-color);
     background-color: var(--form-bg-color);
     border: 1px solid var(--form-border-color);
+    line-height: 48px;
     cursor: pointer;
   }
 
@@ -523,6 +482,10 @@ export default {
     user-select: none;
   }
 
+  &_filled {
+    background-color: var(--entry-bg-color);
+  }
+
   & .content {
     position: relative;
   }
@@ -534,20 +497,24 @@ export default {
 
     &__item {
       position: relative;
-      width: 80px;
-      height: 80px;
-      border-radius: 8px;
-      box-shadow: var(--border-a);
 
       &:not(:first-child) {
-        margin-left: 25px;
+        margin-left: 20px;
       }
 
-      & img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: contain;
+      & .attachment {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        box-shadow: var(--border-a);
+        overflow: hidden;
+
+        & img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: contain;
+        }
       }
 
       & .delete-btn {
@@ -640,6 +607,14 @@ export default {
         height: 40px;
         display: flex;
         align-items: center;
+
+        & .custom-loader {
+          &__loader-1,
+          &__loader-2,
+          &__loader-3 {
+            background-color: #fff;
+          }
+        }
       }
     }
   }
@@ -651,12 +626,35 @@ export default {
   max-width: 640px;
 }
 
+@media (hover: hover) {
+  .reply-form {
+    & .attachments {
+      &__item {
+        & .delete-btn {
+          &:hover {
+            & .icon {
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   .entry-page {
     &__header {
       padding-top: 15px;
       padding-left: 15px;
       padding-right: 15px;
+    }
+
+    &__title {
+      & .entry-title {
+        margin-left: 15px;
+        margin-right: 15px;
+      }
     }
 
     &__footer {

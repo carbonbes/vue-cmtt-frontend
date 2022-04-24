@@ -4,8 +4,8 @@
       :srcVideo="item.data.items[0].image.data.uuid"
       :srcWidth="item.data.items[0].image.data.width"
       :srcHeight="item.data.items[0].image.data.height"
-      maxWidth="1020"
-      maxHeight="700"
+      :maxWidth="maxWidth"
+      :maxHeight="maxHeight"
       :externalService="item.data.items[0].image.data.external_service"
       v-if="type === 'default'"
     />
@@ -14,8 +14,8 @@
       :srcVideo="item.data.video.data.thumbnail.data.uuid"
       :srcWidth="item.data.video.data.width"
       :srcHeight="item.data.video.data.height"
-      maxWidth="1020"
-      maxHeight="700"
+      :maxWidth="maxWidth"
+      :maxHeight="maxHeight"
       :externalService="item.data.video.data.external_service"
       v-if="type === 'video'"
     />
@@ -41,10 +41,11 @@ export default {
         return {
           "entry-page__video-block_wide":
             this.item.data.items[0].image.data.width > 1020,
+          "entry-page__video-block_thin":
+            this.item.data.items[0].image.data.width < this.maxWidth,
           "entry-page__video-block_vertical":
             this.item.data.items[0].image.data.width <
             this.item.data.items[0].image.data.height,
-          "entry-page__video-block_highlighted": this.item.data.with_background,
         };
       } else if (this.type === "video") {
         return {
@@ -53,10 +54,16 @@ export default {
             this.item.data.video.data.external_service,
           "entry-page__video-block_vertical":
             this.item.data.video.data.width < this.item.data.video.data.height,
-          "entry-page__video-block_highlighted":
-            this.item.data.video.with_background,
         };
       }
+    },
+
+    maxWidth() {
+      return parseInt(1020);
+    },
+
+    maxHeight() {
+      return parseInt(700);
     },
   },
 };

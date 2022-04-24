@@ -7,16 +7,25 @@ import ProfileComments from "@/components/ProfilePage/ProfileComments.vue";
 
 const routes = [
   {
-    path: "/:sorting?",
+    path: "/:allSite?/:sorting?",
     name: "FeedPage",
     component: FeedPage,
     beforeEnter: (to, from, next) => {
-      let sorting = localStorage.getItem("saved-sorting");
+      let allSite = localStorage.getItem("allSite");
 
-      if (!sorting && !to.params.sorting) {
-        next();
-      } else if (sorting === "date" && !to.params.sorting) {
-        next("/new");
+      let allSorting = localStorage.getItem("all-saved-sorting");
+      let mySorting = localStorage.getItem("my-saved-sorting");
+
+      if (!allSite && (!allSorting || !mySorting) && !to.params.sorting) {
+        next("/all/popular");
+      } else if (allSite === "all" && allSorting === "date" && !to.params.sorting) {
+        next("/all/new");
+      } else if (allSite === "all" && (allSorting === "hotness" || !allSorting) && !to.params.sorting) {
+        next("/all/popular");
+      } else if (allSite === "my" && mySorting === "date" && !to.params.sorting) {
+        next("/my/new");
+      } else if (allSite === "my" && (mySorting === "hotness" || !mySorting) && !to.params.sorting) {
+        next("/my/popular");
       } else next();
     },
   },
@@ -29,16 +38,15 @@ const routes = [
     path: "/u/:id(\\d+)",
     name: "ProfilePage",
     component: ProfilePage,
+    alias: "/s/:id(\\d+)",
     children: [
       {
         path: "entries",
-        name: "ProfileEntries",
         component: ProfileEntries,
         alias: "",
       },
       {
         path: "comments",
-        name: "ProfileComments",
         component: ProfileComments,
       },
     ],

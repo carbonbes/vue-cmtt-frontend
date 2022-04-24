@@ -2,34 +2,82 @@ import { instance_v2 } from "./config";
 
 export const API_v2 = {
   getTimeline(data) {
-    if (data.sorting === "new" && data.lastId) {
-      return instance_v2.get(`timeline?sorting=date&lastId=${data.lastId}`);
+    if (data.allSite !== "all") {
+      if (data.sorting === "new" && data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite=false&sorting=date&lastId=${data.lastId}`
+        );
+      }
+
+      if (data.sorting === "new" && !data.lastId) {
+        return instance_v2.get(`timeline?allSite=false&sorting=date`);
+      }
+
+      if ((data.sorting === "" || data.sorting === "popular") && !data.lastId) {
+        return instance_v2.get(`timeline?allSite=false&sorting=hotness`);
+      }
+
+      if ((data.sorting === "" || data.sorting === "popular") && data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite=false&sorting=hotness&lastId=${data.lastId}`
+        );
+      }
+
+      if (data.sorting && !data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite=false&sorting=${data.sorting}`
+        );
+      }
+
+      if (data.sorting && data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite=false&sorting=${data.sorting}&lastId=${data.lastId}`
+        );
+      }
+
+      if (!data.sorting && !data.lastId && data.subsiteId) {
+        return instance_v2.get(
+          `timeline?allSite=false&subsitesIds=${data.subsiteId}`
+        );
+      }
     }
 
-    if (data.sorting === "new" && !data.lastId) {
-      return instance_v2.get(`timeline?sorting=date`);
-    }
+    if (data.allSite === "all") {
+      if (data.sorting === "new" && data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite&sorting=date&lastId=${data.lastId}`
+        );
+      }
 
-    if ((data.sorting === "" || data.sorting === "popular") && !data.lastId) {
-      return instance_v2.get(`timeline?sorting=hotness`);
-    }
+      if (data.sorting === "new" && !data.lastId) {
+        return instance_v2.get(`timeline?allSite&sorting=date`);
+      }
 
-    if ((data.sorting === "" || data.sorting === "popular") && data.lastId) {
-      return instance_v2.get(`timeline?sorting=hotness&lastId=${data.lastId}`);
-    }
+      if ((data.sorting === "" || data.sorting === "popular") && !data.lastId) {
+        return instance_v2.get(`timeline?allSite&sorting=hotness`);
+      }
 
-    if (data.sorting && !data.lastId) {
-      return instance_v2.get(`timeline?sorting=${data.sorting}`);
-    }
+      if ((data.sorting === "" || data.sorting === "popular") && data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite&sorting=hotness&lastId=${data.lastId}`
+        );
+      }
 
-    if (data.sorting && data.lastId) {
-      return instance_v2.get(
-        `timeline?sorting=${data.sorting}&lastId=${data.lastId}`
-      );
-    }
+      if (data.sorting && !data.lastId) {
+        return instance_v2.get(`timeline?allSite&sorting=${data.sorting}`);
+      }
 
-    if (!data.sorting && !data.lastId && data.subsiteId) {
-      return instance_v2.get(`timeline?subsitesIds=${data.subsiteId}`);
+      if (data.sorting && data.lastId) {
+        return instance_v2.get(
+          `timeline?allSite&sorting=${data.sorting}&lastId=${data.lastId}`
+        );
+      }
+
+      if (!data.sorting && !data.lastId && data.subsiteId) {
+        return instance_v2.get(
+          `timeline?allSite&subsitesIds=${data.subsiteId}`
+        );
+      }
     }
   },
 

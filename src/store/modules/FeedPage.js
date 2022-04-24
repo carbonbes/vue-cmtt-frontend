@@ -113,7 +113,11 @@ const feedPageModule = {
       commit("setFeedIsRequested", true);
 
       return API_v2.getTimeline(data).then((response) => {
-        if (data.prevSorting !== data.sorting && !data.nextPage) {
+        if (
+          (data.prevSorting !== data.sorting ||
+            data.prevAllSite !== data.allSite) &&
+          !data.nextPage
+        ) {
           commit("clearFeed");
         }
         commit("setFeed", response.data.result.items);
