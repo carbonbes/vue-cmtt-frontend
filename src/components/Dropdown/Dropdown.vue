@@ -7,7 +7,7 @@
       :icon="item.icon"
       :label="item.label"
       :action="item.action"
-      :dataAction="item.dataAction"
+      :actionInfo="item.actionInfo"
     />
   </div>
 </template>

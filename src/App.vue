@@ -129,6 +129,7 @@ export default {
 @use "normalize.css";
 @use "roboto.css";
 @use "../node_modules/nprogress/nprogress.css";
+@use "../node_modules/photoswipe/dist/photoswipe.css";
 
 :root {
   --brand-color: #e5a040;
@@ -393,7 +394,7 @@ body {
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.75);
-  z-index: 3;
+  z-index: 4;
 }
 
 .layout {
@@ -448,6 +449,10 @@ body {
   & img {
     width: 100%;
     display: block;
+  }
+
+  & a {
+    cursor: zoom-in;
   }
 }
 

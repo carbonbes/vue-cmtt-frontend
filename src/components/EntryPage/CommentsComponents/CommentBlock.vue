@@ -109,6 +109,7 @@
         v-for="comment in this.comment.replies"
         :comment="comment"
         :replyToAuthorName="authorName"
+        :maxLvl="maxLvl"
         :key="comment.id"
       />
     </div>
@@ -139,8 +140,7 @@ export default {
   props: {
     comment: Object,
     replyToAuthorName: String,
-    currentLvl: Number,
-    type: String,
+    maxLvl: Number,
   },
 
   components: {
@@ -178,7 +178,7 @@ export default {
     replyCommentClassObj() {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
-        /* "entry-page__comment_max-lvl": this.comment.level > 3, */
+        "entry-page__comment_max-lvl": this.comment.level > this.maxLvl,
       };
     },
 
@@ -433,9 +433,7 @@ export default {
     --text-right-gap: 85px;
     --padding-highlighted: 5px 21px;
     --right-gap-highlighted: -21px;
-    --width-highlighted: calc(
-      var(--level) * var(--branch-gap) + (var(--level) * 1px) + 100%
-    );
+    --width-highlighted: 100%;
 
     margin-top: 9px;
     font-size: 16px;
@@ -456,14 +454,14 @@ export default {
         border: solid var(--branch-color);
         border-width: 0 0 1px 1px;
         border-bottom-left-radius: 8px;
-        z-index: 1;
+        z-index: 3;
       }
 
       &:not(.entry-page__comment_max-lvl):not(:last-child) {
         border-left: 1px solid var(--branch-color);
       }
 
-      &:last-child {
+      &:not(.entry-page__comment_max-lvl):last-child {
         border-left: 1px solid transparent;
       }
     }
@@ -472,7 +470,7 @@ export default {
       padding-left: 0;
 
       &::before {
-        border-color: transparent;
+        display: none;
       }
     }
 
@@ -707,6 +705,10 @@ export default {
             min-width: 0;
           }
         }
+
+        & + .media {
+          margin-top: 0;
+        }
       }
 
       & .media {
@@ -883,7 +885,7 @@ export default {
       --text-right-gap: 0;
       --padding-highlighted: 8px 0;
       --right-gap-highlighted: -15px;
-      --width-highlighted: calc(var(--level) * var(--branch-gap) + 100vh);
+      --width-highlighted: 100vh;
 
       &_reply {
         &::before {

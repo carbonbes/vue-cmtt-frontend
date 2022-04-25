@@ -144,7 +144,7 @@ export default {
   height: 60px;
   display: flex;
   background: var(--header-bg-color);
-  z-index: 3;
+  z-index: 4;
 }
 
 .header__item {

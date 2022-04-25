@@ -98,10 +98,10 @@ export default {
 
   props: {
     srcVideo: String,
-    srcWidth: Number,
-    srcHeight: Number,
-    maxWidth: Number,
-    maxHeight: Number,
+    srcWidth: [Number, String],
+    srcHeight: [Number, String],
+    maxWidth: [Number, String],
+    maxHeight: [Number, String],
     externalService: Object,
     embedCover: String,
     type: String,

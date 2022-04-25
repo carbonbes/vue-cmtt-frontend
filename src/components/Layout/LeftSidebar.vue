@@ -36,7 +36,7 @@
           @click="saveFeedSorting({ allSite: 'my' })"
           to="/my"
           v-if="myFeedBtnVisibility"
-          ><clock-icon class="icon" />Моя лента</router-link
+          ><my-feed-icon class="icon" />Моя лента</router-link
         >
       </div>
     </div>
@@ -57,10 +57,11 @@ import {
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { useMediaQuery } from "@vueuse/core";
+import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
 import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import HotIcon from "@/assets/logos/hot_icon.svg?inline";
 import ClockIcon from "@/assets/logos/clock_icon.svg?inline";
-import MenuIcon from "@/assets/logos/burger_icon.svg?inline";
+import MyFeedIcon from "@/assets/logos/my_feed_icon.svg?inline";
 
 const store = useStore();
 const emitter = inject("emitter");
@@ -171,7 +172,7 @@ onBeforeUnmount(() => {
   width: 220px;
   height: calc(100vh - 60px);
   flex-shrink: 0;
-  z-index: 3;
+  z-index: 4;
 
   &_hidden {
     display: none;

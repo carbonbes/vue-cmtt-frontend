@@ -6,11 +6,10 @@
         v-if="sortingSelectorVisible"
         v-outside-click:[true]="closeFeedSorting"
       >
-        <div
-          class="label"
-          @click="toggleFeedSortingVisible"
-          v-text="sortingSelectorLabel"
-        ></div>
+        <div class="selector-btn" @click="toggleFeedSortingVisible">
+          <div class="label" v-text="sortingSelectorLabel"></div>
+          <chevron-down-icon class="icon" />
+        </div>
         <div class="selector__dropdown" v-if="feedSortingSelectorIsOpen">
           <dropdown :data="dropdownData" />
         </div>
@@ -40,6 +39,7 @@ import store from "@/store";
 import nProgress from "nprogress";
 import Loader from "@/components/Loader";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
+import ChevronDownIcon from "@/assets/logos/chevron-down_icon.svg?inline";
 
 function requestFeed(routeTo, routeFrom, next) {
   nProgress.start();
@@ -66,6 +66,7 @@ export default {
     Entry,
     Loader,
     Dropdown,
+    ChevronDownIcon,
   },
 
   data() {
@@ -74,8 +75,18 @@ export default {
 
       myFeedDropdownSettings: {
         items: [
-          { label: "Популярное", path: "/my/popular", action: this.saveFeedSorting, dataAction: { allSite: "my", sorting: "hotness" } },
-          { label: "Свежее", path: "/my/new", action: this.saveFeedSorting, dataAction: { allSite: "my", sorting: "date" } },
+          {
+            label: "Популярное",
+            path: "/my/popular",
+            action: this.saveFeedSorting,
+            actionInfo: { allSite: "my", sorting: "hotness" },
+          },
+          {
+            label: "Свежее",
+            path: "/my/new",
+            action: this.saveFeedSorting,
+            actionInfo: { allSite: "my", sorting: "date" },
+          },
         ],
       },
 
@@ -221,12 +232,21 @@ export default {
       display: inline-block;
       color: var(--black-color);
 
-      & .label {
+      & .selector-btn {
+        display: flex;
+        align-items: center;
         cursor: pointer;
+      }
+
+      & .icon {
+        margin-left: 3px;
+        width: 16px;
+        height: 16px;
       }
 
       & .selector__dropdown {
         position: absolute;
+        top: 100%;
         margin-top: 5px;
         width: 175px;
         z-index: 3;

@@ -73,6 +73,7 @@ const feedPageModule = {
                 : null;
           } else {
             entry.likes.isLiked = data.sign;
+            
             entry.likes.summ =
               sign === -1 && (summ <= 0 || summ >= 0)
                 ? --entry.likes.summ

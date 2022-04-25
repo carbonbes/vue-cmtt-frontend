@@ -2,14 +2,16 @@
   <template v-for="comment in props.comments" :key="comment.id">
     <comment-block
       :comment="comment"
+      :maxLvl="state.maxLvl"
       v-if="comment.isIgnored !== true || comment.isRemoved !== true"
     />
   </template>
 </template>
 
 <script setup>
-import { reactive, onMounted, onUnmounted } from "vue";
+import { reactive, watch, onMounted, onUnmounted } from "vue";
 import store from "@/store";
+import { useMediaQuery } from "@vueuse/core";
 import CommentBlock from "@/components/EntryPage/CommentsComponents/CommentBlock.vue";
 import io from "socket.io-client";
 
@@ -18,6 +20,25 @@ let socket = io("https://ws-sio.tjournal.ru", {
 });
 
 const props = defineProps({ comments: Array });
+
+const isMobile = useMediaQuery("(max-width: 768px)");
+
+// state
+const state = reactive({
+  maxLvl: 8,
+});
+
+// watch
+watch(
+  () => isMobile.value,
+  () => {
+    if (isMobile.value) {
+      state.maxLvl = 4;
+    } else {
+      state.maxLvl = 8;
+    }
+  }
+);
 
 onMounted(() => {
   socket.emit("subscribe", {

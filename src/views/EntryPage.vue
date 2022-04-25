@@ -122,40 +122,42 @@
         <div class="comments-count">
           {{ commentsList.length }} {{ commentsWordDecl }}
         </div>
-      </div>
-      <div class="entry-page__comments-reply-form">
-        <reply-form
-          type="root"
-          :closeReplyForm="this.closeTopReplyForm"
-          v-if="replyTopFormVisible"
-        />
-        <div
-          class="pseudo-reply-form"
-          @click="openTopReplyForm"
-          v-if="!replyTopFormVisible"
-        >
-          Написать комментарий...
+        <div class="entry-page__comments-reply-form">
+          <reply-form
+            type="root"
+            :closeReplyForm="this.closeTopReplyForm"
+            v-if="replyTopFormVisible"
+          />
+          <div
+            class="pseudo-reply-form"
+            @click="openTopReplyForm"
+            v-if="!replyTopFormVisible"
+          >
+            Написать комментарий...
+          </div>
         </div>
       </div>
       <div class="entry-page__comments-content">
         <comments-block :comments="this.commentsTree" />
       </div>
-      <div
-        class="entry-page__comments-reply-form bottom"
-        v-if="commentsList.length >= 10"
-      >
-        <reply-form
-          type="root"
-          :closeReplyForm="this.closeBottomReplyForm"
-          v-if="replyBottomFormVisible"
-        />
+      <div class="entry-page__comments-footer">
         <div
-          class="pseudo-reply-form"
-          @click="openBottomReplyForm"
-          :closeReplyForm="this.closeBottomReplyForm"
-          v-if="!replyBottomFormVisible"
+          class="entry-page__comments-reply-form bottom"
+          v-if="commentsList.length >= 10"
         >
-          Написать комментарий...
+          <reply-form
+            type="root"
+            :closeReplyForm="this.closeBottomReplyForm"
+            v-if="replyBottomFormVisible"
+          />
+          <div
+            class="pseudo-reply-form"
+            @click="openBottomReplyForm"
+            :closeReplyForm="this.closeBottomReplyForm"
+            v-if="!replyBottomFormVisible"
+          >
+            Написать комментарий...
+          </div>
         </div>
       </div>
     </div>
@@ -437,14 +439,13 @@ export default {
   }
 
   &-reply-form {
+    margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 15px;
-    padding-bottom: 12px;
     max-width: 640px;
 
     &.bottom {
-      padding-top: 0;
+      margin-top: 0;
       padding-bottom: 30px;
     }
   }
@@ -513,7 +514,7 @@ export default {
           width: 100%;
           height: 100%;
           display: block;
-          object-fit: contain;
+          object-fit: cover;
         }
       }
 
@@ -584,6 +585,14 @@ export default {
 
       & .attachments-loader {
         margin-left: 15px;
+
+        & .custom-loader {
+          &__loader-1,
+          &__loader-2,
+          &__loader-3 {
+            background-color: var(--black-color);
+          }
+        }
       }
 
       & .media-attach-input-hidden {
@@ -624,6 +633,10 @@ export default {
   margin-left: auto;
   margin-right: auto;
   max-width: 640px;
+
+  & + .entry-page__video-block {
+    margin-top: 15px;
+  }
 }
 
 @media (hover: hover) {

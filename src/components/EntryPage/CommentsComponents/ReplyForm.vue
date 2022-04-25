@@ -88,20 +88,22 @@ import DeleteIcon from "@/assets/logos/delete_icon.svg?inline";
 const store = useStore();
 const emitter = inject("emitter");
 
+const textFieldRef = ref(null);
+
+// props
 const props = defineProps({
   parentCommentId: String,
   type: String,
   closeReplyForm: Function,
 });
 
+// state
 const state = reactive({
   replyFormFocused: false,
   text: "",
   attachments: [],
   uploadedAttachment: false,
 });
-
-const textFieldRef = ref(null);
 
 // getters
 const isAuth = computed(() => store.getters.isAuth);
@@ -110,10 +112,15 @@ const entryId = computed(() => store.getters.entryId);
 
 const commentIsSended = computed(() => store.getters.commentIsSended);
 
+// computed
+const formIsFilled = computed(() => {
+  return state.text.length > 0 || state.attachments.length > 0;
+});
+
 const replyFormClassObj = computed(() => ({
   "reply-form_focused": state.replyFormFocused,
   "reply-form_sending": commentIsSended.value,
-  "reply-form_filled": state.text.length || state.attachments.length,
+  "reply-form_filled": formIsFilled.value,
 }));
 
 const textFieldClassObj = computed(() => ({
@@ -121,7 +128,9 @@ const textFieldClassObj = computed(() => ({
 }));
 
 const replyFormBtnClassObj = computed(() => ({
-  button_disabled: !state.text.length && !state.attachments.length,
+  button_disabled:
+    (!state.text.length && !state.attachments.length) ||
+    state.uploadedAttachment,
 }));
 
 const mediaAttachBtnClassObj = computed(() => ({
@@ -172,7 +181,7 @@ const onPasteHandler = (e) => {
     notify({
       title: "Внимание",
       type: "warn",
-      text: "Подождите, пока загрузится текущее прикрепление",
+      text: "Подождите, пока загрузится текущий файл",
     });
   } else if (
     e.clipboardData.files.length > 0 &&
@@ -191,7 +200,7 @@ const onPasteHandler = (e) => {
       .replace(/(<([^>]+)>)/gi, "");
     document.execCommand("insertText", false, text);
 
-    state.text = state.text + text;
+    state.text.concat(text);
   }
 };
 

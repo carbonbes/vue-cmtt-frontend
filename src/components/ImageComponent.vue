@@ -1,14 +1,21 @@
 <template>
-  <div class="img-wrapp" :style="styleObject">
-    <img
-      :src="`https://leonardo.osnova.io/${image}/-/preview/1200/-/format/webp/`"
-      alt=""
-    />
+  <div class="img-wrapp" id="image-wrapp" :style="styleObject">
+    <a
+      :href="`https://leonardo.osnova.io/${image}/-/preview/1200/-/format/webp/`"
+      :data-pswp-width="this.srcWidth"
+      :data-pswp-height="this.srcHeight"
+      target="_blank"
+    >
+      <img
+        :src="`https://leonardo.osnova.io/${image}/-/preview/1200/-/format/webp/`"
+      />
+    </a>
   </div>
 </template>
 
 <script>
 import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
+import PhotoSwipeLightbox from "photoswipe/dist/photoswipe-lightbox.esm.js";
 
 export default {
   computed: {
@@ -58,6 +65,25 @@ export default {
     srcHeight: Number,
     maxWidth: [String, Number],
     maxHeight: [String, Number],
+  },
+
+  mounted() {
+    if (!this.lightbox) {
+      this.lightbox = new PhotoSwipeLightbox({
+        gallery: "#image-wrapp",
+        children: "a",
+        pswpModule: () => import("photoswipe"),
+        padding: { top: 20, bottom: 40, left: 100, right: 100 },
+      });
+      this.lightbox.init();
+    }
+  },
+
+  unmounted() {
+    if (this.lightbox) {
+      this.lightbox.destroy();
+      this.lightbox = null;
+    }
   },
 };
 </script>
