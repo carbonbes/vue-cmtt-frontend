@@ -10,24 +10,6 @@ const routes = [
     path: "/:allSite?/:sorting?",
     name: "FeedPage",
     component: FeedPage,
-    beforeEnter: (to, from, next) => {
-      let allSite = localStorage.getItem("allSite");
-
-      let allSorting = localStorage.getItem("all-saved-sorting");
-      let mySorting = localStorage.getItem("my-saved-sorting");
-
-      if (!allSite && (!allSorting || !mySorting) && !to.params.sorting) {
-        next("/all/popular");
-      } else if (allSite === "all" && allSorting === "date" && !to.params.sorting) {
-        next("/all/new");
-      } else if (allSite === "all" && (allSorting === "hotness" || !allSorting) && !to.params.sorting) {
-        next("/all/popular");
-      } else if (allSite === "my" && mySorting === "date" && !to.params.sorting) {
-        next("/my/new");
-      } else if (allSite === "my" && (mySorting === "hotness" || !mySorting) && !to.params.sorting) {
-        next("/my/popular");
-      } else next();
-    },
   },
   {
     path: "/:id(\\d+)",
@@ -94,6 +76,39 @@ const router = createRouter({
       }, 0);
     });
   },
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === "FeedPage") {
+    let allSite = localStorage.getItem("allSite");
+
+    let allSorting = localStorage.getItem("all-saved-sorting");
+    let mySorting = localStorage.getItem("my-saved-sorting");
+
+    if (!allSite && (!allSorting || !mySorting) && !to.params.sorting) {
+      next("/all/popular");
+    } else if (
+      allSite === "all" &&
+      allSorting === "date" &&
+      !to.params.sorting
+    ) {
+      next("/all/new");
+    } else if (
+      allSite === "all" &&
+      (allSorting === "hotness" || !allSorting) &&
+      !to.params.sorting
+    ) {
+      next("/all/popular");
+    } else if (allSite === "my" && mySorting === "date" && !to.params.sorting) {
+      next("/my/new");
+    } else if (
+      allSite === "my" &&
+      (mySorting === "hotness" || !mySorting) &&
+      !to.params.sorting
+    ) {
+      next("/my/popular");
+    } else next();
+  } else next();
 });
 
 export default router;

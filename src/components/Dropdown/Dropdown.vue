@@ -6,6 +6,8 @@
       :path="item.path"
       :icon="item.icon"
       :label="item.label"
+      :action="item.action"
+      :dataAction="item.dataAction"
     />
   </div>
 </template>

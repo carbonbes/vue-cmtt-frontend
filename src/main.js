@@ -19,7 +19,7 @@ app.provide("emitter", emitter);
 nProgress.configure({
   showSpinner: false,
   parent: ".loader",
-  trickleSpeed: 35,
+  trickleSpeed: 40,
 });
 
 app

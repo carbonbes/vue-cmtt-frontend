@@ -74,8 +74,8 @@ export default {
 
       myFeedDropdownSettings: {
         items: [
-          { label: "Популярное", path: "/my/popular" },
-          { label: "Свежее", path: "/my/new" },
+          { label: "Популярное", path: "/my/popular", action: this.saveFeedSorting, dataAction: { allSite: "my", sorting: "hotness" } },
+          { label: "Свежее", path: "/my/new", action: this.saveFeedSorting, dataAction: { allSite: "my", sorting: "date" } },
         ],
       },
 
@@ -108,6 +108,16 @@ export default {
 
     closeFeedSorting() {
       this.feedSortingSelectorIsOpen = false;
+    },
+
+    saveFeedSorting(data) {
+      if (data.allSite === "all") {
+        localStorage.setItem("all-saved-sorting", data.sorting);
+        localStorage.setItem("allSite", "all");
+      } else if (data.allSite === "my") {
+        localStorage.setItem("my-saved-sorting", data.sorting);
+        localStorage.setItem("allSite", "my");
+      }
     },
   },
 
@@ -162,7 +172,10 @@ export default {
         return "За год";
       } else if (this.$route.path === "/all/all") {
         return "За все время";
-      } else if (this.$route.path === "/my/popular") {
+      } else if (
+        this.$route.path === "/my/popular" ||
+        this.$route.path === "/my"
+      ) {
         return "Популярное";
       } else if (this.$route.path === "/my/new") {
         return "Свежее";

@@ -1,6 +1,7 @@
 <template>
   <router-link
     :to="props.path"
+    @click="props.action ? props.action(dataAction) : null"
     class="dropdown__item"
     active-class="dropdown__item_active"
   >
@@ -16,6 +17,7 @@ const props = defineProps({
   icon: Object,
   label: String,
   action: Function,
+  dataAction: Object,
   path: String,
 });
 </script>

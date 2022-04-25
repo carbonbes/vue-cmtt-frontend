@@ -33,7 +33,7 @@
         <router-link
           class="left-sidebar__link"
           :class="sidebarMyFeedBtnClassObj"
-          @click="saveFeedSorting({ allSite: 'my', sorting: 'hotness' })"
+          @click="saveFeedSorting({ allSite: 'my' })"
           to="/my"
           v-if="myFeedBtnVisibility"
           ><clock-icon class="icon" />Моя лента</router-link
@@ -74,7 +74,7 @@ const allFeedRoutes = markRaw([
   "/all/year",
   "/all/all",
 ]);
-const myFeedRoutes = markRaw(["/my/new", "/my/popular"]);
+const myFeedRoutes = markRaw(["/my/new", "/my/popular", "/my"]);
 
 // state
 const state = reactive({
@@ -95,7 +95,9 @@ const saveFeedSorting = (data) => {
     localStorage.setItem("all-saved-sorting", data.sorting);
     localStorage.setItem("allSite", "all");
   } else if (data.allSite === "my") {
-    localStorage.setItem("my-saved-sorting", data.sorting);
+    if (data.sorting) {
+      localStorage.setItem("my-saved-sorting", data.sorting);
+    }
     localStorage.setItem("allSite", "my");
   }
 };

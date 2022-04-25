@@ -224,7 +224,7 @@ export default {
   position: absolute;
   top: 100%;
   width: 100%;
-  height: 2px;
+  height: 1.5px;
 }
 
 #nprogress .bar {
@@ -854,6 +854,14 @@ body {
   100% {
     opacity: 0;
     transform: translateY(-12.5px);
+  }
+}
+
+@media screen and (max-width: 1219px) {
+  [data-theme="dark"] {
+    --sidebar-bg-color: #202020;
+    --active-item-color: #303030;
+    --left-sidebar-link-hover-color: #272727;
   }
 }
 </style>
