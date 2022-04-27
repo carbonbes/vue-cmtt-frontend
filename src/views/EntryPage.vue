@@ -25,11 +25,25 @@
             :item="block"
             v-if="
               block.type === 'media' &&
+              block.data.items.length === 1 &&
               (block.data.items[0].image.data.type === 'jpg' ||
                 block.data.items[0].image.data.type === 'png' ||
                 block.data.items[0].image.data.type === 'webp')
             "
           />
+
+          <div
+            class="entry-page__gallery-block"
+            v-if="
+              block.type === 'media' &&
+              block.data.items.length > 1 &&
+              (block.data.items[0].image.data.type === 'jpg' ||
+                block.data.items[0].image.data.type === 'png' ||
+                block.data.items[0].image.data.type === 'webp')
+            "
+          >
+            <gallery-component :images="block.data.items" />
+          </div>
 
           <video-block
             :item="block"
@@ -81,9 +95,7 @@
               :authorName="block.data.telegram.data.tg_data.author.name"
               :dateTime="block.data.telegram.data.tg_data.datetime"
               :text="block.data.telegram.data.tg_data.text"
-              :imgCover="
-                block.data.telegram.data.tg_data.photos[0]?.leonardo_url
-              "
+              :imgCover="block.data.telegram.data.tg_data.photos"
               :videoCover="block.data.telegram.data.tg_data.videos[0]"
             />
           </div>
@@ -171,6 +183,7 @@ import EntryTitle from "@/components/Entry/EntryTitle.vue";
 import EntryFooter from "@/components/Entry/EntryFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
+import GalleryComponent from "@/components/Gallery/GalleryComponent.vue";
 import TextBlock from "@/components/EntryPage/TextBlock.vue";
 import LinkBlock from "@/components/EntryPage/LinkBlock.vue";
 import QuoteBlock from "@/components/EntryPage/QuoteBlock.vue";
@@ -213,6 +226,7 @@ export default {
     EntryFooter,
     ImageBlock,
     VideoBlock,
+    GalleryComponent,
     TextBlock,
     LinkBlock,
     QuoteBlock,
@@ -387,6 +401,11 @@ export default {
   & + .entry-page__video-block {
     margin-top: 12px;
   }
+}
+
+.entry-page__gallery-block {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .entry-page__comments {
@@ -634,8 +653,9 @@ export default {
   margin-right: auto;
   max-width: 640px;
 
-  & + .entry-page__video-block {
-    margin-top: 15px;
+  & + .entry-page__video-block,
+  + .ep-island {
+    margin-top: 30px;
   }
 }
 

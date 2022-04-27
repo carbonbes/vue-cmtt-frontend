@@ -6,98 +6,100 @@
     :style="{ '--level': this.comment.level }"
   >
     <div
-      class="comment-content"
-      :class="commentContentClassObj"
+      class="self-comment"
+      :class="selfCommentClassObj"
       @mouseenter="setIsUnread(false)"
     >
-      <router-link
-        class="avatar"
-        :style="avatarStyleObj"
-        :to="{ path: `/u/${authorId}` }"
-      ></router-link>
-      <router-link
-        class="author-name"
-        v-text="authorName"
-        :to="{ path: `/u/${authorId}` }"
-      ></router-link>
-      <router-link
-        class="up-arrow"
-        :title="this.replyToAuthorName"
-        :to="{
-          query: { comment: this.replyTo },
-        }"
-        v-if="isReply"
-        @click="highlightFocusedComment(this.replyTo)"
-        @mouseenter="highlightParentComment(this.replyTo)"
-        @mouseleave="clearHighlightParentComment"
-      >
-        <up-arrow-icon />
-      </router-link>
-      <div class="break"></div>
-      <div class="date-created">
-        <date-time :date="dateCreated" type="0" />
-      </div>
-      <span class="is-author" v-if="isAuthorOfComment">автор</span>
-
-      <div class="rating-wrapp">
-        <div class="rating">
-          <vote-icon
-            class="icon dislike-icon"
-            :class="dislikeBtnClassObj"
-            @click="like('dislike')"
-          />
-          <div
-            class="value-wrapp"
-            :class="ratingValueWrappClassObj"
-            @mouseenter="getLikes"
-            @mouseleave="closeLikesPopup"
-            @touchstart="getLikes"
-            v-outside-click:[true]="closeLikesPopup"
-          >
-            <transition-group
-              class="value"
-              :class="ratingValueClassObj"
-              :name="this.animationType === 'up' ? 'value_up' : 'value_down'"
-              tag="div"
-              ><div
-                v-text="commentRatingFormatted"
-                :key="commentRatingFormatted"
-              ></div
-            ></transition-group>
-            <transition name="popup">
-              <div class="popup" v-if="likesPopupIsOpen">
-                <likes-popup :likes="this.likesList" type="comment" />
-              </div>
-            </transition>
-          </div>
-          <vote-icon
-            class="icon like-icon"
-            :class="likeBtnClassObj"
-            @click="like('like')"
-          />
+      <div class="comment-content">
+        <router-link
+          class="avatar"
+          :style="avatarStyleObj"
+          :to="{ path: `/u/${authorId}` }"
+        ></router-link>
+        <router-link
+          class="author-name"
+          v-text="authorName"
+          :to="{ path: `/u/${authorId}` }"
+        ></router-link>
+        <router-link
+          class="up-arrow"
+          :title="this.replyToAuthorName"
+          :to="{
+            query: { comment: this.replyTo },
+          }"
+          v-if="isReply"
+          @click="highlightFocusedComment(this.replyTo)"
+          @mouseenter="highlightParentComment(this.replyTo)"
+          @mouseleave="clearHighlightParentComment"
+        >
+          <up-arrow-icon />
+        </router-link>
+        <div class="break"></div>
+        <div class="date-created">
+          <date-time :date="dateCreated" type="0" />
         </div>
+        <span class="is-author" v-if="isAuthorOfComment">автор</span>
+
+        <div class="rating-wrapp">
+          <div class="rating">
+            <vote-icon
+              class="icon dislike-icon"
+              :class="dislikeBtnClassObj"
+              @click="like('dislike')"
+            />
+            <div
+              class="value-wrapp"
+              :class="ratingValueWrappClassObj"
+              @mouseenter="getLikes"
+              @mouseleave="closeLikesPopup"
+              @touchstart="getLikes"
+              v-outside-click:[true]="closeLikesPopup"
+            >
+              <transition-group
+                class="value"
+                :class="ratingValueClassObj"
+                :name="this.animationType === 'up' ? 'value_up' : 'value_down'"
+                tag="div"
+                ><div
+                  v-text="commentRatingFormatted"
+                  :key="commentRatingFormatted"
+                ></div
+              ></transition-group>
+              <transition name="popup">
+                <div class="popup" v-if="likesPopupIsOpen">
+                  <likes-popup :likes="this.likesList" type="comment" />
+                </div>
+              </transition>
+            </div>
+            <vote-icon
+              class="icon like-icon"
+              :class="likeBtnClassObj"
+              @click="like('like')"
+            />
+          </div>
+        </div>
+
+        <div class="text" v-if="text">
+          <comment-text :string="text" />
+        </div>
+
+        <div class="media" v-if="media.length > 0">
+          <comment-media :attachments="media" />
+        </div>
+
+        <span class="reply-btn" @click="this.openReplyForm()">Ответить</span>
+
+        <div class="more-items-btn">
+          <more-item-icon class="icon" />
+        </div>
+
+        <reply-form
+          :parentCommentId="this.commentId"
+          :closeReplyForm="this.closeReplyForm"
+          type="reply"
+          v-if="replyFormIsOpen"
+        />
       </div>
-
-      <div class="text" v-if="text">
-        <comment-text :string="text" />
-      </div>
-
-      <div class="media" v-if="media.length > 0">
-        <comment-media :attachments="media" />
-      </div>
-
-      <span class="reply-btn" @click="this.openReplyForm()">Ответить</span>
-
-      <div class="more-items-btn">
-        <more-item-icon class="icon" />
-      </div>
-
-      <reply-form
-        :parentCommentId="this.commentId"
-        :closeReplyForm="this.closeReplyForm"
-        type="reply"
-        v-if="replyFormIsOpen"
-      />
     </div>
     <div
       class="comment-replies"
@@ -182,9 +184,9 @@ export default {
       };
     },
 
-    commentContentClassObj() {
+    selfCommentClassObj() {
       return {
-        "comment-content_highlighted":
+        "self-comment_highlighted":
           this.commentId == this.hoveredHighlightComment ||
           this.commentId == this.temporaryHightlightComment ||
           this.unread,
@@ -430,7 +432,7 @@ export default {
 .entry-page {
   &__comment {
     --branch-gap: 21px;
-    --text-right-gap: 85px;
+    --comment-content-right-gap: 85px;
     --padding-highlighted: 5px 21px;
     --right-gap-highlighted: -21px;
     --width-highlighted: 100%;
@@ -454,7 +456,7 @@ export default {
         border: solid var(--branch-color);
         border-width: 0 0 1px 1px;
         border-bottom-left-radius: 8px;
-        z-index: 3;
+        z-index: 1;
       }
 
       &:not(.entry-page__comment_max-lvl):not(:last-child) {
@@ -474,12 +476,10 @@ export default {
       }
     }
 
-    & .comment-content {
+    & .self-comment {
       position: relative;
       padding-top: 18px;
       padding-bottom: 5px;
-      display: flex;
-      flex-wrap: wrap;
 
       &_highlighted {
         &::before {
@@ -491,283 +491,272 @@ export default {
           width: var(--width-highlighted);
           height: 100%;
           background: var(--comment-highlight-bg);
-          z-index: 2;
         }
       }
 
-      & .avatar {
-        margin-top: 2px;
-        margin-right: 10px;
-        margin-bottom: -32px;
-        width: 32px;
-        height: 32px;
+      & .comment-content {
+        position: relative;
         display: flex;
-        border-radius: 50%;
-        box-shadow: var(--box-shadow-avatar);
-        background-size: cover;
-        background-position: 50% 50%;
-        order: -2;
-      }
+        flex-wrap: wrap;
 
-      & .author-name {
-        margin-right: 8px;
-        white-space: nowrap;
-        font-weight: 500;
-        line-height: 20px;
-        order: -2;
-      }
-
-      & .up-arrow {
-        display: flex;
-        align-items: center;
-        opacity: 0;
-        order: -2;
-
-        & svg {
-          width: 14px;
-          height: 14px;
-          color: var(--grey-color);
+        & .avatar {
+          margin-top: 2px;
+          margin-right: 10px;
+          margin-bottom: -32px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          border-radius: 50%;
+          box-shadow: var(--box-shadow-avatar);
+          background-size: cover;
+          background-position: 50% 50%;
+          order: -2;
         }
-      }
 
-      .break {
-        flex-basis: 100%;
-      }
+        & .author-name {
+          margin-right: 8px;
+          white-space: nowrap;
+          font-weight: 500;
+          line-height: 20px;
+          order: -2;
+        }
 
-      & .date-created {
-        margin-left: 42px;
-        white-space: nowrap;
-        line-height: 16px;
-        font-size: 12px;
-        color: var(--grey-color);
-      }
-
-      & .is-author {
-        margin-left: 8px;
-        white-space: nowrap;
-        line-height: 16px;
-        font-size: 12px;
-        color: var(--comment-self-author-badge);
-        z-index: 1;
-      }
-
-      & .rating-wrapp {
-        --action-gap: 8px;
-
-        margin-left: auto;
-        padding-left: 25px;
-        display: flex;
-        order: -2;
-
-        & .rating {
-          margin-left: auto;
-          height: 20px;
+        & .up-arrow {
           display: flex;
           align-items: center;
-          line-height: 20px;
+          opacity: 0;
+          order: -2;
 
-          & .icon {
-            width: 18px;
-            height: 18px;
+          & svg {
+            width: 14px;
+            height: 14px;
             color: var(--grey-color);
-            cursor: pointer;
-
-            &.dislike-icon {
-              margin-right: var(--action-gap);
-              transform: rotate(180deg);
-              opacity: 0;
-
-              &_pressed {
-                color: var(--red-color);
-                opacity: 1;
-              }
-            }
-
-            &.like-icon {
-              margin-left: var(--action-gap);
-              opacity: 0;
-
-              &_pressed {
-                color: var(--green-color);
-                opacity: 1;
-              }
-            }
           }
+        }
 
-          & .value-wrapp {
-            position: relative;
-            min-width: 40px;
-            padding: 0 12.5px;
+        .break {
+          flex-basis: 100%;
+        }
+
+        & .date-created {
+          margin-left: 42px;
+          white-space: nowrap;
+          line-height: 16px;
+          font-size: 12px;
+          color: var(--grey-color);
+        }
+
+        & .is-author {
+          margin-left: 8px;
+          white-space: nowrap;
+          line-height: 16px;
+          font-size: 12px;
+          color: var(--comment-self-author-badge);
+          z-index: 1;
+        }
+
+        & .rating-wrapp {
+          --action-gap: 8px;
+
+          margin-left: auto;
+          padding-left: 25px;
+          display: flex;
+          order: -2;
+
+          & .rating {
+            margin-left: auto;
+            height: 20px;
             display: flex;
-            justify-content: center;
-            border-radius: 4px;
+            align-items: center;
+            line-height: 20px;
 
-            &_neutral {
-              background: var(--comment-rating-value-wrapp-bg-neutral);
+            & .icon {
+              width: 18px;
+              height: 18px;
+              color: var(--grey-color);
+              cursor: pointer;
+
+              &.dislike-icon {
+                margin-right: var(--action-gap);
+                transform: rotate(180deg);
+                opacity: 0;
+
+                &_pressed {
+                  color: var(--red-color);
+                  opacity: 1;
+                }
+              }
+
+              &.like-icon {
+                margin-left: var(--action-gap);
+                opacity: 0;
+
+                &_pressed {
+                  color: var(--green-color);
+                  opacity: 1;
+                }
+              }
             }
 
-            &_positive {
-              background: var(--comment-rating-value-wrapp-bg-positive);
-            }
-
-            &_negative {
-              background: var(--comment-rating-value-wrapp-bg-negative);
-            }
-
-            & .value {
-              font-weight: 500;
-              font-size: 14px;
-              cursor: default;
+            & .value-wrapp {
+              position: relative;
+              min-width: 40px;
+              padding: 0 12.5px;
+              display: flex;
+              justify-content: center;
+              border-radius: 4px;
 
               &_neutral {
-                color: var(--grey-color);
+                background: var(--comment-rating-value-wrapp-bg-neutral);
               }
 
               &_positive {
-                color: var(--green-color);
+                background: var(--comment-rating-value-wrapp-bg-positive);
               }
 
               &_negative {
-                color: var(--red-color);
+                background: var(--comment-rating-value-wrapp-bg-negative);
               }
 
-              &_up {
-                &-enter-active {
-                  animation: rating-anim-up-enter 0.2s;
+              & .value {
+                font-weight: 500;
+                font-size: 14px;
+                cursor: default;
+
+                &_neutral {
+                  color: var(--grey-color);
                 }
 
+                &_positive {
+                  color: var(--green-color);
+                }
+
+                &_negative {
+                  color: var(--red-color);
+                }
+
+                &_up {
+                  &-enter-active {
+                    animation: rating-anim-up-enter 0.2s;
+                  }
+
+                  &-leave-active {
+                    position: absolute;
+                    animation: rating-anim-up-leave 0.2s;
+                  }
+                }
+
+                &_down {
+                  &-enter-active {
+                    animation: rating-anim-down-enter 0.2s;
+                  }
+
+                  &-leave-active {
+                    position: absolute;
+                    animation: rating-anim-down-leave 0.2s;
+                  }
+                }
+              }
+
+              & .popup {
+                position: absolute;
+                top: 100%;
+                margin-top: 5px;
+                z-index: 3;
+
+                &-enter-active,
                 &-leave-active {
-                  position: absolute;
-                  animation: rating-anim-up-leave 0.2s;
-                }
-              }
-
-              &_down {
-                &-enter-active {
-                  animation: rating-anim-down-enter 0.2s;
+                  transition: opacity 0.075s;
                 }
 
-                &-leave-active {
-                  position: absolute;
-                  animation: rating-anim-down-leave 0.2s;
+                &-enter-from,
+                &-leave-to {
+                  opacity: 0;
                 }
-              }
-            }
-
-            & .popup {
-              position: absolute;
-              top: 100%;
-              margin-top: 5px;
-              z-index: 3;
-
-              &-enter-active,
-              &-leave-active {
-                transition: opacity 0.075s;
-              }
-
-              &-enter-from,
-              &-leave-to {
-                opacity: 0;
               }
             }
           }
         }
-      }
 
-      & .text {
-        margin: 6px 0;
-        padding-right: var(--text-right-gap);
-        max-width: 100%;
-        flex-basis: 100%;
-        word-wrap: break-word;
+        & .text {
+          margin: 6px 0;
+          padding-right: var(--comment-content-right-gap);
+          max-width: 100%;
+          flex-basis: 100%;
+          word-wrap: break-word;
 
-        & p {
-          margin: 0;
+          & p {
+            margin: 0;
 
-          &:not(:last-child) {
-            margin-bottom: 6px;
+            &:not(:last-child) {
+              margin-bottom: 6px;
+            }
+          }
+
+          & .quote {
+            padding-top: 6px;
+            padding-bottom: 6px;
+            display: flex;
+
+            & .icon {
+              min-width: 16px;
+              min-height: 12px;
+              margin-right: 10px;
+              color: #9b9b9b;
+            }
+
+            &-content {
+              min-width: 0;
+            }
+          }
+
+          & + .media {
+            margin-top: 0;
           }
         }
 
-        & .quote {
-          padding-top: 6px;
-          padding-bottom: 6px;
+        & .media {
+          margin: 10px 0;
+          max-width: 100%;
+          padding-right: var(--comment-content-right-gap);
+          flex-basis: 100%;
+
+          & .img-wrapp {
+            & + .img-wrapp {
+              margin-top: 7px;
+            }
+          }
+        }
+
+        & .reply-btn {
+          font-size: 14px;
+          line-height: 20px;
+          color: var(--grey-color);
+          cursor: pointer;
+        }
+
+        & .more-items-btn {
+          margin-left: 10px;
           display: flex;
+          align-items: center;
+          line-height: 20px;
+          color: var(--grey-color);
+          cursor: pointer;
 
           & .icon {
-            min-width: 16px;
-            min-height: 12px;
-            margin-right: 10px;
-            color: #9b9b9b;
-          }
-
-          &-content {
-            min-width: 0;
+            width: 16px;
+            height: 16px;
           }
         }
 
-        & + .media {
-          margin-top: 0;
+        & .author-name,
+        .date-created {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          flex: 1;
+          min-width: 0;
+          max-width: max-content;
         }
-      }
-
-      & .media {
-        margin: 10px 0;
-        max-width: 100%;
-        padding-right: 85px;
-        flex-basis: 100%;
-
-        & .img-wrapp {
-          & + .img-wrapp {
-            margin-top: 7px;
-          }
-        }
-      }
-
-      & .reply-btn {
-        font-size: 14px;
-        line-height: 20px;
-        color: var(--grey-color);
-        cursor: pointer;
-      }
-
-      & .more-items-btn {
-        margin-left: 10px;
-        display: flex;
-        align-items: center;
-        line-height: 20px;
-        color: var(--grey-color);
-        cursor: pointer;
-
-        & .icon {
-          width: 16px;
-          height: 16px;
-        }
-      }
-
-      & .avatar,
-      .author-name,
-      .up-arrow,
-      .date-created,
-      .is-author,
-      .like-icon,
-      .dislike-icon,
-      .value,
-      .text,
-      .media,
-      .reply-btn,
-      .more-items-btn,
-      .reply-form {
-        z-index: 2;
-      }
-
-      & .author-name,
-      .date-created {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        flex: 1;
-        min-width: 0;
-        max-width: max-content;
       }
     }
 
@@ -796,69 +785,71 @@ export default {
 
 @media (hover: hover) {
   .entry-page__comment {
-    & .comment-content {
-      &:hover {
-        & .rating-wrapp .rating {
-          & .dislike-icon,
-          .like-icon {
+    & .self-comment {
+      & .comment-content {
+        &:hover {
+          & .rating-wrapp .rating {
+            & .dislike-icon,
+            .like-icon {
+              opacity: 1;
+            }
+          }
+
+          & .up-arrow {
             opacity: 1;
           }
         }
 
-        & .up-arrow {
-          opacity: 1;
+        & .avatar {
+          &:hover {
+            & ~ .author-name {
+              color: var(--blue-color);
+            }
+          }
         }
-      }
 
-      & .avatar {
-        &:hover {
-          & ~ .author-name {
+        & .author-name {
+          &:hover {
             color: var(--blue-color);
           }
         }
-      }
 
-      & .author-name {
-        &:hover {
-          color: var(--blue-color);
-        }
-      }
-
-      & .reply-btn,
-      .more-items-btn,
-      .up-arrow svg {
-        &:hover {
-          color: var(--blue-color);
-        }
-      }
-
-      & .value-wrapp {
-        &:hover {
-          &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            width: 40px;
-            height: 30px;
+        & .reply-btn,
+        .more-items-btn,
+        .up-arrow svg {
+          &:hover {
+            color: var(--blue-color);
           }
         }
-      }
 
-      & .rating-wrapp .rating .dislike-icon {
-        &:hover {
-          color: var(--red-color);
+        & .value-wrapp {
+          &:hover {
+            &::before {
+              content: "";
+              position: absolute;
+              top: 0;
+              width: 40px;
+              height: 30px;
+            }
+          }
         }
-      }
 
-      & .rating-wrapp .rating .like-icon {
-        &:hover {
-          color: var(--green-color);
+        & .rating-wrapp .rating .dislike-icon {
+          &:hover {
+            color: var(--red-color);
+          }
         }
-      }
 
-      & .cancel-btn {
-        &:hover {
-          opacity: 0.8;
+        & .rating-wrapp .rating .like-icon {
+          &:hover {
+            color: var(--green-color);
+          }
+        }
+
+        & .cancel-btn {
+          &:hover {
+            opacity: 0.8;
+          }
         }
       }
     }
@@ -882,7 +873,7 @@ export default {
   .entry-page {
     &__comment {
       --branch-gap: 19px;
-      --text-right-gap: 0;
+      --comment-content-right-gap: 0;
       --padding-highlighted: 8px 0;
       --right-gap-highlighted: -15px;
       --width-highlighted: 100vh;
@@ -893,33 +884,35 @@ export default {
         }
       }
 
-      & .comment-content {
-        & .rating-wrapp {
-          --action-gap: 2px;
+      & .self-comment {
+        & .comment-content {
+          & .rating-wrapp {
+            --action-gap: 2px;
 
-          order: 1;
+            order: 1;
 
-          & .rating {
-            & .icon.dislike-icon,
-            .icon.like-icon {
-              opacity: 1;
-            }
+            & .rating {
+              & .icon.dislike-icon,
+              .icon.like-icon {
+                opacity: 1;
+              }
 
-            & .value-wrapp {
-              padding: 0 13px;
-              min-width: unset;
-              justify-content: flex-end;
-              background: none;
+              & .value-wrapp {
+                padding: 0 13px;
+                min-width: unset;
+                justify-content: flex-end;
+                background: none;
 
-              & .popup {
-                transform: translateX(30px);
+                & .popup {
+                  transform: translateX(30px);
+                }
               }
             }
           }
-        }
 
-        & .up-arrow {
-          opacity: 1;
+          & .up-arrow {
+            opacity: 1;
+          }
         }
       }
     }

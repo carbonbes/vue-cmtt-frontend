@@ -7,9 +7,8 @@
         <link-icon class="icon" />{{ shortUrl[1] }}
       </div>
     </div>
-    <div class="link-block__logo">
-      <!-- <img :src="`https://leonardo.osnova.io/${sourceIcon}/`" /> -->
-      <img :src="`${sourceIcon}`" />
+    <div class="link-block__logo" v-if="sourceLogo">
+      <img :src="sourceLogo" />
     </div>
   </a>
 </template>
@@ -31,6 +30,17 @@ export default {
     shortUrl() {
       let regex = /https?\:\/\/(.+?)(?=\/)/gi;
       return regex.exec(this.urlSrc);
+    },
+
+    sourceLogo() {
+      if (
+        this.sourceIcon &&
+        /https\:\/\/tjournal\.ru|https\:\/\/proxy.leonardo.osnova.io/g.test(
+          this.sourceIcon
+        )
+      ) {
+        return this.sourceIcon;
+      } else return `https://leonardo.osnova.io/${this.sourceIcon}/`;
     },
   },
 };

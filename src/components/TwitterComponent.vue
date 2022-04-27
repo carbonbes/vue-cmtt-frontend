@@ -22,7 +22,17 @@
       <div class="embed-text" v-html="text"></div>
     </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
-      <img class="embed-cover_img" :src="imgSrc" alt="" v-if="imgSrc" />
+      <image-component
+        class="embed-cover_img"
+        :imageSrc="imgSrc"
+        :srcWidth="imageSrcWidth"
+        :srcHeight="imageSrcHeight"
+        :maxWidth="1400"
+        :maxHeight="600"
+        type="embed"
+        v-if="imgSrc"
+      />
+
       <video-component
         class="embed-cover_video"
         :srcVideo="videoSrc"
@@ -40,6 +50,7 @@
 
 <script>
 import DateTime from "./DateTime.vue";
+import ImageComponent from "./ImageComponent.vue";
 import VideoComponent from "./VideoComponent.vue";
 import TwitterLogo from "@/assets/logos/twitter_logo.svg?inline";
 
@@ -56,6 +67,7 @@ export default {
   components: {
     DateTime,
     VideoComponent,
+    ImageComponent,
     TwitterLogo,
   },
 
@@ -67,6 +79,18 @@ export default {
     imgSrc() {
       if (this.media && this.media[0].type === "photo") {
         return this.media[0].media_url_https;
+      }
+    },
+
+    imageSrcWidth() {
+      if (this.media && this.media[0].type === "photo") {
+        return this.media[0].sizes.large.w;
+      }
+    },
+
+    imageSrcHeight() {
+      if (this.media && this.media[0].type === "photo") {
+        return this.media[0].sizes.large.h;
       }
     },
 

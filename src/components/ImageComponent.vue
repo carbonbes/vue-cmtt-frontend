@@ -1,21 +1,19 @@
 <template>
   <div class="img-wrapp" id="image-wrapp" :style="styleObject">
     <a
-      :href="`https://leonardo.osnova.io/${image}/-/preview/1200/-/format/webp/`"
+      :href="image"
       :data-pswp-width="this.srcWidth"
       :data-pswp-height="this.srcHeight"
       target="_blank"
     >
-      <img
-        :src="`https://leonardo.osnova.io/${image}/-/preview/1200/-/format/webp/`"
-      />
+      <img :src="image" />
     </a>
   </div>
 </template>
 
 <script>
 import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
-import PhotoSwipeLightbox from "photoswipe/dist/photoswipe-lightbox.esm.js";
+import PhotoSwipeLightbox from "photoswipe/dist/photoswipe-lightbox.esm.min.js";
 
 export default {
   computed: {
@@ -33,6 +31,13 @@ export default {
             ? this.srcHeight + "px"
             : this.calculatedHeight + "px",
       };
+    },
+
+    image() {
+      if (this.type === "embed") {
+        return this.imageSrc;
+      } else
+        return `https://leonardo.osnova.io/${this.imageSrc}/-/preview/1200/-/format/webp/`;
     },
 
     calculatedWidth() {
@@ -59,12 +64,12 @@ export default {
   },
 
   props: {
-    image: String,
-    type: [String, Number],
-    srcWidth: Number,
-    srcHeight: Number,
+    imageSrc: String,
+    srcWidth: [String, Number],
+    srcHeight: [String, Number],
     maxWidth: [String, Number],
     maxHeight: [String, Number],
+    type: String,
   },
 
   mounted() {
@@ -72,8 +77,8 @@ export default {
       this.lightbox = new PhotoSwipeLightbox({
         gallery: "#image-wrapp",
         children: "a",
-        pswpModule: () => import("photoswipe"),
-        padding: { top: 20, bottom: 40, left: 100, right: 100 },
+        pswpModule: () => import("photoswipe/dist/photoswipe.esm.min.js"),
+        padding: { top: 40, bottom: 40, left: 100, right: 100 },
       });
       this.lightbox.init();
     }

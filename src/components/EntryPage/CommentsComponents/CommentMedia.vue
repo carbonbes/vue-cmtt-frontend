@@ -1,7 +1,7 @@
 <template>
   <template v-for="(media, index) in attachments" :key="index">
     <image-component
-      :image="media.data.uuid"
+      :imageSrc="media.data.uuid"
       :srcWidth="media.data.width"
       :srcHeight="media.data.height"
       maxWidth="400"

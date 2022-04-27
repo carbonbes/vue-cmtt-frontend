@@ -21,8 +21,13 @@
                 class="rating"
                 :class="subsiteRatingClassObj"
                 v-text="subsiteRating"
+                v-if="subsiteRating"
               ></div>
-              <div class="subs-count" v-text="subsiteSubs"></div>
+              <div
+                class="subs-count"
+                v-text="subsiteSubs"
+                v-if="subsiteSubs"
+              ></div>
             </div>
             <div class="subsite__stat">
               На проекте с {{ subsiteDateCreated }}

@@ -1,7 +1,7 @@
 <template>
   <div class="entry-page__img-block" :class="classObject">
     <Image
-      :image="this.item.data.items[0].image.data.uuid"
+      :imageSrc="this.item.data.items[0].image.data.uuid"
       type="2"
       :srcWidth="this.item.data.items[0].image.data.width"
       :srcHeight="this.item.data.items[0].image.data.height"

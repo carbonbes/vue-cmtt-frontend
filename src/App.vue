@@ -666,9 +666,6 @@ body {
 
   &_img {
     margin: 0 auto;
-    max-width: 100%;
-    max-height: 600px;
-    display: block;
   }
 
   &_video {

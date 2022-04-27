@@ -19,6 +19,7 @@
       :authorName="entry.author.name"
       :date="entry.date"
       dateType="0"
+      :entryId="entry.id"
     />
     <div class="entry-content">
       <div class="entry-content__title e-island" v-if="entry.title">
@@ -44,9 +45,7 @@
           :authorName="telegramData.data.telegram.data.tg_data.author.name"
           :dateTime="telegramData.data.telegram.data.tg_data.datetime"
           :text="telegramData.data.telegram.data.tg_data.text"
-          :imgCover="
-            telegramData.data.telegram.data.tg_data.photos[0]?.leonardo_url
-          "
+          :imgCover="telegramData.data.telegram.data.tg_data.photos"
           :videoCover="telegramData.data.telegram.data.tg_data.videos[0]"
           v-if="telegramCovers.length > 0"
       /></template>
@@ -102,7 +101,7 @@
         v-if="imageCovers.length > 0"
       >
         <image-component
-          :image="imageCovers[0].data.items[0].image.data.uuid"
+          :imageSrc="imageCovers[0].data.items[0].image.data.uuid"
           :srcWidth="imageCovers[0].data.items[0].image.data.width"
           :srcHeight="imageCovers[0].data.items[0].image.data.height"
           :maxWidth="640"

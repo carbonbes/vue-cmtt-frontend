@@ -52,11 +52,12 @@
             /></div
         ></transition>
       </router-link>
-      <time
+      <router-link
         class="entry-header__date-publish entry-header__item"
+        :to="{ path: `/${entryId}` }"
         :title="new Date(date * 1000).toLocaleString()"
         ><date-time :date="date * 1000" :type="dateType"
-      /></time>
+      /></router-link>
     </div>
   </div>
 </template>
@@ -84,6 +85,7 @@ export default {
     authorName: String,
     date: [String, Number],
     dateType: String,
+    entryId: Number,
   },
 
   data() {
