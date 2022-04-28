@@ -1,4 +1,3 @@
-import store from "../index";
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
@@ -15,7 +14,6 @@ const entryPageModule = {
     unreadComments: null,
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
-    commentIsSended: false,
   }),
 
   getters: {
@@ -57,10 +55,6 @@ const entryPageModule = {
 
     temporaryHightlightComment(state) {
       return state.temporaryHightlightComment;
-    },
-
-    commentIsSended(state) {
-      return state.commentIsSended;
     },
   },
 
@@ -111,10 +105,6 @@ const entryPageModule = {
 
     clearTemporaryHightlightComment(state) {
       state.temporaryHightlightComment = null;
-    },
-
-    setCommentIsSended(state, value) {
-      state.commentIsSended = value;
     },
 
     setEntryPrevLiked(state, value) {
@@ -224,11 +214,7 @@ const entryPageModule = {
       newComment.isRemoved = data.comment.is_removed;
       newComment.media = [...data.comment.attaches];
 
-      if (data.comment.author.id === store.state.auth.auth.id) {
-        state.commentsList.unshift(newComment);
-      } else {
-        state.commentsList.push(newComment);
-      }
+      state.commentsList.push(newComment);
     },
 
     entryCommentsChannelEdited(state, data) {
@@ -239,6 +225,23 @@ const entryPageModule = {
           comment.media = [...data.comment.attaches];
         }
       });
+    },
+
+    addComment(state, data) {
+      let newComment = data.comment;
+      newComment.replies = [];
+      newComment.likes.isLiked = data.comment.likes.is_liked;
+      newComment.isIgnored = data.comment.is_ignored;
+      newComment.isRemoved = data.comment.is_removed;
+      newComment.media = [...data.comment.attaches];
+
+      if (data.position === "top") {
+        state.commentsList.unshift(newComment);
+      } else if (data.position === "bottom") {
+        state.commentsList.push(newComment);
+      } else if (!data.position) {
+        state.commentsList.unshift(newComment);
+      }
     },
   },
 
@@ -320,11 +323,7 @@ const entryPageModule = {
     },
 
     postComment({ commit }, data) {
-      commit("setCommentIsSended", true);
-
-      return API_v1.postComment(data).then(() => {
-        commit("setCommentIsSended", false);
-      });
+      return API_v1.postComment(data);
     },
 
     uploadFile({}, file) {

@@ -65,10 +65,10 @@
           :class="replyFormBtnClassObj"
           @click="postComment"
         >
-          <template v-if="!commentIsSended">
+          <template v-if="!state.commentIsSended">
             <div class="button__label">Ответить</div>
           </template>
-          <template v-if="commentIsSended">
+          <template v-if="state.commentIsSended">
             <LoaderIcon />
           </template>
         </div>
@@ -95,6 +95,7 @@ const props = defineProps({
   parentCommentId: String,
   type: String,
   closeReplyForm: Function,
+  position: String,
 });
 
 // state
@@ -103,14 +104,13 @@ const state = reactive({
   text: "",
   attachments: [],
   uploadedAttachment: false,
+  commentIsSended: false,
 });
 
 // getters
 const isAuth = computed(() => store.getters.isAuth);
 
 const entryId = computed(() => store.getters.entryId);
-
-const commentIsSended = computed(() => store.getters.commentIsSended);
 
 // computed
 const formIsFilled = computed(() => {
@@ -119,7 +119,7 @@ const formIsFilled = computed(() => {
 
 const replyFormClassObj = computed(() => ({
   "reply-form_focused": state.replyFormFocused,
-  "reply-form_sending": commentIsSended.value,
+  "reply-form_sending": state.commentIsSended,
   "reply-form_filled": formIsFilled.value,
 }));
 
@@ -223,6 +223,7 @@ const deleteAttachment = (index) => {
 
 const postComment = () => {
   if (isAuth.value) {
+    state.commentIsSended = true;
     store
       .dispatch("postComment", {
         id: entryId.value,
@@ -230,8 +231,23 @@ const postComment = () => {
         reply_to: props.parentCommentId || 0,
         attachments: JSON.stringify(state.attachments),
       })
-      .then(() => {
+      .then((response) => {
+        store.commit("addComment", {
+          position: props.position,
+          comment: response.data.result,
+        });
+
+        state.commentIsSended = false;
+
         props.closeReplyForm();
+      })
+      .catch((error) => {
+        state.commentIsSended = false;
+
+        notify({
+          title: "Ошибка " + error.response.data.error.code,
+          text: error.response.data.message,
+        });
       });
   } else {
     emitter.emit("login-modal-toggle");

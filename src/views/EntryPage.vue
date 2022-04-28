@@ -138,6 +138,7 @@
           <reply-form
             type="root"
             :closeReplyForm="this.closeTopReplyForm"
+            position="top"
             v-if="replyTopFormVisible"
           />
           <div
@@ -160,6 +161,7 @@
           <reply-form
             type="root"
             :closeReplyForm="this.closeBottomReplyForm"
+            position="bottom"
             v-if="replyBottomFormVisible"
           />
           <div

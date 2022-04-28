@@ -104,13 +104,13 @@ export default {
 
     voteLikeButtonClassObject() {
       return {
-        "vote-like_active": this.isLiked === 1,
+        "vote-like_pressed": this.isLiked === 1,
       };
     },
 
     voteDislikeButtonClassObject() {
       return {
-        "vote-dislike_active": this.isLiked === -1,
+        "vote-dislike_pressed": this.isLiked === -1,
       };
     },
 
@@ -246,7 +246,7 @@ export default {
     margin-right: 4px;
     transform: rotate(180deg);
 
-    &_active {
+    &_pressed {
       background: rgba(211, 79, 87, 0.1) !important;
       color: var(--red-color);
     }
@@ -255,7 +255,7 @@ export default {
   &.vote-like {
     margin-left: 4px;
 
-    &_active {
+    &_pressed {
       background: rgba(79, 167, 87, 0.1) !important;
       color: var(--green-color);
     }
@@ -339,13 +339,13 @@ export default {
   }
 
   .entry-footer__vote-btn {
-    &.vote-like_active {
+    &.vote-like_pressed {
       &:hover {
         background: #4fa75733 !important;
       }
     }
 
-    &.vote-dislike_active {
+    &.vote-dislike_pressed {
       &:hover {
         background: #d34f5733 !important;
       }

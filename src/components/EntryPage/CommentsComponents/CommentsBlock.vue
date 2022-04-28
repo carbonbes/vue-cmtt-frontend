@@ -53,7 +53,9 @@ onMounted(() => {
     }
 
     if (data.data.type === "comment_created") {
-      store.commit("entryCommentsChannelCreated", data.data);
+      if (store.state.auth.auth.id !== data.data.comment.author.id) {
+        store.commit("entryCommentsChannelCreated", data.data);
+      }
     }
 
     if (data.data.type === "comment_edited") {

@@ -99,6 +99,31 @@ onUnmounted(() => {
     }
   }
 
+  &_2 {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 400px;
+
+    & .gallery__item {
+      grid-column: 1 span;
+      grid-row: 1 span;
+    }
+  }
+
+  &_3 {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 250px);
+
+    & .gallery__item {
+      grid-column: 2 span;
+      grid-row: 1 span;
+
+      &:first-child {
+        grid-column: 4 span;
+        grid-row: 2 span;
+      }
+    }
+  }
+
   &_4 {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 150px);
