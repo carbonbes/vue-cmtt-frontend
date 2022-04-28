@@ -2,12 +2,14 @@
   <div class="gallery" id="gallery-component" :class="galleryClassObj">
     <template v-for="(item, index) in images" :key="index">
       <GalleryItem
-        :class="{ gallery__item_more: index >= 4 && props.images.length > 5 }"
-        :srcImage="item.image.data.uuid"
-        :srcWidth="item.image.data.width"
-        :srcHeight="item.image.data.height"
+        :class="{
+          gallery__item_more: index >= 4 && props.srcImages.length > 5,
+        }"
+        :srcImage="item.url"
+        :srcWidth="item.width"
+        :srcHeight="item.height"
         v-show="index <= 4"
-        :data-more="props.images.length - index"
+        :data-more="props.srcImages.length - index"
       />
     </template>
   </div>
@@ -20,7 +22,8 @@ import PhotoSwipeLightbox from "photoswipe/dist/photoswipe-lightbox.esm.min.js";
 
 // props
 const props = defineProps({
-  images: Object,
+  srcImages: Object,
+  type: String,
 });
 
 // state
@@ -44,14 +47,57 @@ onMounted(() => {
 
 // computed
 const galleryClassObj = computed(() => {
-  if (props.images.length === 2) {
+  if (props.srcImages.length === 2) {
     return "gallery_2";
-  } else if (props.images.length === 3) {
+  } else if (props.srcImages.length === 3) {
     return "gallery_3";
-  } else if (props.images.length === 4) {
+  } else if (props.srcImages.length === 4) {
     return "gallery_4";
-  } else if (props.images.length >= 5) {
+  } else if (props.srcImages.length >= 5) {
     return "gallery_5";
+  }
+});
+
+const images = computed(() => {
+  if (props.type === "entry_page") {
+    return props.srcImages.map((item) => {
+      let accum = {};
+      accum.url = null;
+      accum.width = null;
+      accum.height = null;
+
+      accum.url = `https://leonardo.osnova.io/${item.image.data.uuid}`;
+      accum.width = item.image.data.width;
+      accum.height = item.image.data.height;
+
+      return accum;
+    });
+  } else if (props.type === "twitter_embed") {
+    return props.srcImages.map((item) => {
+      let accum = {};
+      accum.url = null;
+      accum.width = null;
+      accum.height = null;
+
+      accum.url = item.media_url_https;
+      accum.width = item.sizes.large.w;
+      accum.height = item.sizes.large.h;
+
+      return accum;
+    });
+  } else if (props.type === "telegram_embed") {
+    return props.srcImages.map((item) => {
+      let accum = {};
+      accum.url = null;
+      accum.width = null;
+      accum.height = null;
+
+      accum.url = item.leonardo_url;
+      accum.width = item.width;
+      accum.height = item.height;
+
+      return accum;
+    });
   }
 });
 

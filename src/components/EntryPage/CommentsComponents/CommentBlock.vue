@@ -722,7 +722,15 @@ export default {
           flex-basis: 100%;
 
           & .img-wrapp {
-            & + .img-wrapp {
+            & + .img-wrapp,
+            + .media-video {
+              margin-top: 7px;
+            }
+          }
+
+          & .media-video {
+            & + .img-wrapp,
+            + .media-video {
               margin-top: 7px;
             }
           }

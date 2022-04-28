@@ -14,28 +14,33 @@
       "
     />
 
-    <video-component
-      :srcVideo="media.data.uuid"
-      :srcWidth="media.data.width"
-      :srcHeight="media.data.height"
-      maxWidth="400"
-      maxHeight="300"
+    <div
+      class="media-video"
       v-if="
         (media.type === 'image' || media.type === 'movie') &&
         (media.data.type === 'gif' || media.data.type === 'mp4')
       "
-    />
+    >
+      <video-component
+        :srcVideo="media.data.uuid"
+        :srcWidth="media.data.width"
+        :srcHeight="media.data.height"
+        maxWidth="400"
+        maxHeight="300"
+      />
+    </div>
 
-    <video-component
-      :srcVideo="media.data.uuid"
-      :srcWidth="media.data.width"
-      :srcHeight="media.data.height"
-      maxWidth="400"
-      maxHeight="300"
-      :externalService="media.data.external_service"
-      :embedCover="media.data.thumbnail.data.uuid"
-      v-if="media.type === 'video'"
-    />
+    <div class="media-video" v-if="media.type === 'video'">
+      <video-component
+        :srcVideo="media.data.uuid"
+        :srcWidth="media.data.width"
+        :srcHeight="media.data.height"
+        maxWidth="400"
+        maxHeight="300"
+        :externalService="media.data.external_service"
+        :embedCover="media.data.thumbnail.data.uuid"
+      />
+    </div>
   </template>
 </template>
 

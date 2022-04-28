@@ -24,7 +24,7 @@
         >Раскрыть</span
       >
     </div>
-    <div class="embed-cover" v-if="imageSrc || videoSrc">
+    <div class="embed-cover" v-if="imageSrc || videoSrc || imagesGallery">
       <image-component
         class="embed-cover_img"
         :imageSrc="imageSrc"
@@ -34,6 +34,12 @@
         :maxHeight="600"
         type="embed"
         v-if="imageSrc"
+      />
+
+      <gallery-component
+        :srcImages="imagesGallery"
+        type="telegram_embed"
+        v-if="imagesGallery"
       />
 
       <video-component
@@ -55,10 +61,17 @@
 import DateTime from "./DateTime.vue";
 import ImageComponent from "./ImageComponent.vue";
 import VideoComponent from "./VideoComponent.vue";
+import GalleryComponent from "./Gallery/GalleryComponent.vue";
 import TelegramLogo from "@/assets/logos/telegram_logo.svg?inline";
 
 export default {
-  components: { DateTime, ImageComponent, VideoComponent, TelegramLogo },
+  components: {
+    DateTime,
+    ImageComponent,
+    VideoComponent,
+    GalleryComponent,
+    TelegramLogo,
+  },
 
   props: {
     authorAvatarSrc: String,
@@ -84,15 +97,19 @@ export default {
     },
 
     imageSrc() {
-      if (this.imgCover.length > 0) return this.imgCover[0].leonardo_url;
+      if (this.imgCover.length === 1) return this.imgCover[0].leonardo_url;
     },
 
     imageSrcWidth() {
-      if (this.imgCover.length > 0) return this.imgCover[0].width;
+      if (this.imgCover.length === 1) return this.imgCover[0].width;
     },
 
     imageSrcHeight() {
-      if (this.imgCover.length > 0) return this.imgCover[0].height;
+      if (this.imgCover.length === 1) return this.imgCover[0].height;
+    },
+
+    imagesGallery() {
+      if (this.imgCover.length > 1) return this.imgCover;
     },
 
     videoSrc() {

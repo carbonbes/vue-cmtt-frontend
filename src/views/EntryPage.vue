@@ -32,8 +32,9 @@
             "
           />
 
-          <div
-            class="entry-page__gallery-block"
+          <gallery-block
+            :images="block.data.items"
+            type="entry_page"
             v-if="
               block.type === 'media' &&
               block.data.items.length > 1 &&
@@ -41,9 +42,7 @@
                 block.data.items[0].image.data.type === 'png' ||
                 block.data.items[0].image.data.type === 'webp')
             "
-          >
-            <gallery-component :images="block.data.items" />
-          </div>
+          />
 
           <video-block
             :item="block"
@@ -87,34 +86,11 @@
           />
 
           <div class="ep-island" v-if="block.type === 'telegram'">
-            <telegram-component
-              class="entry-page__embed"
-              :authorAvatarSrc="
-                block.data.telegram.data.tg_data.author.avatar_url
-              "
-              :authorName="block.data.telegram.data.tg_data.author.name"
-              :dateTime="block.data.telegram.data.tg_data.datetime"
-              :text="block.data.telegram.data.tg_data.text"
-              :imgCover="block.data.telegram.data.tg_data.photos"
-              :videoCover="block.data.telegram.data.tg_data.videos[0]"
-            />
+            <telegram-block :data="block.data" />
           </div>
 
           <div class="ep-island" v-if="block.type === 'tweet'">
-            <twitter-component
-              class="entry-page__embed"
-              :authorAvatar="
-                block.data.tweet.data.tweet_data.user.profile_image_url_https
-              "
-              :authorName="block.data.tweet.data.tweet_data.user.name"
-              :authorTag="block.data.tweet.data.tweet_data.user.screen_name"
-              :dateTime="block.data.tweet.data.tweet_data.created_at"
-              :text="
-                block.data.tweet.data.tweet_data.processed_text ||
-                block.data.tweet.data.tweet_data.full_text
-              "
-              :media="block.data.tweet.data.tweet_data.extended_entities?.media"
-            />
+            <twitter-block :data="block.data" />
           </div>
         </template>
       </div>
@@ -185,13 +161,13 @@ import EntryTitle from "@/components/Entry/EntryTitle.vue";
 import EntryFooter from "@/components/Entry/EntryFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
-import GalleryComponent from "@/components/Gallery/GalleryComponent.vue";
+import GalleryBlock from "@/components/EntryPage/GalleryBlock.vue";
 import TextBlock from "@/components/EntryPage/TextBlock.vue";
 import LinkBlock from "@/components/EntryPage/LinkBlock.vue";
 import QuoteBlock from "@/components/EntryPage/QuoteBlock.vue";
 import PersonBlock from "@/components/EntryPage/PersonBlock.vue";
-import TwitterComponent from "@/components/TwitterComponent.vue";
-import TelegramComponent from "@/components/TelegramComponent.vue";
+import TwitterBlock from "@/components/EntryPage/TwitterBlock.vue";
+import TelegramBlock from "@/components/EntryPage/TelegramBlock.vue";
 import CommentsBlock from "@/components/EntryPage/CommentsComponents/CommentsBlock.vue";
 import ReplyForm from "@/components/EntryPage/CommentsComponents/ReplyForm.vue";
 import store from "@/store";
@@ -228,13 +204,13 @@ export default {
     EntryFooter,
     ImageBlock,
     VideoBlock,
-    GalleryComponent,
+    GalleryBlock,
     TextBlock,
     LinkBlock,
     QuoteBlock,
     PersonBlock,
-    TwitterComponent,
-    TelegramComponent,
+    TwitterBlock,
+    TelegramBlock,
     CommentsBlock,
     ReplyForm,
   },

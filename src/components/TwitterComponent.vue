@@ -30,7 +30,13 @@
         :maxWidth="1400"
         :maxHeight="600"
         type="embed"
-        v-if="imgSrc"
+        v-if="imgSrc && this.media.length === 1"
+      />
+
+      <gallery-component
+        :srcImages="imagesGallery"
+        type="twitter_embed"
+        v-if="imagesGallery"
       />
 
       <video-component
@@ -52,6 +58,7 @@
 import DateTime from "./DateTime.vue";
 import ImageComponent from "./ImageComponent.vue";
 import VideoComponent from "./VideoComponent.vue";
+import GalleryComponent from "./Gallery/GalleryComponent.vue";
 import TwitterLogo from "@/assets/logos/twitter_logo.svg?inline";
 
 export default {
@@ -68,6 +75,7 @@ export default {
     DateTime,
     VideoComponent,
     ImageComponent,
+    GalleryComponent,
     TwitterLogo,
   },
 
@@ -91,6 +99,12 @@ export default {
     imageSrcHeight() {
       if (this.media && this.media[0].type === "photo") {
         return this.media[0].sizes.large.h;
+      }
+    },
+
+    imagesGallery() {
+      if (this.media && this.media.length > 1 && this.media[0].type === "photo") {
+        return this.media;
       }
     },
 

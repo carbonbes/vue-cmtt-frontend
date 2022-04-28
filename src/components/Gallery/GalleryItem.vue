@@ -20,10 +20,10 @@ const props = defineProps({
 });
 
 const itemImgPreview = computed(() => {
-  return `https://leonardo.osnova.io/${props.srcImage}/-/resize/680/`;
+  return `${props.srcImage}`;
 });
 
 const itemImgSrc = computed(() => {
-  return `https://leonardo.osnova.io/${props.srcImage}/-/resize/2794/`;
+  return `${props.srcImage}/-/resize/2500/`;
 });
 </script>
