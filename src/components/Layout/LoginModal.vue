@@ -16,18 +16,24 @@
       <h2 class="login-modal__title">Вход в аккаунт</h2>
       <Field
         class="login-modal__input v-input"
+        :class="emailInputClassObj"
         name="email"
         type="email"
         placeholder="Почта"
         validateOnInput
+        @click="setEmailInputPressed"
+        v-outside-click:[true]="clearEmailInputPressed"
         :disabled="isLoginRequested"
       />
       <Field
         class="login-modal__input v-input"
+        :class="passwordInputClassObj"
         name="password"
         type="password"
         placeholder="Пароль"
         validateOnInput
+        @click="setPasswordInputPressed"
+        v-outside-click:[true]="clearPasswordInputPressed"
         :disabled="isLoginRequested"
       />
       <button
@@ -77,9 +83,14 @@ export default {
       })
     );
 
+    const emailInputPressed = false;
+    const passwordInputPressed = false;
+
     return {
       initialValues,
       schema,
+      emailInputPressed,
+      passwordInputPressed,
     };
   },
 
@@ -92,12 +103,40 @@ export default {
       this.requestLogin(data);
     },
 
+    setEmailInputPressed() {
+      this.emailInputPressed = true;
+    },
+
+    clearEmailInputPressed() {
+      this.emailInputPressed = false;
+    },
+
+    setPasswordInputPressed() {
+      this.passwordInputPressed = true;
+    },
+
+    clearPasswordInputPressed() {
+      this.passwordInputPressed = false;
+    },
+
     ...mapActions(["requestLogin"]),
 
     ...mapMutations(["setIsError", "setError"]),
   },
 
   computed: {
+    emailInputClassObj() {
+      return {
+        "v-input_pressed": this.emailInputPressed,
+      };
+    },
+
+    passwordInputClassObj() {
+      return {
+        "v-input_pressed": this.passwordInputPressed,
+      };
+    },
+
     ...mapGetters(["isLoginRequested", "isError", "error"]),
   },
 
@@ -130,6 +169,7 @@ export default {
   }
 
   &__form {
+    position: relative;
     width: 250px;
     display: flex;
     flex-flow: column;
@@ -165,7 +205,10 @@ export default {
   }
 
   &__error-msg {
+    position: absolute;
+    top: 100%;
     margin-top: 30px;
+    font-size: 15px;
     color: var(--red-color);
   }
 

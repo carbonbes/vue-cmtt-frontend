@@ -9,7 +9,6 @@ import bodyScrollLock from "@/plugins/bodyScrollLock";
 import onKeydown from "@/plugins/onKeydown";
 import onClickOutside from "@/plugins/onClickOutside";
 import intersectionObserver from "@/plugins/intersectionObserver";
-import { plugin, defaultConfig } from "@formkit/vue";
 
 const app = createApp(App);
 const emitter = mitt();
@@ -30,5 +29,4 @@ app
   .use(onKeydown)
   .use(onClickOutside)
   .use(intersectionObserver)
-  .use(plugin, defaultConfig)
   .mount("body");

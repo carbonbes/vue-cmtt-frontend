@@ -287,7 +287,7 @@ iframe {
     opacity: 0.7;
   }
 
-  &_focused {
+  &_pressed {
     background-color: transparent;
     border: 1px solid var(--form-border-color-active) !important;
     box-shadow: var(--form-shadow);
