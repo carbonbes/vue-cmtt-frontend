@@ -13,7 +13,7 @@
       />
     </template>
 
-    <div class="comments-loader" v-if="this.currentPage < this.totalPagesCount">
+    <div class="comments-loader" v-if="this.currentPage < this.totalPages">
       <loader />
     </div>
   </div>
@@ -51,21 +51,17 @@ export default {
       () => store.getters.profileCommentsLastSortingValue
     );
 
-    const commentsIsRequested = computed(
-      () => store.getters.profileCommentsIsRequested
-    );
-
     const profileCommentsCount = computed(
       () => store.getters.profileECommentsCount
     );
 
-    const totalPagesCount = computed(() => {
-      return Math.round(profileCommentsCount.value / 30);
+    const totalPages = computed(() => {
+      return Math.ceil(profileCommentsCount.value / 30);
     });
 
     // methods
     const requestNextPage = () => {
-      if (currentPage.value < totalPagesCount.value) {
+      if (currentPage.value < totalPages.value) {
         store.commit("setProfileCommentsIsRequested", true);
 
         store
@@ -89,9 +85,9 @@ export default {
       currentPage,
       commentsList,
       commentsListLastId,
-      commentsIsRequested,
+      commentsLastSortingValue,
       profileCommentsCount,
-      totalPagesCount,
+      totalPages,
       requestNextPage,
     };
   },

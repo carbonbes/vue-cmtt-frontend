@@ -40,6 +40,12 @@ export const API_v2 = {
           `timeline?allSite=false&subsitesIds=${data.subsiteId}`
         );
       }
+
+      if (!data.sorting && data.subsiteId && data.lastId && data.lastSortingValue) {
+        return instance_v2.get(
+          `timeline?allSite=false&subsitesIds=${data.subsiteId}&lastId=${data.lastId}&lastSortingValue=${data.lastSortingValue}`
+        );
+      }
     }
 
     if (data.allSite === "all") {

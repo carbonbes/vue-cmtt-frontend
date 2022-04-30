@@ -672,11 +672,7 @@ body {
     margin: 0 auto;
   }
 
-  &_img + &_video {
-    margin-top: 7px;
-  }
-
-  &_video + &_img {
+  & div:not(:first-child) {
     margin-top: 7px;
   }
 }

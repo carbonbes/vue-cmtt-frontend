@@ -7,6 +7,7 @@ const profilePageModule = {
     profileHidden: null,
     profileEntries: [],
     profileEntriesLastId: null,
+    profileEntriesLastSortingValue: null,
     profileEntriesIsRequested: false,
     profileComments: [],
     profileCommentsLastId: null,
@@ -29,6 +30,10 @@ const profilePageModule = {
 
     profileEntriesLastId(state) {
       return state.profileEntriesLastId;
+    },
+
+    profileEntriesLastSortingValue(state) {
+      return state.profileEntriesLastSortingValue;
     },
 
     profileEntriesIsRequested(state) {
@@ -71,6 +76,10 @@ const profilePageModule = {
 
     setProfileEntriesLastId(state, data) {
       state.profileEntriesLastId = data;
+    },
+
+    setProfileEntriesLastSortingValue(state, data) {
+      state.profileEntriesLastSortingValue = data;
     },
 
     setProfileEntriesIsRequested(state, value) {
@@ -170,6 +179,10 @@ const profilePageModule = {
         if (!state.profileHidden) {
           commit("setProfileEntries", response.data.result.items);
           commit("setProfileEntriesLastId", response.data.result.lastId);
+          commit(
+            "setProfileEntriesLastSortingValue",
+            response.data.result.lastSortingValue
+          );
         }
       });
     },
