@@ -5,12 +5,8 @@ export default {
         el.observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (
-                entry.isIntersecting &&
-                !binding.value.requestState &&
-                binding.value.callback
-              ) {
-                binding.value.callback();
+              if (entry.isIntersecting) {
+                binding.value();
                 el.observer.disconnect();
               }
             });

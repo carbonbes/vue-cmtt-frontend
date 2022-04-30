@@ -408,6 +408,7 @@ export default {
     }
 
     & .content-content {
+      padding-bottom: 30px;
       grid-column: 1;
     }
   }

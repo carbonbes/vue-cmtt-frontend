@@ -6,8 +6,11 @@ const profilePageModule = {
     profile: null,
     profileHidden: null,
     profileEntries: [],
+    profileEntriesLastId: null,
     profileEntriesIsRequested: false,
     profileComments: [],
+    profileCommentsLastId: null,
+    profileCommentsLastSortingValue: null,
     profileCommentsIsRequested: false,
   }),
 
@@ -20,8 +23,36 @@ const profilePageModule = {
       return state.profileEntries;
     },
 
+    profileEntriesCount(state) {
+      return state.profile.counters.entries;
+    },
+
+    profileEntriesLastId(state) {
+      return state.profileEntriesLastId;
+    },
+
+    profileEntriesIsRequested(state) {
+      return state.profileEntriesIsRequested;
+    },
+
     profileComments(state) {
       return state.profileComments;
+    },
+
+    profileECommentsCount(state) {
+      return state.profile.counters.comments;
+    },
+
+    profileCommentsLastId(state) {
+      return state.profileCommentsLastId;
+    },
+
+    profileCommentsLastSortingValue(state) {
+      return state.profileCommentsLastSortingValue;
+    },
+
+    profileCommentsIsRequested(state) {
+      return state.profileCommentsIsRequested;
     },
   },
 
@@ -38,16 +69,32 @@ const profilePageModule = {
       state.profileEntries.push(...data.map((entry) => entry.data));
     },
 
-    clearProfileEntries(state) {
-      state.profileEntries = [];
+    setProfileEntriesLastId(state, data) {
+      state.profileEntriesLastId = data;
     },
 
     setProfileEntriesIsRequested(state, value) {
       state.profileEntriesIsRequested = value;
     },
 
+    clearProfileEntries(state) {
+      state.profileEntries = [];
+    },
+
     setProfileComments(state, data) {
       state.profileComments.push(...data);
+    },
+
+    setProfileCommentsLastId(state, data) {
+      state.profileCommentsLastId = data;
+    },
+
+    setProfileCommentsLastSortingValue(state, data) {
+      state.profileCommentsLastSortingValue = data;
+    },
+
+    setProfileCommentsIsRequested(state, value) {
+      state.profileCommentsIsRequested = value;
     },
 
     clearProfileComments(state) {
@@ -122,6 +169,7 @@ const profilePageModule = {
       return API_v2.getTimeline(data).then((response) => {
         if (!state.profileHidden) {
           commit("setProfileEntries", response.data.result.items);
+          commit("setProfileEntriesLastId", response.data.result.lastId);
         }
       });
     },
@@ -130,6 +178,11 @@ const profilePageModule = {
       return API_v2.getComments(data).then((response) => {
         if (!state.profileHidden) {
           commit("setProfileComments", response.data.result.items);
+          commit("setProfileCommentsLastId", response.data.result.lastId);
+          commit(
+            "setProfileCommentsLastSortingValue",
+            response.data.result.lastSortingValue
+          );
         }
       });
     },

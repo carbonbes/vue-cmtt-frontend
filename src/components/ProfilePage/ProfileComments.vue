@@ -1,10 +1,21 @@
 <template>
   <div class="profile__comments" v-if="commentsList.length">
-    <profile-comment
-      v-for="comment in commentsList"
-      :comment="comment"
-      :key="comment.id"
-    />
+    <template v-for="(comment, index) in commentsList" :key="comment.id">
+      <profile-comment
+        :comment="comment"
+        v-if="commentsList.length !== index + 1"
+      />
+
+      <profile-comment
+        :comment="comment"
+        v-intersect="requestNextPage"
+        v-else
+      />
+    </template>
+
+    <div class="comments-loader" v-if="this.currentPage < this.totalPagesCount">
+      <loader />
+    </div>
   </div>
 
   <div class="profile__comments_empty" v-if="!commentsList.length">
@@ -13,31 +24,84 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 import rootStore from "@/store";
 import nProgress from "nprogress";
 import ProfileComment from "@/components/ProfilePage/ProfileComment.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
   setup() {
     const store = useStore();
+    const route = useRoute();
 
+    // state
+    const currentPage = ref(1);
+
+    // computed
     const commentsList = computed(() => store.getters.profileComments);
 
-    return { commentsList };
+    const commentsListLastId = computed(
+      () => store.getters.profileCommentsLastId
+    );
+
+    const commentsLastSortingValue = computed(
+      () => store.getters.profileCommentsLastSortingValue
+    );
+
+    const commentsIsRequested = computed(
+      () => store.getters.profileCommentsIsRequested
+    );
+
+    const profileCommentsCount = computed(
+      () => store.getters.profileECommentsCount
+    );
+
+    const totalPagesCount = computed(() => {
+      return Math.round(profileCommentsCount.value / 30);
+    });
+
+    // methods
+    const requestNextPage = () => {
+      if (currentPage.value < totalPagesCount.value) {
+        store.commit("setProfileCommentsIsRequested", true);
+
+        store
+          .dispatch("requestProfileComments", {
+            subsiteId: route.params.id,
+            lastId: commentsListLastId.value,
+            lastSortingValue: commentsLastSortingValue.value,
+          })
+          .then(() => {
+            currentPage.value += 1;
+            store.commit("setProfileCommentsIsRequested", false);
+          });
+      }
+    };
+
+    onUnmounted(() => {
+      store.commit("clearProfileComments");
+    });
+
+    return {
+      currentPage,
+      commentsList,
+      commentsListLastId,
+      commentsIsRequested,
+      profileCommentsCount,
+      totalPagesCount,
+      requestNextPage,
+    };
   },
 
-  components: { ProfileComment },
-
-  beforeUnmount() {
-    rootStore.commit("clearProfileComments");
-  },
+  components: { ProfileComment, Loader },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
     nProgress.start();
 
-    return rootStore
+    rootStore
       .dispatch("requestProfileComments", {
         subsiteId: routeTo.params.id,
       })
@@ -51,6 +115,23 @@ export default {
 
 <style lang="scss">
 .profile__comments {
+  & .comments-loader {
+    padding: 20px;
+    max-width: 640px;
+    background: var(--entry-bg-color);
+    color: var(--black-color);
+    border-radius: 8px;
+    user-select: none;
+
+    & .custom-loader {
+      &__loader-1,
+      &__loader-2,
+      &__loader-3 {
+        background-color: var(--black-color);
+      }
+    }
+  }
+
   &_empty {
     padding: 88px 0;
     background: var(--entry-bg-color);

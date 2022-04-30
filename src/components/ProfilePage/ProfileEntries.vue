@@ -1,19 +1,15 @@
 <template>
   <div class="profile__entries" v-if="entriesList.length">
-    <Entry
-      v-for="(entry, index) in entriesList"
-      :entry="entry"
-      :key="entry.id"
-    />
+    <Entry v-for="entry in entriesList" :entry="entry" :key="entry.id" />
   </div>
 
   <div class="profile__entries_empty" v-if="!entriesList.length">
-    <span>Здесь еще нет публикаций</span>
+    <span>Пользователь не опубликовал ни одной записи</span>
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import rootStore from "@/store";
 import nProgress from "nprogress";
@@ -23,7 +19,16 @@ export default {
   setup() {
     const store = useStore();
 
+    // computed
     const entriesList = computed(() => store.getters.profileEntries);
+
+    const entriesListLastId = computed(
+      () => store.getters.profileEntriesLastId
+    );
+
+    onUnmounted(() => {
+      store.commit("clearProfileEntries");
+    });
 
     return { entriesList };
   },

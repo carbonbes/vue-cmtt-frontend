@@ -16,17 +16,19 @@
       </div>
     </div>
     <div class="feed-page__content">
-      <entry
-        v-for="(entry, index) in feed"
-        :entry="entry"
-        :key="entry.id"
-        v-intersect="
-          feed.length === index + 1 && {
-            requestState: feedIsRequested,
-            callback: this.requestNextPage,
-          }
-        "
-      />
+      <template v-for="(entry, index) in feed" :key="entry.id">
+        <entry
+          :entry="entry"
+          v-if="feed.length !== index + 1"
+        />
+
+        <entry
+          :entry="entry"
+          v-intersect="this.requestNextPage"
+          v-else
+        />
+      </template>
+
       <div class="feed-loader"><loader /></div>
     </div>
   </div>

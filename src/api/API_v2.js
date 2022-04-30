@@ -86,10 +86,18 @@ export const API_v2 = {
   },
 
   getComments(data) {
-    if (data.subsiteId) {
+    if (data.subsiteId && !data.lastId && !data.lastSortingValue) {
       return instance_v2.get(`comments?subsiteId=${data.subsiteId}`);
-    } else {
+    }
+
+    if (data.contentId && !data.lastId && !data.lastSortingValue) {
       return instance_v2.get(`comments?contentId=${data.contentId}`);
+    }
+
+    if (data.subsiteId && data.lastId && data.lastSortingValue) {
+      return instance_v2.get(
+        `comments?subsiteId=${data.subsiteId}&lastId=${data.lastId}&lastSortingValue=${data.lastSortingValue}`
+      );
     }
   },
 
