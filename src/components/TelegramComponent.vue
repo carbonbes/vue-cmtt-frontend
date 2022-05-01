@@ -25,34 +25,32 @@
       >
     </div>
     <div class="embed-cover" v-if="imageSrc || videoSrc || imagesGallery">
-      <image-component
-        class="embed-cover_img"
-        :imageSrc="imageSrc"
-        :srcWidth="imageSrcWidth"
-        :srcHeight="imageSrcHeight"
-        :maxWidth="1400"
-        :maxHeight="600"
-        type="embed"
-        v-if="imageSrc"
-      />
+      <div class="embed-cover_img" v-if="imageSrc">
+        <image-component
+          :imageSrc="imageSrc"
+          :srcWidth="imageSrcWidth"
+          :srcHeight="imageSrcHeight"
+          :maxWidth="1400"
+          :maxHeight="600"
+          type="embed"
+        />
+      </div>
 
-      <gallery-component
-        :srcImages="imagesGallery"
-        type="telegram_embed"
-        v-if="imagesGallery"
-      />
+      <div class="embed-cover__gallery" v-if="imagesGallery">
+        <gallery-component :srcImages="imagesGallery" type="telegram_embed" />
+      </div>
 
-      <video-component
-        class="embed-cover_video"
-        :srcVideo="videoSrc"
-        :srcWidth="videoSrcWidth"
-        :srcHeight="videoSrcHeight"
-        :maxWidth="1400"
-        :maxHeight="600"
-        :embedCover="coverSrc"
-        type="embed"
-        v-if="videoCover"
-      />
+      <div class="embed-cover_video" v-if="videoCover">
+        <video-component
+          :srcVideo="videoSrc"
+          :srcWidth="videoSrcWidth"
+          :srcHeight="videoSrcHeight"
+          :maxWidth="1400"
+          :maxHeight="600"
+          :embedCover="coverSrc"
+          type="embed"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -22,34 +22,32 @@
       <div class="embed-text" v-html="text"></div>
     </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
-      <image-component
-        class="embed-cover_img"
-        :imageSrc="imgSrc"
-        :srcWidth="imageSrcWidth"
-        :srcHeight="imageSrcHeight"
-        :maxWidth="1400"
-        :maxHeight="600"
-        type="embed"
-        v-if="imgSrc && this.media.length === 1"
-      />
+      <div class="embed-cover_img" v-if="imgSrc && this.media.length === 1">
+        <image-component
+          :imageSrc="imgSrc"
+          :srcWidth="imageSrcWidth"
+          :srcHeight="imageSrcHeight"
+          :maxWidth="1400"
+          :maxHeight="600"
+          type="embed"
+        />
+      </div>
 
-      <gallery-component
-        :srcImages="imagesGallery"
-        type="twitter_embed"
-        v-if="imagesGallery"
-      />
+      <div class="embed-cover__gallery" v-if="imagesGallery">
+        <gallery-component :srcImages="imagesGallery" type="twitter_embed" />
+      </div>
 
-      <video-component
-        class="embed-cover_video"
-        :srcVideo="videoSrc"
-        :srcWidth="videoSrcWidth"
-        :srcHeight="videoSrcHeight"
-        :maxWidth="1400"
-        :maxHeight="600"
-        :embedCover="videoCover"
-        type="embed"
-        v-if="videoSrc"
-      />
+      <div class="embed-cover_video" v-if="videoSrc">
+        <video-component
+          :srcVideo="videoSrc"
+          :srcWidth="videoSrcWidth"
+          :srcHeight="videoSrcHeight"
+          :maxWidth="1400"
+          :maxHeight="600"
+          :embedCover="videoCover"
+          type="embed"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -103,7 +101,11 @@ export default {
     },
 
     imagesGallery() {
-      if (this.media && this.media.length > 1 && this.media[0].type === "photo") {
+      if (
+        this.media &&
+        this.media.length > 1 &&
+        this.media[0].type === "photo"
+      ) {
         return this.media;
       }
     },
