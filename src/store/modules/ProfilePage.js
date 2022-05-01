@@ -149,17 +149,22 @@ const profilePageModule = {
                 ? ++entry.likes.summ
                 : null;
           } else {
-            entry.likes.isLiked = data.sign;
             entry.likes.summ =
-              sign === -1 && (summ <= 0 || summ >= 0)
+              sign === -1 && entry.likes.isLiked === 0
                 ? --entry.likes.summ
-                : sign === 0 && summ <= 0
+                : sign === -1 && entry.likes.isLiked === 1
+                ? entry.likes.summ - 2
+                : sign === 0 && entry.likes.isLiked === -1
                 ? ++entry.likes.summ
-                : sign === 0 && summ >= 0
+                : sign === 0 && entry.likes.isLiked === 1
                 ? --entry.likes.summ
-                : sign === 1 && (summ <= 0 || summ >= 0)
+                : sign === 1 && entry.likes.isLiked === 0
                 ? ++entry.likes.summ
+                : sign === 1 && entry.likes.isLiked === -1
+                ? entry.likes.summ + 2
                 : null;
+
+            entry.likes.isLiked = data.sign;
           }
         }
       });
