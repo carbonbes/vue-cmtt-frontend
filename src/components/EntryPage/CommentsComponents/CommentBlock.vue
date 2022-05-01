@@ -411,8 +411,6 @@ export default {
       this.openReplyForm();
     }
 
-    this.setCommentPrevLiked({ id: this.commentId, sign: this.commentIsLiked });
-
     if (
       this.dateCreatedComment > this.lastViewedEntry &&
       this.authorId !== this.myId

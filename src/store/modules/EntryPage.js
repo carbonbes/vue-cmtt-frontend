@@ -130,29 +130,24 @@ const entryPageModule = {
               ? --state.entry.likes.summ
               : null;
         } else {
-          state.entry.likes.isLiked = data.sign;
-
           state.entry.likes.summ =
-            sign === -1 && (summ <= 0 || summ >= 0)
+            sign === -1 && state.entry.likes.isLiked === 0
               ? --state.entry.likes.summ
-              : sign === 0 && summ <= 0
+              : sign === -1 && state.entry.likes.isLiked === 1
+              ? state.entry.likes.summ - 2
+              : sign === 0 && state.entry.likes.isLiked === -1
               ? ++state.entry.likes.summ
-              : sign === 0 && summ >= 0
+              : sign === 0 && state.entry.likes.isLiked === 1
               ? --state.entry.likes.summ
-              : sign === 1 && (summ <= 0 || summ >= 0)
+              : sign === 1 && state.entry.likes.isLiked === 0
               ? ++state.entry.likes.summ
+              : sign === 1 && state.entry.likes.isLiked === -1
+              ? state.entry.likes.summ + 2
               : null;
+
+          state.entry.likes.isLiked = data.sign;
         }
       }
-    },
-
-    setCommentPrevLiked(state, data) {
-      state.commentsList.find((comment) => {
-        if (comment.id == data.id) {
-          comment.likes.prevIsLiked = null;
-          comment.likes.prevIsLiked = data.sign;
-        }
-      });
     },
 
     setCommentIsLiked(state, data) {
@@ -175,18 +170,22 @@ const entryPageModule = {
                 ? --comment.likes.summ
                 : null;
           } else {
-            comment.likes.isLiked = data.sign;
-
             comment.likes.summ =
-              sign === -1 && (summ <= 0 || summ >= 0)
+              sign === -1 && comment.likes.isLiked === 0
                 ? --comment.likes.summ
-                : sign === 0 && summ <= 0
+                : sign === -1 && comment.likes.isLiked === 1
+                ? comment.likes.summ - 2
+                : sign === 0 && comment.likes.isLiked === -1
                 ? ++comment.likes.summ
-                : sign === 0 && summ >= 0
+                : sign === 0 && comment.likes.isLiked === 1
                 ? --comment.likes.summ
-                : sign === 1 && (summ <= 0 || summ >= 0)
+                : sign === 1 && comment.likes.isLiked === 0
                 ? ++comment.likes.summ
+                : sign === 1 && comment.likes.isLiked === -1
+                ? comment.likes.summ + 2
                 : null;
+
+            comment.likes.isLiked = data.sign;
           }
         }
       });
@@ -209,6 +208,7 @@ const entryPageModule = {
     entryCommentsChannelCreated(state, data) {
       let newComment = data.comment;
       newComment.replies = [];
+      newComment.likes.prevIsLiked = data.comment.likes.is_liked;
       newComment.likes.isLiked = data.comment.likes.is_liked;
       newComment.isIgnored = data.comment.is_ignored;
       newComment.isRemoved = data.comment.is_removed;
@@ -230,6 +230,7 @@ const entryPageModule = {
     addComment(state, data) {
       let newComment = data.comment;
       newComment.replies = [];
+      newComment.likes.prevIsLiked = data.comment.likes.is_liked;
       newComment.likes.isLiked = data.comment.likes.is_liked;
       newComment.isIgnored = data.comment.is_ignored;
       newComment.isRemoved = data.comment.is_removed;
@@ -318,7 +319,13 @@ const entryPageModule = {
 
     requestCommentsList({ commit }, data) {
       return API_v2.getComments(data).then((response) => {
-        commit("setCommentsList", response.data.result.items);
+        let items = response.data.result.items.map((item) => {
+          item.likes.prevIsLiked = null;
+          item.likes.prevIsLiked = item.likes.isLiked;
+
+          return item;
+        });
+        commit("setCommentsList", items);
       });
     },
 
