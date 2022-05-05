@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="21.599999999999998"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol viewBox="0 0 10 9" id="ui_reply">
+      <path d="M3.928.5L0 4.428l3.928 3.928v-2.3c2.806 0 4.67-.24 6.072 1.725-1.403-3.092-2.144-4.475-6.072-5.036V.5z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#ui_reply" fill="currentColor"></use>
+</svg>

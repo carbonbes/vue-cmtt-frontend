@@ -69,6 +69,9 @@ const authModule = {
 
       API_v2.subsiteMe()
         .then((response) => {
+          localStorage.m_hash = response.data.result.mHash;
+          localStorage.user_hash = response.data.result.userHash;
+
           commit("setAuth", response.data.result);
           commit("setIsAuth", true);
           commit("setAuthIsRequested", false);
@@ -86,15 +89,7 @@ const authModule = {
 
       API_v1.requestLogin(data)
         .then((response) => {
-          if (data.rememberMe) {
-            localStorage.token = response.headers["x-device-token"];
-            localStorage.m_hash = response.data.result["m_hash"];
-            localStorage.user_hash = response.data.result["user_hash"];
-          } else {
-            sessionStorage.token = response.headers["x-device-token"];
-            sessionStorage.m_hash = response.data.result["m_hash"];
-            sessionStorage.user_hash = response.data.result["user_hash"];
-          }
+          localStorage.token = response.headers["x-device-token"];
           location.reload();
         })
         .catch((error) => {

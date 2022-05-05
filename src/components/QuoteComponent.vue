@@ -58,7 +58,8 @@ export default {
       return this.text.split("\n\n").map((item) =>
         item
           .replace(/\\/g, "")
-          .replace(/^\*[^\s](.+)[^\s](?:\*)/gm, "<i>$1</i>")
+          .replace(/\*(?!\*)(?!\s)(.+?)(?!\s)(?:\*)(?!\*)/gm, "<i>$1</i>")
+          .replace(/\*(?=\*)(?!\s)(.+?)(?!\s)(?:\*)(?:\*)/gm, "<b>$1</b>")
           .replace(
             /(\[(.*?)\])\((https?\:\/\/.*?)\)/g,
             '<a href="$3" target="_blank">$2</a>'

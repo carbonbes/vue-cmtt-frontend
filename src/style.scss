@@ -8,6 +8,7 @@
   --bg-color: #f2f2f2;
   --border-a: 0 0 0 1px #0000001a;
   --header-bg-color: #fff4e2;
+  --header-notifications-new-notifications-btn-bg: #f0f6ff;
   --sidebar-bg-color: var(--bg-color);
   --entry-bg-color: #fff;
   --entry-thin-cover-gap: 0 20px;
@@ -15,6 +16,7 @@
   --dropdown-bg-color: #fff;
   --dropdown-item-hover-bg-color: #f4f5f6;
   --dropdown-item-active-bg-color: #e3edfd;
+  --dropdown-scrollbar-thumb-color: #bbbbbb;
   --link-block-bg-color: var(--embed-bg-color);
   --highlight-block-color: #fffaf1;
   --entry-block-highlight: #00000014;
@@ -49,11 +51,13 @@
   --bg-color: #000;
   --border-a: 0 0 0 1px #ffffff25;
   --header-bg-color: #202020;
+  --header-notifications-new-notifications-btn-bg: #2e3033;
   --entry-bg-color: #151515;
   --embed-border-color: #303030;
   --dropdown-bg-color: #272727;
   --dropdown-item-hover-bg-color: #303030;
   --dropdown-item-active-bg-color: #353f4d;
+  --dropdown-scrollbar-thumb-color: #797979;
   --highlight-block-color: #1d1d1d;
   --entry-block-highlight: #ffffff0a;
   --left-sidebar-link-hover-color: #1f1f1fbf;
@@ -534,8 +538,8 @@ body {
 
 .embed-cover {
 
-  &_img,
-  &_video {
+  &__img,
+  &__video {
     background-color: var(--embed-cover-bg);
 
     &>div {

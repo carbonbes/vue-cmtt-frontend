@@ -71,9 +71,9 @@ export default {
       if (currentYear == srcYear) {
         if (currentMonth == srcMonth) {
           if (currentDay == srcDay) {
-            if (secondsAgo >= 0 && secondsAgo <= 60) {
+            if (secondsAgo < 60) {
               this.dateTime = "только что";
-            } else if (secondsAgo > 60 && secondsAgo <= 3600) {
+            } else if (secondsAgo >= 60 && secondsAgo <= 3600) {
               if (this.type === "0") {
                 this.dateTime = minutesAgo + " мин";
               } else {

@@ -465,7 +465,7 @@ export default {
 
   &_vertical,
   &_thin {
-    padding: 15px 30px;
+    padding: 8px 30px;
     background: var(--entry-block-highlight);
 
     & > div {

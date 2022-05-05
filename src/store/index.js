@@ -1,14 +1,16 @@
 import { createStore } from "vuex";
-import Auth from "./modules/Auth";
-import Feed from "./modules/FeedPage";
-import EntryPage from "./modules/EntryPage";
-import profilePageModule from "./modules/ProfilePage";
+import AuthModule from "./modules/Auth";
+import FeedModule from "./modules/FeedPage";
+import EntryPageModule from "./modules/EntryPage";
+import ProfilePageModule from "./modules/ProfilePage";
+import NotificationsModule from "./modules/Notifications";
 
 export default createStore({
   modules: {
-    auth: Auth,
-    feed: Feed,
-    entry: EntryPage,
-    profile: profilePageModule,
+    auth: AuthModule,
+    feed: FeedModule,
+    entry: EntryPageModule,
+    profile: ProfilePageModule,
+    notifications: NotificationsModule,
   },
 });

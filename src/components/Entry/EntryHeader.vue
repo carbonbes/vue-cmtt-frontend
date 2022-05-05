@@ -4,7 +4,7 @@
       <router-link
         class="entry-header__subsite-data entry-header__item"
         :to="{ path: `/u/${subsiteId}` }"
-        @mouseenter="showSubsitePopup"
+        @mouseenter="requestSubsite(this.subsiteId)"
         @mouseleave="hideSubsitePopup"
       >
         <div
@@ -31,7 +31,7 @@
       <router-link
         class="entry-header__author-data entry-header__item"
         :to="{ path: `/u/${authorId}` }"
-        @mouseenter="showAuthorPopup"
+        @mouseenter="requestAuthor(this.authorId)"
         @mouseleave="hideAuthorPopup"
         v-if="!isSameAuthor"
       >
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import DateTime from "@/components/DateTime.vue";
 import ProfilePopup from "../ProfilePopup.vue";
 
@@ -99,13 +99,28 @@ export default {
   },
 
   methods: {
-    showSubsitePopup() {
-      if (this.isAuth) {
-        this.subsitePopupIsFocus = true;
-        this.timeout = setTimeout(() => {
-          if (this.subsitePopupIsFocus) this.subsitePopupVisibled = true;
-        }, 750);
-      }
+    requestSubsite(id) {
+      this.subsitePopupIsFocus = true;
+
+      this.timeout = setTimeout(() => {
+        if (this.isAuth && this.subsitePopupIsFocus) {
+          this.requestSubsiteData(id).then(() => {
+            this.subsitePopupVisibled = true;
+          });
+        }
+      }, 500);
+    },
+
+    requestAuthor(id) {
+      this.authorPopupIsFocus = true;
+
+      this.timeout = setTimeout(() => {
+        if (this.isAuth && this.authorPopupIsFocus) {
+          this.requestSubsiteData(id).then(() => {
+            this.authorPopupVisibled = true;
+          });
+        }
+      }, 500);
     },
 
     hideSubsitePopup() {
@@ -126,6 +141,8 @@ export default {
       this.authorPopupIsFocus = false;
       this.authorPopupVisibled = false;
     },
+
+    ...mapActions(["requestSubsiteData"]),
   },
 
   computed: {

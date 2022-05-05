@@ -38,4 +38,16 @@ export const API_v1 = {
 
     return instance_v1.post("uploader/upload", formData);
   },
+
+  myNotifications(data) {
+    if (!data.lastId) {
+      return instance_v1.get("user/me/updates?is_read=1");
+    } else if (data.lastId) {
+      return instance_v1.get(`user/me/updates?is_read=1&last_id=${data.lastId}`);
+    }
+  },
+
+  myNotificationsCount() {
+    return instance_v1.get("user/me/updates/count");
+  },
 };

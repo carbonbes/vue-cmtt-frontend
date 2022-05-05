@@ -53,15 +53,15 @@
         >
           <template v-if="isPositiveRating">+</template>{{ rating }}
         </div>
-        <div
+        <!-- <div
           class="profile-popup__author-rating-loader"
           v-if="(!rating || rating === 0) && isNotSubsite"
-        />
+        /> -->
         <div class="profile-popup__subs-count" v-if="subsCount">
           {{ subsCount }}
           <span class="profile-popup__subs-label">{{ subsLabel }}</span>
         </div>
-        <div class="profile-popup__subs-loader" v-if="!subsCount" />
+        <!-- <div class="profile-popup__subs-loader" v-if="!subsCount" /> -->
         <div class="profile-popup__date-created" v-if="isNotSubsite">
           <span class="label"
             ><template v-if="isNotSubsite">Дата регистрации: </template></span
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import declensionWords from "@/utils/declensionWords";
 import numberWithSpaces from "@/utils/numberWithSpaces";
 import UserAddIcon from "@/assets/logos/user_add.svg?inline";
@@ -109,10 +109,6 @@ export default {
     };
   },
 
-  created() {
-    this.requestSubsiteData(this.data.id);
-  },
-
   beforeUnmount() {
     this.clearSubsiteData();
   },
@@ -123,7 +119,6 @@ export default {
     },
 
     ...mapMutations(["clearSubsiteData"]),
-    ...mapActions(["requestSubsiteData"]),
   },
 
   computed: {

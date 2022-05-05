@@ -19,10 +19,27 @@
         <moon-icon class="icon" v-else />
       </div>
     </div>
-    <div class="header__item">
-      <div class="header__item-bell-btn" v-if="!isAuthRequested">
+    <div
+      class="header__item bell-btn"
+      v-outside-click:[true]="closeNotificationsPopup"
+    >
+      <div
+        class="header__item-bell-btn"
+        :class="bellBtnClassObj"
+        @click="toggleNotificationsPopup"
+        v-if="!isAuthRequested"
+      >
         <bell-icon class="icon" />
+        <div
+          class="badge"
+          v-if="this.notificationsCount > 0"
+          v-text="this.notificationsCount"
+        ></div>
       </div>
+      <notifications
+        :close="closeNotificationsPopup"
+        v-if="notificationsVisible"
+      />
     </div>
     <div class="header__item">
       <div
@@ -66,9 +83,17 @@ import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import BellIcon from "@/assets/logos/bell_icon.svg?inline";
 import UserIcon from "@/assets/logos/user_icon.svg?inline";
 import ChevronDown from "@/assets/logos/chevron-down_icon.svg?inline";
-import Dropdown from "@/components/Layout/Header/Dropdown.vue";
+import Dropdown from "./Dropdown.vue";
+import Notifications from "./Notifications/Notifications.vue";
+import notifySound from "@/assets/sounds/notify.mp3";
 
 export default {
+  setup() {
+    const audioFile = new Audio(notifySound);
+
+    return { audioFile };
+  },
+
   components: {
     MenuIcon,
     BellIcon,
@@ -78,6 +103,7 @@ export default {
     SiteLogo,
     ChevronDown,
     Dropdown,
+    Notifications,
   },
 
   inject: ["currentTheme"],
@@ -85,6 +111,7 @@ export default {
   data() {
     return {
       dropdownVisible: false,
+      notificationsVisible: false,
     };
   },
 
@@ -112,9 +139,32 @@ export default {
     closeDropdown() {
       this.dropdownVisible = false;
     },
+
+    toggleNotificationsPopup() {
+      this.notificationsVisible = !this.notificationsVisible;
+    },
+
+    closeNotificationsPopup() {
+      this.notificationsVisible = false;
+    },
+  },
+
+  watch: {
+    unreadNotifications(newValue, oldValue) {
+      if (newValue) {
+        this.audioFile.volume = 0.25;
+        this.audioFile.play();
+      }
+    },
   },
 
   computed: {
+    bellBtnClassObj() {
+      return {
+        "header__item-bell-btn_pressed": this.notificationsVisible,
+      };
+    },
+
     avatarStyleObject() {
       if (this.auth.avatar) {
         return {
@@ -131,7 +181,13 @@ export default {
       };
     },
 
-    ...mapGetters(["auth", "isAuth", "isAuthRequested"]),
+    ...mapGetters([
+      "auth",
+      "isAuth",
+      "isAuthRequested",
+      "notificationsCount",
+      "unreadNotifications",
+    ]),
   },
 };
 </script>
@@ -148,6 +204,7 @@ export default {
 }
 
 .header__item {
+  position: relative;
   display: flex;
   flex-shrink: 0;
 }
@@ -170,6 +227,29 @@ export default {
   & .icon {
     width: 28px;
     height: 24px;
+  }
+}
+
+.header__item-bell-btn {
+  &_pressed {
+    & .icon {
+      color: var(--brand-color);
+    }
+  }
+
+  & .badge {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    padding: 3px 5px;
+    min-width: 12px;
+    display: inline-block;
+    background-color: #e62e3b;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1em;
+    font-weight: 500;
   }
 }
 
@@ -257,6 +337,10 @@ export default {
   .header__item-login-btn,
   .header__item-avatar-wrapp {
     padding-right: 15px;
+  }
+
+  .header__item.bell-btn {
+    position: unset;
   }
 }
 

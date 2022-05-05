@@ -1,0 +1,9 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24"
+  xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol viewBox="0 0 8 8" id="ui_comments_fill">
+      <path d="M.408 5.566A3.83 3.83 0 003.85 7.692c.6 0 1.191-.14 1.719-.406a.396.396 0 01.303-.022L8 8l-.73-2.133a.394.394 0 01.023-.303c.268-.53.409-1.123.407-1.718A3.826 3.826 0 005.57.406 3.812 3.812 0 003.86 0h-.248A3.834 3.834 0 000 3.608v.238c-.002.595.14 1.189.408 1.72z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#ui_comments_fill" fill="currentColor"></use>
+</svg>

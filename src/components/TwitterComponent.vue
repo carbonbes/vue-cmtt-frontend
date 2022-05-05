@@ -22,7 +22,7 @@
       <div class="embed-text" v-html="text"></div>
     </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
-      <div class="embed-cover_img" v-if="imgSrc && this.media.length === 1">
+      <div class="embed-cover__img" v-if="imgSrc && this.media.length === 1">
         <image-component
           :imageSrc="imgSrc"
           :srcWidth="imageSrcWidth"
@@ -37,7 +37,7 @@
         <gallery-component :srcImages="imagesGallery" type="twitter_embed" />
       </div>
 
-      <div class="embed-cover_video" v-if="videoSrc">
+      <div class="embed-cover__video" v-if="videoSrc">
         <video-component
           :srcVideo="videoSrc"
           :srcWidth="videoSrcWidth"

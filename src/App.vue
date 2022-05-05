@@ -28,6 +28,30 @@ export default {
       transports: ["websocket"],
     });
 
+    const unsubscribe = store.subscribe((mutation, state) => {
+      if (mutation.type === "setIsAuth" && mutation.payload === true) {
+        const userHash = localStorage.getItem("user_hash");
+
+        socket.emit("subscribe", { channel: "mobile:" + userHash });
+
+        socket.on("event", (data) => {
+          if (
+            data.data.type === 4 ||
+            data.data.type === 8 ||
+            data.data.type === 16 ||
+            data.data.type === 32 ||
+            data.data.type === 64
+          ) {
+            store.commit("setUnreadNotifications");
+          }
+        });
+
+        socket.on("reconnect", () => {
+          socket.emit("subscribe", { channel: "mobile:" + userHash });
+        });
+      }
+    });
+
     onMounted(() => {
       socket.emit("subscribe", { channel: "api" });
 
@@ -48,10 +72,13 @@ export default {
           channel: "api",
         });
       });
+
+      store.dispatch("requestNotificationsCount");
     });
 
     onUnmounted(() => {
       socket.disconnect();
+      unsubscribe();
     });
   },
 
@@ -131,4 +158,5 @@ export default {
 @use "../node_modules/nprogress/nprogress.css";
 @use "../node_modules/photoswipe/dist/photoswipe.css";
 @use "style.scss";
+@use "../node_modules/vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
 </style>

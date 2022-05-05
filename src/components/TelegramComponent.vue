@@ -25,7 +25,7 @@
       >
     </div>
     <div class="embed-cover" v-if="imageSrc || videoSrc || imagesGallery">
-      <div class="embed-cover_img" v-if="imageSrc">
+      <div class="embed-cover__img" v-if="imageSrc">
         <image-component
           :imageSrc="imageSrc"
           :srcWidth="imageSrcWidth"
@@ -40,7 +40,7 @@
         <gallery-component :srcImages="imagesGallery" type="telegram_embed" />
       </div>
 
-      <div class="embed-cover_video" v-if="videoCover">
+      <div class="embed-cover__video" v-if="videoCover">
         <video-component
           :srcVideo="videoSrc"
           :srcWidth="videoSrcWidth"

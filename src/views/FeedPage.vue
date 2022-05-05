@@ -49,7 +49,9 @@ function requestFeed(routeTo, routeFrom, next) {
     .then(() => {
       nProgress.done();
       next((vm) => {
-        vm.closeLeftSidebar();
+        if (window.matchMedia("(max-width: 1219px)").matches) {
+          vm.emitter.emit("left-sidebar-hide");
+        }
       });
     });
 }
@@ -121,12 +123,6 @@ export default {
       } else if (data.allSite === "my") {
         localStorage.setItem("my-saved-sorting", data.sorting);
         localStorage.setItem("allSite", "my");
-      }
-    },
-
-    closeLeftSidebar() {
-      if (window.matchMedia("(max-width: 1219px)").matches) {
-        vm.emitter.emit("left-sidebar-hide");
       }
     },
   },
