@@ -14,10 +14,10 @@
 import { computed } from "vue";
 
 const props = defineProps({
+  path: String,
   icon: Object,
   label: String,
   action: Function,
   actionInfo: Object,
-  path: String,
 });
 </script>

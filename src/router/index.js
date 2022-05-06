@@ -41,8 +41,22 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (to.name === "EntryPage" && to.query && to.query.comment) {
+        if (
+          from.name === "EntryPage" &&
+          to.name === "EntryPage" &&
+          from.params.id !== to.params.id &&
+          to.query.comment
+        ) {
           resolve({ el: "#" + to.query.comment, top: 75 });
+        }
+
+        if (
+          from.name === "EntryPage" &&
+          to.name === "EntryPage" &&
+          from.params.id === to.params.id &&
+          to.query.comment
+        ) {
+          resolve({ el: "#" + to.query.comment, top: 75, behavior: "smooth" });
         }
 
         if (to.name === "EntryPage" && to.query.comments === null) {

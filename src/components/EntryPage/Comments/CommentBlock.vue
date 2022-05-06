@@ -87,7 +87,7 @@
           <comment-media :attachments="media" />
         </div>
 
-        <span class="reply-btn" @click="this.openReplyForm()">Ответить</span>
+        <span class="reply-btn" @click="this.openReplyForm">Ответить</span>
 
         <div class="more-items-btn">
           <more-item-icon class="icon" />
@@ -130,9 +130,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import DateTime from "@/components/DateTime.vue";
 import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
 import LikesPopup from "@/components/LikesPopup.vue";
-import CommentText from "@/components/EntryPage/CommentsComponents/CommentText.vue";
-import CommentMedia from "@/components/EntryPage/CommentsComponents/CommentMedia.vue";
-import ReplyForm from "@/components/EntryPage/CommentsComponents/ReplyForm.vue";
+import CommentText from "@/components/EntryPage/Comments/CommentText.vue";
+import CommentMedia from "@/components/EntryPage/Comments/CommentMedia.vue";
+import ReplyForm from "@/components/EntryPage/Comments/ReplyForm.vue";
 import UpArrowIcon from "@/assets/logos/up_arrow.svg?inline";
 import MoreItemIcon from "@/assets/logos/more-item_icon.svg?inline";
 

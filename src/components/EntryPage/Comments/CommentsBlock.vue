@@ -1,10 +1,6 @@
 <template>
   <template v-for="comment in props.comments" :key="comment.id">
-    <comment-block
-      :comment="comment"
-      :maxLvl="state.maxLvl"
-      v-if="comment.isIgnored !== true || comment.isRemoved !== true"
-    />
+    <comment-block :comment="comment" :maxLvl="state.maxLvl" />
   </template>
 </template>
 
@@ -12,7 +8,7 @@
 import { reactive, watch, onMounted, onUnmounted } from "vue";
 import store from "@/store";
 import { useMediaQuery } from "@vueuse/core";
-import CommentBlock from "@/components/EntryPage/CommentsComponents/CommentBlock.vue";
+import CommentBlock from "@/components/EntryPage/Comments/CommentBlock.vue";
 import io from "socket.io-client";
 
 let socket = io("https://ws-sio.tjournal.ru", {

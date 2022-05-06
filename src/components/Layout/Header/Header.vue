@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import { mapGetters } from "vuex";
 import MoonIcon from "@/assets/logos/moon_icon.svg?inline";
 import SunIcon from "@/assets/logos/sun_icon.svg?inline";
@@ -83,8 +84,6 @@ import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import BellIcon from "@/assets/logos/bell_icon.svg?inline";
 import UserIcon from "@/assets/logos/user_icon.svg?inline";
 import ChevronDown from "@/assets/logos/chevron-down_icon.svg?inline";
-import Dropdown from "./Dropdown.vue";
-import Notifications from "./Notifications/Notifications.vue";
 import notifySound from "@/assets/sounds/notify.mp3";
 
 export default {
@@ -102,8 +101,10 @@ export default {
     MoonIcon,
     SiteLogo,
     ChevronDown,
-    Dropdown,
-    Notifications,
+    Dropdown: defineAsyncComponent(() => import("./Dropdown.vue")),
+    Notifications: defineAsyncComponent(() =>
+      import("./Notifications/Notifications.vue")
+    ),
   },
 
   inject: ["currentTheme"],
@@ -212,6 +213,7 @@ export default {
 .header__item-bell-btn,
 .header__item-login-btn,
 .header__item-theme-toggle-btn {
+  position: relative;
   padding: 0 12px;
   display: flex;
   align-items: center;

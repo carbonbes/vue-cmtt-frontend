@@ -13,14 +13,13 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted, defineAsyncComponent } from "vue";
 import { mapActions } from "vuex";
 import store from "@/store";
 import io from "socket.io-client";
 import Header from "@/components/Layout/Header/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
-import LoginModal from "@/components/Layout/LoginModal.vue";
 
 export default {
   setup() {
@@ -86,7 +85,9 @@ export default {
     Header,
     LeftSidebar,
     RightSidebar,
-    LoginModal,
+    LoginModal: defineAsyncComponent(() =>
+      import("@/components/Layout/LoginModal.vue")
+    ),
   },
 
   data() {

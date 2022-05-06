@@ -63,14 +63,16 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import { mapGetters, mapActions } from "vuex";
 import DateTime from "@/components/DateTime.vue";
-import ProfilePopup from "../ProfilePopup.vue";
 
 export default {
   components: {
     DateTime,
-    ProfilePopup,
+    ProfilePopup: defineAsyncComponent(() =>
+      import("@/components/ProfilePopup.vue")
+    ),
   },
 
   props: {
