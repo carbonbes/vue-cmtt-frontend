@@ -106,7 +106,11 @@
       :class="commentRepliesClassObj"
       v-if="this.comment.replies.length > 0"
     >
-      <div class="branch-collapse-btn" @click="toggleBranchCollapse" />
+      <div
+        class="branch-collapse-btn"
+        @click="toggleBranchCollapse"
+        v-if="this.comment.level <= this.maxLvl - 1"
+      />
       <comment-block
         v-for="comment in this.comment.replies"
         :comment="comment"
@@ -190,6 +194,8 @@ export default {
           this.commentId == this.hoveredHighlightComment ||
           this.commentId == this.temporaryHightlightComment ||
           this.unread,
+
+        "self-comment_removed": this.comment.isRemoved,
       };
     },
 

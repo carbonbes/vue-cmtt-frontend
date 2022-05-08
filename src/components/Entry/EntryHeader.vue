@@ -14,8 +14,8 @@
           }"
         />
         <div class="entry-header__subsite-name">{{ subsiteName }}</div>
-        <transition name="entry-header-subsite-data__popup"
-          ><div
+        <transition name="entry-header-subsite-data__popup">
+          <div
             class="
               entry-header-subsite-data__popup
               entry-header-subsite-data__popup_bottom
@@ -191,9 +191,9 @@ export default {
 
   &__subsite-avatar {
     margin-right: 8px;
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     box-shadow: var(--box-shadow-avatar);
     background-size: 100% auto;
     background-repeat: no-repeat;

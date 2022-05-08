@@ -8,7 +8,11 @@
 
       <profile-comment
         :comment="comment"
-        v-intersect="requestNextPage"
+        v-intersect="{
+          type: 'when-appears',
+          threshold: 0,
+          callback: requestNextPage,
+        }"
         v-else
       />
     </template>

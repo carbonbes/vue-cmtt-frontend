@@ -36,10 +36,12 @@
           v-text="this.notificationsCount"
         ></div>
       </div>
-      <notifications
-        :close="closeNotificationsPopup"
-        v-if="notificationsVisible"
-      />
+      <transition name="header__notifications">
+        <notifications
+          :close="closeNotificationsPopup"
+          v-if="notificationsVisible"
+        />
+      </transition>
     </div>
     <div class="header__item">
       <div
@@ -236,6 +238,7 @@ export default {
   &_pressed {
     & .icon {
       color: var(--brand-color);
+      transform: rotate(10deg);
     }
   }
 

@@ -1,13 +1,21 @@
 <template>
-  <div class="entry-page__img-block" :class="classObject">
-    <Image
-      :imageSrc="this.item.data.items[0].image.data.uuid"
-      type="2"
-      :srcWidth="this.item.data.items[0].image.data.width"
-      :srcHeight="this.item.data.items[0].image.data.height"
-      maxWidth="1020"
-      maxHeight="700"
-    />
+  <div class="entry-page__img-block">
+    <div class="image" :class="classObject">
+      <Image
+        :imageSrc="this.item.data.items[0].image.data.uuid"
+        type="2"
+        :srcWidth="srcWidth"
+        :srcHeight="srcHeight"
+        maxWidth="1020"
+        maxHeight="1020"
+      />
+    </div>
+
+    <div
+      class="entry-page__img-block_description ep-island"
+      v-text="description"
+      v-if="description"
+    ></div>
   </div>
 </template>
 
@@ -23,23 +31,30 @@ export default {
   components: { Image },
 
   computed: {
+    srcWidth() {
+      return this.item.data.items[0].image.data.width;
+    },
+
+    srcHeight() {
+      return this.item.data.items[0].image.data.height;
+    },
+
+    description() {
+      return this.item.data.items[0].title;
+    },
+
     classObject() {
       return {
-        "entry-page__img-block_wide":
-          this.item.data.items[0].image.data.width > 1020,
-        "entry-page__img-block_thin":
-          this.calculatedWidth < 1020 ||
-          this.item.data.items[0].image.data.width < 1020,
-        "entry-page__img-block_vertical":
-          this.item.data.items[0].image.data.width <
-          this.item.data.items[0].image.data.height,
+        image_wide: this.srcWidth >= 1020 && this.srcWidth > this.srcHeight,
+        image_thin: this.srcWidth < 1020 && this.srcWidth > this.srcHeight,
+        image_vertical: this.srcWidth < this.srcHeight,
       };
     },
 
     calculatedWidth() {
       const { width } = сalculateAspectRatio(
-        this.item.data.items[0].image.data.width,
-        this.item.data.items[0].image.data.height,
+        this.srcWidth,
+        this.srcHeight,
         1020,
         700
       );
@@ -59,22 +74,38 @@ export default {
     margin-top: 0;
   }
 
-  &_wide {
-    width: 100%;
+  & .image {
+    &_wide {
+      width: 100%;
+    }
+
+    &_vertical {
+      padding: 8px 30px;
+      background: var(--entry-block-highlight);
+
+      & > div {
+        margin: 0 auto;
+        max-width: var(--vertical-max-width) !important;
+      }
+    }
+
+    &_thin {
+      padding: 8px 30px;
+      max-width: 640px;
+      background: var(--entry-block-highlight);
+
+      & > div {
+        margin: 0 auto;
+        max-width: var(--vertical-max-width);
+      }
+    }
   }
 
-  &_vertical,
-  &_thin {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 15px 30px;
-    max-width: 640px;
-    background: var(--entry-block-highlight);
-
-    & > div {
-      margin: 0 auto;
-      max-width: var(--vertical-max-width);
-    }
+  &_description {
+    margin-top: 10px;
+    color: var(--grey-color);
+    font-size: 15px;
+    line-height: 22px;
   }
 }
 

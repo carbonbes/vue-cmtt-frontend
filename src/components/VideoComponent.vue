@@ -21,6 +21,11 @@
         controls
         loop
         v-if="isDefaultVideo && this.isPlaying"
+        v-intersect="{
+          type: 'when-hide',
+          threshold: 1,
+          callback: this.pausePlaying,
+        }"
       >
         <source
           :src="
@@ -38,6 +43,11 @@
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         v-if="isYoutube && this.isPlaying"
+        v-intersect="{
+          type: 'when-hide',
+          threshold: 1,
+          callback: this.pausePlaying,
+        }"
       />
 
       <iframe
@@ -47,6 +57,11 @@
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         v-if="isVimeo && this.isPlaying"
+        v-intersect="{
+          type: 'when-hide',
+          threshold: 1,
+          callback: this.pausePlaying,
+        }"
       />
 
       <video
@@ -55,6 +70,11 @@
         playsInline
         controls
         v-if="isGfycat && this.isPlaying"
+        v-intersect="{
+          type: 'when-hide',
+          threshold: 1,
+          callback: this.pausePlaying,
+        }"
       >
         <source :src="`${externalService.mp4_url}`" />
       </video>
@@ -65,6 +85,11 @@
         playsInline
         controls
         v-if="isGiphy && this.isPlaying"
+        v-intersect="{
+          type: 'when-hide',
+          threshold: 1,
+          callback: this.pausePlaying,
+        }"
       >
         <source :src="`${externalService.mp4_url}`" />
       </video>
@@ -76,6 +101,11 @@
         allowFullScreen="1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         v-if="isCoub && this.isPlaying"
+        v-intersect="{
+          type: 'when-hide',
+          threshold: 1,
+          callback: this.pausePlaying,
+        }"
       />
     </div>
   </div>
@@ -114,6 +144,10 @@ export default {
   methods: {
     togglePlaying() {
       this.isPlaying = !this.isPlaying;
+    },
+
+    pausePlaying() {
+      this.isPlaying = false;
     },
   },
 

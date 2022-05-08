@@ -1,40 +1,42 @@
 <template>
   <div class="header__notifications">
-    <div class="notifications-header">
+    <div class="notifications-header us-none">
       <div class="label">Уведомления</div>
     </div>
     <div class="delimiter"></div>
-    <div
+    <perfect-scrollbar
       class="notifications-content"
       v-if="notifications.length > 0 && isAuth && !state.isRequested"
     >
-      <perfect-scrollbar>
-        <div
-          class="new-notifications-btn"
-          @click="requestNewNotifications"
-          v-if="state.isOpen && unreadNotifications > 0"
-        >
-          Новые уведомления
-        </div>
-        <template v-for="(item, index) in notifications" :key="item.id">
-          <NotificationsItem
-            :item="item"
-            v-if="notifications.length !== index + 1"
-            @click="closeNotifications"
-          />
+      <div
+        class="new-notifications-btn"
+        @click="requestNewNotifications"
+        v-if="state.isOpen && unreadNotifications > 0"
+      >
+        Новые уведомления
+      </div>
+      <template v-for="(item, index) in notifications" :key="item.id">
+        <NotificationsItem
+          :item="item"
+          v-if="notifications.length !== index + 1"
+          @click="closeNotifications"
+        />
 
-          <NotificationsItem
-            :item="item"
-            v-else
-            v-intersect="requestNextPage"
-            @click="closeNotifications"
-          />
-        </template>
-        <div class="notifications-content__loader">
-          <Loader />
-        </div>
-      </perfect-scrollbar>
-    </div>
+        <NotificationsItem
+          :item="item"
+          v-else
+          v-intersect="{
+            type: 'when-appears',
+            threshold: 0,
+            callback: requestNextPage,
+          }"
+          @click="closeNotifications"
+        />
+      </template>
+      <div class="notifications-content__loader">
+        <Loader />
+      </div>
+    </perfect-scrollbar>
     <div
       class="notifications-content__empty"
       v-if="!notifications.length && isAuth && !state.isRequested"
@@ -168,7 +170,9 @@ onUnmounted(() => {
 
   & .notifications-content {
     max-height: 450px;
+    overflow: auto !important;
     overflow-y: scroll;
+    overscroll-behavior: contain;
 
     &::-webkit-scrollbar {
       width: 0px;
@@ -190,9 +194,6 @@ onUnmounted(() => {
     }
 
     & .ps {
-      height: 450px;
-      overscroll-behavior: contain;
-
       &__rail-y {
         width: 0;
         z-index: 3;
@@ -341,6 +342,16 @@ onUnmounted(() => {
         height: 100%;
       }
     }
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.1s;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
   }
 }
 

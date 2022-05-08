@@ -1,5 +1,5 @@
 <template>
-  <div class="entry-page__text-block">
+  <div class="entry-page__text-block ep-island">
     <p v-html="processed"></p>
   </div>
 </template>
@@ -43,13 +43,6 @@ export default {
 
   & p {
     margin: 12px 0;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .entry-page__text-block {
-    padding-left: 15px;
-    padding-right: 15px;
   }
 }
 </style>

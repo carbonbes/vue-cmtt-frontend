@@ -5,13 +5,16 @@ export default {
         el.observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                binding.value();
+              if (entry.isIntersecting && binding.value.type === "when-appears") {
+                binding.value.callback();
+                el.observer.disconnect();
+              } else if (!entry.isIntersecting && binding.value.type === "when-hide") {
+                binding.value.callback();
                 el.observer.disconnect();
               }
             });
           },
-          { threshold: 0 }
+          { threshold: binding.value.threshold }
         );
 
         el.observer.observe(el);

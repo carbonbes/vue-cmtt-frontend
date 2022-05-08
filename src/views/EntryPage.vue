@@ -17,7 +17,7 @@
         />
       </div>
       <div class="entry-page__content">
-        <div class="entry-page__title" v-if="entry.title">
+        <div class="entry-page__title ep-island" v-if="entry.title">
           <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
         </div>
         <template v-for="(block, index) in entry.blocks" :key="index">
@@ -627,12 +627,9 @@ export default {
 }
 
 .ep-island {
-  margin-left: auto;
-  margin-right: auto;
   max-width: 640px;
 
-  & + .entry-page__video-block,
-  + .ep-island {
+  & + .entry-page__video-block {
     margin-top: 30px;
   }
 }
@@ -653,24 +650,10 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .entry-page {
     &__header {
       padding-top: 15px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-
-    &__title {
-      & .entry-title {
-        margin-left: 15px;
-        margin-right: 15px;
-      }
-    }
-
-    &__footer {
-      padding-left: 15px;
-      padding-right: 15px;
     }
 
     &__comments {
@@ -693,9 +676,6 @@ export default {
   }
 
   .entry-page__embed {
-    margin-left: 15px;
-    margin-right: 15px;
-
     &:not(:first-child) {
       margin-top: 15px;
       margin-bottom: 15px;
@@ -703,7 +683,21 @@ export default {
   }
 }
 
-@media screen and (max-width: 1021px) {
+@media (max-width: 641px) {
+  .ep-island {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+@media (min-width: 641px) {
+  .ep-island {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 1021px) {
   .entry-page,
   .entry-page__comments {
     border-radius: 0;
