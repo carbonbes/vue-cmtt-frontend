@@ -26,7 +26,7 @@
     </div>
     <div class="embed-cover" v-if="imageSrc || videoSrc || imagesGallery">
       <div class="embed-cover__img" v-if="imageSrc">
-        <image-component
+        <ImageComponent
           :imageSrc="imageSrc"
           :srcWidth="imageSrcWidth"
           :srcHeight="imageSrcHeight"

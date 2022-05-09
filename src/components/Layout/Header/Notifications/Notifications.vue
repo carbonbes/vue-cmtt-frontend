@@ -346,11 +346,12 @@ onUnmounted(() => {
 
   &-enter-active,
   &-leave-active {
-    transition: opacity 0.1s;
+    transition: all 0.1s;
   }
 
   &-enter-from,
   &-leave-to {
+    transform: translateY(-2px);
     opacity: 0;
   }
 }

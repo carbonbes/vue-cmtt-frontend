@@ -20,7 +20,10 @@ export default {
     styleObject() {
       return {
         maxWidth:
-          this.srcWidth >= this.maxWidth
+          (this.srcWidth >= this.maxWidth &&
+            (this.srcHeight > this.maxHeight ||
+              this.srcHeight < this.maxHeight)) ||
+          (this.srcWidth < this.maxWidth && this.srcHeight > this.maxHeight)
             ? this.calculatedWidth + "px"
             : this.srcWidth + "px",
         maxHeight:
