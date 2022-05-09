@@ -99,8 +99,10 @@ const itemIconClassObj = computed(() => {
     props.item.type === 1024
   ) {
     return "icon_other";
-  } else if (props.item.type === 2 || props.item.type === 65536) {
+  } else if (props.item.type === 2 && props.item.icon === "like_up" || props.item.type === 65536 && props.item.icon === "like_up") {
     return "icon_like";
+  } else if (props.item.type === 2 && props.item.icon === "like_down" || props.item.type === 65536 && props.item.icon === "like_down") {
+    return "icon_dislike"
   } else if (props.item.type === 4096) {
     return "icon_subscribe";
   }

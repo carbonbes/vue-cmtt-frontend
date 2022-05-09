@@ -295,7 +295,7 @@ onUnmounted(() => {
           }
 
           &_like {
-            background: var(--green-color);
+            background: #45c045;
 
             & svg {
               width: 16px;
@@ -304,11 +304,12 @@ onUnmounted(() => {
           }
 
           &_dislike {
-            background: var(--red-color);
+            background: #ff4759;
 
             & svg {
-              width: 8px;
-              height: 8px;
+              width: 16px;
+              height: 11px;
+              transform: rotate(180deg);
             }
           }
         }

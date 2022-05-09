@@ -692,6 +692,10 @@ export default {
           & p {
             margin: 0;
 
+            & br {
+              content: "";
+            }
+
             &:not(:last-child) {
               margin-bottom: 6px;
             }
