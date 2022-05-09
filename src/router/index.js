@@ -42,30 +42,23 @@ const router = createRouter({
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (
-          from.name === "EntryPage" &&
+          (from.name === "EntryPage" || from.name !== "EntryPage") &&
           to.name === "EntryPage" &&
           from.params.id !== to.params.id &&
           to.query.comment
         ) {
           resolve({ el: "#" + to.query.comment, top: 75 });
-        }
-
-        if (
+        } else if (
           from.name === "EntryPage" &&
           to.name === "EntryPage" &&
           from.params.id === to.params.id &&
           to.query.comment
         ) {
           resolve({ el: "#" + to.query.comment, top: 75, behavior: "smooth" });
-        }
-
-        if (to.name === "EntryPage" && to.query.comments === null) {
+        } else if (to.name === "EntryPage" && to.query.comments === null) {
           resolve({ el: "#entry-page__comments", top: 60 });
-        }
-
-        if (savedPosition) resolve(savedPosition);
-
-        if (!savedPosition) resolve({ top: 0 });
+        } else if (savedPosition) resolve(savedPosition);
+        else if (!savedPosition) resolve({ top: 0 });
       }, 0);
     });
   },

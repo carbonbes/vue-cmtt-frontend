@@ -15,7 +15,7 @@
           ><site-logo
         /></router-link>
       </div>
-      <div class="left-sidebar__link-list">
+      <div class="left-sidebar__link-list" v-if="!isAuthRequested">
         <router-link
           class="left-sidebar__link"
           :class="sidebarPopularBtnClassObj"
@@ -133,6 +133,8 @@ const myFeedBtnVisibility = computed(() => {
 });
 
 const isAuth = computed(() => store.getters.isAuth);
+
+const isAuthRequested = computed(() => store.getters.isAuthRequested);
 
 // watch
 watch(

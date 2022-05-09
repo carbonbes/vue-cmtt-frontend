@@ -133,7 +133,7 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import DateTime from "@/components/DateTime.vue";
 import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
-import LikesPopup from "@/components/LikesPopup.vue";
+import LikesPopup from "@/components/LikesPopup/LikesPopup.vue";
 import CommentText from "@/components/EntryPage/Comments/CommentText.vue";
 import CommentMedia from "@/components/EntryPage/Comments/CommentMedia.vue";
 import ReplyForm from "@/components/EntryPage/Comments/ReplyForm.vue";

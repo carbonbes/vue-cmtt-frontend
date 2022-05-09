@@ -155,7 +155,6 @@ export default {
   watch: {
     unreadNotifications(newValue, oldValue) {
       if (newValue) {
-        this.audioFile.volume = 0.25;
         this.audioFile.play();
       }
     },
@@ -216,7 +215,7 @@ export default {
 .header__item-login-btn,
 .header__item-theme-toggle-btn {
   position: relative;
-  padding: 0 12px;
+  padding: 0 15px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -271,7 +270,8 @@ export default {
 }
 
 .header__item-avatar-wrapp {
-  padding: 0 12px;
+  padding-left: 15px;
+  padding-right: 5px;
   display: flex;
   align-items: center;
   cursor: pointer;

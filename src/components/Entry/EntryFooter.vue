@@ -62,7 +62,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import LikesPopup from "@/components/LikesPopup.vue";
+import LikesPopup from "@/components/LikesPopup/LikesPopup.vue";
 import CommentIcon from "@/assets/logos/comment_icon.svg?inline";
 import RepostIcon from "@/assets/logos/repost_icon.svg?inline";
 import BookmarkIcon from "@/assets/logos/bookmark_icon.svg?inline";

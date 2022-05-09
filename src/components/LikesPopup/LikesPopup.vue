@@ -1,57 +1,39 @@
 <template>
-  <div class="likes-popup">
+  <div class="likes-popup" ref="likesPopupRef">
     <template v-for="(like, index) in this.likes" :key="index">
       <template v-if="this.type === 'entry'">
-        <router-link class="likes-popup__item" :to="{ path: `/u/${index}` }">
-          <div
-            class="item-avatar"
-            :style="{
-              backgroundImage: `url(
-                ${like.avatar_url}
-              )`,
-            }"
-          ></div>
-          <span
-            class="item-nickname"
-            :class="{
-              'item-nickname_positive': like.sign === 1,
-              'item-nickname_negative': like.sign === -1,
-            }"
-            >{{ like.user_name }}</span
-          >
-        </router-link>
+        <LikesPopupItem
+          :userId="index"
+          :avatarUrl="like.avatar_url"
+          :userName="like.user_name"
+          :sign="like.sign"
+          :popupRef="this.$refs.likesPopupRef"
+        />
       </template>
 
       <template v-if="this.type === 'comment'">
-        <router-link class="likes-popup__item" :to="{ path: `/u/${index}` }">
-          <div
-            class="item-avatar"
-            :style="{
-              backgroundImage: `url(
-                ${like.avatar_url}
-              )`,
-            }"
-          ></div>
-          <span
-            class="item-nickname"
-            :class="{
-              'item-nickname_positive': like.sign === 1,
-              'item-nickname_negative': like.sign === -1,
-            }"
-            >{{ like.name }}</span
-          >
-        </router-link>
+        <LikesPopupItem
+          :userId="index"
+          :avatarUrl="like.avatar_url"
+          :userName="like.name"
+          :sign="like.sign"
+          :popupRef="this.$refs.likesPopupRef"
+        />
       </template>
     </template>
   </div>
 </template>
 
 <script>
+import LikesPopupItem from "./LikesPopupItem.vue";
+
 export default {
   props: {
     likes: Object,
     type: String,
   },
+
+  components: { LikesPopupItem },
 };
 </script>
 
