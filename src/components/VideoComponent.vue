@@ -23,8 +23,9 @@
         v-if="isDefaultVideo && this.isPlaying"
         v-intersect="{
           type: 'when-hide',
-          threshold: 1,
-          callback: this.pausePlaying,
+          threshold: 0,
+          callback: null,
+          videoType: 'default',
         }"
       >
         <source
@@ -38,15 +39,16 @@
 
       <iframe
         class="video"
-        :src="`https://www.youtube.com/embed/${externalService.id}?controls=2&autoplay=1`"
+        :src="`https://www.youtube.com/embed/${externalService.id}?controls=2&autoplay=1&enablejsapi=1`"
         frameBorder="0"
         allowFullScreen="1"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
         v-if="isYoutube && this.isPlaying"
         v-intersect="{
           type: 'when-hide',
-          threshold: 1,
-          callback: this.pausePlaying,
+          threshold: 0,
+          callback: null,
+          videoType: 'youtube',
         }"
       />
 
@@ -55,12 +57,13 @@
         :src="`https://player.vimeo.com/video/${externalService.id}?autoplay=1`"
         frameBorder="0"
         allowFullScreen="1"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
         v-if="isVimeo && this.isPlaying"
         v-intersect="{
           type: 'when-hide',
-          threshold: 1,
-          callback: this.pausePlaying,
+          threshold: 0,
+          callback: null,
+          videoType: 'vimeo',
         }"
       />
 
@@ -72,8 +75,9 @@
         v-if="isGfycat && this.isPlaying"
         v-intersect="{
           type: 'when-hide',
-          threshold: 1,
-          callback: this.pausePlaying,
+          threshold: 0,
+          callback: null,
+          videoType: 'default',
         }"
       >
         <source :src="`${externalService.mp4_url}`" />
@@ -87,8 +91,9 @@
         v-if="isGiphy && this.isPlaying"
         v-intersect="{
           type: 'when-hide',
-          threshold: 1,
-          callback: this.pausePlaying,
+          threshold: 0,
+          callback: null,
+          videoType: 'default',
         }"
       >
         <source :src="`${externalService.mp4_url}`" />
@@ -99,11 +104,11 @@
         :src="`https://coub.com/embed/${externalService.id}?autoplay=1`"
         frameBorder="0"
         allowFullScreen="1"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
         v-if="isCoub && this.isPlaying"
         v-intersect="{
           type: 'when-hide',
-          threshold: 1,
+          threshold: 0,
           callback: this.pausePlaying,
         }"
       />
@@ -144,10 +149,6 @@ export default {
   methods: {
     togglePlaying() {
       this.isPlaying = !this.isPlaying;
-    },
-
-    pausePlaying() {
-      this.isPlaying = false;
     },
   },
 

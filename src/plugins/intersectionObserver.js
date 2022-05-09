@@ -9,8 +9,16 @@ export default {
                 binding.value.callback();
                 el.observer.disconnect();
               } else if (!entry.isIntersecting && binding.value.type === "when-hide") {
-                binding.value.callback();
-                el.observer.disconnect();
+                if (binding.value.callback !== null) {
+                  binding.value.callback();
+                  el.observer.disconnect();
+                } else if (binding.value.videoType === "youtube") {
+                  el.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                } if (binding.value.videoType === "vimeo") {
+                  el.contentWindow.postMessage('{"method":"pause"}', '*');
+                } else if (binding.value.videoType === "default") {
+                  el.pause();
+                }
               }
             });
           },
