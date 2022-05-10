@@ -24,11 +24,7 @@ const feedPageModule = {
 
   mutations: {
     setFeed(state, data) {
-      state.feed.push(
-        ...data
-          .filter((entry) => entry.type === "entry")
-          .map((entry) => entry.data)
-      );
+      state.feed.push(...data);
     },
 
     setLastId(state, id) {
@@ -51,16 +47,8 @@ const feedPageModule = {
           let summ = entry.likes.summ;
 
           if (data.reset) {
-            entry.likes.isLiked =
-              entry.likes.isLiked === -1 && (data.sign === 0 || data.sign === 1)
-                ? -1
-                : entry.likes.isLiked === 0 &&
-                  (data.sign === -1 || data.sign === 1)
-                ? 0
-                : entry.likes.isLiked === 1 &&
-                  (data.sign === -1 || data.sign === 0)
-                ? 1
-                : null;
+            entry.likes.isLiked = entry.likes.prevIsLiked;
+            
             entry.likes.summ =
               sign === 1 && (summ <= 0 || summ >= 0)
                 ? --entry.likes.summ
@@ -118,6 +106,16 @@ const feedPageModule = {
       commit("setFeedIsRequested", true);
 
       return API_v2.getTimeline(data).then((response) => {
+        let items = response.data.result.items
+          .filter((entry) => entry.type === "entry")
+          .map((entry) => entry.data)
+          .map((item) => {
+            item.likes.prevIsLiked = null;
+            item.likes.prevIsLiked = item.likes.isLiked;
+
+            return item;
+          });
+
         if (
           (data.prevSorting !== data.sorting ||
             data.prevAllSite !== data.allSite) &&
@@ -125,7 +123,7 @@ const feedPageModule = {
         ) {
           commit("clearFeed");
         }
-        commit("setFeed", response.data.result.items);
+        commit("setFeed", items);
         commit("setLastId", response.data.result.lastId);
         commit("setFeedIsRequested", false);
       });

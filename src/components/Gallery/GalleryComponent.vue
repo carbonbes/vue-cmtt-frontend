@@ -146,8 +146,9 @@ onUnmounted(() => {
   }
 
   &_2 {
+    --g2-t-rows-height: 400px;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 400px;
+    grid-template-rows: var(--g2-t-rows-height);
 
     & .gallery__item {
       grid-column: 1 span;
@@ -156,8 +157,9 @@ onUnmounted(() => {
   }
 
   &_3 {
+    --g3-t-rows-height: 250px;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 250px);
+    grid-template-rows: repeat(2, var(--g3-t-rows-height));
 
     & .gallery__item {
       grid-column: 2 span;
@@ -183,8 +185,9 @@ onUnmounted(() => {
   }
 
   &_5 {
+    --g5-t-rows-height: 250px;
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 250px);
+    grid-template-rows: repeat(2, var(--g5-t-rows-height));
 
     & .gallery__item {
       grid-column: 2 span;
@@ -198,6 +201,22 @@ onUnmounted(() => {
         grid-column: 3 span;
         grid-row: 1 span;
       }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    &_2 {
+      --g2-t-rows-height: 200px;
+    }
+
+    &_3 {
+      --g3-t-rows-height: 175px;
+    }
+
+    &_5 {
+      --g5-t-rows-height: 175px;
     }
   }
 }

@@ -85,13 +85,17 @@
             v-if="block.type === 'person'"
           />
 
-          <div class="ep-island" v-if="block.type === 'telegram'">
-            <telegram-block :data="block.data" />
-          </div>
+          <telegram-block
+            class="ep-island"
+            :data="block.data"
+            v-if="block.type === 'telegram'"
+          />
 
-          <div class="ep-island" v-if="block.type === 'tweet'">
-            <twitter-block :data="block.data" />
-          </div>
+          <twitter-block
+            class="ep-island"
+            :data="block.data"
+            v-if="block.type === 'tweet'"
+          />
         </template>
       </div>
       <div class="entry-page__footer ep-island">
