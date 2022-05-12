@@ -151,7 +151,7 @@
       :entryId="entryId"
       :likesList="entry.likes.likesList"
       :newLikes="entry.likes.newLikes"
-      type="feedPage"
+      :type="this.type"
     />
   </div>
 </template>
@@ -336,6 +336,7 @@ export default {
 
   props: {
     entry: Object,
+    type: String,
   },
 };
 </script>

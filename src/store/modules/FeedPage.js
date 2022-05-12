@@ -94,7 +94,7 @@ const feedPageModule = {
     setEntryLikesList(state, data) {
       if (data.type === "feedEntry") {
         state.feed.find((entry) => {
-          if (entry.id == data.id) {
+          if (entry.id === data.id) {
             entry.likes.likesList = data.data;
             entry.likes.newLikes = false;
           }

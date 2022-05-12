@@ -1,10 +1,15 @@
 <template>
   <div class="profile__entries" v-if="entriesList.length">
     <template v-for="(entry, index) in entriesList" :key="entry.id">
-      <Entry :entry="entry" v-if="entriesList.length !== index + 1" />
+      <Entry
+        :entry="entry"
+        type="profileEntry"
+        v-if="entriesList.length !== index + 1"
+      />
 
       <Entry
         :entry="entry"
+        type="profileEntry"
         v-intersect="{
           type: 'when-appears',
           threshold: 0,

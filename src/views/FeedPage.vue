@@ -17,10 +17,15 @@
     </div>
     <div class="feed-page__content">
       <template v-for="(entry, index) in feed" :key="entry.id">
-        <entry :entry="entry" v-if="feed.length !== index + 1" />
+        <entry
+          :entry="entry"
+          type="feedEntry"
+          v-if="feed.length !== index + 1"
+        />
 
         <entry
           :entry="entry"
+          type="feedEntry"
           v-intersect="{
             type: 'when-appears',
             threshold: 0,

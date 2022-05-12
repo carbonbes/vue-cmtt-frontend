@@ -115,11 +115,20 @@ const profilePageModule = {
       state.profileEntries.find((entry) => {
         if (entry.id === data.id) {
           entry.likes.summ = data.count;
-          if (store.state.auth.auth.id === data.subsite_id) {
-            entry.likes.isLiked = data.state;
-          }
+          entry.likes.newLikes = true;
         }
       });
+    },
+
+    setEntryLikesList(state, data) {
+      if (data.type === "profileEntry") {
+        state.profileEntries.find((entry) => {
+          if (entry.id === data.id) {
+            entry.likes.likesList = data.data;
+            entry.likes.newLikes = false;
+          }
+        });
+      }
     },
 
     setEntryIsLiked(state, data) {
@@ -158,6 +167,7 @@ const profilePageModule = {
                 : null;
 
             entry.likes.isLiked = data.sign;
+            entry.likes.newLikes = true;
           }
         }
       });
@@ -180,6 +190,10 @@ const profilePageModule = {
             .map((item) => {
               item.likes.prevIsLiked = null;
               item.likes.prevIsLiked = item.likes.isLiked;
+              item.likes.likesList = null;
+              item.likes.likesList = [];
+              item.likes.newLikes = null;
+              item.likes.newLikes = false;
 
               return item;
             });

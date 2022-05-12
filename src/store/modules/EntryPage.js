@@ -332,10 +332,17 @@ const entryPageModule = {
                 type: "entryPage",
                 data: response.data.data.likers,
               });
-            } else {
+            } else if (data.subtype === "feedEntry") {
               commit("setEntryLikesList", {
                 id: data.id,
                 type: "feedEntry",
+                data: response.data.data.likers,
+              });
+            } else if (data.subtype === "profileEntry") {
+              console.log("yes")
+              commit("setEntryLikesList", {
+                id: data.id,
+                type: "profileEntry",
                 data: response.data.data.likers,
               });
             }
