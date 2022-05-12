@@ -351,17 +351,6 @@ export default {
           );
         }
       }
-
-      /* this.requestLikesList({ id: this.commentId, type: "comment" }).then(
-        () => {
-          if (
-            this.likesPopupIsFocused &&
-            Object.keys(this.likesList).length !== 0
-          ) {
-            this.likesPopupIsOpen = true;
-          }
-        }
-      ); */
     },
 
     closeLikesPopup() {
