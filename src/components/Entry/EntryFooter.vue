@@ -83,6 +83,9 @@ export default {
     favoritesCount: Number,
     entryRating: Object,
     entryId: Number,
+    likesList: Object,
+    newLikes: Boolean,
+    type: String,
   },
 
   data() {
@@ -129,22 +132,31 @@ export default {
         return this.entryRating.summ;
       }
     },
-
-    ...mapGetters(["likesList"]),
   },
 
   methods: {
     getLikes() {
       this.likesPopupIsFocused = true;
 
-      this.requestLikesList({ id: this.entryId, type: "entry" }).then(() => {
-        if (
-          this.likesPopupIsFocused &&
-          Object.keys(this.likesList).length !== 0
-        ) {
-          this.likesPopupIsOpen = true;
-        }
-      });
+      if (Object.keys(this.likesList).length > 0 && !this.newLikes) {
+        this.likesPopupIsOpen = true;
+      } else if (
+        this.likesList.length === 0 ||
+        (Object.keys(this.likesList).length > 0 && this.newLikes)
+      ) {
+        this.requestLikesList({
+          id: this.entryId,
+          type: "entry",
+          subtype: this.type,
+        }).then(() => {
+          if (
+            this.likesPopupIsFocused &&
+            Object.keys(this.likesList).length > 0
+          ) {
+            this.likesPopupIsOpen = true;
+          }
+        });
+      }
     },
 
     closeLikesPopup() {
@@ -316,7 +328,7 @@ export default {
 
   &-enter-active,
   &-leave-active {
-    transition: opacity 0.075s;
+    transition: opacity 0.1s;
   }
 
   &-enter-from,

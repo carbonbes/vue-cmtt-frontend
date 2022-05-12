@@ -67,7 +67,10 @@
               ></transition-group>
               <transition name="popup">
                 <div class="popup" v-if="likesPopupIsOpen">
-                  <likes-popup :likes="this.likesList" type="comment" />
+                  <likes-popup
+                    :likes="this.comment.likes.likesList"
+                    type="comment"
+                  />
                 </div>
               </transition>
             </div>
@@ -312,7 +315,6 @@ export default {
       "auth",
       "entryId",
       "entryAuthorId",
-      "likesList",
       "hoveredHighlightComment",
       "temporaryHightlightComment",
     ]),
@@ -326,7 +328,31 @@ export default {
     getLikes() {
       this.likesPopupIsFocused = true;
 
-      this.requestLikesList({ id: this.commentId, type: "comment" }).then(
+      if (
+        Object.keys(this.comment.likes.likesList).length > 0 &&
+        !this.comment.likes.newLikes
+      ) {
+        this.likesPopupIsOpen = true;
+      } else if (
+        this.comment.likes.likesList.length === 0 ||
+        (Object.keys(this.comment.likes.likesList).length > 0 &&
+          this.comment.likes.newLikes)
+      ) {
+        if (this.likesPopupIsFocused) {
+          this.requestLikesList({ id: this.commentId, type: "comment" }).then(
+            () => {
+              if (
+                this.likesPopupIsFocused &&
+                Object.keys(this.comment.likes.likesList).length !== 0
+              ) {
+                this.likesPopupIsOpen = true;
+              }
+            }
+          );
+        }
+      }
+
+      /* this.requestLikesList({ id: this.commentId, type: "comment" }).then(
         () => {
           if (
             this.likesPopupIsFocused &&
@@ -335,7 +361,7 @@ export default {
             this.likesPopupIsOpen = true;
           }
         }
-      );
+      ); */
     },
 
     closeLikesPopup() {
@@ -670,7 +696,7 @@ export default {
 
                 &-enter-active,
                 &-leave-active {
-                  transition: opacity 0.075s;
+                  transition: opacity 0.1s;
                 }
 
                 &-enter-from,
@@ -691,10 +717,6 @@ export default {
 
           & p {
             margin: 0;
-
-            & br {
-              content: "";
-            }
 
             &:not(:last-child) {
               margin-bottom: 6px;

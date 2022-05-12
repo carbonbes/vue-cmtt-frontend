@@ -48,7 +48,7 @@ const feedPageModule = {
 
           if (data.reset) {
             entry.likes.isLiked = entry.likes.prevIsLiked;
-            
+
             entry.likes.summ =
               sign === 1 && (summ <= 0 || summ >= 0)
                 ? --entry.likes.summ
@@ -76,6 +76,7 @@ const feedPageModule = {
                 : null;
 
             entry.likes.isLiked = data.sign;
+            entry.likes.newLikes = true;
           }
         }
       });
@@ -85,19 +86,20 @@ const feedPageModule = {
       state.feed.find((entry) => {
         if (entry.id === data.id) {
           entry.likes.summ = data.count;
-          if (store.state.auth.auth.id === data.subsite_id) {
-            entry.likes.isLiked = data.state;
-          }
+          entry.likes.newLikes = true;
         }
       });
     },
 
-    entryCommentsChannelCreated(state, data) {
-      state.feed.find((entry) => {
-        if (entry.id === data.comment.id) {
-          entry.counters.comments = ++entry.counters.comments;
-        }
-      });
+    setEntryLikesList(state, data) {
+      if (data.type === "feedEntry") {
+        state.feed.find((entry) => {
+          if (entry.id == data.id) {
+            entry.likes.likesList = data.data;
+            entry.likes.newLikes = false;
+          }
+        });
+      }
     },
   },
 
@@ -112,6 +114,10 @@ const feedPageModule = {
           .map((item) => {
             item.likes.prevIsLiked = null;
             item.likes.prevIsLiked = item.likes.isLiked;
+            item.likes.likesList = null;
+            item.likes.likesList = [];
+            item.likes.newLikes = null;
+            item.likes.newLikes = false;
 
             return item;
           });

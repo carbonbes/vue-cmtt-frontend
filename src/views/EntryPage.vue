@@ -105,6 +105,9 @@
           :favoritesCount="entry.counters.favorites"
           :entryRating="entry.likes"
           :entryId="entryId"
+          :likesList="entry.likes.likesList"
+          :newLikes="entry.likes.newLikes"
+          type="entryPage"
         />
       </div>
     </div>
@@ -290,6 +293,8 @@ export default {
       localStorage.setItem(`${this.entryId}-last-viewed`, Date.now());
     },
 
+    getEntryLikes() {},
+
     ...mapMutations(["setEntryPrevLiked"]),
   },
 
@@ -376,18 +381,13 @@ export default {
 
 .entry-page__embed {
   &:not(:first-child) {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   & + .entry-page__video-block {
     margin-top: 12px;
   }
-}
-
-.entry-page__gallery-block {
-  margin-top: 30px;
-  margin-bottom: 30px;
 }
 
 .entry-page__comments {

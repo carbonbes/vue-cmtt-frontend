@@ -8,7 +8,6 @@ const entryPageModule = {
     entry: [],
     entryPrevLiked: null,
     subsiteData: [],
-    entrylikesList: null,
     repostsList: null,
     commentsList: null,
     unreadComments: null,
@@ -31,10 +30,6 @@ const entryPageModule = {
 
     subsiteData(state) {
       return state.subsiteData;
-    },
-
-    likesList(state) {
-      return state.likesList;
     },
 
     repostsList(state) {
@@ -75,8 +70,20 @@ const entryPageModule = {
       state.subsiteData = [];
     },
 
-    setLikesList(state, data) {
-      state.likesList = data;
+    setEntryLikesList(state, data) {
+      if (data.type === "entryPage") {
+        state.entry.likes.likesList = data.data;
+        state.entry.likes.newLikes = false;
+      }
+    },
+
+    setCommentLikesList(state, data) {
+      state.commentsList.find((comment) => {
+        if (comment.id == data.commentId) {
+          comment.likes.likesList = data.data;
+          comment.likes.newLikes = false;
+        }
+      });
     },
 
     setRepostsList(state, data) {
@@ -146,6 +153,7 @@ const entryPageModule = {
               : null;
 
           state.entry.likes.isLiked = data.sign;
+          state.entry.likes.newLikes = true;
         }
       }
     },
@@ -186,6 +194,7 @@ const entryPageModule = {
                 : null;
 
             comment.likes.isLiked = data.sign;
+            comment.likes.newLikes = true;
           }
         }
       });
@@ -194,6 +203,7 @@ const entryPageModule = {
     apiChannelContentVoted(state, data) {
       if (state.entry.id === data.id) {
         state.entry.likes.summ = data.count;
+        state.entry.likes.newLikes = true;
       }
     },
 
@@ -201,16 +211,24 @@ const entryPageModule = {
       state.commentsList.find((comment) => {
         if (comment.id === data.id) {
           comment.likes.summ = data.count;
+          comment.likes.newLikes = true;
         }
       });
     },
 
     entryCommentsChannelCreated(state, data) {
       let newComment = data.comment;
-      newComment.replies = [];
+      newComment.likes.prevIsLiked = null;
       newComment.likes.prevIsLiked = data.comment.likes.is_liked;
+      newComment.likes.isLiked = null;
       newComment.likes.isLiked = data.comment.likes.is_liked;
+      newComment.likes.likesList = null;
+      newComment.likes.likesList = [];
+      newComment.likes.newLikes = null;
+      newComment.likes.newLikes = false;
+      newComment.isIgnore = null;
       newComment.isIgnored = data.comment.is_ignored;
+      newComment.isRemoved = null;
       newComment.isRemoved = data.comment.is_removed;
       newComment.media = [...data.comment.attaches];
 
@@ -232,6 +250,9 @@ const entryPageModule = {
       newComment.replies = [];
       newComment.likes.prevIsLiked = data.comment.likes.is_liked;
       newComment.likes.isLiked = data.comment.likes.is_liked;
+      newComment.likes.likesList = null;
+      newComment.likes.likesList = [];
+      newComment.likes.newLikes = null;
       newComment.isIgnored = data.comment.is_ignored;
       newComment.isRemoved = data.comment.is_removed;
       newComment.media = [...data.comment.attaches];
@@ -249,7 +270,13 @@ const entryPageModule = {
   actions: {
     requestEntry({ commit }, id) {
       return API_v2.getEntry(id).then((response) => {
-        commit("setEntry", response.data.result);
+        let entry = response.data.result;
+        entry.likes.likesList = null;
+        entry.likes.likesList = [];
+        entry.likes.newLikes = null;
+        entry.likes.newLikes = false;
+
+        commit("setEntry", entry);
       });
     },
 
@@ -300,11 +327,25 @@ const entryPageModule = {
         return entryRatingInstance
           .get(`vote/get_likers?id=${data.id}&type=1`)
           .then((response) => {
-            commit("setLikesList", response.data.data.likers);
+            if (data.subtype === "entryPage") {
+              commit("setEntryLikesList", {
+                type: "entryPage",
+                data: response.data.data.likers,
+              });
+            } else {
+              commit("setEntryLikesList", {
+                id: data.id,
+                type: "feedEntry",
+                data: response.data.data.likers,
+              });
+            }
           });
       } else if (data.type === "comment") {
         return API_v1.getCommentLikes(data.id).then((response) => {
-          commit("setLikesList", response.data.result);
+          commit("setCommentLikesList", {
+            commentId: data.id,
+            data: response.data.result,
+          });
         });
       }
     },
@@ -322,6 +363,10 @@ const entryPageModule = {
         let items = response.data.result.items.map((item) => {
           item.likes.prevIsLiked = null;
           item.likes.prevIsLiked = item.likes.isLiked;
+          item.likes.likesList = null;
+          item.likes.likesList = [];
+          item.likes.newLikes = null;
+          item.likes.newLikes = false;
 
           return item;
         });

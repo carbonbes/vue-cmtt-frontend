@@ -72,7 +72,7 @@ const profilePageModule = {
     },
 
     setProfileEntries(state, data) {
-      state.profileEntries.push(...data.map((entry) => entry.data));
+      state.profileEntries.push(...data);
     },
 
     setProfileEntriesLastId(state, data) {
@@ -129,16 +129,8 @@ const profilePageModule = {
           let summ = entry.likes.summ;
 
           if (data.reset) {
-            entry.likes.isLiked =
-              entry.likes.isLiked === -1 && (data.sign === 0 || data.sign === 1)
-                ? -1
-                : entry.likes.isLiked === 0 &&
-                  (data.sign === -1 || data.sign === 1)
-                ? 0
-                : entry.likes.isLiked === 1 &&
-                  (data.sign === -1 || data.sign === 0)
-                ? 1
-                : null;
+            entry.likes.isLiked = entry.likes.prevIsLiked;
+
             entry.likes.summ =
               sign === 1 && (summ <= 0 || summ >= 0)
                 ? --entry.likes.summ
@@ -183,7 +175,16 @@ const profilePageModule = {
     requestProfileEntries({ commit, state }, data) {
       return API_v2.getTimeline(data).then((response) => {
         if (!state.profileHidden) {
-          commit("setProfileEntries", response.data.result.items);
+          let items = response.data.result.items
+            .map((entry) => entry.data)
+            .map((item) => {
+              item.likes.prevIsLiked = null;
+              item.likes.prevIsLiked = item.likes.isLiked;
+
+              return item;
+            });
+
+          commit("setProfileEntries", items);
           commit("setProfileEntriesLastId", response.data.result.lastId);
           commit(
             "setProfileEntriesLastSortingValue",

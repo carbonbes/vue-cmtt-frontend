@@ -149,6 +149,9 @@
       :favoritesCount="entry.counters.favorites"
       :entryRating="entry.likes"
       :entryId="entryId"
+      :likesList="entry.likes.likesList"
+      :newLikes="entry.likes.newLikes"
+      type="feedPage"
     />
   </div>
 </template>
@@ -350,7 +353,7 @@ export default {
   border-radius: 8px;
 
   & .entry-header {
-    margin-top: 16px;
+    margin-top: 15px;
     margin-bottom: 15px;
   }
 
