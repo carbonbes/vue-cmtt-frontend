@@ -114,9 +114,9 @@ onUnmounted(() => {
 .gallery {
   display: grid;
   grid-gap: 4px;
+  background: var(--bg-color);
 
   &__item {
-    box-shadow: inset 0 0 11px rgb(0 0 0 / 10%);
     cursor: zoom-in;
 
     &_more {
