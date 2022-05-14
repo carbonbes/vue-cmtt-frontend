@@ -293,8 +293,6 @@ export default {
       localStorage.setItem(`${this.entryId}-last-viewed`, Date.now());
     },
 
-    getEntryLikes() {},
-
     ...mapMutations(["setEntryPrevLiked"]),
   },
 
@@ -453,6 +451,8 @@ export default {
 }
 
 .reply-form {
+  --attachment-item-size: 80px;
+
   position: relative;
   padding: 13.5px 12px 12px 17px;
   flex-basis: 100%;
@@ -505,8 +505,8 @@ export default {
       }
 
       & .attachment {
-        width: 80px;
-        height: 80px;
+        width: var(--attachment-item-size);
+        height: var(--attachment-item-size);
         border-radius: 8px;
         box-shadow: var(--border-a);
         overflow: hidden;
@@ -613,7 +613,7 @@ export default {
       }
 
       & .button {
-        width: 100px;
+        min-width: 100px;
         height: 40px;
         display: flex;
         align-items: center;
@@ -684,6 +684,10 @@ export default {
       margin-top: 15px;
       margin-bottom: 15px;
     }
+  }
+
+  .reply-form {
+    --attachment-item-size: 50px;
   }
 }
 

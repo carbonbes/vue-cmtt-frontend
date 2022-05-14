@@ -1,23 +1,53 @@
 <template>
   <router-link
-    :to="props.path"
-    @click="props.action ? props.action(actionInfo) : null"
-    class="dropdown__item"
-    active-class="dropdown__item_active"
+    :to="props.data.path"
+    @click="
+      props.data.action
+        ? props.data.action(
+            props.data.actionInfo ? props.data.actionInfo : null
+          )
+        : null
+    "
+    class="dropdown-component__item"
+    active-class="dropdown-component__item_active"
+    v-if="isLinkType"
   >
-    <component class="icon" :is="props.icon" v-if="props.icon"></component>
-    <div class="label" v-text="props.label" v-if="props.label"></div>
+    <component
+      class="icon"
+      :is="props.data.icon"
+      v-if="props.data.icon"
+    ></component>
+    <div class="label" v-text="props.data.label" v-if="props.data.label"></div>
   </router-link>
+
+  <div
+    @click="
+      props.data.action
+        ? props.data.action(
+            props.data.actionInfo ? props.data.actionInfo : null
+          )
+        : null
+    "
+    class="dropdown-component__item"
+    v-if="isDefaultType"
+  >
+    <component
+      class="icon"
+      :is="props.data.icon"
+      v-if="props.data.icon"
+    ></component>
+    <div class="label" v-text="props.data.label" v-if="props.data.label"></div>
+  </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
 
 const props = defineProps({
-  path: String,
-  icon: Object,
-  label: String,
-  action: Function,
-  actionInfo: Object,
+  data: Object,
 });
+
+const isLinkType = computed(() => props.data.type === "link");
+
+const isDefaultType = computed(() => props.data.type === "default");
 </script>

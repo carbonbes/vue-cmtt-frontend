@@ -15,12 +15,24 @@ export const API_v1 = {
 
   postComment(data) {
     let formData = new FormData();
+
     formData.append("id", data.id);
-    formData.append("text", data.text);
     formData.append("reply_to", data.reply_to);
+    formData.append("text", data.text);
     formData.append("attachments", data.attachments);
 
     return instance_v1.post("comment/add", formData);
+  },
+
+  editComment(data) {
+    let formData = new FormData();
+
+    formData.append("id", data.entryId);
+    formData.append("comment_id", data.commentId);
+    formData.append("text", data.text);
+    formData.append("attachments", data.attachments);
+
+    return instance_v1.post("comment/edit", formData);
   },
 
   postLike(data) {
@@ -43,7 +55,9 @@ export const API_v1 = {
     if (!data.lastId) {
       return instance_v1.get("user/me/updates?is_read=1");
     } else if (data.lastId) {
-      return instance_v1.get(`user/me/updates?is_read=1&last_id=${data.lastId}`);
+      return instance_v1.get(
+        `user/me/updates?is_read=1&last_id=${data.lastId}`
+      );
     }
   },
 

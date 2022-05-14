@@ -41,7 +41,12 @@ export const API_v2 = {
         );
       }
 
-      if (!data.sorting && data.subsiteId && data.lastId && data.lastSortingValue) {
+      if (
+        !data.sorting &&
+        data.subsiteId &&
+        data.lastId &&
+        data.lastSortingValue
+      ) {
         return instance_v2.get(
           `timeline?allSite=false&subsitesIds=${data.subsiteId}&lastId=${data.lastId}&lastSortingValue=${data.lastSortingValue}`
         );
@@ -105,6 +110,12 @@ export const API_v2 = {
         `comments?subsiteId=${data.subsiteId}&lastId=${data.lastId}&lastSortingValue=${data.lastSortingValue}`
       );
     }
+  },
+
+  getCommentEtcControls(id) {
+    return instance_v2.get("comment/etcControls", {
+      params: { commentId: id },
+    });
   },
 
   subsite(id) {

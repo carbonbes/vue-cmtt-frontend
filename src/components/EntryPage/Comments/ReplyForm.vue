@@ -16,7 +16,7 @@
       <p
         class="reply-form__text-field"
         :class="textFieldClassObj"
-        :contenteditable="true"
+        :contenteditable="contentEditableState"
         @click="focusReplyForm"
         @input="replyTextHandler"
         @paste="onPasteHandler"
@@ -59,17 +59,20 @@
         </div>
       </div>
       <div class="reply-actions">
-        <div class="cancel-btn" @click="closeReplyForm">Отменить</div>
+        <div class="cancel-btn" @click="closeReplyForm">Отмена</div>
         <div
           class="button button_b"
           :class="replyFormBtnClassObj"
           @click="postComment"
         >
-          <template v-if="!state.commentIsSended">
+          <template v-if="!state.commentIsSended && !props.editMode">
             <div class="button__label">Ответить</div>
           </template>
           <template v-if="state.commentIsSended">
             <LoaderIcon />
+          </template>
+          <template v-if="props.editMode && !state.commentIsSended">
+            <div class="button__label">Редактировать</div>
           </template>
         </div>
       </div>
@@ -93,9 +96,13 @@ const textFieldRef = ref(null);
 // props
 const props = defineProps({
   parentCommentId: String,
-  type: String,
   closeReplyForm: Function,
+  closeEditForm: Function,
   position: String,
+  editMode: Boolean,
+  selfCommentText: String,
+  selfCommentMedia: Object,
+  type: String,
 });
 
 // state
@@ -137,6 +144,14 @@ const mediaAttachBtnClassObj = computed(() => ({
   "media-attach-btn_disabled": state.attachments.length === 2,
 }));
 
+const contentEditableState = computed(() => {
+  if (state.commentIsSended) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
 // methods
 const focusReplyForm = () => {
   state.replyFormFocused = true;
@@ -148,7 +163,11 @@ const unfocusReplyForm = () => {
 };
 
 const closeReplyForm = () => {
-  props.closeReplyForm();
+  if (props.editMode) {
+    props.closeEditForm();
+  } else {
+    props.closeReplyForm();
+  }
 };
 
 const replyTextHandler = (e) => {
@@ -223,32 +242,56 @@ const deleteAttachment = (index) => {
 
 const postComment = () => {
   if (isAuth.value) {
-    state.commentIsSended = true;
-    store
-      .dispatch("postComment", {
-        id: entryId.value,
-        text: state.text,
-        reply_to: props.parentCommentId || 0,
-        attachments: JSON.stringify(state.attachments),
-      })
-      .then((response) => {
-        store.commit("addComment", {
-          position: props.position,
-          comment: response.data.result,
+    if (!props.editMode) {
+      state.commentIsSended = true;
+
+      store
+        .dispatch("postComment", {
+          id: entryId.value,
+          text: state.text,
+          reply_to: props.parentCommentId || 0,
+          attachments: JSON.stringify(state.attachments),
+        })
+        .then((response) => {
+          store.commit("addComment", {
+            position: props.position,
+            comment: response.data.result,
+          });
+
+          state.commentIsSended = false;
+          closeReplyForm();
+        })
+        .catch((error) => {
+          state.commentIsSended = false;
+
+          notify({
+            title: "Ошибка " + error.response.data.error.code,
+            text: error.response.data.message,
+          });
         });
+    } else {
+      state.commentIsSended = true;
 
-        state.commentIsSended = false;
+      store
+        .dispatch("editComment", {
+          entryId: entryId.value,
+          commentId: props.parentCommentId,
+          text: state.text,
+          attachments: JSON.stringify(state.attachments),
+        })
+        .then(() => {
+          state.commentIsSended = false;
+          closeReplyForm();
+        })
+        .catch((error) => {
+          state.commentIsSended = false;
 
-        props.closeReplyForm();
-      })
-      .catch((error) => {
-        state.commentIsSended = false;
-
-        notify({
-          title: "Ошибка " + error.response.data.error.code,
-          text: error.response.data.message,
+          notify({
+            title: "Ошибка " + error.response.data.error.code,
+            text: error.response.data.message,
+          });
         });
-      });
+    }
   } else {
     emitter.emit("login-modal-toggle");
   }
@@ -256,5 +299,12 @@ const postComment = () => {
 
 onMounted(() => {
   focusReplyForm();
+
+  if (props.editMode) {
+    console.log(textFieldRef)
+    textFieldRef.value.innerText = props.selfCommentText;
+    state.text = props.selfCommentText;
+    state.attachments = [...props.selfCommentMedia];
+  }
 });
 </script>

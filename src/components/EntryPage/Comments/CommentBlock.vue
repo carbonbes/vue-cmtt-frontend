@@ -90,17 +90,29 @@
           <comment-media :attachments="media" />
         </div>
 
-        <span class="reply-btn" @click="this.openReplyForm">Ответить</span>
+        <span class="reply-btn us-none" @click="this.openReplyForm"
+          >Ответить</span
+        >
 
-        <div class="more-items-btn">
-          <more-item-icon class="icon" />
+        <div class="more-items-btn" v-outside-click:[true]="closeEtcControls">
+          <more-item-icon
+            class="icon"
+            @click="getCommentEtcControls(+this.commentId)"
+          />
+          <div class="dropdown" v-if="etcControlsDropdownIsOpen">
+            <Dropdown :data="etcControlsConfig" />
+          </div>
         </div>
 
-        <reply-form
+        <ReplyForm
           :parentCommentId="this.commentId"
           :closeReplyForm="this.closeReplyForm"
+          :closeEditForm="this.closeEditForm"
+          :editMode="this.editMode"
+          :selfCommentText="this.comment.text"
+          :selfCommentMedia="this.comment.media"
           type="reply"
-          v-if="replyFormIsOpen"
+          v-if="replyFormIsOpen || this.editMode"
         />
       </div>
     </div>
@@ -142,6 +154,12 @@ import CommentMedia from "@/components/EntryPage/Comments/CommentMedia.vue";
 import ReplyForm from "@/components/EntryPage/Comments/ReplyForm.vue";
 import UpArrowIcon from "@/assets/logos/up_arrow.svg?inline";
 import MoreItemIcon from "@/assets/logos/more-item_icon.svg?inline";
+import Dropdown from "@/components/Dropdown/Dropdown.vue";
+import FlagIcon from "@/assets/logos/flag_icon.svg?inline";
+import ChainIcon from "@/assets/logos/chain_icon.svg?inline";
+import DeleteIcon from "@/assets/logos/delete_icon.svg?inline";
+import DeleteThreadIcon from "@/assets/logos/delete-thread_icon.svg?inline";
+import PencilIcon from "@/assets/logos/pencil_icon.svg?inline";
 
 export default {
   name: "comment-block",
@@ -161,6 +179,12 @@ export default {
     ReplyForm,
     UpArrowIcon,
     MoreItemIcon,
+    Dropdown,
+    FlagIcon,
+    ChainIcon,
+    DeleteIcon,
+    DeleteThreadIcon,
+    PencilIcon,
   },
 
   data() {
@@ -172,6 +196,8 @@ export default {
       timeout: false,
       animationType: null,
       unread: null,
+      etcControlsDropdownIsOpen: false,
+      editMode: false,
     };
   },
 
@@ -311,6 +337,34 @@ export default {
       return this.comment.date * 1000;
     },
 
+    etcControlsConfig() {
+      return {
+        items: [
+          this.comment.etcControls !== null &&
+            this.comment.etcControls.edit && {
+              icon: PencilIcon,
+              label: "Редактировать",
+              action: this.openEditForm,
+              type: "default",
+            },
+          this.comment.etcControls !== null &&
+            this.comment.etcControls.remove && {
+              icon: DeleteIcon,
+              label: "Удалить",
+              type: "default",
+            },
+          this.comment.etcControls !== null &&
+            this.comment.etcControls.remove_thread && {
+              icon: DeleteThreadIcon,
+              label: "Удалить ветку",
+              type: "default",
+            },
+          { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+          { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+        ],
+      };
+    },
+
     ...mapGetters([
       "auth",
       "entryId",
@@ -382,6 +436,14 @@ export default {
       this.replyFormIsOpen = false;
     },
 
+    openEditForm() {
+      this.editMode = true;
+    },
+
+    closeEditForm() {
+      this.editMode = false;
+    },
+
     like(actionType) {
       if (actionType === "like") {
         this.postCommentLike({
@@ -402,7 +464,32 @@ export default {
       this.unread = value;
     },
 
-    ...mapActions(["requestLikesList", "postCommentLike"]),
+    toggleOpenEtcControls() {
+      this.etcControlsDropdownIsOpen = !this.etcControlsDropdownIsOpen;
+    },
+
+    closeEtcControls() {
+      this.etcControlsDropdownIsOpen = false;
+    },
+
+    getCommentEtcControls(id) {
+      if (
+        this.comment.etcControls === null &&
+        !this.etcControlsDropdownIsOpen
+      ) {
+        this.requestCommentEtcControls(id).then(() => {
+          this.etcControlsDropdownIsOpen = true;
+        });
+      } else if (Object.keys(this.comment.etcControls).length > 0) {
+        this.etcControlsDropdownIsOpen = true;
+      }
+    },
+
+    ...mapActions([
+      "requestLikesList",
+      "postCommentLike",
+      "requestCommentEtcControls",
+    ]),
 
     ...mapMutations([
       "setHoveredHighlightComment",
@@ -763,16 +850,25 @@ export default {
         }
 
         & .more-items-btn {
+          position: relative;
           margin-left: 10px;
           display: flex;
           align-items: center;
+          justify-content: center;
           line-height: 20px;
           color: var(--grey-color);
-          cursor: pointer;
 
-          & .icon {
+          & > .icon {
             width: 16px;
             height: 16px;
+            cursor: pointer;
+          }
+
+          & .dropdown {
+            position: absolute;
+            top: 100%;
+            margin-top: 5px;
+            z-index: 2;
           }
         }
 
@@ -842,7 +938,7 @@ export default {
         }
 
         & .reply-btn,
-        .more-items-btn,
+        .more-items-btn svg,
         .up-arrow svg {
           &:hover {
             color: var(--blue-color);

@@ -88,24 +88,26 @@ export default {
             path: "/my/popular",
             action: this.saveFeedSorting,
             actionInfo: { allSite: "my", sorting: "hotness" },
+            type: "link",
           },
           {
             label: "Свежее",
             path: "/my/new",
             action: this.saveFeedSorting,
             actionInfo: { allSite: "my", sorting: "date" },
+            type: "link",
           },
         ],
       },
 
       allFeedDropdownSettings: {
         items: [
-          { label: "За сегодня", path: "/all/popular" },
-          { label: "За 24 часа", path: "/all/day" },
-          { label: "За неделю", path: "/all/week" },
-          { label: "За месяц", path: "/all/month" },
-          { label: "За год", path: "/all/year" },
-          { label: "За все время", path: "/all/all" },
+          { label: "За сегодня", path: "/all/popular", type: "link" },
+          { label: "За 24 часа", path: "/all/day", type: "link" },
+          { label: "За неделю", path: "/all/week", type: "link" },
+          { label: "За месяц", path: "/all/month", type: "link" },
+          { label: "За год", path: "/all/year", type: "link" },
+          { label: "За все время", path: "/all/all", type: "link" },
         ],
       },
     };

@@ -218,6 +218,7 @@ const entryPageModule = {
 
     entryCommentsChannelCreated(state, data) {
       let newComment = data.comment;
+      newComment.etcControls = null;
       newComment.likes.prevIsLiked = null;
       newComment.likes.prevIsLiked = data.comment.likes.is_liked;
       newComment.likes.isLiked = null;
@@ -247,13 +248,18 @@ const entryPageModule = {
 
     addComment(state, data) {
       let newComment = data.comment;
+      newComment.replies = null;
       newComment.replies = [];
+      newComment.etcControls = null;
       newComment.likes.prevIsLiked = data.comment.likes.is_liked;
+      newComment.likes.isLiked = null;
       newComment.likes.isLiked = data.comment.likes.is_liked;
       newComment.likes.likesList = null;
       newComment.likes.likesList = [];
       newComment.likes.newLikes = null;
+      newComment.isIgnored = null;
       newComment.isIgnored = data.comment.is_ignored;
+      newComment.isRemoved = null;
       newComment.isRemoved = data.comment.is_removed;
       newComment.media = [...data.comment.attaches];
 
@@ -264,6 +270,14 @@ const entryPageModule = {
       } else if (!data.position) {
         state.commentsList.unshift(newComment);
       }
+    },
+
+    setCommentEtcControls(state, data) {
+      state.commentsList.find((comment) => {
+        if (comment.id === data.id) {
+          comment.etcControls = data.controls;
+        }
+      });
     },
   },
 
@@ -339,7 +353,7 @@ const entryPageModule = {
                 data: response.data.data.likers,
               });
             } else if (data.subtype === "profileEntry") {
-              console.log("yes")
+              console.log("yes");
               commit("setEntryLikesList", {
                 id: data.id,
                 type: "profileEntry",
@@ -368,6 +382,7 @@ const entryPageModule = {
     requestCommentsList({ commit }, data) {
       return API_v2.getComments(data).then((response) => {
         let items = response.data.result.items.map((item) => {
+          item.etcControls = null;
           item.likes.prevIsLiked = null;
           item.likes.prevIsLiked = item.likes.isLiked;
           item.likes.likesList = null;
@@ -381,12 +396,25 @@ const entryPageModule = {
       });
     },
 
-    postComment({ commit }, data) {
+    postComment({}, data) {
       return API_v1.postComment(data);
+    },
+
+    editComment({}, data) {
+      return API_v1.editComment(data);
     },
 
     uploadFile({}, file) {
       return API_v1.uploadFile(file);
+    },
+
+    requestCommentEtcControls({ commit }, id) {
+      return API_v2.getCommentEtcControls(id).then((response) => {
+        commit("setCommentEtcControls", {
+          id,
+          controls: response.data.result.etcControls,
+        });
+      });
     },
   },
 };

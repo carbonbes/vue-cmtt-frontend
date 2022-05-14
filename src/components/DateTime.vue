@@ -122,6 +122,7 @@ export default {
 
   beforeUnmount() {
     clearInterval(this.interval);
+    this.dateTime = null;
   },
 };
 </script>

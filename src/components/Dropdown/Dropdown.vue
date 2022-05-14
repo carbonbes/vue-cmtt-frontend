@@ -1,14 +1,8 @@
 <template>
-  <div class="dropdown">
-    <DropdownItem
-      v-for="(item, index) in props.data.items"
-      :key="index"
-      :path="item.path"
-      :icon="item.icon"
-      :label="item.label"
-      :action="item.action"
-      :actionInfo="item.actionInfo"
-    />
+  <div class="dropdown-component">
+    <template v-for="(item, index) in props.data.items" :key="index">
+      <DropdownItem :data="item" />
+    </template>
   </div>
 </template>
 
@@ -21,7 +15,7 @@ const props = defineProps({
 </script>
 
 <style lang="scss">
-.dropdown {
+.dropdown-component {
   padding: 6px;
   background: var(--dropdown-bg-color);
   border-radius: 8px;
@@ -41,9 +35,17 @@ const props = defineProps({
     align-items: center;
     border-radius: 6px;
     color: var(--black-color);
+    white-space: nowrap;
+    cursor: pointer;
 
     &:not(:last-child) {
       margin-bottom: 4px;
+    }
+
+    & .icon {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
     }
 
     &_active {
@@ -56,7 +58,7 @@ const props = defineProps({
 }
 
 @media (hover: hover) {
-  .dropdown {
+  .dropdown-component {
     &__item {
       &:hover {
         background: var(--dropdown-item-hover-bg-color);

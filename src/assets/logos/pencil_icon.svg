@@ -1,1 +1,9 @@
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" height="24" width="24" class="icon icon--v_pencil"><defs><symbol viewBox="0 0 24 24" id="v_pencil"><path fill-rule="evenodd" d="M5.868 18.155l.569-1.983 8.891-8.892 1.414 1.415-8.89 8.89-1.984.57zM18.156 7.28l.643-.642-1.414-1.414-.643.642 1.414 1.414zm-13.57 8.091a1 1 0 01.254-.43L15.97 3.808a2 2 0 012.83 0l1.413 1.415a2 2 0 010 2.828l-11.13 11.13a1 1 0 01-.432.255l-3.966 1.138a1 1 0 01-1.237-1.237l1.138-3.966z" clip-rule="evenodd"></path></symbol></defs><use xlink:href="#v_pencil"></use></svg>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+  <defs>
+    <symbol viewBox="0 0 24 24" id="v_pen">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M16.172 3.586a2 2 0 012.828 0L20.414 5a2 2 0 010 2.829l-1.697 1.696L8.391 19.851a2 2 0 01-1.053.553l-3.157.58a1 1 0 01-1.165-1.164l.58-3.159a2 2 0 01.553-1.053L16.172 3.586zm1.838 3.818l.99-.99L17.586 5l-.99.99 1.414 1.414zm-2.828 0l-9.619 9.618-.318 1.733 1.732-.318 9.619-9.619-1.414-1.414z"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_pen" fill="currentColor"></use>
+</svg>
