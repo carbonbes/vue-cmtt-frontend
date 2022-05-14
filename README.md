@@ -1,19 +1,4 @@
-# test
+# Frontend-приложение к публичному API ООО "Комитет" (владеет TJ, VC, DTF)
+Основной костяк приложения написан на Vue 3 (из смеси компонентов, написанных на options api и composition api), Vuex и Vue-Router. В качестве библиотеки для асинхронных запросов используется axios, вёрстка польностью своя, без всяких ui-библиотек, реализована смена темы со светлой на тёмную при помощи css-переменных. Так же на проекте используются вебсокеты, ответственная библиотека — socket.io-client 2 версии, используются несколько каналов для различных событий (новая оценка у статьи, у комментариея, новый комментарий к статье, оповещения). Так же используется валидатор форм vee-validate в купе с yup'ом на форме логина. На форме написания комментария данные библиотеки не используются, потому что там написан кастомный компонент вокруг дива с аттрибутом contenteditable=true.
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Документация к API Комитета: https://cmtt-ru.github.io/osnova-api/
