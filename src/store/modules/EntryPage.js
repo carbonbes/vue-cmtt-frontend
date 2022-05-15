@@ -279,6 +279,10 @@ const entryPageModule = {
         }
       });
     },
+
+    connectEntryPageChannel() {},
+
+    disconnectEntryPageChannel() {},
   },
 
   actions: {

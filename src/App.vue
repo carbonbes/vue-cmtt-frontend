@@ -13,74 +13,14 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { mapActions } from "vuex";
 import store from "@/store";
-import io from "socket.io-client";
 import Header from "@/components/Layout/Header/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
 
 export default {
-  setup() {
-    let socket = io("https://ws-sio.tjournal.ru", {
-      transports: ["websocket"],
-    });
-
-    const unsubscribe = store.subscribe((mutation, state) => {
-      if (mutation.type === "setIsAuth" && mutation.payload === true) {
-        const userHash = localStorage.getItem("user_hash");
-
-        socket.emit("subscribe", { channel: "mobile:" + userHash });
-
-        socket.on("event", (data) => {
-          if (
-            data.data.type === 4 ||
-            data.data.type === 8 ||
-            data.data.type === 16 ||
-            data.data.type === 32 ||
-            data.data.type === 64
-          ) {
-            store.commit("setUnreadNotifications");
-          }
-        });
-
-        socket.on("reconnect", () => {
-          socket.emit("subscribe", { channel: "mobile:" + userHash });
-        });
-      }
-    });
-
-    onMounted(() => {
-      socket.emit("subscribe", { channel: "api" });
-
-      socket.on("event", (data) => {
-        if (data.data.type === "content voted") {
-          if (store.state.auth.auth.id !== data.data.subsite_id) {
-            store.commit("apiChannelContentVoted", data.data);
-          }
-        }
-
-        /* if (data.data.type === "new_entry_published") {
-        store.commit("apiChannelNewEntry", data.data);
-      } */
-      });
-
-      socket.on("reconnect", () => {
-        socket.emit("subscribe", {
-          channel: "api",
-        });
-      });
-
-      store.dispatch("requestNotificationsCount");
-    });
-
-    onUnmounted(() => {
-      socket.disconnect();
-      unsubscribe();
-    });
-  },
-
   components: {
     Header,
     LeftSidebar,
@@ -137,16 +77,23 @@ export default {
 
   created() {
     this.requestAuth();
+
     this.setTheme();
   },
 
   mounted() {
+    store.commit("connectApiChannel");
+    store.dispatch("requestNotificationsCount");
+
     this.emitter.on("theme-toggle", this.themeToggle);
     this.emitter.on("login-modal-toggle", this.toggleShowLoginModal);
   },
 
   beforeUnmount() {
+    store.commit("disconnectApiChannel");
+
     clearTimeout(this.timeout);
+
     this.emitter.off("theme-toggle", this.themeToggle);
     this.emitter.off("login-modal-toggle", this.toggleShowLoginModal);
   },

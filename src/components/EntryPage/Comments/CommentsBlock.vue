@@ -5,19 +5,14 @@
 </template>
 
 <script setup>
-import { reactive, watch, onMounted, onUnmounted } from "vue";
-import store from "@/store";
+import { reactive, watch } from "vue";
 import { useMediaQuery } from "@vueuse/core";
 import CommentBlock from "@/components/EntryPage/Comments/CommentBlock.vue";
-import io from "socket.io-client";
-
-let socket = io("https://ws-sio.tjournal.ru", {
-  transports: ["websocket"],
-});
-
-const props = defineProps({ comments: Array });
 
 const isMobile = useMediaQuery("(max-width: 768px)");
+
+// props
+const props = defineProps({ comments: Array });
 
 // state
 const state = reactive({
@@ -30,45 +25,11 @@ watch(
   () => {
     if (isMobile.value) {
       state.maxLvl = 4;
-    } else {
+    } else if (!isMobile.value) {
       state.maxLvl = 8;
     }
   }
 );
-
-onMounted(() => {
-  socket.emit("subscribe", {
-    channel: `api:comments-${store.state.entry.entry.id}`,
-  });
-
-  socket.on("event", (data) => {
-    if (data.data.type === "comment voted") {
-      if (store.state.auth.auth.id !== data.data.subsite_id) {
-        store.commit("entryCommentsChannelVoted", data.data);
-      }
-    }
-
-    if (data.data.type === "comment_created") {
-      if (store.state.auth.auth.id !== data.data.comment.author.id) {
-        store.commit("entryCommentsChannelCreated", data.data);
-      }
-    }
-
-    if (data.data.type === "comment_edited") {
-      store.commit("entryCommentsChannelEdited", data.data);
-    }
-  });
-
-  socket.on("reconnect", () => {
-    socket.emit("subscribe", {
-      channel: `api:comments-${store.state.entry.entry.id}`,
-    });
-  });
-});
-
-onUnmounted(() => {
-  socket.disconnect();
-});
 </script>
 
 <style lang="scss">

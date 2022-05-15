@@ -185,13 +185,15 @@ import declensionWords from "@/utils/declensionWords";
 function requestEntry(routeTo, next) {
   nProgress.start();
 
-  Promise.all([
+  return Promise.all([
     store.dispatch("requestEntry", routeTo.params.id),
     store.dispatch("requestCommentsList", { contentId: routeTo.params.id }),
   ])
     .then(() => {
       nProgress.done();
-      next();
+      next((vm) => {
+        store.commit("connectEntryPageChannel", vm.entryId);
+      });
     })
     .catch((error) => {
       nProgress.done();
@@ -302,22 +304,24 @@ export default {
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
     if (routeTo.params.id !== routeFrom.params.id) {
-      requestEntry(routeTo, next);
+      store.commit("disconnectEntryPageChannel", this.entryId);
+      requestEntry(routeTo, next).then(() => {
+        store.commit("connectEntryPageChannel", this.entryId);
+      });
     } else next();
   },
 
-  created() {
+  mounted() {
     document.title =
       this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
 
     this.setLastViewed();
-  },
 
-  mounted() {
     this.setEntryPrevLiked(this.entry.likes.isLiked);
   },
 
   unmounted() {
+    store.commit("disconnectEntryPageChannel", this.entryId);
     store.commit("clearEntry");
 
     this.setLastViewed();
