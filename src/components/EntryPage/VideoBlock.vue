@@ -40,7 +40,7 @@ export default {
       if (this.type === "default") {
         return {
           "entry-page__video-block_wide":
-            this.item.data.items[0].image.data.width > 1020,
+            this.item.data.items[0].image.data.width > this.maxWidth,
           "entry-page__video-block_thin":
             this.item.data.items[0].image.data.width < this.maxWidth,
           "entry-page__video-block_vertical":
@@ -50,7 +50,7 @@ export default {
       } else if (this.type === "video") {
         return {
           "entry-page__video-block_wide":
-            this.item.data.video.data.width > 1020 ||
+            this.item.data.video.data.width > this.maxWidth ||
             this.item.data.video.data.external_service,
           "entry-page__video-block_vertical":
             this.item.data.video.data.width < this.item.data.video.data.height,
@@ -59,11 +59,11 @@ export default {
     },
 
     maxWidth() {
-      return parseInt(1020);
+      return 640;
     },
 
     maxHeight() {
-      return parseInt(700);
+      return 700;
     },
   },
 };
@@ -81,6 +81,11 @@ export default {
 
   &_wide {
     width: 100%;
+
+    & > div {
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   &_vertical,
@@ -102,7 +107,16 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 640px) {
+  .entry-page__video-block {
+    &_thin,
+    &_vertical {
+      padding: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
   .entry-page__video-block {
     width: 100%;
   }

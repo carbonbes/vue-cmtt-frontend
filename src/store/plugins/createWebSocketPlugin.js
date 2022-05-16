@@ -75,5 +75,21 @@ export default function createWebSocketPlugin(socket) {
         store.commit("entryCommentsChannelEdited", data.data);
       }
     });
+
+    socket.on("reconnect", () => {
+      const entryId = store.getters.idEntryConnectedChannel;
+      if (entryId !== null) {
+        socket.emit("subscribe", {
+          channel: "api:comments-" + entryId,
+        });
+      }
+
+      if (store.state.auth.isAuth) {
+        const userHash = localStorage.getItem("user_hash");
+        socket.emit("subscribe", { channel: "mobile:" + userHash });
+      }
+
+      socket.emit("subscribe", { channel: "api" });
+    });
   };
 }

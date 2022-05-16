@@ -191,9 +191,7 @@ function requestEntry(routeTo, next) {
   ])
     .then(() => {
       nProgress.done();
-      next((vm) => {
-        store.commit("connectEntryPageChannel", vm.entryId);
-      });
+      next();
     })
     .catch((error) => {
       nProgress.done();
@@ -291,40 +289,54 @@ export default {
       this.replyBottomFormVisible = false;
     },
 
-    setLastViewed() {
-      localStorage.setItem(`${this.entryId}-last-viewed`, Date.now());
+    setLastViewed(lifeCycle) {
+      const lastViewed = localStorage.getItem(`${this.entryId}-last-viewed`);
+
+      if (!lastViewed && lifeCycle === "mounted") {
+        localStorage.setItem(this.entryId + "-last-viewed", Date.now());
+      } else if (lifeCycle === "updated" || lifeCycle === "unmounted") {
+        localStorage.setItem(this.entryId + "-last-viewed", Date.now());
+      }
+    },
+
+    setTitlePage() {
+      document.title =
+        this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
     },
 
     ...mapMutations(["setEntryPrevLiked"]),
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
-    requestEntry(routeTo, next);
+    requestEntry(routeTo, next).then(() => {
+      store.commit("connectEntryPageChannel", routeTo.params.id);
+      store.commit("setIdEntryConnectedChannel", routeTo.params.id);
+    });
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
+    this.setLastViewed("updated");
     if (routeTo.params.id !== routeFrom.params.id) {
-      store.commit("disconnectEntryPageChannel", this.entryId);
+      store.commit("disconnectEntryPageChannel", routeFrom.params.id);
+      store.commit("setIdEntryConnectedChannel", null);
       requestEntry(routeTo, next).then(() => {
-        store.commit("connectEntryPageChannel", this.entryId);
+        store.commit("connectEntryPageChannel", routeTo.params.id);
+        store.commit("setIdEntryConnectedChannel", routeTo.params.id);
       });
     } else next();
   },
 
   mounted() {
-    document.title =
-      this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
-
-    this.setLastViewed();
-
+    this.setLastViewed("mounted");
     this.setEntryPrevLiked(this.entry.likes.isLiked);
+    this.setTitlePage();
   },
 
   unmounted() {
     store.commit("disconnectEntryPageChannel", this.entryId);
+    store.commit("setIdEntryConnectedChannel", null);
     store.commit("clearEntry");
-
-    this.setLastViewed();
+    this.setLastViewed("unmounted");
   },
 };
 </script>
@@ -638,7 +650,7 @@ export default {
   max-width: 640px;
 
   & + .entry-page__video-block {
-    margin-top: 30px;
+    margin-top: 15px;
   }
 }
 

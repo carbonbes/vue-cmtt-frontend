@@ -264,7 +264,7 @@ export default {
             this.imageCovers[0].data.items[0].image.data.width,
           "entry-content__cover_wide":
             this.imageCovers[0].data.items[0].image.data.width >=
-              this.calculatedWidth && !this.imageCovers[0].data.with_background,
+            this.calculatedWidth,
           "entry-content__cover_thin":
             this.imageCovers[0].data.items[0].image.data.width < 640 ||
             this.calculatedWidth < 640,
@@ -277,21 +277,11 @@ export default {
         return {
           "entry-content__cover_vertical":
             this.videoCovers[0].data.video.data.height >
-              this.videoCovers[0].data.video.data.width &&
-            !this.videoCovers[0].data.with_background &&
-            !Object.keys(this.videoCovers[0].data.video.data.external_service),
+            this.videoCovers[0].data.video.data.width,
           "entry-content__cover_wide":
-            this.videoCovers[0].data.video.data.width >= 640 &&
-            !this.videoCovers[0].data.with_background,
+            this.videoCovers[0].data.video.data.width >= 640,
           "entry-content__cover_thin":
-            (this.videoCovers[0].data.video.data.width <= 640 ||
-              this.videoCovers[0].data.video.data.width ===
-                this.videoCovers[0].data.video.data.height) &&
-            !this.videoCovers[0].data.with_background &&
-            !Object.keys(this.videoCovers[0].data.video.data.external_service)
-              .length,
-          "entry-content__cover_highlighted":
-            this.videoCovers[0].data.with_background,
+            this.videoCovers[0].data.video.data.width < 640,
         };
       }
     },
@@ -303,15 +293,9 @@ export default {
             this.gifCovers[0].data.items[0].image.data.height >
             this.gifCovers[0].data.items[0].image.data.width,
           "entry-content__cover_wide":
-            this.gifCovers[0].data.items[0].image.data.width >= 640 &&
-            !this.gifCovers[0].data.items[0].image.data.width,
+            this.gifCovers[0].data.items[0].image.data.width >= 640,
           "entry-content__cover_thin":
-            (this.gifCovers[0].data.items[0].image.data.width <= 640 ||
-              this.gifCovers[0].data.items[0].image.data.width ===
-                this.gifCovers[0].data.items[0].image.data.height) &&
-            !this.gifCovers[0].data.with_background,
-          "entry-content__cover_highlighted":
-            this.gifCovers[0].data.with_background,
+            this.gifCovers[0].data.items[0].image.data.width < 640,
         };
       }
     },
@@ -465,6 +449,11 @@ export default {
 
   &_wide {
     width: 100%;
+
+    & > div {
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   &_vertical,

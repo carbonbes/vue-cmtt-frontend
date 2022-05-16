@@ -13,6 +13,7 @@ const entryPageModule = {
     unreadComments: null,
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
+    idEntryConnectedChannel: null,
   }),
 
   getters: {
@@ -50,6 +51,10 @@ const entryPageModule = {
 
     temporaryHightlightComment(state) {
       return state.temporaryHightlightComment;
+    },
+
+    idEntryConnectedChannel(state) {
+      return state.idEntryConnectedChannel;
     },
   },
 
@@ -278,6 +283,10 @@ const entryPageModule = {
           comment.etcControls = data.controls;
         }
       });
+    },
+
+    setIdEntryConnectedChannel(state, id) {
+      state.idEntryConnectedChannel = id;
     },
 
     connectEntryPageChannel() {},
