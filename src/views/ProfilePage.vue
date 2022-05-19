@@ -75,11 +75,26 @@ import { notify } from "@kyvg/vue3-notification";
 function requestProfile(routeTo, routeFrom, next) {
   nProgress.start();
 
-  return rootStore
-    .dispatch("requestProfile", {
+  return Promise.all([
+    rootStore.dispatch("requestProfile", {
       id: routeTo.params.id,
-    })
+    }),
+
+    (routeTo.path == `/u/${routeTo.params.id}` ||
+      routeTo.path == `/u/${routeTo.params.id}/entries`) &&
+      rootStore.dispatch("requestProfileEntries", {
+        subsiteId: routeTo.params.id,
+        clearEntries: !routeFrom.params.id !== routeTo.params.id,
+      }),
+
+    routeTo.path == `/u/${routeTo.params.id}/comments` &&
+      rootStore.dispatch("requestProfileComments", {
+        subsiteId: routeTo.params.id,
+        clearComments: !routeFrom.params.id !== routeTo.params.id,
+      }),
+  ])
     .then(() => {
+      nProgress.done();
       next();
     })
     .catch((error) => {
@@ -93,6 +108,32 @@ function requestProfile(routeTo, routeFrom, next) {
         type: "error",
         text: error.response.data.message,
       });
+    });
+}
+
+function requestProfileEntries(routeTo, routeFrom, next) {
+  nProgress.start();
+
+  rootStore
+    .dispatch("requestProfileEntries", {
+      subsiteId: routeTo.params.id,
+    })
+    .then(() => {
+      nProgress.done();
+      next();
+    });
+}
+
+function requestProfileComments(routeTo, routeFrom, next) {
+  nProgress.start();
+
+  rootStore
+    .dispatch("requestProfileComments", {
+      subsiteId: routeTo.params.id,
+    })
+    .then(() => {
+      nProgress.done();
+      next();
     });
 }
 
@@ -210,6 +251,26 @@ export default {
 
   beforeRouteEnter(routeTo, routeFrom, next) {
     requestProfile(routeTo, routeFrom, next);
+  },
+
+  beforeRouteUpdate(routeTo, routeFrom, next) {
+    if (routeFrom.params.id !== routeTo.params.id) {
+      requestProfile(routeTo, routeFrom, next);
+    }
+
+    if (
+      routeFrom.params.id === routeTo.params.id &&
+      routeTo.path == `/u/${routeTo.params.id}/entries`
+    ) {
+      requestProfileEntries(routeTo, routeFrom, next);
+    }
+
+    if (
+      routeFrom.params.id === routeTo.params.id &&
+      routeTo.path == `/u/${routeTo.params.id}/comments`
+    ) {
+      requestProfileComments(routeTo, routeFrom, next);
+    }
   },
 };
 </script>

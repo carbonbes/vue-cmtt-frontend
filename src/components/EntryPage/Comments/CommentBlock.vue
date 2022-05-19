@@ -193,7 +193,6 @@ export default {
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
       replyFormIsOpen: false,
-      timeout: false,
       animationType: null,
       unread: null,
       etcControlsDropdownIsOpen: false,
@@ -422,10 +421,6 @@ export default {
 
     highlightFocusedComment(id) {
       this.setTemporaryHightlightComment(id);
-      this.timeout = setTimeout(() => {
-        this.clearTemporaryHightlightComment();
-        clearTimeout(this.timeout);
-      }, 3000);
     },
 
     openReplyForm() {
@@ -495,7 +490,6 @@ export default {
       "setHoveredHighlightComment",
       "clearHoveredHighlightComment",
       "setTemporaryHightlightComment",
-      "clearTemporaryHightlightComment",
       "setCommentPrevLiked",
     ]),
   },
@@ -511,10 +505,6 @@ export default {
   },
 
   mounted() {
-    if (this.commentId == this.queryCommentId) {
-      this.highlightFocusedComment(this.queryCommentId);
-    }
-
     if (this.commentId == this.queryCommentId && this.isReplyMode) {
       this.openReplyForm();
     }
@@ -525,11 +515,6 @@ export default {
     ) {
       this.setIsUnread(true);
     }
-  },
-
-  beforeUnmount() {
-    clearTimeout(this.timeout);
-    clearTimeout(this.replyFormFocusTimeout);
   },
 };
 </script>

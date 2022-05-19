@@ -2,19 +2,7 @@
   <div class="entry-page-wrapp">
     <div class="entry-page">
       <div class="entry-page__header ep-island">
-        <entry-header
-          :subsiteData="entry.subsite"
-          :subsiteType="entry.subsite.type"
-          :subsiteId="entry.subsite.id"
-          :subsiteAvatar="entry.subsite.avatar.data.uuid"
-          :subsiteName="entry.subsite.name"
-          :authorData="entry.author"
-          :authorType="entry.author.type"
-          :authorId="entry.author.id"
-          :authorName="entry.author.name"
-          :date="entry.date"
-          dateType="1"
-        />
+        <ArticleHeader :article="entry" dateType="1" />
       </div>
       <div class="entry-page__content">
         <div class="entry-page__title ep-island" v-if="entry.title">
@@ -164,6 +152,7 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import EntryHeader from "@/components/Entry/EntryHeader.vue";
+import ArticleHeader from "../components/Entry/ArticleHeader.vue";
 import EntryTitle from "@/components/Entry/EntryTitle.vue";
 import EntryFooter from "@/components/Entry/EntryFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
@@ -207,6 +196,7 @@ function requestEntry(routeTo, next) {
 export default {
   components: {
     EntryHeader,
+    ArticleHeader,
     EntryTitle,
     EntryFooter,
     ImageBlock,
@@ -227,6 +217,7 @@ export default {
       commentWords: ["комментарий", "комментария", "комментариев"],
       replyTopFormVisible: false,
       replyBottomFormVisible: false,
+      highlightTimeout: null,
     };
   },
 
@@ -304,21 +295,35 @@ export default {
         this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
     },
 
-    ...mapMutations(["setEntryPrevLiked"]),
+    ...mapMutations([
+      "setEntryPrevLiked",
+      "setTemporaryHightlightComment",
+      "clearTemporaryHightlightComment",
+    ]),
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
     requestEntry(routeTo, next).then(() => {
       store.commit("connectEntryPageChannel", routeTo.params.id);
       store.commit("setIdEntryConnectedChannel", routeTo.params.id);
+
+      if (routeTo.query.comment) {
+        store.commit("setTemporaryHightlightComment", routeTo.query.comment);
+      }
     });
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
     this.setLastViewed("updated");
+
+    if (routeTo.query.comment) {
+      store.commit("setTemporaryHightlightComment", routeTo.query.comment);
+    }
+
     if (routeTo.params.id !== routeFrom.params.id) {
       store.commit("disconnectEntryPageChannel", routeFrom.params.id);
       store.commit("setIdEntryConnectedChannel", null);
+
       requestEntry(routeTo, next).then(() => {
         store.commit("connectEntryPageChannel", routeTo.params.id);
         store.commit("setIdEntryConnectedChannel", routeTo.params.id);

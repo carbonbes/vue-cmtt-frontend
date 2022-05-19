@@ -31,8 +31,6 @@
 import { computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import rootStore from "@/store";
-import nProgress from "nprogress";
 import ProfileComment from "@/components/ProfilePage/ProfileComment.vue";
 import Loader from "@/components/Loader.vue";
 
@@ -97,19 +95,6 @@ export default {
   },
 
   components: { ProfileComment, Loader },
-
-  beforeRouteEnter(routeTo, routeFrom, next) {
-    nProgress.start();
-
-    rootStore
-      .dispatch("requestProfileComments", {
-        subsiteId: routeTo.params.id,
-      })
-      .then(() => {
-        nProgress.done();
-        next();
-      });
-  },
 };
 </script>
 

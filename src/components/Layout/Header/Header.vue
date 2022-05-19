@@ -31,7 +31,7 @@
       >
         <bell-icon class="icon" />
         <div
-          class="badge"
+          class="badge us-none"
           v-if="this.notificationsCount > 0"
           v-text="this.notificationsCount"
         ></div>

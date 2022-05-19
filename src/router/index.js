@@ -64,8 +64,8 @@ const router = createRouter({
         }
 
         if (savedPosition) resolve(savedPosition);
-        
-        if (!savedPosition || from.name !== to.name) resolve({ top: 0 });
+
+        if (!savedPosition) resolve({ top: 0 });
       }, 0);
     });
   },

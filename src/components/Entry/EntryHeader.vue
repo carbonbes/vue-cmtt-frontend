@@ -197,7 +197,6 @@ export default {
     box-shadow: var(--box-shadow-avatar);
     background-size: 100% auto;
     background-repeat: no-repeat;
-    image-rendering: -webkit-optimize-contrast;
   }
 
   &__subsite-name {

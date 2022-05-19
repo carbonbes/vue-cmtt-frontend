@@ -6,21 +6,9 @@
         >{{ entry.repost.author.name }} сделал репост</span
       >
     </div>
-    <entry-header
-      class="e-island"
-      :subsiteData="entry.subsite"
-      :subsiteType="entry.subsite.type"
-      :subsiteId="entry.subsite.id"
-      :subsiteAvatar="entry.subsite.avatar.data.uuid"
-      :subsiteName="entry.subsite.name"
-      :authorData="entry.author"
-      :authorType="entry.author.type"
-      :authorId="entry.author.id"
-      :authorName="entry.author.name"
-      :date="entry.date"
-      dateType="0"
-      :entryId="entry.id"
-    />
+
+    <ArticleHeader class="e-island" :article="entry" dateType="0" />
+
     <div class="entry-content">
       <div class="entry-content__title e-island" v-if="entry.title">
         <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
@@ -30,9 +18,11 @@
         class="entry-content__subtitle e-island"
         v-if="subtitleArr.length > 0"
       >
-        <template v-for="(subtitle, i) in subtitleArr" :key="i">
-          <entry-subtitle :string="subtitle.data.text" />
-        </template>
+        <EntrySubtitle
+          v-for="subtitle in subtitleArr"
+          :key="subtitle.data.text"
+          :string="subtitle.data.text"
+        />
       </div>
 
       <template
@@ -158,6 +148,7 @@
 
 <script>
 import EntryHeader from "@/components/Entry/EntryHeader.vue";
+import ArticleHeader from "./ArticleHeader.vue";
 import EntryTitle from "@/components/Entry/EntryTitle.vue";
 import EntrySubtitle from "@/components/Entry/EntrySubtitle.vue";
 import EntryFooter from "@/components/Entry/EntryFooter.vue";
@@ -174,6 +165,7 @@ import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 export default {
   components: {
     EntryHeader,
+    ArticleHeader,
     EntryTitle,
     EntrySubtitle,
     EntryFooter,
@@ -337,7 +329,7 @@ export default {
   background: var(--entry-bg-color);
   border-radius: 8px;
 
-  & .entry-header {
+  & .article-component__header {
     margin-top: 15px;
     margin-bottom: 15px;
   }

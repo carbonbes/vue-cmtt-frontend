@@ -33,8 +33,6 @@
 import { computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import rootStore from "@/store";
-import nProgress from "nprogress";
 import Entry from "@/components/Entry/Entry.vue";
 import Loader from "@/components/Loader.vue";
 
@@ -98,19 +96,6 @@ export default {
   },
 
   components: { Entry, Loader },
-
-  beforeRouteEnter(routeTo, routeFrom, next) {
-    nProgress.start();
-
-    rootStore
-      .dispatch("requestProfileEntries", {
-        subsiteId: routeTo.params.id,
-      })
-      .then(() => {
-        nProgress.done();
-        next();
-      });
-  },
 };
 </script>
 

@@ -242,11 +242,15 @@ onUnmounted(() => {
 
     &__item {
       position: relative;
-      padding: 15px 20px;
+      padding: 12px 20px;
       display: flex;
       flex-flow: row;
       font-size: 14px;
       line-height: 20px;
+
+      &:first-child {
+        padding: 15px 20px;
+      }
 
       & .item__avatar {
         position: relative;

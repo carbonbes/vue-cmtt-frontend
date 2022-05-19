@@ -13,6 +13,7 @@ const entryPageModule = {
     unreadComments: null,
     hoveredHighlightComment: null,
     temporaryHightlightComment: null,
+    temporaryHightlightCommentTimeout: null,
     idEntryConnectedChannel: null,
   }),
 
@@ -113,6 +114,11 @@ const entryPageModule = {
 
     setTemporaryHightlightComment(state, id) {
       state.temporaryHightlightComment = id;
+
+      this.temporaryHightlightCommentTimeout = setTimeout(() => {
+        state.temporaryHightlightComment = null;
+        clearTimeout(this.temporaryHightlightCommentTimeout);
+      }, 3000);
     },
 
     clearTemporaryHightlightComment(state) {

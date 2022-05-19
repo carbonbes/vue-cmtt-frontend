@@ -197,7 +197,9 @@ const profilePageModule = {
 
               return item;
             });
-
+          if (data.clearEntries) {
+            commit("clearProfileEntries");
+          }
           commit("setProfileEntries", items);
           commit("setProfileEntriesLastId", response.data.result.lastId);
           commit(
@@ -211,6 +213,9 @@ const profilePageModule = {
     requestProfileComments({ commit, state }, data) {
       return API_v2.getComments(data).then((response) => {
         if (!state.profileHidden) {
+          if (data.clearComments) {
+            commit("clearProfileComments");
+          }
           commit("setProfileComments", response.data.result.items);
           commit("setProfileCommentsLastId", response.data.result.lastId);
           commit(
