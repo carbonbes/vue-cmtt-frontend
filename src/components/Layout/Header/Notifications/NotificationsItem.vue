@@ -7,6 +7,7 @@
         <VoteIcon v-if="props.item.type === 2 || props.item.type === 65536" />
         <ReplyIcon v-if="props.item.type === 4" />
         <CheckIcon v-if="props.item.type === 4096" />
+        <MentionIcon v-if="props.item.type === 1024" />
       </div>
     </div>
 
@@ -23,6 +24,7 @@ import ReplyIcon from "@/assets/logos/reply_icon.svg?inline";
 import MessageIcon from "@/assets/logos/message2_icon.svg?inline";
 import CheckIcon from "@/assets/logos/check_icon.svg?inline";
 import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
+import MentionIcon from "@/assets/logos/mention_icon.svg?inline";
 
 // props
 const props = defineProps({

@@ -17,14 +17,14 @@
     </div>
     <div class="feed-page__content">
       <template v-for="(entry, index) in feed" :key="entry.id">
-        <entry
-          :entry="entry"
+        <ArticleComponent
+          :article="entry"
           type="feedEntry"
           v-if="feed.length !== index + 1"
         />
 
-        <entry
-          :entry="entry"
+        <ArticleComponent
+          :article="entry"
           type="feedEntry"
           v-intersect="{
             type: 'when-appears',
@@ -42,7 +42,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Entry from "@/components/Entry/Entry.vue";
+import ArticleComponent from "../components/Entry/ArticleComponent.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import Loader from "@/components/Loader";
@@ -71,7 +71,7 @@ function requestFeed(routeTo, routeFrom, next) {
 
 export default {
   components: {
-    Entry,
+    ArticleComponent,
     Loader,
     Dropdown,
     ChevronDownIcon,
@@ -271,7 +271,7 @@ export default {
   margin-right: auto;
   max-width: 640px;
 
-  & .entry,
+  & .article-component,
   .feed-loader {
     margin-bottom: 30px;
 

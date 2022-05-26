@@ -270,7 +270,7 @@ export default {
 }
 
 .header__item-avatar-wrapp {
-  padding-left: 15px;
+  padding-left: 20px;
   padding-right: 5px;
   display: flex;
   align-items: center;

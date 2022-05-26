@@ -1,14 +1,14 @@
 <template>
   <div class="profile__entries" v-if="entriesList.length">
     <template v-for="(entry, index) in entriesList" :key="entry.id">
-      <Entry
-        :entry="entry"
+      <ArticleComponent
+        :article="entry"
         type="profileEntry"
         v-if="entriesList.length !== index + 1"
       />
 
-      <Entry
-        :entry="entry"
+      <ArticleComponent
+        :article="entry"
         type="profileEntry"
         v-intersect="{
           type: 'when-appears',
@@ -33,7 +33,7 @@
 import { computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import Entry from "@/components/Entry/Entry.vue";
+import ArticleComponent from "../Entry/ArticleComponent.vue";
 import Loader from "@/components/Loader.vue";
 
 export default {
@@ -95,7 +95,7 @@ export default {
     };
   },
 
-  components: { Entry, Loader },
+  components: { ArticleComponent, Loader },
 };
 </script>
 
@@ -126,7 +126,7 @@ export default {
     text-align: center;
   }
 
-  & .entry {
+  & .article-component {
     &:not(:last-child) {
       margin-bottom: 30px;
     }

@@ -6,6 +6,7 @@ import DateTime from "../DateTime.vue";
 const props = defineProps(["article", "dateType"]);
 
 // computed
+const articleId = computed(() => props.article.id);
 const subsiteId = computed(() => props.article.subsite.id);
 const subsiteAvatarSrc = computed(() => props.article.subsite.avatar.data.uuid);
 const subsiteAvatar = computed(() => ({
@@ -42,11 +43,13 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     <div class="separator" />
     <div class="details">
       <div class="date-created">
-        <DateTime
-          :date="dateCreated"
-          :type="props.dateType"
-          :title="dateCreatedTitle"
-        />
+        <router-link :to="{ path: '/' + articleId }">
+          <DateTime
+            :date="dateCreated"
+            :type="props.dateType"
+            :title="dateCreatedTitle"
+          />
+        </router-link>
       </div>
     </div>
   </div>
@@ -80,9 +83,15 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
   }
 
   & .author-name {
-    margin-left: 15px;
+    margin-left: 12px;
+    min-width: 0;
+    max-width: max-content;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 15px;
     line-height: 20px;
+    white-space: nowrap;
   }
 
   & .separator {

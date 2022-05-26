@@ -108,7 +108,7 @@ export default {
 @media screen and (max-width: 768px) {
   .link-block__title,
   .link-block__description {
-    max-width: 230px;
+    max-width: 175px;
   }
 }
 </style>

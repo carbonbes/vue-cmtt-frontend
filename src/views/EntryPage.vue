@@ -6,7 +6,7 @@
       </div>
       <div class="entry-page__content">
         <div class="entry-page__title ep-island" v-if="entry.title">
-          <entry-title :title="entry.title" :isEditorial="entry.isEditorial" />
+          <ArticleTitle :title="entry.title" :isEditorial="entry.isEditorial" />
         </div>
         <template v-for="(block, index) in entry.blocks" :key="index">
           <image-block
@@ -87,14 +87,10 @@
         </template>
       </div>
       <div class="entry-page__footer ep-island">
-        <entry-footer
-          :commentsCount="commentsList.length"
-          :repostsCount="entry.counters.reposts"
-          :favoritesCount="entry.counters.favorites"
-          :entryRating="entry.likes"
-          :entryId="entryId"
-          :likesList="entry.likes.likesList"
-          :newLikes="entry.likes.newLikes"
+        <ArticleFooter
+          :articleId="entry.id"
+          :articleCounters="entry.counters"
+          :articleLikes="entry.likes"
           type="entryPage"
         />
       </div>
@@ -151,10 +147,9 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import EntryHeader from "@/components/Entry/EntryHeader.vue";
 import ArticleHeader from "../components/Entry/ArticleHeader.vue";
-import EntryTitle from "@/components/Entry/EntryTitle.vue";
-import EntryFooter from "@/components/Entry/EntryFooter.vue";
+import ArticleTitle from "../components/Entry/ArticleTitle.vue";
+import ArticleFooter from "../components/Entry/ArticleFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
 import GalleryBlock from "@/components/EntryPage/GalleryBlock.vue";
@@ -195,10 +190,9 @@ function requestEntry(routeTo, next) {
 
 export default {
   components: {
-    EntryHeader,
     ArticleHeader,
-    EntryTitle,
-    EntryFooter,
+    ArticleTitle,
+    ArticleFooter,
     ImageBlock,
     VideoBlock,
     GalleryBlock,
@@ -369,12 +363,12 @@ export default {
   margin: 0 auto;
   max-width: 640px;
 
-  & .entry-title {
+  & .article__title {
     font-size: 22px;
     font-weight: 500;
     line-height: 30px;
 
-    &__editorial-icon {
+    & .editorial-icon {
       & .icon {
         margin-left: 4px;
       }
@@ -570,6 +564,7 @@ export default {
     padding-bottom: 40px;
     width: 100%;
     display: inline-block;
+    line-height: 26px;
     outline: none;
     user-select: auto;
   }

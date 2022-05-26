@@ -246,7 +246,7 @@ onUnmounted(() => {
       display: flex;
       flex-flow: row;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 21px;
 
       &:first-child {
         padding: 15px 20px;
@@ -254,7 +254,7 @@ onUnmounted(() => {
 
       & .item__avatar {
         position: relative;
-        margin-right: 10px;
+        margin-right: 12px;
         width: 36px;
         height: 36px;
 

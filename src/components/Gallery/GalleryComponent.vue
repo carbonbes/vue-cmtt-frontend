@@ -59,7 +59,7 @@ const galleryClassObj = computed(() => {
 });
 
 const images = computed(() => {
-  if (props.type === "entry_page") {
+  if (props.type === "entry_page" || props.type === "entry") {
     return props.srcImages.map((item) => {
       let accum = {};
       accum.url = null;
