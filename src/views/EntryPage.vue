@@ -147,9 +147,9 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import ArticleHeader from "../components/Entry/ArticleHeader.vue";
-import ArticleTitle from "../components/Entry/ArticleTitle.vue";
-import ArticleFooter from "../components/Entry/ArticleFooter.vue";
+import ArticleHeader from "../components/ArticleComponent/ArticleHeader.vue";
+import ArticleTitle from "../components/ArticleComponent/ArticleTitle.vue";
+import ArticleFooter from "../components/ArticleComponent/ArticleFooter.vue";
 import ImageBlock from "@/components/EntryPage/ImageBlock.vue";
 import VideoBlock from "@/components/EntryPage/VideoBlock.vue";
 import GalleryBlock from "@/components/EntryPage/GalleryBlock.vue";

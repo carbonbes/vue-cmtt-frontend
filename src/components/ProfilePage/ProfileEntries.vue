@@ -33,7 +33,7 @@
 import { computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import ArticleComponent from "../Entry/ArticleComponent.vue";
+import ArticleComponent from "../ArticleComponent/ArticleComponent.vue";
 import Loader from "@/components/Loader.vue";
 
 export default {

@@ -42,7 +42,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ArticleComponent from "../components/Entry/ArticleComponent.vue";
+import ArticleComponent from "../components/ArticleComponent/ArticleComponent.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import Loader from "@/components/Loader";
