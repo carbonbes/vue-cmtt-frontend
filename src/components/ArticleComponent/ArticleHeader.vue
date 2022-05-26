@@ -34,6 +34,7 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
       class="subsite-name"
       v-text="subsiteName"
     />
+    <div class="point" v-if="!isSameAuthor">•</div>
     <router-link
       :to="{ path: `/u/${authorId}` }"
       class="author-name"
@@ -82,8 +83,14 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     white-space: nowrap;
   }
 
+  & .point {
+    margin: 0 9px;
+    display: flex;
+    align-items: center;
+    color: var(--grey-color);
+  }
+
   & .author-name {
-    margin-left: 12px;
     min-width: 0;
     max-width: max-content;
     flex: 1;
@@ -110,7 +117,8 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
 @media (hover: hover) {
   .article-component__header {
     .subsite-name,
-    .author-name {
+    .author-name,
+    .details > .date-created {
       &:hover {
         color: var(--blue-color);
       }

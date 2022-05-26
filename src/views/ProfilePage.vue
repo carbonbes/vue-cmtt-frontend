@@ -83,13 +83,13 @@ function requestProfile(routeTo, routeFrom, next) {
     (routeTo.path == `/u/${routeTo.params.id}` ||
       routeTo.path == `/u/${routeTo.params.id}/entries`) &&
       rootStore.dispatch("requestProfileEntries", {
-        subsiteId: routeTo.params.id,
+        params: { subsitesIds: routeTo.params.id },
         clearEntries: !routeFrom.params.id !== routeTo.params.id,
       }),
 
     routeTo.path == `/u/${routeTo.params.id}/comments` &&
       rootStore.dispatch("requestProfileComments", {
-        subsiteId: routeTo.params.id,
+        params: { subsitesIds: routeTo.params.id },
         clearComments: !routeFrom.params.id !== routeTo.params.id,
       }),
   ])

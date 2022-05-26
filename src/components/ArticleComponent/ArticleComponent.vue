@@ -68,6 +68,16 @@ const articleLikes = computed(() => props.article.likes);
       font-size: 22px;
       font-weight: 500;
       line-height: 32px;
+
+      &:nth-last-child(-n + 2) {
+        margin-bottom: -5px;
+      }
+
+      & .editorial-icon {
+        & > .icon {
+          margin-left: 5px;
+        }
+      }
     }
 
     & .subtitle {
@@ -76,6 +86,10 @@ const articleLikes = computed(() => props.article.likes);
 
       &:first-child {
         margin-top: -6px;
+      }
+
+      &:nth-last-child(-n + 2) {
+        margin-bottom: -6px;
       }
 
       & p {
@@ -170,6 +184,7 @@ const articleLikes = computed(() => props.article.likes);
 
 @media (max-width: 768px) {
   .article-component {
+    --title-padding: 0 15px;
     --e-island-padding: 15px;
   }
 }

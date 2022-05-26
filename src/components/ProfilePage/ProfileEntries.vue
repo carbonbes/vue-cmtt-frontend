@@ -70,9 +70,11 @@ export default {
 
         store
           .dispatch("requestProfileEntries", {
-            subsiteId: route.params.id,
-            lastId: entriesListLastId.value,
-            lastSortingValue: entriesListLastSortingValue.value,
+            params: {
+              subsitesIds: route.params.id,
+              lastId: entriesListLastId.value,
+              lastSortingValue: entriesListLastSortingValue.value,
+            },
           })
           .then(() => {
             currentPage.value += 1;

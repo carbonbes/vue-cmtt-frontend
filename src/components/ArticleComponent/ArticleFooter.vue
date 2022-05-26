@@ -49,7 +49,7 @@ const ratingValueStyleObj = computed(() => ({
 
 const ratingFormatted = computed(() => {
   if (likesSumm.value < 0) {
-    return likesSumm.toString().replace(/\-/g, "—");
+    return likesSumm.value.toString().replace(/\-/g, "—");
   } else {
     return likesSumm;
   }
@@ -172,10 +172,7 @@ const like = (actionType) => {
           "
           tag="div"
         >
-          <div
-            v-text="ratingFormatted.value"
-            :key="ratingFormatted.value"
-          ></div>
+          <div v-text="ratingFormatted" :key="likesSumm"></div>
         </transition-group>
         <transition name="entry-likes-popup">
           <div class="entry-likes-popup" v-if="state.likesPopupIsOpen">

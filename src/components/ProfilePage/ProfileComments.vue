@@ -68,9 +68,11 @@ export default {
 
         store
           .dispatch("requestProfileComments", {
-            subsiteId: route.params.id,
-            lastId: commentsListLastId.value,
-            lastSortingValue: commentsLastSortingValue.value,
+            params: {
+              subsitesIds: route.params.id,
+              lastId: commentsListLastId.value,
+              lastSortingValue: commentsLastSortingValue.value,
+            },
           })
           .then(() => {
             currentPage.value += 1;

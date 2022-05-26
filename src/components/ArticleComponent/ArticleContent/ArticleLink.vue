@@ -20,5 +20,5 @@ const props = defineProps(["link"]);
 const linkTitle = computed(() => props.link.data.link.data.title);
 const linkDescription = computed(() => props.link.data.link.data.description);
 const linkSrc = computed(() => props.link.data.link.data.url);
-const linkIcon = computed(() => props.link.data.link.data.image.data.uuid);
+const linkIcon = computed(() => props.link.data.link.data.image?.data.uuid);
 </script>

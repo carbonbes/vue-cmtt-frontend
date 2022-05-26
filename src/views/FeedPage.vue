@@ -54,8 +54,15 @@ function requestFeed(routeTo, routeFrom, next) {
 
   return store
     .dispatch("requestFeed", {
-      allSite: routeTo.params.allSite,
-      sorting: routeTo.params.sorting,
+      params: {
+        allSite: routeTo.params.allSite === "all" ? true : false,
+        sorting:
+          routeTo.params.sorting === "popular"
+            ? "hotness"
+            : routeTo.params.sorting === "new"
+            ? "date"
+            : routeTo.params.sorting,
+      },
       prevAllSite: routeFrom.params.allSite,
       prevSorting: routeFrom.params.sorting,
     })
@@ -116,9 +123,16 @@ export default {
   methods: {
     requestNextPage() {
       store.dispatch("requestFeed", {
-        allSite: this.allSite,
-        sorting: this.currentSorting,
-        lastId: this.lastId,
+        params: {
+          allSite: this.allSite === "all" ? true : false,
+          sorting:
+            this.currentSorting === "popular"
+              ? "hotness"
+              : this.currentSorting === "new"
+              ? "date"
+              : this.currentSorting,
+          lastId: this.lastId,
+        },
         nextPage: true,
       });
     },
