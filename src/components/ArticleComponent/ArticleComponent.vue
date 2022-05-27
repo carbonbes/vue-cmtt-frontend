@@ -166,8 +166,8 @@ const articleLikes = computed(() => props.article.likes);
   }
 
   & > &__footer {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 11px;
+    margin-bottom: 11px;
   }
 
   .e-island {

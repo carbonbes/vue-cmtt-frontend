@@ -49,7 +49,7 @@ const ratingValueStyleObj = computed(() => ({
 
 const ratingFormatted = computed(() => {
   if (likesSumm.value < 0) {
-    return likesSumm.value.toString().replace(/\-/g, "—");
+    return likesSumm.value.toString().replace(/\-/g, "−");
   } else {
     return likesSumm;
   }

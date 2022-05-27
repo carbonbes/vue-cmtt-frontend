@@ -171,7 +171,9 @@ function requestEntry(routeTo, next) {
 
   return Promise.all([
     store.dispatch("requestEntry", routeTo.params.id),
-    store.dispatch("requestCommentsList", { contentId: routeTo.params.id }),
+    store.dispatch("requestCommentsList", {
+      params: { contentId: routeTo.params.id },
+    }),
   ])
     .then(() => {
       nProgress.done();

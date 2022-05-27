@@ -69,7 +69,7 @@ export default {
         store
           .dispatch("requestProfileComments", {
             params: {
-              subsitesIds: route.params.id,
+              subsiteId: route.params.id,
               lastId: commentsListLastId.value,
               lastSortingValue: commentsLastSortingValue.value,
             },

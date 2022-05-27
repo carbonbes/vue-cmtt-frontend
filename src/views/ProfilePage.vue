@@ -89,7 +89,7 @@ function requestProfile(routeTo, routeFrom, next) {
 
     routeTo.path == `/u/${routeTo.params.id}/comments` &&
       rootStore.dispatch("requestProfileComments", {
-        params: { subsitesIds: routeTo.params.id },
+        params: { subsiteId: routeTo.params.id },
         clearComments: !routeFrom.params.id !== routeTo.params.id,
       }),
   ])
@@ -116,7 +116,7 @@ function requestProfileEntries(routeTo, routeFrom, next) {
 
   rootStore
     .dispatch("requestProfileEntries", {
-      subsiteId: routeTo.params.id,
+      params: { subsitesIds: routeTo.params.id },
     })
     .then(() => {
       nProgress.done();
@@ -129,7 +129,7 @@ function requestProfileComments(routeTo, routeFrom, next) {
 
   rootStore
     .dispatch("requestProfileComments", {
-      subsiteId: routeTo.params.id,
+      params: { subsiteId: routeTo.params.id },
     })
     .then(() => {
       nProgress.done();
