@@ -2,7 +2,7 @@
   <div
     class="entry-page__comment"
     :id="this.commentId"
-    :class="replyCommentClassObj"
+    :class="commentClassObj"
     :style="{ '--level': this.comment.level }"
   >
     <div
@@ -209,10 +209,12 @@ export default {
       return this.comment.replyTo;
     },
 
-    replyCommentClassObj() {
+    commentClassObj() {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
         "entry-page__comment_max-lvl": this.comment.level > this.maxLvl,
+        "entry-page__comment_ignored": this.comment.isIgnored,
+        "entry-page__comment_removed": this.comment.isRemoved,
       };
     },
 
@@ -222,8 +224,6 @@ export default {
           this.commentId == this.hoveredHighlightComment ||
           this.commentId == this.temporaryHightlightComment ||
           this.unread,
-
-        "self-comment_removed": this.comment.isRemoved,
       };
     },
 
@@ -565,6 +565,11 @@ export default {
       &::before {
         display: none;
       }
+    }
+
+    &_ignored,
+    &_removed {
+      display: none;
     }
 
     & .self-comment {
@@ -962,13 +967,6 @@ export default {
       }
     }
 
-    /* & .branch-collapse-btn {
-      &:hover {
-        background: var(--branch-collapse-btn-bg);
-        border-radius: 4px;
-      }
-    } */
-
     & .branch-expand-btn {
       &:hover {
         color: var(--red-color);
@@ -977,7 +975,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .entry-page {
     &__comment {
       --branch-gap: 19px;

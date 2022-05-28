@@ -34,4 +34,8 @@ export const API_v2 = {
   subscriptions(myId) {
     return instance_v2.get(`subsite/subscriptions?subsiteId=${myId}`);
   },
+
+  getShortNews(data) {
+    return instance_v2.get("news", { params: { ...data } });
+  },
 };

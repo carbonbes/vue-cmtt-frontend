@@ -1,20 +1,3 @@
-<template>
-  <div class="gallery" id="gallery-component" :class="galleryClassObj">
-    <template v-for="(item, index) in images" :key="index">
-      <GalleryItem
-        :class="{
-          gallery__item_more: index >= 4 && props.srcImages.length > 5,
-        }"
-        :srcImage="item.url"
-        :srcWidth="item.width"
-        :srcHeight="item.height"
-        v-show="index <= 4"
-        :data-more="props.srcImages.length - index"
-      />
-    </template>
-  </div>
-</template>
-
 <script setup>
 import { reactive, computed, onMounted, onUnmounted } from "vue";
 import GalleryItem from "./GalleryItem.vue";
@@ -109,6 +92,23 @@ onUnmounted(() => {
   }
 });
 </script>
+
+<template>
+  <div class="gallery" id="gallery-component" :class="galleryClassObj">
+    <template v-for="(item, index) in images" :key="index">
+      <GalleryItem
+        :class="{
+          gallery__item_more: index >= 4 && props.srcImages.length > 5,
+        }"
+        :srcImage="item.url"
+        :srcWidth="item.width"
+        :srcHeight="item.height"
+        v-show="index <= 4"
+        :data-more="props.srcImages.length - index"
+      />
+    </template>
+  </div>
+</template>
 
 <style lang="scss">
 .gallery {

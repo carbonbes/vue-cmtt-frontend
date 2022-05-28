@@ -6,6 +6,8 @@ const feedPageModule = {
     feed: [],
     lastId: null,
     feedIsRequested: false,
+    shortNews: [],
+    shortNewsLastId: null,
   }),
 
   getters: {
@@ -19,6 +21,14 @@ const feedPageModule = {
 
     feedIsRequested(state) {
       return state.feedIsRequested;
+    },
+
+    shortNews(state) {
+      return state.shortNews;
+    },
+
+    shortNewsLastId(state) {
+      return state.shortNewsLastId;
     },
   },
 
@@ -101,6 +111,18 @@ const feedPageModule = {
         });
       }
     },
+
+    setShortNews(state, data) {
+      state.shortNews.push(...data);
+    },
+
+    setShortNewsLastId(state, lastId) {
+      state.shortNewsLastId = lastId;
+    },
+
+    clearShortNews(state) {
+      state.shortNews = [];
+    },
   },
 
   actions: {
@@ -132,6 +154,13 @@ const feedPageModule = {
         commit("setFeed", items);
         commit("setLastId", response.data.result.lastId);
         commit("setFeedIsRequested", false);
+      });
+    },
+
+    requestShortNews({ commit }, data) {
+      return API_v2.getShortNews(data).then((response) => {
+        commit("setShortNews", response.data.result.news);
+        commit("setShortNewsLastId", response.data.result.lastId);
       });
     },
   },

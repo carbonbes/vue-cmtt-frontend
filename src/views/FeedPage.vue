@@ -14,6 +14,7 @@
           <dropdown :data="dropdownData" />
         </div>
       </div>
+      <ShortNews v-if="shortNewsCondition" />
     </div>
     <div class="feed-page__content">
       <template v-for="(entry, index) in feed" :key="entry.id">
@@ -43,6 +44,7 @@
 <script>
 import { mapGetters } from "vuex";
 import ArticleComponent from "../components/ArticleComponent/ArticleComponent.vue";
+import ShortNews from "../components/FeedPage/ShortNews/ShortNews.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import Loader from "@/components/Loader";
@@ -79,6 +81,7 @@ function requestFeed(routeTo, routeFrom, next) {
 export default {
   components: {
     ArticleComponent,
+    ShortNews,
     Loader,
     Dropdown,
     ChevronDownIcon,
@@ -216,6 +219,10 @@ export default {
         return "Свежее";
       }
     },
+
+    shortNewsCondition() {
+      return this.allSite === "all" && this.currentSorting === "popular";
+    },
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
@@ -247,7 +254,7 @@ export default {
   margin-top: 12px;
 
   &__header {
-    margin-top: 20px;
+    margin-top: 15px;
     margin-bottom: 15px;
 
     & .feed-page__sorting-selector {
