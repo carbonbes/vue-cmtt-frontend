@@ -365,7 +365,7 @@ export default {
   margin: 0 auto;
   max-width: 640px;
 
-  & .article__title {
+  & .article-title {
     font-size: 22px;
     font-weight: 500;
     line-height: 30px;

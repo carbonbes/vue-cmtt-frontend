@@ -20,7 +20,7 @@ const lastWord = computed(() => {
 </script>
 
 <template>
-  <h1 class="article__title" v-if="props.title && props.isEditorial">
+  <h1 class="article-title" v-if="props.title && props.isEditorial">
     {{ props.title.substring(0, titleWithoutLastWord) + " " }}
     <div class="editorial-icon" title="Статья от редакции">
       {{ lastWord }}
@@ -28,19 +28,19 @@ const lastWord = computed(() => {
     </div>
   </h1>
 
-  <h1 class="article__title" v-if="props.title && !isEditorial">
+  <h1 class="article-title" v-if="props.title && !isEditorial">
     {{ props.title }}
   </h1>
 </template>
 
 <style lang="scss">
-.article__title .editorial-icon {
+.article-title .editorial-icon {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
 }
 
-.article__title .editorial-icon .icon {
+.article-title .editorial-icon .icon {
   width: 25px;
   height: 25px;
   stroke-width: 2.75;
