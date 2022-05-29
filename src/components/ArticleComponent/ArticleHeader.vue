@@ -34,14 +34,12 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
       class="subsite-name"
       v-text="subsiteName"
     />
-    <div class="point" v-if="!isSameAuthor">•</div>
     <router-link
       :to="{ path: `/u/${authorId}` }"
       class="author-name"
       v-text="authorName"
       v-if="!isSameAuthor"
     ></router-link>
-    <div class="separator" />
     <div class="details">
       <div class="date-created">
         <router-link :to="{ path: '/' + articleId }">
@@ -58,17 +56,19 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
 
 <style lang="scss">
 .article-component__header {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(0px, auto));
+  grid-template-rows: repeat(2, 1fr);
 
   & .subsite-avatar {
-    margin: 2px 10px -32px 0;
+    margin-right: 10px;
     width: 32px;
     height: 32px;
     border-radius: 50%;
     box-shadow: var(--box-shadow-avatar);
     background-size: cover;
     background-repeat: no-repeat;
+    grid-row: 2 span;
   }
 
   & .subsite-name {
@@ -76,41 +76,36 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     max-width: max-content;
     flex: 1;
     font-size: 15px;
+    line-height: 15px;
     font-weight: 500;
-    line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  & .point {
-    margin: 0 9px;
-    display: flex;
-    align-items: center;
-    color: var(--grey-color);
+    grid-row: 1 span;
   }
 
   & .author-name {
+    margin-left: 15px;
     min-width: 0;
     max-width: max-content;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 15px;
-    line-height: 20px;
+    line-height: 15px;
     white-space: nowrap;
-  }
-
-  & .separator {
-    flex-basis: 100%;
+    grid-row: 1 span;
   }
 
   & .details {
-    margin-left: 42px;
     display: flex;
+    align-self: flex-end;
     color: var(--grey-color);
     font-size: 12px;
-    line-height: 16px;
+    line-height: 10px;
+    grid-row: 1 span;
+    grid-row-start: 2;
+    grid-column: 2 / 3 span;
   }
 }
 

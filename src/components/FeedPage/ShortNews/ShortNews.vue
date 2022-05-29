@@ -92,6 +92,7 @@ const requestNextPage = () => {
           align-items: center;
           color: var(--grey-color);
           font-size: 15px;
+          line-height: 16px;
           vertical-align: middle;
 
           & > .icon {
@@ -103,7 +104,6 @@ const requestNextPage = () => {
             margin-left: 3px;
             font-size: 13px;
             font-weight: 500;
-            line-height: 0;
           }
         }
       }
