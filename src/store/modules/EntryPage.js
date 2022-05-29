@@ -11,7 +11,6 @@ const entryPageModule = {
     repostsList: null,
     commentsList: null,
     unreadComments: null,
-    hoveredHighlightComment: null,
     temporaryHightlightComment: null,
     temporaryHightlightCommentTimeout: null,
     idEntryConnectedChannel: null,
@@ -44,10 +43,6 @@ const entryPageModule = {
 
     unreadComments(state) {
       return state.unreadComments;
-    },
-
-    hoveredHighlightComment(state) {
-      return state.hoveredHighlightComment;
     },
 
     temporaryHightlightComment(state) {
@@ -104,14 +99,6 @@ const entryPageModule = {
       state.unreadComments = data;
     },
 
-    setHoveredHighlightComment(state, id) {
-      state.hoveredHighlightComment = id;
-    },
-
-    clearHoveredHighlightComment(state) {
-      state.hoveredHighlightComment = null;
-    },
-
     setTemporaryHightlightComment(state, id) {
       state.temporaryHightlightComment = id;
 
@@ -119,10 +106,6 @@ const entryPageModule = {
         state.temporaryHightlightComment = null;
         clearTimeout(this.temporaryHightlightCommentTimeout);
       }, 3000);
-    },
-
-    clearTemporaryHightlightComment(state) {
-      state.temporaryHightlightComment = null;
     },
 
     setEntryPrevLiked(state, value) {

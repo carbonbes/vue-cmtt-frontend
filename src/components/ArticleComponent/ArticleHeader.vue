@@ -34,13 +34,13 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
       class="subsite-name"
       v-text="subsiteName"
     />
-    <router-link
-      :to="{ path: `/u/${authorId}` }"
-      class="author-name"
-      v-text="authorName"
-      v-if="!isSameAuthor"
-    ></router-link>
     <div class="details">
+      <router-link
+        :to="{ path: `/u/${authorId}` }"
+        class="author-name"
+        v-text="authorName"
+        v-if="!isSameAuthor"
+      ></router-link>
       <div class="date-created">
         <router-link :to="{ path: '/' + articleId }">
           <DateTime
@@ -57,8 +57,8 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
 <style lang="scss">
 .article-component__header {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(0px, auto));
   grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(0px, auto));
 
   & .subsite-avatar {
     margin-right: 10px;
@@ -85,14 +85,12 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
   }
 
   & .author-name {
-    margin-left: 15px;
+    margin-right: 12px;
     min-width: 0;
     max-width: max-content;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 15px;
-    line-height: 15px;
     white-space: nowrap;
     grid-row: 1 span;
   }
@@ -102,10 +100,10 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     align-self: flex-end;
     color: var(--grey-color);
     font-size: 12px;
-    line-height: 9px;
-    grid-row: 1 span;
-    grid-row-start: 2;
+    line-height: 13px;
+    grid-row: 2 span;
     grid-column: 2 / 3 span;
+    transform: translateY(2px);
   }
 }
 

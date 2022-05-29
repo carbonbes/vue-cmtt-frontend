@@ -294,7 +294,6 @@ export default {
     ...mapMutations([
       "setEntryPrevLiked",
       "setTemporaryHightlightComment",
-      "clearTemporaryHightlightComment",
     ]),
   },
 

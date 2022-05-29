@@ -28,9 +28,9 @@
             query: { comment: this.replyTo },
           }"
           v-if="isReply"
-          @click="highlightFocusedComment(this.replyTo)"
-          @mouseenter="highlightParentComment(this.replyTo)"
-          @mouseleave="clearHighlightParentComment"
+          @click="$emit('temporaryHighlightParentComment')"
+          @mouseenter="$emit('highlightComment')"
+          @mouseleave="$emit('unhighlightParentComment')"
         >
           <up-arrow-icon />
         </router-link>
@@ -132,6 +132,9 @@
         :replyToAuthorName="authorName"
         :maxLvl="maxLvl"
         :key="comment.id"
+        @highlight-comment="highlightParentComment"
+        @unhighlight-parent-comment="unhighlightParentComment"
+        @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
       />
     </div>
     <span
@@ -195,6 +198,8 @@ export default {
       replyFormIsOpen: false,
       animationType: null,
       unread: null,
+      highlighted: false,
+      highlightedTimeout: null,
       etcControlsDropdownIsOpen: false,
       editMode: false,
     };
@@ -221,7 +226,7 @@ export default {
     selfCommentClassObj() {
       return {
         "self-comment_highlighted":
-          this.commentId == this.hoveredHighlightComment ||
+          this.highlighted ||
           this.commentId == this.temporaryHightlightComment ||
           this.unread,
       };
@@ -368,7 +373,6 @@ export default {
       "auth",
       "entryId",
       "entryAuthorId",
-      "hoveredHighlightComment",
       "temporaryHightlightComment",
     ]),
   },
@@ -411,16 +415,20 @@ export default {
       this.likesPopupIsOpen = false;
     },
 
-    highlightParentComment(id) {
-      this.setHoveredHighlightComment(id);
+    highlightParentComment() {
+      this.highlighted = true;
     },
 
-    clearHighlightParentComment() {
-      this.clearHoveredHighlightComment();
+    unhighlightParentComment() {
+      this.highlighted = false;
     },
 
-    highlightFocusedComment(id) {
-      this.setTemporaryHightlightComment(id);
+    temporaryHighlightParentComment() {
+      this.highlighted = true;
+      this.highlightedTimeout = setTimeout(() => {
+        this.highlighted = false;
+        clearTimeout(this.highlightedTimeout);
+      }, 3000);
     },
 
     openReplyForm() {
@@ -486,12 +494,7 @@ export default {
       "requestCommentEtcControls",
     ]),
 
-    ...mapMutations([
-      "setHoveredHighlightComment",
-      "clearHoveredHighlightComment",
-      "setTemporaryHightlightComment",
-      "setCommentPrevLiked",
-    ]),
+    ...mapMutations(["setCommentPrevLiked"]),
   },
 
   watch: {
