@@ -276,13 +276,20 @@ export default {
       this.replyBottomFormVisible = false;
     },
 
-    setLastViewed(lifeCycle) {
-      const lastViewed = localStorage.getItem(`${this.entryId}-last-viewed`);
+    setLastView(actionType) {
+      if (this.entryId) {
+        let lastViewed = localStorage.getItem(this.entryId + "-last-viewed");
 
-      if (!lastViewed && lifeCycle === "mounted") {
-        localStorage.setItem(this.entryId + "-last-viewed", Date.now());
-      } else if (lifeCycle === "updated" || lifeCycle === "unmounted") {
-        localStorage.setItem(this.entryId + "-last-viewed", Date.now());
+        if (!lastViewed) {
+          localStorage.setItem(this.entryId + "-last-viewed", Date.now());
+        } else if (
+          lastViewed &&
+          (actionType === "leave" ||
+            actionType === "routeUpdate" ||
+            actionType === "enter")
+        ) {
+          localStorage.setItem(this.entryId + "-last-viewed", Date.now());
+        }
       }
     },
 
@@ -291,10 +298,7 @@ export default {
         this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
     },
 
-    ...mapMutations([
-      "setEntryPrevLiked",
-      "setTemporaryHightlightComment",
-    ]),
+    ...mapMutations(["setEntryPrevLiked", "setTemporaryHightlightComment"]),
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
@@ -309,8 +313,6 @@ export default {
   },
 
   beforeRouteUpdate(routeTo, routeFrom, next) {
-    this.setLastViewed("updated");
-
     if (routeTo.query.comment) {
       store.commit("setTemporaryHightlightComment", routeTo.query.comment);
     }
@@ -318,6 +320,7 @@ export default {
     if (routeTo.params.id !== routeFrom.params.id) {
       store.commit("disconnectEntryPageChannel", routeFrom.params.id);
       store.commit("setIdEntryConnectedChannel", null);
+      this.setLastView("routeUpdate");
 
       requestEntry(routeTo, next).then(() => {
         store.commit("connectEntryPageChannel", routeTo.params.id);
@@ -326,8 +329,8 @@ export default {
     } else next();
   },
 
-  mounted() {
-    this.setLastViewed("mounted");
+  created() {
+    this.setLastView("enter");
     this.setEntryPrevLiked(this.entry.likes.isLiked);
     this.setTitlePage();
   },
@@ -336,7 +339,7 @@ export default {
     store.commit("disconnectEntryPageChannel", this.entryId);
     store.commit("setIdEntryConnectedChannel", null);
     store.commit("clearEntry");
-    this.setLastViewed("unmounted");
+    this.setLastView("leave");
   },
 };
 </script>
