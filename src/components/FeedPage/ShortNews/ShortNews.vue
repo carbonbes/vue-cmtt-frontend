@@ -28,6 +28,12 @@ onBeforeUnmount(() => {
 // computed
 const news = computed(() => store.getters.shortNews);
 const lastId = computed(() => store.getters.shortNewsLastId);
+const isRequested = computed(() => state.isRequested);
+const isNextPageRequested = computed(() => state.isNextPageRequested);
+
+const componentClassObj = computed(() => ({
+  "feed-page__short-news_requested": isRequested.value,
+}));
 
 // methods
 const requestNextPage = () => {
@@ -40,15 +46,15 @@ const requestNextPage = () => {
 </script>
 
 <template>
-  <div class="feed-page__short-news">
-    <div class="loader" v-if="state.isRequested"><Loader /></div>
-    <div class="news-content" v-if="!state.isRequested">
+  <div class="feed-page__short-news" :class="componentClassObj">
+    <div class="loader" v-if="isRequested"><Loader /></div>
+    <div class="news-content" v-if="!isRequested">
       <ShortNewsItem v-for="item in news" :item="item" :key="item.id" />
       <div class="show-more-btn" @click="requestNextPage">
-        <template v-if="!state.isNextPageRequested">
+        <template v-if="!isNextPageRequested">
           <span class="label">Показать еще...</span>
         </template>
-        <template v-if="state.isNextPageRequested">
+        <template v-if="isNextPageRequested">
           <div class="loader"><Loader /></div>
         </template>
       </div>
@@ -61,6 +67,7 @@ const requestNextPage = () => {
   &__short-news {
     --b-rad: 8px;
 
+    position: relative;
     margin-top: 15px;
     margin-bottom: 30px;
     color: var(--black-color);
@@ -69,8 +76,21 @@ const requestNextPage = () => {
     line-height: 26px;
     border-radius: var(--b-rad);
 
+    &_requested {
+      height: 250px;
+    }
+
     & > .loader {
+      top: 0;
       padding: 125px 0;
+
+      & .custom-loader {
+        &__loader-1,
+        &__loader-2,
+        &__loader-3 {
+          background-color: var(--black-color);
+        }
+      }
     }
 
     & .news-content {
