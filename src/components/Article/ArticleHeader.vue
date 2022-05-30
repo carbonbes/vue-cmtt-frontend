@@ -98,12 +98,14 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
   & .details {
     display: flex;
     align-self: flex-end;
-    color: var(--grey-color);
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 13px;
     grid-row: 2 span;
     grid-column: 2 / 3 span;
     transform: translateY(3px);
+
+    & .date-created {
+      color: var(--grey-color);
+    }
   }
 }
 
