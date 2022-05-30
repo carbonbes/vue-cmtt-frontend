@@ -100,10 +100,10 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     align-self: flex-end;
     color: var(--grey-color);
     font-size: 12px;
-    line-height: 13px;
+    line-height: 16px;
     grid-row: 2 span;
     grid-column: 2 / 3 span;
-    transform: translateY(2px);
+    transform: translateY(3px);
   }
 }
 

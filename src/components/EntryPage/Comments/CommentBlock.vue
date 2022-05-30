@@ -10,7 +10,7 @@
       :class="selfCommentClassObj"
       @mouseenter="setIsUnread(false)"
     >
-      <div class="comment-content">
+      <div class="comment-content" v-if="!isIgnored">
         <router-link
           class="avatar"
           :style="avatarStyleObj"
@@ -115,6 +115,9 @@
           v-if="replyFormIsOpen || this.editMode"
         />
       </div>
+      <div class="ignored-comment__text" v-if="isIgnored">
+        Комментарий скрыт
+      </div>
     </div>
     <div
       class="comment-replies"
@@ -208,6 +211,10 @@ export default {
   computed: {
     isReply() {
       return this.comment.replyTo !== 0;
+    },
+
+    isIgnored() {
+      return this.comment.isIgnored;
     },
 
     replyTo() {
@@ -570,9 +577,11 @@ export default {
       }
     }
 
-    &_ignored,
-    &_removed {
-      display: none;
+    &_ignored {
+      & .ignored-comment__text {
+        color: var(--grey-color);
+        line-height: 32px;
+      }
     }
 
     & .self-comment {

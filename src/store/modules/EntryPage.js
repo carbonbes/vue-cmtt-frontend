@@ -228,6 +228,7 @@ const entryPageModule = {
       newComment.media = [...data.comment.attaches];
 
       state.commentsList.push(newComment);
+      state.entry.counters.comments = ++state.entry.counters.comments;
     },
 
     entryCommentsChannelEdited(state, data) {

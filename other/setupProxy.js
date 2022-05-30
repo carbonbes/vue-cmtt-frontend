@@ -20,7 +20,7 @@ export default function (app) {
     createProxyMiddleware({
       target:
         process.env.NODE_ENV == "production"
-          ? "https://happy-yonath-c3d5de.netlify.app/v1.9"
+          ? "https://happy-yonath-c3d5de.netlify.app/v2.1"
           : "https://api.tjournal.ru/v2.1",
       changeOrigin: true,
       pathRewrite: {
