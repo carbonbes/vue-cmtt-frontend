@@ -63,7 +63,7 @@ const articleLikes = computed(() => props.article.likes);
     line-height: 1.6em;
 
     & .article-title {
-      margin-top: -7px;
+      margin-top: -4px;
       padding: var(--title-padding);
       font-size: 22px;
       font-weight: 500;

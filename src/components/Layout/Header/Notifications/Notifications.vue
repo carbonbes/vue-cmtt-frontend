@@ -144,6 +144,7 @@ onUnmounted(() => {
   --mt: 5px;
   --width: 430px;
   --bradius: 8px;
+  --avatar-size: 40px;
 
   position: absolute;
   top: 100%;
@@ -255,14 +256,14 @@ onUnmounted(() => {
       & .item__avatar {
         position: relative;
         margin-right: 12px;
-        width: 36px;
-        height: 36px;
+        width: var(--avatar-size);
+        height: var(--avatar-size);
 
         & .avatar {
-          min-width: 36px;
-          min-height: 36px;
-          width: 36px;
-          height: 36px;
+          min-width: var(--avatar-size);
+          min-height: var(--avatar-size);
+          width: var(--avatar-size);
+          height: var(--avatar-size);
           background-size: cover;
           border-radius: 50%;
           box-shadow: var(--box-shadow-avatar);
