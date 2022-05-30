@@ -1,64 +1,55 @@
-<template>
-  <div class="header-popup">
-    <div class="header-popup__item exit-button" @click="this.logout">
-      <logout-icon class="icon" />Выход
-    </div>
-  </div>
-</template>
-
-<script>
-import { mapActions } from "vuex";
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import Dropdown from "@/components/Dropdown/Dropdown.vue";
 import LogoutIcon from "@/assets/logos/logout_icon.svg?inline";
 
-export default {
-  components: { LogoutIcon },
+const store = useStore();
 
-  computed: {
-    ...mapActions(["logout"]),
-  },
+// computed
+const dropdownConfig = computed(() => ({
+  items: [
+    {
+      icon: LogoutIcon,
+      iconStyle: "color: var(--red-color); stroke-width: 2.25;",
+      label: "Выход",
+      labelStyle: "color: var(--red-color)",
+      action: logoutAction,
+      type: "default",
+    },
+  ],
+}));
+
+// methods
+const logoutAction = () => {
+  store.dispatch("logout");
 };
 </script>
+
+<template>
+  <div class="header-popup">
+    <Dropdown :data="dropdownConfig" />
+  </div>
+</template>
 
 <style lang="scss">
 .header-popup {
   --right-gap: 20px;
 
   position: fixed;
-  top: 60px;
+  top: 65px;
   right: var(--right-gap);
-  padding-top: 7px;
-  padding-bottom: 7px;
-  width: 175px;
-  background: var(--dropdown-bg-color);
-  border-radius: 4px;
-  font-size: 14px;
-  box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
-  user-select: none;
+  width: 200px;
 
-  &__item {
-    display: flex;
-    padding: 7px 15px;
-    align-items: center;
-    color: var(--black-color);
-    cursor: pointer;
-
-    &.exit-button {
-      color: var(--red-color);
-    }
-
-    & .icon {
-      margin-right: 10px;
-      width: 16px;
-      height: 16px;
-    }
+  &-enter-active,
+  &-leave-active {
+    transition: all 100ms;
   }
-}
 
-@media (hover: hover) {
-  .header-popup__item {
-    &:hover {
-      background: var(--dropdown-item-hover-bg-color);
-    }
+  &-enter-from,
+  &-leave-to {
+    transform: translateY(-3px);
+    opacity: 0;
   }
 }
 

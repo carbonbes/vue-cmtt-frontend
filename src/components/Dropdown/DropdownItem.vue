@@ -1,3 +1,15 @@
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  data: Object,
+});
+
+const isLinkType = computed(() => props.data.type === "link");
+
+const isDefaultType = computed(() => props.data.type === "default");
+</script>
+
 <template>
   <router-link
     :to="props.data.path"
@@ -14,10 +26,16 @@
   >
     <component
       class="icon"
+      :style="props.data.iconStyle"
       :is="props.data.icon"
       v-if="props.data.icon"
     ></component>
-    <div class="label" v-text="props.data.label" v-if="props.data.label"></div>
+    <div
+      class="label"
+      :style="props.data.labelStyle"
+      v-text="props.data.label"
+      v-if="props.data.label"
+    ></div>
   </router-link>
 
   <div
@@ -33,21 +51,15 @@
   >
     <component
       class="icon"
+      :style="props.data.iconStyle"
       :is="props.data.icon"
       v-if="props.data.icon"
     ></component>
-    <div class="label" v-text="props.data.label" v-if="props.data.label"></div>
+    <div
+      class="label"
+      :style="props.data.labelStyle"
+      v-text="props.data.label"
+      v-if="props.data.label"
+    ></div>
   </div>
 </template>
-
-<script setup>
-import { computed } from "vue";
-
-const props = defineProps({
-  data: Object,
-});
-
-const isLinkType = computed(() => props.data.type === "link");
-
-const isDefaultType = computed(() => props.data.type === "default");
-</script>

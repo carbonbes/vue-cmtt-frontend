@@ -9,6 +9,7 @@
 <script setup>
 import DropdownItem from "./DropdownItem.vue";
 
+// props
 const props = defineProps({
   data: Object,
 });

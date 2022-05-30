@@ -51,25 +51,20 @@
       >
         <user-icon class="icon" />
       </div>
-      <div
-        class="header__item-profile-wrapp"
-        @touchstart="openDropdown"
-        v-if="isAuth"
-      >
+      <div class="header__item-profile-wrapp" v-if="isAuth">
         <div class="header__item-avatar-wrapp">
           <div class="header__item-avatar icon" :style="avatarStyleObject" />
         </div>
         <div
           class="header__item-avatar-more-wrapp"
-          :class="moreButtonClassObject"
           @click="toggleDrowdownVisible"
+          v-outside-click:[true]="closeDropdown"
         >
           <chevron-down class="header__item-avatar-more icon" />
-          <dropdown
-            v-if="dropdownVisible"
-            v-outside-click:[true]="closeDropdown"
-          />
         </div>
+        <transition name="header-popup">
+          <Dropdown v-if="dropdownVisible" />
+        </transition>
       </div>
     </div>
     <div class="loader" />
@@ -292,21 +287,9 @@ export default {
   margin-right: 40px;
   display: flex;
   align-items: center;
-  cursor: pointer;
 
-  &_active {
-    &::before {
-      content: "";
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      left: 25%;
-      bottom: -5px;
-      background: var(--dropdown-bg-color);
-      transform: rotate(45deg);
-      box-shadow: -1px -1px 0 0 rgb(0 0 0 / 7%);
-      z-index: 1;
-    }
+  & > .icon {
+    cursor: pointer;
   }
 }
 
@@ -356,16 +339,15 @@ export default {
 @media (hover: hover) {
   .header__item-avatar-wrapp {
     &:hover {
-      .icon {
+      & > .icon {
         opacity: 0.8;
       }
     }
   }
 
-  .site-burger-btn,
-  .header__item-avatar-more-wrapp {
+  .site-burger-btn {
     &:hover {
-      .icon {
+      & > .icon {
         opacity: 0.7;
       }
     }
