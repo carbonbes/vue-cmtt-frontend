@@ -14,6 +14,11 @@
         <router-link class="left-sidebar__item site-logo" to="/"
           ><site-logo
         /></router-link>
+        <div class="spacer"></div>
+        <div class="left-sidebar__item theme-toggle-btn" @click="toggleTheme">
+          <SunIcon class="icon" v-if="currentTheme" />
+          <MoonIcon class="icon" v-else />
+        </div>
       </div>
       <div class="left-sidebar__link-list" v-if="!isAuthRequested">
         <router-link
@@ -62,9 +67,12 @@ import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import HotIcon from "@/assets/logos/hot_icon.svg?inline";
 import ClockIcon from "@/assets/logos/clock_icon.svg?inline";
 import MyFeedIcon from "@/assets/logos/my_feed_icon.svg?inline";
+import MoonIcon from "@/assets/logos/moon_icon.svg?inline";
+import SunIcon from "@/assets/logos/sun_icon.svg?inline";
 
 const store = useStore();
 const emitter = inject("emitter");
+const currentTheme = inject("currentTheme");
 const route = useRoute();
 const isMobile = useMediaQuery("(max-width: 1219px)");
 const allFeedRoutes = markRaw([
@@ -101,6 +109,10 @@ const saveFeedSorting = (data) => {
     }
     localStorage.setItem("allSite", "my");
   }
+};
+
+const toggleTheme = () => {
+  emitter.emit("theme-toggle");
 };
 
 // computed
@@ -217,7 +229,21 @@ onBeforeUnmount(() => {
   }
 }
 
-@media screen and (max-width: 1219px) {
+.left-sidebar__item.theme-toggle-btn {
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  & .icon {
+    width: 30px;
+    height: 26px;
+    color: var(--black-color);
+    stroke-width: 2.25;
+  }
+}
+
+@media (max-width: 1219px) {
   .left-sidebar {
     position: fixed;
     top: 0;
@@ -256,9 +282,23 @@ onBeforeUnmount(() => {
   }
 }
 
+@media (min-width: 769px) {
+  .left-sidebar__item.theme-toggle-btn {
+    display: none;
+  }
+}
+
 @media (hover: hover) {
   .left-sidebar__link:hover {
     background: var(--left-sidebar-link-hover-color);
+  }
+
+  .left-sidebar__item.theme-toggle-btn {
+    &:hover {
+      & .icon {
+        color: var(--brand-color);
+      }
+    }
   }
 }
 </style>

@@ -5,11 +5,11 @@
         <menu-icon class="icon" />
       </div>
     </div>
-    <router-link class="header__item" to="/"
-      ><site-logo class="site-logo"
-    /></router-link>
+    <router-link class="header__item" to="/">
+      <site-logo class="site-logo" />
+    </router-link>
     <div class="spacer"></div>
-    <div class="header__item">
+    <div class="header__item theme-toggle-btn">
       <div
         class="header__item-theme-toggle-btn"
         @click="toggleTheme"
@@ -346,6 +346,10 @@ export default {
 
   .header__item.bell-btn {
     position: unset;
+  }
+
+  .header__item.theme-toggle-btn {
+    display: none;
   }
 }
 
