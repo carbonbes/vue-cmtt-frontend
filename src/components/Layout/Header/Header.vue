@@ -181,10 +181,16 @@ export default {
       <div class="profile" v-if="isAuth">
         <router-link
           :to="{ name: 'ProfilePage', params: { id: currentUserId } }"
-          class="avatar-link"
+          class="avatar-link avatar-link_without-action"
         >
           <div class="avatar-img" :style="avatarStyleObject" />
         </router-link>
+        <div
+          class="avatar-link avatar-link_with-action"
+          @click="toggleDrowdownVisible"
+        >
+          <div class="avatar-img" :style="avatarStyleObject" />
+        </div>
         <div class="actions" @click="toggleDrowdownVisible">
           <div class="dropdown-toggle-btn"><ChevronDown class="icon" /></div>
         </div>
@@ -377,6 +383,10 @@ export default {
 
       & > .profile {
         & .avatar-link {
+          &_without-action {
+            display: none;
+          }
+
           & .avatar-img {
             margin-right: 15px;
           }
@@ -388,10 +398,18 @@ export default {
       }
     }
   }
+}
 
-  .header__item-login-btn {
-    & .icon {
-      margin-right: 0px;
+@media (min-width: 769px) {
+  .header {
+    &__item {
+      & > .profile {
+        & .avatar-link {
+          &.avatar-link_with-action {
+            display: none;
+          }
+        }
+      }
     }
   }
 }
