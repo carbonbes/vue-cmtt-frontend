@@ -258,8 +258,10 @@ export default {
       position: relative;
 
       &_pressed {
-        color: var(--brand-color);
-        transform: rotate(10deg);
+        & .icon {
+          color: var(--brand-color);
+          transform: rotate(10deg);
+        }
       }
 
       & .badge {
