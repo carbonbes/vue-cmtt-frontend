@@ -21,6 +21,7 @@ const isDefaultType = computed(() => props.data.type === "default");
         : null
     "
     class="dropdown-component__item"
+    :class="props.data.itemClass"
     active-class="dropdown-component__item_active"
     v-if="isLinkType"
   >
@@ -47,6 +48,7 @@ const isDefaultType = computed(() => props.data.type === "default");
         : null
     "
     class="dropdown-component__item"
+    :class="props.data.itemClass"
     v-if="isDefaultType"
   >
     <component

@@ -1,53 +1,34 @@
 <script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { useMediaQuery } from "@vueuse/core";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
 import UserIcon from "@/assets/logos/user_icon.svg?inline";
 import LogoutIcon from "@/assets/logos/logout_icon.svg?inline";
 
 const store = useStore();
 
-const isMobile = useMediaQuery("(max-width: 768px)");
-
 // computed
 const currentUserId = computed(() => store.getters.auth.id);
 
-const dropdownConfig = computed(() => {
-  if (isMobile.value) {
-    return {
-      items: [
-        {
-          icon: UserIcon,
-          label: "Профиль",
-          path: "/u/" + currentUserId.value,
-          type: "link",
-        },
-        {
-          icon: LogoutIcon,
-          iconStyle: "color: var(--red-color);",
-          label: "Выйти",
-          labelStyle: "color: var(--red-color);",
-          action: logoutAction,
-          type: "default",
-        },
-      ],
-    };
-  } else {
-    return {
-      items: [
-        {
-          icon: LogoutIcon,
-          iconStyle: "color: var(--red-color);",
-          label: "Выйти",
-          labelStyle: "color: var(--red-color);",
-          action: logoutAction,
-          type: "default",
-        },
-      ],
-    };
-  }
-});
+const dropdownConfig = computed(() => ({
+  items: [
+    {
+      itemClass: "profile-link",
+      icon: UserIcon,
+      label: "Профиль",
+      path: "/u/" + currentUserId.value,
+      type: "link",
+    },
+    {
+      icon: LogoutIcon,
+      iconStyle: "color: var(--red-color);",
+      label: "Выйти",
+      labelStyle: "color: var(--red-color);",
+      action: logoutAction,
+      type: "default",
+    },
+  ],
+}));
 
 // methods
 const logoutAction = () => {
@@ -70,6 +51,12 @@ const logoutAction = () => {
   right: var(--right-gap);
   width: 200px;
 
+  & > .dropdown-component {
+    & .profile-link {
+      display: none;
+    }
+  }
+
   &-enter-active,
   &-leave-active {
     transition: all 100ms;
@@ -85,6 +72,12 @@ const logoutAction = () => {
 @media screen and (max-width: 768px) {
   .header-popup {
     --right-gap: 15px;
+
+    & > .dropdown-component {
+      & .profile-link {
+        display: flex;
+      }
+    }
   }
 }
 </style>
