@@ -11,9 +11,9 @@
             <menu-icon class="icon" width="24" height="24" />
           </div>
         </div>
-        <router-link class="left-sidebar__item site-logo" to="/"
-          ><site-logo
-        /></router-link>
+        <router-link class="left-sidebar__item" to="/"
+          ><div class="site-logo"><SiteLogo class="icon" /></div
+        ></router-link>
         <div class="spacer"></div>
         <div class="left-sidebar__item theme-toggle-btn" @click="toggleTheme">
           <SunIcon class="icon" v-if="currentTheme" />
@@ -264,6 +264,17 @@ onBeforeUnmount(() => {
 
   .left-sidebar__item {
     display: flex;
+
+    & > .site-burger-btn,
+    & > .site-logo {
+      display: flex;
+
+      & .icon {
+        margin-left: 20px;
+        align-self: center;
+        color: var(--black-color);
+      }
+    }
   }
 
   .left-sidebar__link {
@@ -285,6 +296,16 @@ onBeforeUnmount(() => {
 @media (min-width: 769px) {
   .left-sidebar__item.theme-toggle-btn {
     display: none;
+  }
+}
+
+@media (max-width: 769px) {
+  .left-sidebar__item {
+    & > .site-burger-btn {
+      & .icon {
+        margin-left: 15px;
+      }
+    }
   }
 }
 

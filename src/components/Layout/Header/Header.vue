@@ -1,76 +1,3 @@
-<template>
-  <header class="header">
-    <div class="header__item">
-      <div class="site-burger-btn" @click="leftSidebarVisibility">
-        <menu-icon class="icon" />
-      </div>
-    </div>
-    <router-link class="header__item" to="/">
-      <site-logo class="site-logo" />
-    </router-link>
-    <div class="spacer"></div>
-    <div class="header__item theme-toggle-btn">
-      <div
-        class="header__item-theme-toggle-btn"
-        @click="toggleTheme"
-        v-if="!isAuthRequested"
-      >
-        <sun-icon class="icon" v-if="this.currentTheme" />
-        <moon-icon class="icon" v-else />
-      </div>
-    </div>
-    <div
-      class="header__item bell-btn"
-      v-outside-click:[true]="closeNotificationsPopup"
-    >
-      <div
-        class="header__item-bell-btn"
-        :class="bellBtnClassObj"
-        @click="toggleNotificationsPopup"
-        v-if="!isAuthRequested"
-      >
-        <bell-icon class="icon" />
-        <div
-          class="badge us-none"
-          v-if="this.notificationsCount > 0"
-          v-text="this.notificationsCount"
-        ></div>
-      </div>
-      <transition name="header__notifications">
-        <notifications
-          :close="closeNotificationsPopup"
-          v-if="notificationsVisible"
-        />
-      </transition>
-    </div>
-    <div class="header__item">
-      <div
-        class="header__item-login-btn"
-        @click="toggleShowLoginModal"
-        v-if="!isAuth && !isAuthRequested"
-      >
-        <user-icon class="icon" />
-      </div>
-      <div class="header__item-profile-wrapp" v-if="isAuth">
-        <div class="header__item-avatar-wrapp">
-          <div class="header__item-avatar icon" :style="avatarStyleObject" />
-        </div>
-        <div
-          class="header__item-avatar-more-wrapp"
-          @click="toggleDrowdownVisible"
-          v-outside-click:[true]="closeDropdown"
-        >
-          <chevron-down class="header__item-avatar-more icon" />
-        </div>
-        <transition name="header-popup">
-          <Dropdown v-if="dropdownVisible" />
-        </transition>
-      </div>
-    </div>
-    <div class="loader" />
-  </header>
-</template>
-
 <script>
 import { defineAsyncComponent } from "vue";
 import { mapGetters } from "vuex";
@@ -178,6 +105,10 @@ export default {
       };
     },
 
+    currentUserId() {
+      return this.auth.id;
+    },
+
     ...mapGetters([
       "auth",
       "isAuth",
@@ -189,177 +120,278 @@ export default {
 };
 </script>
 
+<template>
+  <header class="header">
+    <div class="header__item">
+      <div class="burger-btn" @click="leftSidebarVisibility">
+        <MenuIcon class="icon" />
+      </div>
+    </div>
+
+    <router-link class="header__item" to="/">
+      <div class="logo-btn"><SiteLogo class="logo" /></div>
+    </router-link>
+
+    <div class="spacer"></div>
+
+    <div class="header__item">
+      <div
+        class="theme-toggle-btn"
+        @click="toggleTheme"
+        v-if="!isAuthRequested"
+      >
+        <SunIcon class="icon" v-if="this.currentTheme" />
+        <MoonIcon class="icon" v-else />
+      </div>
+    </div>
+
+    <div
+      class="header__item notifications"
+      v-outside-click:[true]="closeNotificationsPopup"
+    >
+      <div
+        class="bell-btn"
+        :class="bellBtnClassObj"
+        @click="toggleNotificationsPopup"
+        v-if="!isAuthRequested"
+      >
+        <BellIcon class="icon" />
+        <div
+          class="badge us-none"
+          v-if="this.notificationsCount > 0"
+          v-text="this.notificationsCount"
+        ></div>
+      </div>
+      <transition name="header__notifications">
+        <Notifications
+          :close="closeNotificationsPopup"
+          v-if="notificationsVisible"
+        />
+      </transition>
+    </div>
+
+    <div class="header__item" v-outside-click:[true]="closeDropdown">
+      <div
+        class="login-btn"
+        @click="toggleShowLoginModal"
+        v-if="!isAuth && !isAuthRequested"
+      >
+        <UserIcon class="icon" />
+      </div>
+      <div class="profile" v-if="isAuth">
+        <router-link
+          :to="{ name: 'ProfilePage', params: { id: currentUserId } }"
+          class="avatar-link"
+        >
+          <div class="avatar-img" :style="avatarStyleObject" />
+        </router-link>
+        <div class="actions" @click="toggleDrowdownVisible">
+          <div class="dropdown-toggle-btn"><ChevronDown class="icon" /></div>
+        </div>
+      </div>
+      <transition name="header-popup">
+        <Dropdown v-if="dropdownVisible" />
+      </transition>
+    </div>
+    <div class="loader" />
+  </header>
+</template>
+
 <style lang="scss">
 .header {
-  position: sticky !important;
+  position: sticky;
   top: 0;
   width: 100%;
   height: 60px;
   display: flex;
   background: var(--header-bg-color);
   z-index: 4;
-}
 
-.header__item {
-  position: relative;
-  display: flex;
-  flex-shrink: 0;
-}
+  &__item {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
 
-.header__item-bell-btn,
-.header__item-login-btn,
-.header__item-theme-toggle-btn {
-  position: relative;
-  padding: 0 15px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+    & > .burger-btn {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
 
-  & .icon {
-    color: var(--black-color);
-    stroke-width: 2.25;
-  }
-}
+      & .icon {
+        color: var(--black-color);
+      }
+    }
 
-.header__item-theme-toggle-btn {
-  & .icon {
-    width: 28px;
-    height: 24px;
-  }
-}
+    & > .logo-btn {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
 
-.header__item-bell-btn {
-  &_pressed {
-    & .icon {
-      color: var(--brand-color);
-      transform: rotate(10deg);
+    & > .theme-toggle-btn,
+    & > .bell-btn,
+    & > .login-btn,
+    & > .profile {
+      display: flex;
+    }
+
+    & > .theme-toggle-btn,
+    & > .bell-btn,
+    & > .login-btn {
+      padding: 0 15px;
+      cursor: pointer;
+
+      & .icon {
+        align-self: center;
+      }
+    }
+
+    & > .theme-toggle-btn,
+    & > .bell-btn,
+    & > .profile .actions .dropdown-toggle-btn .icon {
+      color: var(--black-color);
+    }
+
+    & > .bell-btn {
+      position: relative;
+
+      & .badge {
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        padding: 3px 5px;
+        min-width: 12px;
+        display: inline-block;
+        background-color: #e62e3b;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 12px;
+        line-height: 1em;
+        font-weight: 500;
+      }
+    }
+
+    & > .login-btn {
+      padding-right: 30px;
+    }
+
+    & > .profile {
+      & .avatar-link {
+        display: flex;
+        cursor: pointer;
+
+        & .avatar-img {
+          margin-left: 15px;
+          width: 40px;
+          height: 40px;
+          align-self: center;
+          background-position: 50% 50%;
+          background-repeat: no-repeat;
+          background-size: cover;
+          border-radius: 6px;
+          box-shadow: var(--box-shadow-avatar);
+        }
+      }
+
+      & .actions {
+        display: flex;
+        cursor: pointer;
+
+        & .dropdown-toggle-btn {
+          padding-right: 30px;
+          padding-left: 5px;
+          display: flex;
+
+          & .icon {
+            width: 20px;
+            height: 20px;
+            align-self: center;
+          }
+        }
+      }
     }
   }
+}
 
-  & .badge {
-    position: absolute;
-    top: 15%;
-    left: 50%;
-    padding: 3px 5px;
-    min-width: 12px;
-    display: inline-block;
-    background-color: #e62e3b;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 12px;
-    line-height: 1em;
-    font-weight: 500;
+@media (hover: hover) {
+  .header {
+    &__item {
+      &:hover {
+        & .burger-btn,
+        & .logo-btn {
+          opacity: 0.7;
+        }
+
+        & .theme-toggle-btn,
+        & .bell-btn,
+        & .login-btn {
+          & .icon {
+            color: var(--brand-color);
+          }
+        }
+      }
+
+      & > .profile {
+        & .avatar-link {
+          &:hover {
+            & .avatar-img {
+              opacity: 0.8;
+            }
+          }
+        }
+
+        & .actions {
+          &:hover {
+            & .dropdown-toggle-btn {
+              & .icon {
+                opacity: 0.7;
+              }
+            }
+          }
+        }
+      }
+    }
   }
-}
-
-.header__item-login-btn {
-  padding-right: 40px;
-
-  & .icon {
-    margin-right: 8px;
-  }
-}
-
-.header__item-profile-wrapp {
-  display: flex;
-}
-
-.header__item-avatar-wrapp {
-  padding-left: 20px;
-  padding-right: 5px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.header__item-avatar {
-  width: 40px;
-  height: 40px;
-  box-shadow: var(--box-shadow-avatar);
-  border-radius: 8px;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.header__item-avatar-more-wrapp {
-  position: relative;
-  margin-right: 40px;
-  display: flex;
-  align-items: center;
-
-  & > .icon {
-    cursor: pointer;
-  }
-}
-
-.header__item-avatar-more {
-  width: 18px;
-  height: 18px;
-  align-self: center;
-  color: var(--black-color);
 }
 
 @media screen and (max-width: 768px) {
-  .header__item-avatar-more-wrapp {
-    display: none;
-  }
+  .header {
+    &__item {
+      & > .burger-btn {
+        padding-left: 15px;
+      }
 
-  .header__item-bell-btn,
-  .header__item-login-btn,
-  .header__item-theme-toggle-btn,
-  .header__item-avatar-wrapp {
-    margin-left: 0px;
+      & > .theme-toggle-btn {
+        display: none;
+      }
+
+      &.notifications {
+        position: unset;
+      }
+
+      & > .bell-btn {
+        padding: 0 10px;
+      }
+
+      & > .profile {
+        & .avatar-link {
+          & .avatar-img {
+            margin-right: 15px;
+          }
+        }
+
+        & .actions {
+          display: none;
+        }
+      }
+    }
   }
 
   .header__item-login-btn {
     & .icon {
       margin-right: 0px;
-    }
-  }
-
-  .header__item-bars-btn {
-    padding-left: 20px;
-  }
-
-  .header__item-login-btn,
-  .header__item-avatar-wrapp {
-    padding-right: 15px;
-  }
-
-  .header__item.bell-btn {
-    position: unset;
-  }
-
-  .header__item.theme-toggle-btn {
-    display: none;
-  }
-}
-
-@media (hover: hover) {
-  .header__item-avatar-wrapp {
-    &:hover {
-      & > .icon {
-        opacity: 0.8;
-      }
-    }
-  }
-
-  .site-burger-btn {
-    &:hover {
-      & > .icon {
-        opacity: 0.7;
-      }
-    }
-  }
-
-  .header__item-bell-btn,
-  .header__item-login-btn,
-  .header__item-theme-toggle-btn {
-    &:hover {
-      .icon {
-        color: var(--brand-color);
-      }
     }
   }
 }

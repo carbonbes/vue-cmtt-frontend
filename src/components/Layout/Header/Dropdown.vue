@@ -1,24 +1,23 @@
 <script setup>
-import { computed } from "vue";
+import { markRaw } from "vue";
 import { useStore } from "vuex";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
 import LogoutIcon from "@/assets/logos/logout_icon.svg?inline";
 
 const store = useStore();
 
-// computed
-const dropdownConfig = computed(() => ({
+const dropdownConfig = markRaw({
   items: [
     {
       icon: LogoutIcon,
-      iconStyle: "color: var(--red-color); stroke-width: 2.25;",
-      label: "Выход",
-      labelStyle: "color: var(--red-color)",
+      iconStyle: "color: var(--red-color); stroke-width: 2.35;",
+      label: "Выйти",
+      labelStyle: "color: var(--red-color);",
       action: logoutAction,
       type: "default",
     },
   ],
-}));
+});
 
 // methods
 const logoutAction = () => {
