@@ -85,7 +85,7 @@ export default {
   computed: {
     bellBtnClassObj() {
       return {
-        "header__item-bell-btn_pressed": this.notificationsVisible,
+        "bell-btn_pressed": this.notificationsVisible,
       };
     },
 
@@ -97,12 +97,6 @@ export default {
           )`,
         };
       }
-    },
-
-    moreButtonClassObject() {
-      return {
-        "header__item-avatar-more-wrapp_active": this.dropdownVisible,
-      };
     },
 
     currentUserId() {
@@ -262,6 +256,11 @@ export default {
 
     & > .bell-btn {
       position: relative;
+
+      &_pressed {
+        color: var(--brand-color);
+        transform: rotate(10deg);
+      }
 
       & .badge {
         position: absolute;
