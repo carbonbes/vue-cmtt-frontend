@@ -15,9 +15,11 @@
           ><div class="site-logo"><SiteLogo class="icon" /></div
         ></router-link>
         <div class="spacer"></div>
-        <div class="left-sidebar__item theme-toggle-btn" @click="toggleTheme">
-          <SunIcon class="icon" v-if="currentTheme" />
-          <MoonIcon class="icon" v-else />
+        <div class="left-sidebar__item" @click="toggleTheme">
+          <div class="theme-toggle-btn">
+            <SunIcon class="icon" v-if="currentTheme" />
+            <MoonIcon class="icon" v-else />
+          </div>
         </div>
       </div>
       <div class="left-sidebar__link-list" v-if="!isAuthRequested">
@@ -229,17 +231,20 @@ onBeforeUnmount(() => {
   }
 }
 
-.left-sidebar__item.theme-toggle-btn {
-  padding: 0 15px;
+.left-sidebar__item {
   display: flex;
   align-items: center;
   cursor: pointer;
 
-  & .icon {
-    width: 30px;
-    height: 26px;
-    color: var(--black-color);
-    stroke-width: 2.25;
+  & > .theme-toggle-btn {
+    padding: 0 15px;
+
+    & .icon {
+      width: 30px;
+      height: 26px;
+      color: var(--black-color);
+      stroke-width: 2.25;
+    }
   }
 }
 

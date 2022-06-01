@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, markRaw } from "vue";
 import { useStore } from "vuex";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
 import UserIcon from "@/assets/logos/user_icon.svg?inline";
@@ -10,7 +10,12 @@ const store = useStore();
 // computed
 const currentUserId = computed(() => store.getters.auth.id);
 
-const dropdownConfig = computed(() => ({
+// methods
+const logoutAction = () => {
+  store.dispatch("logout");
+};
+
+const dropdownConfig = markRaw({
   items: [
     {
       itemClass: "profile-link",
@@ -28,56 +33,11 @@ const dropdownConfig = computed(() => ({
       type: "default",
     },
   ],
-}));
-
-// methods
-const logoutAction = () => {
-  store.dispatch("logout");
-};
+});
 </script>
 
 <template>
-  <div class="header-popup">
+  <div class="dropdown">
     <Dropdown :data="dropdownConfig" />
   </div>
 </template>
-
-<style lang="scss">
-.header-popup {
-  --right-gap: 20px;
-
-  position: fixed;
-  top: 65px;
-  right: var(--right-gap);
-  width: 200px;
-
-  & > .dropdown-component {
-    & .profile-link {
-      display: none;
-    }
-  }
-
-  &-enter-active,
-  &-leave-active {
-    transition: all 100ms;
-  }
-
-  &-enter-from,
-  &-leave-to {
-    transform: translateY(-3px);
-    opacity: 0;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .header-popup {
-    --right-gap: 15px;
-
-    & > .dropdown-component {
-      & .profile-link {
-        display: flex;
-      }
-    }
-  }
-}
-</style>

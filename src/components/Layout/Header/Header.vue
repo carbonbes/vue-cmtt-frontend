@@ -174,7 +174,7 @@ export default {
       </div>
       <div class="profile" v-if="isAuth">
         <router-link
-          :to="{ name: 'ProfilePage', params: { id: currentUserId } }"
+          :to="{ path: '/u/' + currentUserId }"
           class="avatar-link avatar-link_without-action"
         >
           <div class="avatar-img" :style="avatarStyleObject" />
@@ -189,7 +189,7 @@ export default {
           <div class="dropdown-toggle-btn"><ChevronDown class="icon" /></div>
         </div>
       </div>
-      <transition name="header-popup">
+      <transition name="dropdown">
         <Dropdown v-if="dropdownVisible" />
       </transition>
     </div>
@@ -217,10 +217,6 @@ export default {
       display: flex;
       align-items: center;
       cursor: pointer;
-
-      & .icon {
-        color: var(--black-color);
-      }
     }
 
     & > .logo-btn {
@@ -248,10 +244,20 @@ export default {
       }
     }
 
-    & > .theme-toggle-btn,
-    & > .bell-btn,
-    & > .profile .actions .dropdown-toggle-btn .icon {
+    & > .theme-toggle-btn .icon,
+    & > .bell-btn .icon,
+    & > .profile .actions .dropdown-toggle-btn .icon,
+    & > .burger-btn .icon,
+    & > .login-btn .icon {
       color: var(--black-color);
+    }
+
+    & > .bell-btn,
+    & > .login-btn {
+      & .icon {
+        width: 28px;
+        height: 28px;
+      }
     }
 
     & > .bell-btn {
@@ -317,6 +323,32 @@ export default {
             align-self: center;
           }
         }
+      }
+    }
+
+    & .dropdown {
+      --right-gap: 20px;
+
+      position: fixed;
+      top: 65px;
+      right: var(--right-gap);
+      width: 200px;
+
+      & > .dropdown-component {
+        & .profile-link {
+          display: none;
+        }
+      }
+
+      &-enter-active,
+      &-leave-active {
+        transition: all 100ms;
+      }
+
+      &-enter-from,
+      &-leave-to {
+        transform: translateY(-3px);
+        opacity: 0;
       }
     }
   }
@@ -395,6 +427,16 @@ export default {
 
         & .actions {
           display: none;
+        }
+      }
+
+      & .dropdown {
+        --right-gap: 15px;
+
+        & > .dropdown-component {
+          & .profile-link {
+            display: flex;
+          }
         }
       }
     }
