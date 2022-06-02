@@ -70,6 +70,7 @@ function requestFeed(routeTo, routeFrom, next) {
     })
     .then(() => {
       nProgress.done();
+      store.commit("closeStartScreen");
       next((vm) => {
         if (window.matchMedia("(max-width: 1219px)").matches) {
           vm.emitter.emit("left-sidebar-hide");

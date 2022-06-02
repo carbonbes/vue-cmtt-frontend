@@ -177,10 +177,12 @@ function requestEntry(routeTo, next) {
   ])
     .then(() => {
       nProgress.done();
+      store.commit("closeStartScreen");
       next();
     })
     .catch((error) => {
       nProgress.done();
+      store.commit("closeStartScreen");
       next(false);
       notify({
         title: "Ошибка " + error.response.data.error.code,
@@ -507,7 +509,7 @@ export default {
     background-color: var(--entry-bg-color);
   }
 
-  & .content {
+  &__content {
     position: relative;
   }
 

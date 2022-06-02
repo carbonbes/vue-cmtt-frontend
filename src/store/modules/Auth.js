@@ -64,7 +64,7 @@ const authModule = {
   },
 
   actions: {
-    requestAuth({ commit, dispatch }) {
+    requestAuth({ commit, dispatch, rootState }) {
       commit("setAuthIsRequested", true);
 
       API_v2.subsiteMe()

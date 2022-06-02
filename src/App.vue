@@ -1,14 +1,18 @@
 <template>
   <Header />
   <div class="layout">
-    <left-sidebar />
+    <LeftSidebar />
     <main class="content"><router-view /></main>
-    <right-sidebar />
+    <RightSidebar />
   </div>
-  <transition name="login-modal"
-    ><div class="modal" v-if="loginModalVisibility">
-      <login-modal :isShow="this.loginModalVisibility" /></div
-  ></transition>
+  <transition name="login-modal">
+    <div class="modal" v-if="loginModalVisibility">
+      <LoginModal :isShow="loginModalVisibility" />
+    </div>
+  </transition>
+  <transition name="start-screen">
+    <StartScreen :isShow="showStartScreen" v-if="showStartScreen" />
+  </transition>
   <notifications />
 </template>
 
@@ -19,6 +23,7 @@ import store from "@/store";
 import Header from "@/components/Layout/Header/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
+import StartScreen from "./components/Layout/StartScreen.vue";
 
 export default {
   components: {
@@ -28,6 +33,7 @@ export default {
     LoginModal: defineAsyncComponent(() =>
       import("@/components/Layout/LoginModal.vue")
     ),
+    StartScreen,
   },
 
   data() {
@@ -35,6 +41,8 @@ export default {
       currentTheme: null,
       timeout: null,
       loginModalVisibility: false,
+      showStartScreen: true,
+      unsubscribe: null,
     };
   },
 
@@ -72,6 +80,18 @@ export default {
       this.loginModalVisibility = !this.loginModalVisibility;
     },
 
+    closeStartScreen() {
+      this.showStartScreen = false;
+    },
+
+    startScreenWatch() {
+      this.unsubscribe = store.subscribe((mutation) => {
+        if (mutation.type === "closeStartScreen") {
+          this.closeStartScreen();
+        }
+      });
+    },
+
     ...mapActions(["requestAuth"]),
   },
 
@@ -87,6 +107,8 @@ export default {
 
     this.emitter.on("theme-toggle", this.themeToggle);
     this.emitter.on("login-modal-toggle", this.toggleShowLoginModal);
+
+    this.startScreenWatch();
   },
 
   beforeUnmount() {
@@ -96,6 +118,8 @@ export default {
 
     this.emitter.off("theme-toggle", this.themeToggle);
     this.emitter.off("login-modal-toggle", this.toggleShowLoginModal);
+
+    this.unsubscribe();
   },
 };
 </script>

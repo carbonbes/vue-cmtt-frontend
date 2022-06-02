@@ -212,6 +212,7 @@ const entryPageModule = {
 
     entryCommentsChannelCreated(state, data) {
       let newComment = data.comment;
+      
       newComment.etcControls = null;
       newComment.likes.prevIsLiked = null;
       newComment.likes.prevIsLiked = data.comment.likes.is_liked;
@@ -243,6 +244,7 @@ const entryPageModule = {
 
     addComment(state, data) {
       let newComment = data.comment;
+
       newComment.replies = null;
       newComment.replies = [];
       newComment.etcControls = null;
@@ -265,6 +267,7 @@ const entryPageModule = {
       } else if (!data.position) {
         state.commentsList.unshift(newComment);
       }
+      state.entry.counters.comments = ++state.entry.counters.comments;
     },
 
     setCommentEtcControls(state, data) {

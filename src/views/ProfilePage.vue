@@ -95,6 +95,7 @@ function requestProfile(routeTo, routeFrom, next) {
   ])
     .then(() => {
       nProgress.done();
+      rootStore.commit("closeStartScreen");
       next();
     })
     .catch((error) => {
@@ -103,6 +104,7 @@ function requestProfile(routeTo, routeFrom, next) {
       rootStore.commit("setProfileHidden", true);
       rootStore.commit("clearProfileEntries");
       rootStore.commit("clearProfileComments");
+      rootStore.commit("closeStartScreen");
       notify({
         title: "Ошибка " + error.response.data.error.code,
         type: "error",

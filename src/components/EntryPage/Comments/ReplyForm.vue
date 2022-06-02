@@ -1,6 +1,6 @@
 <template>
   <div class="reply-form" :class="replyFormClassObj">
-    <div class="content">
+    <div class="reply-form__content">
       <div
         class="placeholder"
         v-if="props.type === 'root' && !state.text.length"
@@ -301,7 +301,7 @@ onMounted(() => {
   focusReplyForm();
 
   if (props.editMode) {
-    console.log(textFieldRef)
+    console.log(textFieldRef);
     textFieldRef.value.innerText = props.selfCommentText;
     state.text = props.selfCommentText;
     state.attachments = [...props.selfCommentMedia];
