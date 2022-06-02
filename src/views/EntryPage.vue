@@ -300,7 +300,7 @@ export default {
         this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
     },
 
-    ...mapMutations(["setEntryPrevLiked", "setTemporaryHightlightComment"]),
+    ...mapMutations(["setTemporaryHightlightComment"]),
   },
 
   beforeRouteEnter(routeTo, routeFrom, next) {
@@ -333,7 +333,6 @@ export default {
 
   created() {
     this.setLastView("enter");
-    this.setEntryPrevLiked(this.entry.likes.isLiked);
     this.setTitlePage();
   },
 

@@ -5,12 +5,10 @@ import { notify } from "@kyvg/vue3-notification";
 
 const entryPageModule = {
   state: () => ({
-    entry: [],
-    entryPrevLiked: null,
-    subsiteData: [],
+    entry: null,
+    subsiteData: null,
     repostsList: null,
     commentsList: null,
-    unreadComments: null,
     temporaryHightlightComment: null,
     temporaryHightlightCommentTimeout: null,
     idEntryConnectedChannel: null,
@@ -39,10 +37,6 @@ const entryPageModule = {
 
     commentsList(state) {
       return state.commentsList;
-    },
-
-    unreadComments(state) {
-      return state.unreadComments;
     },
 
     temporaryHightlightComment(state) {
@@ -95,10 +89,6 @@ const entryPageModule = {
       state.commentsList = data;
     },
 
-    setUnreadComments(state, data) {
-      state.unreadComments = data;
-    },
-
     setTemporaryHightlightComment(state, id) {
       state.temporaryHightlightComment = id;
 
@@ -108,42 +98,38 @@ const entryPageModule = {
       }, 3000);
     },
 
-    setEntryPrevLiked(state, value) {
-      state.entryPrevLiked = value;
-    },
-
     setEntryIsLiked(state, data) {
       if (state.entry.id === data.id) {
         let sign = data.sign;
         let summ = state.entry.likes.summ;
 
         if (data.reset) {
-          state.entry.likes.isLiked = state.entryPrevLiked;
+          state.entry.likes.isLiked = state.entry.likes.prevIsLiked;
 
           state.entry.likes.summ =
             sign === -1 && (summ <= 0 || summ >= 0)
-              ? ++state.entry.likes.summ
+              ? ++summ
               : sign === 0 && summ <= 0
-              ? --state.entry.likes.summ
+              ? --summ
               : sign === 0 && summ >= 0
-              ? ++state.entry.likes.summ
+              ? ++summ
               : sign === 1 && (summ <= 0 || summ >= 0)
-              ? --state.entry.likes.summ
+              ? --summ
               : null;
         } else {
           state.entry.likes.summ =
             sign === -1 && state.entry.likes.isLiked === 0
-              ? --state.entry.likes.summ
+              ? --summ
               : sign === -1 && state.entry.likes.isLiked === 1
-              ? state.entry.likes.summ - 2
+              ? summ - 2
               : sign === 0 && state.entry.likes.isLiked === -1
-              ? ++state.entry.likes.summ
+              ? ++summ
               : sign === 0 && state.entry.likes.isLiked === 1
-              ? --state.entry.likes.summ
+              ? --summ
               : sign === 1 && state.entry.likes.isLiked === 0
-              ? ++state.entry.likes.summ
+              ? ++summ
               : sign === 1 && state.entry.likes.isLiked === -1
-              ? state.entry.likes.summ + 2
+              ? summ + 2
               : null;
 
           state.entry.likes.isLiked = data.sign;
@@ -212,7 +198,7 @@ const entryPageModule = {
 
     entryCommentsChannelCreated(state, data) {
       let newComment = data.comment;
-      
+
       newComment.etcControls = null;
       newComment.likes.prevIsLiked = null;
       newComment.likes.prevIsLiked = data.comment.likes.is_liked;
@@ -291,6 +277,8 @@ const entryPageModule = {
     requestEntry({ commit }, id) {
       return API_v2.getEntry(id).then((response) => {
         let entry = response.data.result;
+        entry.likes.prevIsLiked = null;
+        entry.likes.prevIsLiked = entry.likes.isLiked;
         entry.likes.likesList = null;
         entry.likes.likesList = [];
         entry.likes.newLikes = null;
