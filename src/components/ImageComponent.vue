@@ -72,13 +72,18 @@ export default {
     type: String,
   },
 
+  data() {
+    return {
+      lightbox: null,
+    };
+  },
+
   mounted() {
     if (!this.lightbox) {
       this.lightbox = new PhotoSwipeLightbox({
         gallery: "#image-wrapp",
         children: "a",
         pswpModule: () => import("photoswipe/dist/photoswipe.esm.min.js"),
-        padding: { top: 40, bottom: 40, left: 100, right: 100 },
       });
       this.lightbox.init();
     }
