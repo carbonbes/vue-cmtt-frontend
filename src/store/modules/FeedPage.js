@@ -8,6 +8,7 @@ const feedPageModule = {
     feedIsRequested: false,
     shortNews: [],
     shortNewsLastId: null,
+    newArticlesCount: 0,
   }),
 
   getters: {
@@ -29,6 +30,10 @@ const feedPageModule = {
 
     shortNewsLastId(state) {
       return state.shortNewsLastId;
+    },
+
+    newArticlesCount(state) {
+      return state.newArticlesCount;
     },
   },
 
@@ -101,6 +106,10 @@ const feedPageModule = {
       });
     },
 
+    apiChannelNewEntry(state) {
+      state.newArticlesCount = ++state.newArticlesCount;
+    },
+
     setEntryLikesList(state, data) {
       if (data.type === "feedEntry") {
         state.feed.find((entry) => {
@@ -123,6 +132,10 @@ const feedPageModule = {
     clearShortNews(state) {
       state.shortNews = [];
     },
+
+    clearCountNewArticles(state) {
+      state.newArticlesCount = 0;
+    },
   },
 
   actions: {
@@ -144,11 +157,7 @@ const feedPageModule = {
             return item;
           });
 
-        if (
-          (data.prevSorting !== data.sorting ||
-            data.prevAllSite !== data.allSite) &&
-          !data.nextPage
-        ) {
+        if (data.clear && !data.nextPage) {
           commit("clearFeed");
         }
         commit("setFeed", items);

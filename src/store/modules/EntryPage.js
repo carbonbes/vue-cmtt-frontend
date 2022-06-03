@@ -181,7 +181,7 @@ const entryPageModule = {
     },
 
     apiChannelContentVoted(state, data) {
-      if (state.entry.id === data.id) {
+      if (state.entry && state.entry.id === data.id) {
         state.entry.likes.summ = data.count;
         state.entry.likes.newLikes = true;
       }

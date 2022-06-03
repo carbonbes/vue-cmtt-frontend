@@ -17,6 +17,11 @@
       <ShortNews v-if="shortNewsCondition" />
     </div>
     <div class="feed-page__content">
+      <NewArticlesBtn
+        :newArticles="newArticlesCount"
+        :requestFeed="requestNewFeed"
+        v-if="isNewAllSite && newArticlesCount > 0"
+      />
       <template v-for="(entry, index) in feed" :key="entry.id">
         <ArticleComponent
           :article="entry"
@@ -45,6 +50,7 @@
 import { mapGetters } from "vuex";
 import ArticleComponent from "../components/Article/ArticleComponent.vue";
 import ShortNews from "../components/FeedPage/ShortNews/ShortNews.vue";
+import NewArticlesBtn from "../components/FeedPage/NewArticlesBtn.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import Loader from "@/components/Loader";
@@ -65,12 +71,14 @@ function requestFeed(routeTo, routeFrom, next) {
             ? "date"
             : routeTo.params.sorting,
       },
-      prevAllSite: routeFrom.params.allSite,
-      prevSorting: routeFrom.params.sorting,
+      clear:
+        routeFrom.params.allSite !== routeTo.params.allSite ||
+        routeFrom.params.sorting !== routeTo.params.sorting,
     })
     .then(() => {
       nProgress.done();
       store.commit("closeStartScreen");
+      store.commit("clearCountNewArticles");
       next((vm) => {
         if (window.matchMedia("(max-width: 1219px)").matches) {
           vm.emitter.emit("left-sidebar-hide");
@@ -83,6 +91,7 @@ export default {
   components: {
     ArticleComponent,
     ShortNews,
+    NewArticlesBtn,
     Loader,
     Dropdown,
     ChevronDownIcon,
@@ -125,6 +134,20 @@ export default {
   },
 
   methods: {
+    requestNewFeed() {
+      nProgress.start();
+
+      store
+        .dispatch("requestFeed", {
+          params: { allSite: true, sorting: "date" },
+          clear: true,
+        })
+        .then(() => {
+          nProgress.done();
+          store.commit("clearCountNewArticles");
+        });
+    },
+
     requestNextPage() {
       store.dispatch("requestFeed", {
         params: {
@@ -161,7 +184,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["feed", "lastId", "feedIsRequested"]),
+    ...mapGetters(["feed", "lastId", "feedIsRequested", "newArticlesCount"]),
 
     allSite() {
       return this.$route.params.allSite;
@@ -169,6 +192,13 @@ export default {
 
     currentSorting() {
       return this.$route.params.sorting;
+    },
+
+    isNewAllSite() {
+      return (
+        this.$route.params.allSite === "all" &&
+        this.$route.params.sorting === "new"
+      );
     },
 
     dropdownData() {

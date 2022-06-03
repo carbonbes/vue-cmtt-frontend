@@ -17,9 +17,9 @@ export const API_v2 = {
     return instance_v2.get("comments", { params: { ...data.params } });
   },
 
-  getCommentEtcControls(id) {
+  getCommentEtcControls(commentId) {
     return instance_v2.get("comment/etcControls", {
-      params: { commentId: id },
+      params: { commentId },
     });
   },
 

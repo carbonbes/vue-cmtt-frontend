@@ -1,3 +1,4 @@
+import axios from "axios";
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 
@@ -64,7 +65,7 @@ const authModule = {
   },
 
   actions: {
-    requestAuth({ commit, dispatch, rootState }) {
+    requestAuth({ commit }) {
       commit("setAuthIsRequested", true);
 
       API_v2.subsiteMe()
@@ -75,7 +76,6 @@ const authModule = {
           commit("setAuth", response.data.result);
           commit("setIsAuth", true);
           commit("setAuthIsRequested", false);
-          dispatch("mySubscriptions", response.data.result.id);
         })
         .catch(() => {
           commit("setIsAuth", false);
@@ -83,14 +83,23 @@ const authModule = {
         });
     },
 
-    requestLogin({ commit }, data) {
+    requestLogin({ commit, dispatch }, data) {
       commit("setLoginIsRequested", true);
       commit("setIsError", false);
 
       API_v1.requestLogin(data)
         .then((response) => {
           localStorage.token = response.headers["x-device-token"];
-          location.reload();
+          dispatch("mySubscriptions", {
+            token: response.headers["x-device-token"],
+            myId: response.data.result.id,
+          }).then((response) => {
+            localStorage.setItem(
+              "my_subscriptions",
+              JSON.stringify(response.data.result.items)
+            );
+            location.reload();
+          });
         })
         .catch((error) => {
           commit("setLoginIsRequested", false);
@@ -99,12 +108,20 @@ const authModule = {
         });
     },
 
-    mySubscriptions({}, myId) {
-      API_v2.subscriptions(myId).then((response) => {
-        localStorage["my-subscriptions"] = JSON.stringify(
-          response.data.result.items
-        );
-      });
+    mySubscriptions({}, data) {
+      return axios.get(
+        process.env.NODE_ENV == "production"
+          ? process.env.VUE_APP_API_BASE_URL +
+              "/v2.1/subsite/subscriptions?subsiteId=" +
+              data.myId
+          : "http://localhost:8080/v2.1/subsite/subscriptions?subsiteId=" +
+              data.myId,
+        {
+          headers: {
+            "X-Device-Token": data.token,
+          },
+        }
+      );
     },
 
     logout() {

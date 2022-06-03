@@ -45,9 +45,9 @@ export default function createWebSocketPlugin(socket) {
         }
       }
 
-      /* if (data.data.type === "new_entry_published") {
+      if (data.data.type === "new_entry_published") {
         store.commit("apiChannelNewEntry", data.data);
-      } */
+      }
 
       if (
         data.data.type === 4 ||
