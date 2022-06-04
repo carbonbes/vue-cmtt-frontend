@@ -181,7 +181,7 @@ const profilePageModule = {
     },
 
     requestProfileEntries({ commit, state }, data) {
-      return API_v2.getTimeline(data).then((response) => {
+      return API_v2.getTimeline(data.params).then((response) => {
         if (!state.profileHidden) {
           let items = response.data.result.items
             .map((entry) => entry.data)

@@ -1,10 +1,19 @@
 import { instance_v2 } from "./config";
+import { instance_v2_31 } from "./config";
 
 export const API_v2 = {
-  getTimeline(data) {
+  getFeed(params) {
+    return instance_v2_31.get("feed", {
+      params: {
+        ...params,
+      },
+    });
+  },
+
+  getTimeline(params) {
     return instance_v2.get("timeline", {
       params: {
-        ...data.params,
+        ...params,
       },
     });
   },

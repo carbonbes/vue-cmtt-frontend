@@ -60,7 +60,7 @@ const articleLikes = computed(() => props.article.likes);
   &__content {
     position: relative;
     word-break: break-word;
-    line-height: 1.6em;
+    line-height: 1.7em;
 
     & .article-title {
       margin-top: -4px;

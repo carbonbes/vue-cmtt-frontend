@@ -22,6 +22,16 @@ export const instance_v2 = axios.create({
   },
 });
 
+export const instance_v2_31 = axios.create({
+  baseURL:
+    process.env.NODE_ENV == "production"
+      ? process.env.VUE_APP_API_BASE_URL + "/v2.31"
+      : "http://localhost:8080/v2.31",
+  headers: {
+    "X-Device-Token": token,
+  },
+});
+
 export const entryRatingInstance = axios.create({
   baseURL:
     process.env.NODE_ENV == "production"

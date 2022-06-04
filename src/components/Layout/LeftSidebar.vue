@@ -26,25 +26,27 @@
         <router-link
           class="left-sidebar__link"
           :class="sidebarPopularBtnClassObj"
-          to="/all/popular"
-          @click="saveFeedSorting({ allSite: 'all', sorting: 'hotness' })"
-          ><hot-icon class="icon" />Популярное</router-link
+          to="/popular"
+          @click="saveFeedSettings({ pageName: 'popular', sorting: 'hotness' })"
+          ><HotIcon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
           :class="sidebarNewBtnClassObj"
-          to="/all/new"
-          @click="saveFeedSorting({ allSite: 'all', sorting: 'date' })"
-          ><clock-icon class="icon" />Свежее</router-link
+          to="/new"
+          @click="saveFeedSettings({ pageName: 'new', sorting: 'from-10' })"
         >
+          <ClockIcon class="icon" />Свежее
+        </router-link>
         <router-link
           class="left-sidebar__link"
           :class="sidebarMyFeedBtnClassObj"
-          @click="saveFeedSorting({ allSite: 'my' })"
           to="/my"
+          @click="saveFeedSettings({ pageName: 'my', sorting: 'hotness' })"
           v-if="myFeedBtnVisibility"
-          ><my-feed-icon class="icon" />Моя лента</router-link
         >
+          <MyFeedIcon class="icon" />Моя лента
+        </router-link>
       </div>
     </div>
     <div class="sidebar-tint" />
@@ -77,15 +79,23 @@ const emitter = inject("emitter");
 const currentTheme = inject("currentTheme");
 const route = useRoute();
 const isMobile = useMediaQuery("(max-width: 1219px)");
-const allFeedRoutes = markRaw([
-  "/all/popular",
-  "/all/day",
-  "/all/week",
-  "/all/month",
-  "/all/year",
-  "/all/all",
+const allPopularFeedRoutes = markRaw([
+  "/popular",
+  "/popular/hotness",
+  "/popular/day",
+  "/popular/week",
+  "/popular/month",
+  "/popular/year",
+  "/popular/all",
 ]);
-const myFeedRoutes = markRaw(["/my/new", "/my/popular", "/my"]);
+const allNewFeedRoutes = markRaw([
+  "/new",
+  "/new/from-10",
+  "/new/from5",
+  "/new/from10",
+  "/new/all",
+]);
+const myFeedRoutes = markRaw(["/my", "/my/new", "/my/popular"]);
 
 // state
 const state = reactive({
@@ -101,16 +111,13 @@ const sidebarHide = () => {
   state.sidebarVisibled = false;
 };
 
-const saveFeedSorting = (data) => {
-  if (data.allSite === "all") {
-    localStorage.setItem("all-saved-sorting", data.sorting);
-    localStorage.setItem("allSite", "all");
-  } else if (data.allSite === "my") {
-    if (data.sorting) {
-      localStorage.setItem("my-saved-sorting", data.sorting);
-    }
-    localStorage.setItem("allSite", "my");
-  }
+const saveFeedSettings = (data) => {
+  let savedFeedSorting = {
+    pageName: data.pageName,
+    sorting: data.sorting,
+  };
+
+  localStorage.setItem("saved_feed_settings", JSON.stringify(savedFeedSorting));
 };
 
 const toggleTheme = () => {
@@ -123,13 +130,13 @@ const sidebarClassObj = computed(() => ({
 }));
 
 const sidebarPopularBtnClassObj = computed(() => {
-  if (allFeedRoutes.includes(route.path)) {
+  if (allPopularFeedRoutes.includes(route.path)) {
     return "left-sidebar__link_active";
   }
 });
 
 const sidebarNewBtnClassObj = computed(() => {
-  if (route.path === "/all/new") {
+  if (allNewFeedRoutes.includes(route.path)) {
     return "left-sidebar__link_active";
   }
 });

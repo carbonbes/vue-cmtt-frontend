@@ -97,7 +97,6 @@ export default {
 
   created() {
     this.requestAuth();
-
     this.setTheme();
   },
 

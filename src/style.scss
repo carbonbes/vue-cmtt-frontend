@@ -582,7 +582,7 @@ body {
   &>.logo {
     width: 100px;
     height: 100px;
-    animation: logo-pulse infinite 3s;
+    animation: logo-pulse infinite 3s ease-in-out;
   }
 }
 
@@ -742,7 +742,7 @@ body {
   }
 
   50% {
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 
   100% {

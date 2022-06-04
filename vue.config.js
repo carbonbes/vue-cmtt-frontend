@@ -22,6 +22,14 @@ module.exports = {
         },
       },
 
+      "/v2.31": {
+        target: "https://api.tjournal.ru/v2.31",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/v2.31": "",
+        },
+      },
+
       "/entry/rating": {
         target: "https://tjournal.ru",
         changeOrigin: true,

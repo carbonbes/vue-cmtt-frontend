@@ -1,13 +1,27 @@
 <script setup>
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
+
+// props
 const props = defineProps({
   data: Object,
 });
 
+// computed
 const isLinkType = computed(() => props.data.type === "link");
-
 const isDefaultType = computed(() => props.data.type === "default");
+
+const itemClassObj = computed(() => {
+  if (props.data.activeClassPathes) {
+    return {
+      "dropdown-component__item_active": props.data.activeClassPathes.some(
+        (some) => some === route.path
+      ),
+    };
+  }
+});
 </script>
 
 <template>
@@ -21,8 +35,7 @@ const isDefaultType = computed(() => props.data.type === "default");
         : null
     "
     class="dropdown-component__item"
-    :class="props.data.itemClass"
-    active-class="dropdown-component__item_active"
+    :class="itemClassObj"
     v-if="isLinkType"
   >
     <component
@@ -48,7 +61,6 @@ const isDefaultType = computed(() => props.data.type === "default");
         : null
     "
     class="dropdown-component__item"
-    :class="props.data.itemClass"
     v-if="isDefaultType"
   >
     <component

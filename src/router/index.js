@@ -7,7 +7,7 @@ import ProfileComments from "@/components/ProfilePage/ProfileComments.vue";
 
 const routes = [
   {
-    path: "/:allSite?/:sorting?",
+    path: "/:pageName?/:sorting?",
     name: "FeedPage",
     component: FeedPage,
   },
@@ -73,35 +73,31 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.name === "FeedPage") {
-    let allSite = localStorage.getItem("allSite");
+    let savedFeedSettings = JSON.parse(
+      localStorage.getItem("saved_feed_settings")
+    );
+    let pageName = savedFeedSettings?.pageName;
+    let sorting = savedFeedSettings?.sorting;
 
-    let allSorting = localStorage.getItem("all-saved-sorting");
-    let mySorting = localStorage.getItem("my-saved-sorting");
-
-    if (!allSite && (!allSorting || !mySorting) && !to.params.sorting) {
-      next("/all/popular");
+    if (!pageName && !sorting && !to.params.pageName && !to.params.sorting) {
+      next("/popular");
     } else if (
-      allSite === "all" &&
-      allSorting === "date" &&
+      pageName &&
+      sorting &&
+      !to.params.pageName &&
       !to.params.sorting
     ) {
-      next("/all/new");
+      next(`/${pageName}/${sorting}`);
     } else if (
-      allSite === "all" &&
-      (allSorting === "hotness" || !allSorting) &&
-      !to.params.sorting
+      (pageName || !pageName) &&
+      (sorting || !sorting) &&
+      (to.params.pageName || to.params.sorting)
     ) {
-      next("/all/popular");
-    } else if (allSite === "my" && mySorting === "date" && !to.params.sorting) {
-      next("/my/new");
-    } else if (
-      allSite === "my" &&
-      (mySorting === "hotness" || !mySorting) &&
-      !to.params.sorting
-    ) {
-      next("/my/popular");
-    } else next();
-  } else next();
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

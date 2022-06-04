@@ -5,6 +5,7 @@ const feedPageModule = {
   state: () => ({
     feed: [],
     lastId: null,
+    lastSortingValue: null,
     feedIsRequested: false,
     shortNews: [],
     shortNewsLastId: null,
@@ -18,6 +19,10 @@ const feedPageModule = {
 
     lastId(state) {
       return state.lastId;
+    },
+
+    lastSortingValue(state) {
+      return state.lastSortingValue;
     },
 
     feedIsRequested(state) {
@@ -44,6 +49,10 @@ const feedPageModule = {
 
     setLastId(state, id) {
       state.lastId = id;
+    },
+
+    setLastSortingValue(state, lastSortingValue) {
+      state.lastSortingValue = lastSortingValue;
     },
 
     setFeedIsRequested(state, value) {
@@ -140,7 +149,7 @@ const feedPageModule = {
     requestFeed({ commit }, data) {
       commit("setFeedIsRequested", true);
 
-      return API_v2.getTimeline(data).then((response) => {
+      return API_v2.getFeed(data.params).then((response) => {
         let items = response.data.result.items
           .filter((entry) => entry.type === "entry")
           .map((entry) => entry.data)
@@ -160,6 +169,7 @@ const feedPageModule = {
         }
         commit("setFeed", items);
         commit("setLastId", response.data.result.lastId);
+        commit("setLastSortingValue", response.data.result.lastSortingValue);
         commit("setFeedIsRequested", false);
       });
     },

@@ -3,7 +3,6 @@
     <div class="feed-page__header">
       <div
         class="feed-page__sorting-selector"
-        v-if="sortingSelectorVisible"
         v-outside-click:[true]="closeFeedSorting"
       >
         <div class="selector-btn" @click="toggleFeedSortingVisible">
@@ -11,7 +10,7 @@
           <chevron-down-icon class="icon" />
         </div>
         <div class="selector__dropdown" v-if="feedSortingSelectorIsOpen">
-          <Dropdown :data="dropdownData" />
+          <Dropdown :data="dropdownConfig" />
         </div>
       </div>
       <ShortNews v-if="shortNewsCondition" />
@@ -63,16 +62,18 @@ function requestFeed(routeTo, routeFrom, next) {
   return store
     .dispatch("requestFeed", {
       params: {
-        allSite: routeTo.params.allSite === "all" ? true : false,
+        pageName: routeTo.params.pageName,
         sorting:
-          routeTo.params.sorting === "popular"
+          routeTo.params.pageName === "new" && !routeTo.params.sorting
+            ? "from-10"
+            : (routeTo.params.pageName === "popular" ||
+                routeTo.params.pageName === "my") &&
+              !routeTo.params.sorting
             ? "hotness"
-            : routeTo.params.sorting === "new"
-            ? "date"
             : routeTo.params.sorting,
       },
       clear:
-        routeFrom.params.allSite !== routeTo.params.allSite ||
+        routeFrom.params.pageName !== routeTo.params.pageName ||
         routeFrom.params.sorting !== routeTo.params.sorting,
     })
     .then(() => {
@@ -106,28 +107,99 @@ export default {
           {
             label: "Популярное",
             path: "/my/popular",
-            action: this.saveFeedSorting,
-            actionInfo: { allSite: "my", sorting: "hotness" },
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "my", sorting: "hotness" },
             type: "link",
+            activeClassPathes: ["/my", "/my/popular"],
           },
           {
             label: "Свежее",
             path: "/my/new",
-            action: this.saveFeedSorting,
-            actionInfo: { allSite: "my", sorting: "date" },
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "my", sorting: "date" },
             type: "link",
+            activeClassPathes: ["/my/new"],
           },
         ],
       },
 
-      allFeedDropdownSettings: {
+      allFeedPopularDropdownSettings: {
         items: [
-          { label: "За сегодня", path: "/all/popular", type: "link" },
-          { label: "За 24 часа", path: "/all/day", type: "link" },
-          { label: "За неделю", path: "/all/week", type: "link" },
-          { label: "За месяц", path: "/all/month", type: "link" },
-          { label: "За год", path: "/all/year", type: "link" },
-          { label: "За все время", path: "/all/all", type: "link" },
+          {
+            label: "За сегодня",
+            path: "/popular/hotness",
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "popular", sorting: "hotness" },
+            type: "link",
+            activeClassPathes: ["/popular", "/popular/hotness"],
+          },
+          {
+            label: "За 24 часа",
+            path: "/popular/day",
+            type: "link",
+            activeClassPathes: ["/popular/day"],
+          },
+          {
+            label: "За неделю",
+            path: "/popular/week",
+            type: "link",
+            activeClassPathes: ["/popular/week"],
+          },
+          {
+            label: "За месяц",
+            path: "/popular/month",
+            type: "link",
+            activeClassPathes: ["/popular/month"],
+          },
+          {
+            label: "За год",
+            path: "/popular/year",
+            type: "link",
+            activeClassPathes: ["/popular/year"],
+          },
+          {
+            label: "За все время",
+            path: "/popular/all",
+            type: "link",
+            activeClassPathes: ["/popular/all"],
+          },
+        ],
+      },
+
+      allFeedNewDropdownSettings: {
+        items: [
+          {
+            label: "От -10",
+            path: "/new/from-10",
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "new", sorting: "from-10" },
+            type: "link",
+            activeClassPathes: ["/new", "/new/from-10"],
+          },
+          {
+            label: "От +5",
+            path: "/new/from5",
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "new", sorting: "from5" },
+            type: "link",
+            activeClassPathes: ["/new/from5"],
+          },
+          {
+            label: "От +10",
+            path: "/new/from10",
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "new", sorting: "from10" },
+            type: "link",
+            activeClassPathes: ["/new/from10"],
+          },
+          {
+            label: "Все",
+            path: "/new/all",
+            action: this.saveFeedSettings,
+            actionInfo: { pageName: "new", sorting: "all" },
+            type: "link",
+            activeClassPathes: ["/new/all"],
+          },
         ],
       },
     };
@@ -139,7 +211,10 @@ export default {
 
       store
         .dispatch("requestFeed", {
-          params: { allSite: true, sorting: "date" },
+          params: {
+            pageName: "new",
+            sorting: !this.currentSorting ? "from-10" : this.currentSorting,
+          },
           clear: true,
         })
         .then(() => {
@@ -151,14 +226,10 @@ export default {
     requestNextPage() {
       store.dispatch("requestFeed", {
         params: {
-          allSite: this.allSite === "all" ? true : false,
-          sorting:
-            this.currentSorting === "popular"
-              ? "hotness"
-              : this.currentSorting === "new"
-              ? "date"
-              : this.currentSorting,
+          pageName: this.pageName,
+          sorting: this.currentSorting,
           lastId: this.lastId,
+          lastSortingValue: this.lastSortingValue,
         },
         nextPage: true,
       });
@@ -172,22 +243,25 @@ export default {
       this.feedSortingSelectorIsOpen = false;
     },
 
-    saveFeedSorting(data) {
-      if (data.allSite === "all") {
-        localStorage.setItem("all-saved-sorting", data.sorting);
-        localStorage.setItem("allSite", "all");
-      } else if (data.allSite === "my") {
-        localStorage.setItem("my-saved-sorting", data.sorting);
-        localStorage.setItem("allSite", "my");
-      }
+    saveFeedSettings(data) {
+      localStorage.setItem(
+        "saved_feed_settings",
+        JSON.stringify({ pageName: data.pageName, sorting: data.sorting })
+      );
     },
   },
 
   computed: {
-    ...mapGetters(["feed", "lastId", "feedIsRequested", "newArticlesCount"]),
+    ...mapGetters([
+      "feed",
+      "lastId",
+      "lastSortingValue",
+      "feedIsRequested",
+      "newArticlesCount",
+    ]),
 
-    allSite() {
-      return this.$route.params.allSite;
+    pageName() {
+      return this.$route.params.pageName;
     },
 
     currentSorting() {
@@ -196,23 +270,30 @@ export default {
 
     isNewAllSite() {
       return (
-        this.$route.params.allSite === "all" &&
-        this.$route.params.sorting === "new"
+        this.$route.params.pageName === "new" &&
+        this.$route.params.sorting === "all"
       );
     },
 
-    dropdownData() {
+    dropdownConfig() {
       if (
-        this.$route.path === "/" ||
-        this.$route.path === "/all/new" ||
-        this.$route.path === "/all/popular" ||
-        this.$route.path === "/all/day" ||
-        this.$route.path === "/all/week" ||
-        this.$route.path === "/all/month" ||
-        this.$route.path === "/all/year" ||
-        this.$route.path === "/all/all"
+        this.$route.path === "/popular" ||
+        this.$route.path === "/popular/hotness" ||
+        this.$route.path === "/popular/day" ||
+        this.$route.path === "/popular/week" ||
+        this.$route.path === "/popular/month" ||
+        this.$route.path === "/popular/year" ||
+        this.$route.path === "/popular/all"
       ) {
-        return this.allFeedDropdownSettings;
+        return this.allFeedPopularDropdownSettings;
+      } else if (
+        this.$route.path === "/new" ||
+        this.$route.path === "/new/from-10" ||
+        this.$route.path === "/new/from5" ||
+        this.$route.path === "/new/from10" ||
+        this.$route.path === "/new/all"
+      ) {
+        return this.allFeedNewDropdownSettings;
       } else if (
         this.$route.path === "/my" ||
         this.$route.path === "/my/popular" ||
@@ -222,28 +303,38 @@ export default {
       }
     },
 
-    sortingSelectorVisible() {
-      return this.$route.path !== "/all/new";
-    },
-
     sortingSelectorLabel() {
-      if (this.$route.path === "/all/popular") {
+      if (
+        this.$route.path === "/popular" ||
+        this.$route.path === "/popular/hotness"
+      ) {
         return "За сегодня";
-      } else if (this.$route.path === "/all/new") {
+      } else if (this.$route.path === "/popular/new") {
         return "Свежее";
-      } else if (this.$route.path === "/all/day") {
+      } else if (this.$route.path === "/popular/day") {
         return "За 24 часа";
-      } else if (this.$route.path === "/all/week") {
+      } else if (this.$route.path === "/popular/week") {
         return "За неделю";
-      } else if (this.$route.path === "/all/month") {
+      } else if (this.$route.path === "/popular/month") {
         return "За месяц";
-      } else if (this.$route.path === "/all/year") {
+      } else if (this.$route.path === "/popular/year") {
         return "За год";
-      } else if (this.$route.path === "/all/all") {
+      } else if (this.$route.path === "/popular/all") {
         return "За все время";
       } else if (
-        this.$route.path === "/my/popular" ||
-        this.$route.path === "/my"
+        this.$route.path === "/new" ||
+        this.$route.path === "/new/from-10"
+      ) {
+        return "От -10";
+      } else if (this.$route.path === "/new/from5") {
+        return "От +5";
+      } else if (this.$route.path === "/new/from10") {
+        return "От +10";
+      } else if (this.$route.path === "/new/all") {
+        return "Все";
+      } else if (
+        this.$route.path === "/my" ||
+        this.$route.path === "/my/popular"
       ) {
         return "Популярное";
       } else if (this.$route.path === "/my/new") {
@@ -252,7 +343,10 @@ export default {
     },
 
     shortNewsCondition() {
-      return this.allSite === "all" && this.currentSorting === "popular";
+      return (
+        this.pageName === "popular" &&
+        (this.currentSorting === "hotness" || this.currentSorting === "")
+      );
     },
   },
 
