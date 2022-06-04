@@ -55,7 +55,7 @@ const feedPageModule = {
       state.lastId = null;
     },
 
-    setEntryIsLiked(state, data) {
+    setFeedEntryIsLiked(state, data) {
       state.feed.find((entry) => {
         if (entry.id === data.id) {
           let sign = data.sign;
@@ -110,15 +110,13 @@ const feedPageModule = {
       state.newArticlesCount = ++state.newArticlesCount;
     },
 
-    setEntryLikesList(state, data) {
-      if (data.type === "feedEntry") {
-        state.feed.find((entry) => {
-          if (entry.id === data.id) {
-            entry.likes.likesList = data.data;
-            entry.likes.newLikes = false;
-          }
-        });
-      }
+    setFeedArticleLikesList(state, data) {
+      state.feed.find((entry) => {
+        if (entry.id === data.id) {
+          entry.likes.likesList = data.data;
+          entry.likes.newLikes = false;
+        }
+      });
     },
 
     setShortNews(state, data) {

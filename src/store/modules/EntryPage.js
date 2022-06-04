@@ -65,11 +65,9 @@ const entryPageModule = {
       state.subsiteData = [];
     },
 
-    setEntryLikesList(state, data) {
-      if (data.type === "entryPage") {
-        state.entry.likes.likesList = data.data;
-        state.entry.likes.newLikes = false;
-      }
+    setArticlePageLikesList(state, data) {
+      state.entry.likes.likesList = data.data;
+      state.entry.likes.newLikes = false;
     },
 
     setCommentLikesList(state, data) {
@@ -98,7 +96,7 @@ const entryPageModule = {
       }, 3000);
     },
 
-    setEntryIsLiked(state, data) {
+    setPageEntryIsLiked(state, data) {
       if (state.entry.id === data.id) {
         let sign = data.sign;
         let summ = state.entry.likes.summ;
@@ -294,24 +292,6 @@ const entryPageModule = {
       });
     },
 
-    postEntryLike({ commit }, data) {
-      commit("setEntryIsLiked", data);
-
-      return API_v1.postLike(data).catch((error) => {
-        commit("setEntryIsLiked", {
-          id: data.id,
-          content: data.content,
-          sign: data.sign,
-          reset: true,
-        });
-
-        notify({
-          title: "Ошибка " + error.response.data.error.code,
-          text: error.response.data.message,
-        });
-      });
-    },
-
     postCommentLike({ commit }, data) {
       commit("setCommentIsLiked", data);
 
@@ -328,41 +308,6 @@ const entryPageModule = {
           text: error.response.data.message,
         });
       });
-    },
-
-    requestLikesList({ commit }, data) {
-      if (data.type === "entry") {
-        return entryRatingInstance
-          .get(`vote/get_likers?id=${data.id}&type=1`)
-          .then((response) => {
-            if (data.subtype === "entryPage") {
-              commit("setEntryLikesList", {
-                type: "entryPage",
-                data: response.data.data.likers,
-              });
-            } else if (data.subtype === "feedEntry") {
-              commit("setEntryLikesList", {
-                id: data.id,
-                type: "feedEntry",
-                data: response.data.data.likers,
-              });
-            } else if (data.subtype === "profileEntry") {
-              console.log("yes");
-              commit("setEntryLikesList", {
-                id: data.id,
-                type: "profileEntry",
-                data: response.data.data.likers,
-              });
-            }
-          });
-      } else if (data.type === "comment") {
-        return API_v1.getCommentLikes(data.id).then((response) => {
-          commit("setCommentLikesList", {
-            commentId: data.id,
-            data: response.data.result,
-          });
-        });
-      }
     },
 
     requestRepostsList({ commit }, id) {

@@ -1,4 +1,10 @@
-export default function createWebSocketPlugin(socket) {
+import io from "socket.io-client";
+
+export default function createWebSocketPlugin() {
+  let socket = io("https://ws-sio.tjournal.ru", {
+    transports: ["websocket"],
+  });
+
   return (store) => {
     store.subscribe((mutation) => {
       if (mutation.type === "connectApiChannel") {

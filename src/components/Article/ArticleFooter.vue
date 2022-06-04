@@ -101,13 +101,15 @@ const closeLikesPopup = () => {
 
 const like = (actionType) => {
   if (actionType === "like") {
-    store.dispatch("postEntryLike", {
+    store.dispatch("entryLike", {
+      articleType: props.type,
       id: props.articleId,
       type: "content",
       sign: isLiked.value === 1 ? 0 : -1 ? 1 : 1,
     });
   } else if (actionType === "dislike") {
-    store.dispatch("postEntryLike", {
+    store.dispatch("entryLike", {
+      articleType: props.type,
       id: props.articleId,
       type: "content",
       sign: isLiked.value === -1 ? 0 : 1 ? -1 : -1,

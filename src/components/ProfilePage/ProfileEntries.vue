@@ -3,13 +3,13 @@
     <template v-for="(entry, index) in entriesList" :key="entry.id">
       <ArticleComponent
         :article="entry"
-        type="profileEntry"
+        type="profileArticle"
         v-if="entriesList.length !== index + 1"
       />
 
       <ArticleComponent
         :article="entry"
-        type="profileEntry"
+        type="profileArticle"
         v-intersect="{
           type: 'when-appears',
           threshold: 0,

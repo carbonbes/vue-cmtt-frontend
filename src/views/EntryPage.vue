@@ -91,7 +91,7 @@
           :articleId="entry.id"
           :articleCounters="entry.counters"
           :articleLikes="entry.likes"
-          type="entryPage"
+          type="pageArticle"
         />
       </div>
     </div>

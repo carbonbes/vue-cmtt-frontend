@@ -11,7 +11,7 @@
           <chevron-down-icon class="icon" />
         </div>
         <div class="selector__dropdown" v-if="feedSortingSelectorIsOpen">
-          <dropdown :data="dropdownData" />
+          <Dropdown :data="dropdownData" />
         </div>
       </div>
       <ShortNews v-if="shortNewsCondition" />
@@ -25,13 +25,13 @@
       <template v-for="(entry, index) in feed" :key="entry.id">
         <ArticleComponent
           :article="entry"
-          type="feedEntry"
+          type="feedArticle"
           v-if="feed.length !== index + 1"
         />
 
         <ArticleComponent
           :article="entry"
-          type="feedEntry"
+          type="feedArticle"
           v-intersect="{
             type: 'when-appears',
             threshold: 0,

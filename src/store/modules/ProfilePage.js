@@ -120,18 +120,16 @@ const profilePageModule = {
       });
     },
 
-    setEntryLikesList(state, data) {
-      if (data.type === "profileEntry") {
-        state.profileEntries.find((entry) => {
-          if (entry.id === data.id) {
-            entry.likes.likesList = data.data;
-            entry.likes.newLikes = false;
-          }
-        });
-      }
+    setProfileArticleLikesList(state, data) {
+      state.profileEntries.find((entry) => {
+        if (entry.id === data.id) {
+          entry.likes.likesList = data.data;
+          entry.likes.newLikes = false;
+        }
+      });
     },
 
-    setEntryIsLiked(state, data) {
+    setProfileEntryIsLiked(state, data) {
       state.profileEntries.find((entry) => {
         if (entry.id === data.id) {
           let sign = data.sign;
