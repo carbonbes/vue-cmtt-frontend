@@ -27,14 +27,14 @@
           class="left-sidebar__link"
           :class="sidebarPopularBtnClassObj"
           to="/popular"
-          @click="saveFeedSettings({ pageName: 'popular', sorting: 'hotness' })"
+          @click="saveFeedSettings({ pageName: 'popular', popularFeedSorting: 'hotness' })"
           ><HotIcon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
           :class="sidebarNewBtnClassObj"
           to="/new"
-          @click="saveFeedSettings({ pageName: 'new', sorting: 'from-10' })"
+          @click="saveFeedSettings({ pageName: 'new', newFeedSorting: 'from-10' })"
         >
           <ClockIcon class="icon" />Свежее
         </router-link>
@@ -42,7 +42,7 @@
           class="left-sidebar__link"
           :class="sidebarMyFeedBtnClassObj"
           to="/my"
-          @click="saveFeedSettings({ pageName: 'my', sorting: 'hotness' })"
+          @click="saveFeedSettings({ pageName: 'my', myFeedSorting: 'hotness' })"
           v-if="myFeedBtnVisibility"
         >
           <MyFeedIcon class="icon" />Моя лента

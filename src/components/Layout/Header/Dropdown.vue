@@ -20,7 +20,7 @@ const dropdownConfig = markRaw({
     {
       itemClass: "profile-link",
       icon: UserIcon,
-      label: "Профиль",
+      label: "Мой профиль",
       path: "/u/" + currentUserId.value,
       type: "link",
     },

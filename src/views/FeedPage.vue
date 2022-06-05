@@ -9,9 +9,10 @@
           <div class="label" v-text="sortingSelectorLabel"></div>
           <chevron-down-icon class="icon" />
         </div>
-        <div class="selector__dropdown" v-if="feedSortingSelectorIsOpen">
-          <Dropdown :data="dropdownConfig" />
-        </div>
+        <transition name="selector__dropdown"
+          ><div class="selector__dropdown" v-if="feedSortingSelectorIsOpen">
+            <Dropdown :data="dropdownConfig" /></div
+        ></transition>
       </div>
       <ShortNews v-if="shortNewsCondition" />
     </div>
@@ -108,7 +109,7 @@ export default {
             label: "Популярное",
             path: "/my/popular",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "my", sorting: "hotness" },
+            actionInfo: { pageName: "my", myFeedSorting: "hotness" },
             type: "link",
             activeClassPathes: ["/my", "/my/popular"],
           },
@@ -116,7 +117,7 @@ export default {
             label: "Свежее",
             path: "/my/new",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "my", sorting: "date" },
+            actionInfo: { pageName: "my", myFeedSorting: "new" },
             type: "link",
             activeClassPathes: ["/my/new"],
           },
@@ -129,7 +130,7 @@ export default {
             label: "За сегодня",
             path: "/popular/hotness",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "popular", sorting: "hotness" },
+            actionInfo: { pageName: "popular", popularFeedSorting: "hotness" },
             type: "link",
             activeClassPathes: ["/popular", "/popular/hotness"],
           },
@@ -172,7 +173,7 @@ export default {
             label: "От -10",
             path: "/new/from-10",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", sorting: "from-10" },
+            actionInfo: { pageName: "new", newFeedSorting: "from-10" },
             type: "link",
             activeClassPathes: ["/new", "/new/from-10"],
           },
@@ -180,7 +181,7 @@ export default {
             label: "От +5",
             path: "/new/from5",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", sorting: "from5" },
+            actionInfo: { pageName: "new", newFeedSorting: "from5" },
             type: "link",
             activeClassPathes: ["/new/from5"],
           },
@@ -188,7 +189,7 @@ export default {
             label: "От +10",
             path: "/new/from10",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", sorting: "from10" },
+            actionInfo: { pageName: "new", newFeedSorting: "from10" },
             type: "link",
             activeClassPathes: ["/new/from10"],
           },
@@ -196,7 +197,7 @@ export default {
             label: "Все",
             path: "/new/all",
             action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", sorting: "all" },
+            actionInfo: { pageName: "new", newFeedSorting: "all" },
             type: "link",
             activeClassPathes: ["/new/all"],
           },
@@ -265,7 +266,18 @@ export default {
     },
 
     currentSorting() {
-      return this.$route.params.sorting;
+      if (
+        this.$route.params.pageName === "popular" ||
+        this.$route.params.pageName === "my"
+      ) {
+        if (this.$route.params.sorting) {
+          return this.$route.params.sorting;
+        } else return "hotness";
+      } else if (this.$route.params.pageName === "new") {
+        if (this.$route.params.sorting) {
+          return this.$route.params.sorting;
+        } else return "from-10";
+      }
     },
 
     isNewAllSite() {
@@ -387,6 +399,7 @@ export default {
       margin-left: 15px;
       display: inline-block;
       color: var(--black-color);
+      user-select: none;
 
       & .selector-btn {
         display: flex;
@@ -406,6 +419,16 @@ export default {
         margin-top: 5px;
         width: 175px;
         z-index: 3;
+
+        &-enter-active,
+        &-leave-active {
+          transition: all 100ms;
+        }
+
+        &-enter-from,
+        &-leave-to {
+          opacity: 0;
+        }
       }
     }
   }

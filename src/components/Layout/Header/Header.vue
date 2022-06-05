@@ -236,7 +236,7 @@ export default {
     & > .theme-toggle-btn,
     & > .bell-btn,
     & > .login-btn {
-      padding: 0 15px;
+      padding: 0 17px;
       cursor: pointer;
 
       & .icon {
@@ -296,7 +296,7 @@ export default {
         cursor: pointer;
 
         & .avatar-img {
-          margin-left: 15px;
+          margin-left: 17px;
           width: 40px;
           height: 40px;
           align-self: center;
@@ -333,12 +333,6 @@ export default {
       top: 65px;
       right: var(--right-gap);
       width: 200px;
-
-      & > .dropdown-component {
-        & .profile-link {
-          display: none;
-        }
-      }
 
       &-enter-active,
       &-leave-active {

@@ -77,20 +77,28 @@ router.beforeEach((to, from, next) => {
       localStorage.getItem("saved_feed_settings")
     );
     let pageName = savedFeedSettings?.pageName;
-    let sorting = savedFeedSettings?.sorting;
+    let popularFeedSorting = savedFeedSettings?.popularFeedSorting;
+    let newFeedSorting = savedFeedSettings?.newFeedSorting;
+    let myFeedSorting = savedFeedSettings?.myFeedSorting;
 
-    if (!pageName && !sorting && !to.params.pageName && !to.params.sorting) {
+    if (!pageName && !to.params.pageName && !to.params.sorting) {
       next("/popular");
     } else if (
-      pageName &&
-      sorting &&
+      pageName === "popular" &&
       !to.params.pageName &&
       !to.params.sorting
     ) {
-      next(`/${pageName}/${sorting}`);
+      next(`/popular/${popularFeedSorting}`);
+    } else if (
+      pageName === "new" &&
+      !to.params.pageName &&
+      !to.params.sorting
+    ) {
+      next(`/new/${newFeedSorting}`);
+    } else if (pageName === "my" && !to.params.pageName && !to.params.sorting) {
+      next(`/my/${myFeedSorting}`);
     } else if (
       (pageName || !pageName) &&
-      (sorting || !sorting) &&
       (to.params.pageName || to.params.sorting)
     ) {
       next();

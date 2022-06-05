@@ -2,6 +2,8 @@ v1.9/*  https://api.tjournal.ru/v1.9/:splat  200!
 
 v2.1/*  https://api.tjournal.ru/v2.1/:splat  200!
 
+v2.31/*  https://api.tjournal.ru/v2.31/:splat  200!
+
 entry/rating/* https://tjournal.ru/:splat 200!
 
 /*  /index.html  200
