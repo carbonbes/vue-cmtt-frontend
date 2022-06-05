@@ -1,21 +1,3 @@
-<template>
-  <router-link
-    class="likes-popup__item"
-    :to="{ path: '/u/' + props.userId }"
-    v-intersect="{
-      type: 'when-appears',
-      callback: setIsVisible,
-      root: props.popupRef,
-      threshold: 0,
-    }"
-  >
-    <div class="item-avatar" :style="itemAvatarStyleObj"></div>
-    <span class="item-nickname" :class="nicknameClassObj">{{
-      props.userName
-    }}</span>
-  </router-link>
-</template>
-
 <script setup>
 import { ref, computed } from "vue";
 
@@ -48,3 +30,21 @@ const setIsVisible = () => {
   isVisible.value = true;
 };
 </script>
+
+<template>
+  <router-link
+    class="likes-popup__item"
+    :to="{ path: '/u/' + props.userId }"
+    v-intersect="{
+      type: 'when-appears',
+      callback: setIsVisible,
+      root: props.popupRef,
+      threshold: 0,
+    }"
+  >
+    <div class="item-avatar" :style="itemAvatarStyleObj"></div>
+    <span class="item-nickname" :class="nicknameClassObj">{{
+      props.userName
+    }}</span>
+  </router-link>
+</template>

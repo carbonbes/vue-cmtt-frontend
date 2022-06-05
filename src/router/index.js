@@ -85,13 +85,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.name === "FeedPage") {
-    let savedFeedSettings = JSON.parse(
-      localStorage.getItem("saved_feed_settings")
-    );
-    let pageName = savedFeedSettings?.pageName;
-    let popularFeedSorting = savedFeedSettings?.popularFeedSorting;
-    let newFeedSorting = savedFeedSettings?.newFeedSorting;
-    let myFeedSorting = savedFeedSettings?.myFeedSorting;
+    let pageName = localStorage.getItem("pageName");
+    let popularFeedSorting = localStorage.getItem("popularFeedSorting");
+    let newFeedSorting = localStorage.getItem("newFeedSorting");
+    let myFeedSorting = localStorage.getItem("myFeedSorting");
 
     if (!pageName && !to.params.pageName && !to.params.sorting) {
       next("/popular");

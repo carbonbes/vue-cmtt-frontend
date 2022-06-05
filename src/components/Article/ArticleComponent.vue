@@ -63,14 +63,14 @@ const articleLikes = computed(() => props.article.likes);
     line-height: 1.7em;
 
     & .article-title {
-      margin-top: -4px;
+      margin-top: -3px;
       padding: var(--title-padding);
       font-size: 22px;
       font-weight: 500;
       line-height: 32px;
 
       &:nth-last-child(-n + 2) {
-        margin-bottom: -5px;
+        margin-bottom: -4px;
       }
 
       & .editorial-icon {

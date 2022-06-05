@@ -111,7 +111,7 @@ export default {
             action: this.saveFeedSettings,
             actionInfo: { pageName: "my", myFeedSorting: "hotness" },
             type: "link",
-            activeClassPathes: ["/my", "/my/popular"],
+            activeClassPathes: ["/my", "/my/hotness"],
           },
           {
             label: "Свежее",
@@ -245,10 +245,14 @@ export default {
     },
 
     saveFeedSettings(data) {
-      localStorage.setItem(
-        "saved_feed_settings",
-        JSON.stringify({ pageName: data.pageName, sorting: data.sorting })
-      );
+      localStorage.setItem("pageName", data.pageName);
+      if (data.popularFeedSorting) {
+        localStorage.setItem("popularFeedSorting", data.popularFeedSorting);
+      } else if (data.newFeedSorting) {
+        localStorage.setItem("newFeedSorting", data.newFeedSorting);
+      } else if (data.myFeedSorting) {
+        localStorage.setItem("myFeedSorting", data.myFeedSorting);
+      }
     },
   },
 
@@ -308,7 +312,7 @@ export default {
         return this.allFeedNewDropdownSettings;
       } else if (
         this.$route.path === "/my" ||
-        this.$route.path === "/my/popular" ||
+        this.$route.path === "/my/hotness" ||
         this.$route.path === "/my/new"
       ) {
         return this.myFeedDropdownSettings;
@@ -346,7 +350,7 @@ export default {
         return "Все";
       } else if (
         this.$route.path === "/my" ||
-        this.$route.path === "/my/popular"
+        this.$route.path === "/my/hotness"
       ) {
         return "Популярное";
       } else if (this.$route.path === "/my/new") {
