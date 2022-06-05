@@ -59,8 +59,20 @@ const router = createRouter({
           resolve({ el: "#" + to.query.comment, top: 75, behavior: "smooth" });
         }
 
-        if (to.name === "EntryPage" && to.query.comments === null) {
+        if (
+          from.name !== "EntryPage" &&
+          to.name === "EntryPage" &&
+          to.query.comments === null
+        ) {
           resolve({ el: "#entry-page__comments", top: 60 });
+        }
+
+        if (
+          from.name === "EntryPage" &&
+          to.name === "EntryPage" &&
+          to.query.comments === null
+        ) {
+          resolve({ el: "#entry-page__comments", top: 60, behavior: "smooth" });
         }
 
         if (savedPosition) resolve(savedPosition);

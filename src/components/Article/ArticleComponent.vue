@@ -81,15 +81,15 @@ const articleLikes = computed(() => props.article.likes);
     }
 
     & .subtitle {
-      margin-top: 3px;
+      margin-top: 4px;
       font-size: 17px;
 
       &:first-child {
-        margin-top: -6px;
+        margin-top: -3px;
       }
 
       &:nth-last-child(-n + 2) {
-        margin-bottom: -6px;
+        margin-bottom: -3px;
       }
 
       & p {
