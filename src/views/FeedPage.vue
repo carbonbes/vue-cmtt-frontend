@@ -108,16 +108,12 @@ export default {
           {
             label: "Популярное",
             path: "/my/popular",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "my", myFeedSorting: "hotness" },
             type: "link",
             activeClassPathes: ["/my", "/my/hotness"],
           },
           {
             label: "Свежее",
             path: "/my/new",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "my", myFeedSorting: "new" },
             type: "link",
             activeClassPathes: ["/my/new"],
           },
@@ -129,8 +125,6 @@ export default {
           {
             label: "За сегодня",
             path: "/popular/hotness",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "popular", popularFeedSorting: "hotness" },
             type: "link",
             activeClassPathes: ["/popular", "/popular/hotness"],
           },
@@ -172,32 +166,24 @@ export default {
           {
             label: "От -10",
             path: "/new/from-10",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", newFeedSorting: "from-10" },
             type: "link",
             activeClassPathes: ["/new", "/new/from-10"],
           },
           {
             label: "От +5",
             path: "/new/from5",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", newFeedSorting: "from5" },
             type: "link",
             activeClassPathes: ["/new/from5"],
           },
           {
             label: "От +10",
             path: "/new/from10",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", newFeedSorting: "from10" },
             type: "link",
             activeClassPathes: ["/new/from10"],
           },
           {
             label: "Все",
             path: "/new/all",
-            action: this.saveFeedSettings,
-            actionInfo: { pageName: "new", newFeedSorting: "all" },
             type: "link",
             activeClassPathes: ["/new/all"],
           },
@@ -242,17 +228,6 @@ export default {
 
     closeFeedSorting() {
       this.feedSortingSelectorIsOpen = false;
-    },
-
-    saveFeedSettings(data) {
-      localStorage.setItem("pageName", data.pageName);
-      if (data.popularFeedSorting) {
-        localStorage.setItem("popularFeedSorting", data.popularFeedSorting);
-      } else if (data.newFeedSorting) {
-        localStorage.setItem("newFeedSorting", data.newFeedSorting);
-      } else if (data.myFeedSorting) {
-        localStorage.setItem("myFeedSorting", data.myFeedSorting);
-      }
     },
   },
 
