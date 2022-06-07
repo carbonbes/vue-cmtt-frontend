@@ -92,12 +92,32 @@ export default {
       });
     },
 
+    setFeedDefaultSettings() {
+      const pageName = localStorage.getItem("pageName");
+      const popularFeedSorting = localStorage.getItem("popularFeedSorting");
+      const newFeedSorting = localStorage.getItem("newFeedSorting");
+      const myFeedSorting = localStorage.getItem("myFeedSorting");
+
+      if (
+        !pageName ||
+        !popularFeedSorting ||
+        !newFeedSorting ||
+        !myFeedSorting
+      ) {
+        localStorage.setItem("pageName", "popular");
+        localStorage.setItem("popularFeedSorting", "hotness");
+        localStorage.setItem("newFeedSorting", "from-10");
+        localStorage.setItem("myFeedSorting", "popular");
+      }
+    },
+
     ...mapActions(["requestAuth"]),
   },
 
   created() {
     this.requestAuth();
     this.setTheme();
+    this.setFeedDefaultSettings();
   },
 
   mounted() {

@@ -20,6 +20,10 @@ const itemClassObj = computed(() => {
         (some) => some === route.path
       ),
     };
+  } else if (props.data.isSelected) {
+    return {
+      "dropdown-component__item_active": props.data.isSelected,
+    };
   }
 });
 </script>
@@ -61,6 +65,7 @@ const itemClassObj = computed(() => {
         : null
     "
     class="dropdown-component__item"
+    :class="itemClassObj"
     v-if="isDefaultType"
   >
     <component

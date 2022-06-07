@@ -27,21 +27,12 @@
           class="left-sidebar__link"
           :class="sidebarPopularBtnClassObj"
           to="/popular"
-          @click="
-            saveFeedSettings({
-              pageName: 'popular'/* ,
-              popularFeedSorting: 'hotness', */
-            })
-          "
           ><HotIcon class="icon" />Популярное</router-link
         >
         <router-link
           class="left-sidebar__link"
           :class="sidebarNewBtnClassObj"
           to="/new"
-          @click="
-            saveFeedSettings({ pageName: 'new'/* , newFeedSorting: 'from-10' */ })
-          "
         >
           <ClockIcon class="icon" />Свежее
         </router-link>
@@ -49,9 +40,6 @@
           class="left-sidebar__link"
           :class="sidebarMyFeedBtnClassObj"
           to="/my"
-          @click="
-            saveFeedSettings({ pageName: 'my'/* , myFeedSorting: 'hotness' */ })
-          "
           v-if="myFeedBtnVisibility"
         >
           <MyFeedIcon class="icon" />Моя лента
@@ -118,17 +106,6 @@ const sidebarVisibilityToggle = () => {
 
 const sidebarHide = () => {
   state.sidebarVisibled = false;
-};
-
-const saveFeedSettings = (data) => {
-  localStorage.setItem("pageName", data.pageName);
-  if (data.popularFeedSorting) {
-    localStorage.setItem("popularFeedSorting", data.popularFeedSorting);
-  } else if (data.newFeedSorting) {
-    localStorage.setItem("newFeedSorting", data.newFeedSorting);
-  } else if (data.myFeedSorting) {
-    localStorage.setItem("myFeedSorting", data.myFeedSorting);
-  }
 };
 
 const toggleTheme = () => {

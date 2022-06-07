@@ -131,7 +131,8 @@ iframe {
 }
 
 .v-input,
-.v-textarea {
+.v-textarea,
+.v-form {
 
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -140,7 +141,6 @@ iframe {
     -webkit-text-fill-color: var(--black-color);
     transition: background-color 5000s 0s;
   }
-
   &::placeholder {
     color: var(--grey-color);
   }
@@ -150,11 +150,9 @@ iframe {
   background-color: var(--form-bg-color);
   border: 1px solid var(--form-border-color);
   outline: none;
-  transition: background-color 0.1s,
-  border 0.1s,
-  box-shadow 0.1s;
+  transition: background-color 0.2s, border 0.2s, box-shadow 0.2s;
 
-  &:hover:enabled {
+  &:hover {
     background-color: transparent;
     border: 1px solid var(--form-border-color-hover);
     box-shadow: var(--form-shadow);

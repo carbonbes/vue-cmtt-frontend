@@ -4,6 +4,8 @@ import EntryPage from "@/views/EntryPage.vue";
 import ProfilePage from "@/views/ProfilePage.vue";
 import ProfileEntries from "@/components/ProfilePage/ProfileEntries.vue";
 import ProfileComments from "@/components/ProfilePage/ProfileComments.vue";
+import SettingsPage from "@/views/SettingsPage.vue";
+import FeedSettingsBlock from "@/components/SettingsPage/FeedSettingsBlock.vue";
 
 const routes = [
   {
@@ -30,6 +32,18 @@ const routes = [
       {
         path: "comments",
         component: ProfileComments,
+      },
+    ],
+  },
+  {
+    path: "/settings",
+    name: "SettingsPage",
+    component: SettingsPage,
+    children: [
+      {
+        path: "feed",
+        component: FeedSettingsBlock,
+        alias: "",
       },
     ],
   },

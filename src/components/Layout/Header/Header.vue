@@ -190,7 +190,7 @@ export default {
         </div>
       </div>
       <transition name="dropdown">
-        <Dropdown v-if="dropdownVisible" />
+        <Dropdown :closeCallback="closeDropdown" v-if="dropdownVisible" />
       </transition>
     </div>
     <div class="loader" />
