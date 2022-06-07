@@ -6,6 +6,7 @@ export default {
   components: { SettingsPage },
 
   beforeRouteEnter() {
+    document.title = "Настройки";
     store.commit("closeStartScreen");
   },
 };
