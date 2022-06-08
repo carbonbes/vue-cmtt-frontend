@@ -15,7 +15,7 @@ import MyFeedIcon from "@/assets/logos/my_feed_icon.svg?inline";
               :to="{ path: '/settings/feed' }"
               class="link"
               active-class="link_active"
-              ><span class="icon"><MyFeedIcon /></span>
+              ><MyFeedIcon class="icon" />
               <span class="label">Настройки ленты</span></router-link
             >
           </div>
@@ -50,7 +50,6 @@ import MyFeedIcon from "@/assets/logos/my_feed_icon.svg?inline";
           padding: 15px 20px;
           display: flex;
           align-items: center;
-          font-size: 17px;
           font-weight: 500;
 
           &_active {
@@ -59,10 +58,9 @@ import MyFeedIcon from "@/assets/logos/my_feed_icon.svg?inline";
           }
 
           & .icon {
-            & > svg {
-              width: 22px;
-              height: 22px;
-            }
+            width: 22px;
+            height: 22px;
+            color: var(--grey-color);
           }
 
           & .label {

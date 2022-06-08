@@ -1,6 +1,7 @@
 <script setup>
 import { markRaw, reactive, computed, onMounted, watch } from "vue";
 import Dropdown from "../Dropdown/Dropdown.vue";
+import ChevronDown from "@/assets/logos/chevron-down_icon.svg?inline";
 import { notify } from "@kyvg/vue3-notification";
 
 // state
@@ -165,11 +166,11 @@ const selectorPageNameSortingDropdownConfig = computed(() => {
 });
 
 const pageNameSelectorClassObj = computed(() => ({
-  "v-form_pressed": state.pageNameSelectorPressed,
+  "selector_pressed v-form_pressed": state.pageNameSelectorPressed,
 }));
 
 const pageNameSortingSelectorClassObj = computed(() => ({
-  "v-form_pressed": state.pageNameSortingSelectorPressed,
+  "selector_pressed v-form_pressed": state.pageNameSortingSelectorPressed,
 }));
 
 // methods
@@ -286,9 +287,11 @@ onMounted(() => {
         <div
           class="selector v-form"
           :class="pageNameSelectorClassObj"
-          v-text="selectorPageNameLabel"
           @click="togglePageNameSelector"
-        ></div>
+        >
+          <span class="label" v-text="selectorPageNameLabel"></span>
+          <ChevronDown class="icon" />
+        </div>
         <div class="dropdown">
           <transition name="dropdown">
             <Dropdown
@@ -309,9 +312,11 @@ onMounted(() => {
         <div
           class="selector v-form"
           :class="pageNameSortingSelectorClassObj"
-          v-text="selectorFeedSortingLabel"
           @click="togglePageNameSortingSelector"
-        ></div>
+        >
+          <span class="label" v-text="selectorFeedSortingLabel"></span>
+          <ChevronDown class="icon" />
+        </div>
         <div class="dropdown">
           <transition name="dropdown">
             <Dropdown
@@ -334,15 +339,6 @@ onMounted(() => {
         </button>
       </div>
     </div>
-
-    <div class="feed-settings-block__item">
-      <div class="description">
-        <span
-          >Данные настройки применяются к ленте при каждом заходе на сайт, без
-          вручную указанных сортировок в URL-строке.</span
-        >
-      </div>
-    </div>
   </div>
 </template>
 
@@ -363,10 +359,27 @@ onMounted(() => {
 
       & .selector {
         margin-top: 12px;
-        padding: 10px 12px;
+        padding-left: 15px;
+        padding-right: 12px;
+        height: 40px;
+        display: flex;
+        align-items: center;
         border-radius: 8px;
         cursor: pointer;
         user-select: none;
+
+        &_pressed {
+          & .icon {
+            transform: rotate(180deg);
+          }
+        }
+
+        & .icon {
+          margin-left: auto;
+          width: 20px;
+          height: 20px;
+          transition: transform 0.2s;
+        }
       }
 
       & .dropdown {
@@ -397,12 +410,6 @@ onMounted(() => {
       & > .button {
         padding: 10px 15px;
       }
-    }
-
-    & .description {
-      color: var(--grey-color);
-      font-size: 16px;
-      line-height: 1.5;
     }
   }
 }

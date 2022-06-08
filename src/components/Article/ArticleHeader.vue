@@ -101,7 +101,7 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     font-size: 13px;
     grid-row: 2 span;
     grid-column: 2 / 3 span;
-    transform: translateY(2px);
+    transform: translateY(3px);
 
     & .date-created {
       color: var(--grey-color);

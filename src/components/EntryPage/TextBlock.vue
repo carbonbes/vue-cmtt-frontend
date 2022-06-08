@@ -18,7 +18,7 @@ export default {
     processed() {
       return this.text
         .replace(
-          /(\[(.+?)\])\((https?\:\/\/.+?)\)(?=\s)/g,
+          /(\[(.+?)\])\((https?\:\/\/.+?)\)/g,
           '<a href="$3" target="_blank">$2</a>'
         )
         .replace(/(?:\*)\*(.+?)\*(?:\*)/g, "<b>$1</b>")

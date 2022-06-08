@@ -295,9 +295,16 @@ export default {
       }
     },
 
-    setTitlePage() {
-      document.title =
-        this.entry.title || "Запись в подсайте " + this.entry.subsite.name;
+    setPageTitle() {
+      if (this.entry.title) {
+        document.title = this.entry.title;
+      } else if (!this.entry.title) {
+        if (this.entry.subsite.subtype === "personal_blog") {
+          document.title = "Запись в блоге " + this.entry.author.name;
+        } else {
+          document.title = "Запись в подсайте " + this.entry.subsite.name;
+        }
+      }
     },
 
     ...mapMutations(["setTemporaryHightlightComment"]),
@@ -327,13 +334,14 @@ export default {
       requestEntry(routeTo, next).then(() => {
         store.commit("connectEntryPageChannel", routeTo.params.id);
         store.commit("setIdEntryConnectedChannel", routeTo.params.id);
+        this.setPageTitle();
       });
     } else next();
   },
 
   created() {
     this.setLastView("enter");
-    this.setTitlePage();
+    this.setPageTitle();
   },
 
   unmounted() {
