@@ -1,17 +1,12 @@
 <script setup>
 import { markRaw, reactive, computed, onMounted, watch } from "vue";
-import Dropdown from "../Dropdown/Dropdown.vue";
-import ChevronDown from "@/assets/logos/chevron-down_icon.svg?inline";
+import Select from "@/components/Select/Select.vue";
 import { notify } from "@kyvg/vue3-notification";
 
 // state
 const state = reactive({
   selectedPageName: null,
   selectedPageNameSorting: null,
-  pageNameSelectorVisible: false,
-  pageNameSortingSelectorVisible: false,
-  pageNameSelectorPressed: false,
-  pageNameSortingSelectorPressed: false,
   settingsChange: false,
 });
 
@@ -165,14 +160,6 @@ const selectorPageNameSortingDropdownConfig = computed(() => {
   }
 });
 
-const pageNameSelectorClassObj = computed(() => ({
-  "selector_pressed v-form_pressed": state.pageNameSelectorPressed,
-}));
-
-const pageNameSortingSelectorClassObj = computed(() => ({
-  "selector_pressed v-form_pressed": state.pageNameSortingSelectorPressed,
-}));
-
 // methods
 const getCurrentPageName = () => {
   const pageName = localStorage.getItem("pageName");
@@ -185,9 +172,7 @@ const getCurrentPageName = () => {
 };
 const setCurrentPageName = (pageName) => {
   state.selectedPageName = pageName;
-  state.pageNameSelectorVisible = false;
   state.settingsChange = true;
-  state.pageNameSelectorPressed = false;
 };
 
 const getCurrentPageNameSorting = () => {
@@ -209,9 +194,7 @@ const getCurrentPageNameSorting = () => {
 };
 const setCurrentPageNameSorting = (pageNameSorting) => {
   state.selectedPageNameSorting = pageNameSorting;
-  state.pageNameSortingSelectorVisible = false;
   state.settingsChange = true;
-  state.pageNameSortingSelectorPressed = false;
 };
 
 const saveFeedSettings = () => {
@@ -232,24 +215,6 @@ const saveFeedSettings = () => {
   });
 
   state.settingsChange = false;
-};
-
-const togglePageNameSelector = () => {
-  state.pageNameSelectorVisible = !state.pageNameSelectorVisible;
-  state.pageNameSelectorPressed = !state.pageNameSelectorPressed;
-};
-const closePageNameSelector = () => {
-  state.pageNameSelectorVisible = false;
-  state.pageNameSelectorPressed = false;
-};
-
-const togglePageNameSortingSelector = () => {
-  state.pageNameSortingSelectorVisible = !state.pageNameSortingSelectorVisible;
-  state.pageNameSortingSelectorPressed = !state.pageNameSortingSelectorPressed;
-};
-const closePageNameSortingSelector = () => {
-  state.pageNameSortingSelectorVisible = false;
-  state.pageNameSortingSelectorPressed = false;
 };
 
 watch(
@@ -283,48 +248,15 @@ onMounted(() => {
   <div class="feed-settings-block">
     <div class="feed-settings-block__item">
       <span class="item-title">Лента по умолчанию</span>
-      <div class="item-content" v-outside-click:[true]="closePageNameSelector">
-        <div
-          class="selector v-form"
-          :class="pageNameSelectorClassObj"
-          @click="togglePageNameSelector"
-        >
-          <span class="label" v-text="selectorPageNameLabel"></span>
-          <ChevronDown class="icon" />
-        </div>
-        <div class="dropdown">
-          <transition name="dropdown">
-            <Dropdown
-              :data="selectorPageNameDropdownConfig"
-              v-if="state.pageNameSelectorVisible"
-            />
-          </transition>
-        </div>
+      <div class="item-content">
+        <Select :settings="selectorPageNameDropdownConfig" />
       </div>
     </div>
 
     <div class="feed-settings-block__item">
       <span class="item-title">Сортировка ленты по умолчанию</span>
-      <div
-        class="item-content"
-        v-outside-click:[true]="closePageNameSortingSelector"
-      >
-        <div
-          class="selector v-form"
-          :class="pageNameSortingSelectorClassObj"
-          @click="togglePageNameSortingSelector"
-        >
-          <span class="label" v-text="selectorFeedSortingLabel"></span>
-          <ChevronDown class="icon" />
-        </div>
-        <div class="dropdown">
-          <transition name="dropdown">
-            <Dropdown
-              :data="selectorPageNameSortingDropdownConfig"
-              v-if="state.pageNameSortingSelectorVisible"
-            />
-          </transition>
-        </div>
+      <div class="item-content">
+        <Select :settings="selectorPageNameSortingDropdownConfig" />
       </div>
     </div>
 
@@ -355,52 +287,8 @@ onMounted(() => {
     }
 
     & .item-content {
-      position: relative;
-
-      & .selector {
+      & .select-component {
         margin-top: 12px;
-        padding-left: 15px;
-        padding-right: 12px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        border-radius: 8px;
-        cursor: pointer;
-        user-select: none;
-
-        &_pressed {
-          & .icon {
-            transform: rotate(180deg);
-          }
-        }
-
-        & .icon {
-          margin-left: auto;
-          width: 20px;
-          height: 20px;
-          transition: transform 0.2s;
-        }
-      }
-
-      & .dropdown {
-        position: absolute;
-        width: 100%;
-        z-index: 1;
-
-        &-enter-active,
-        &-leave-active {
-          transition: all 100ms;
-        }
-
-        &-enter-from,
-        &-leave-to {
-          transform: translateY(-3px);
-          opacity: 0;
-        }
-
-        & > .dropdown-component {
-          margin-top: 7px;
-        }
       }
     }
 
