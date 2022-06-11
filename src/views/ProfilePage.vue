@@ -29,7 +29,7 @@
                 v-if="subsiteSubs"
               ></div>
             </div>
-            <div class="subsite__stat">
+            <div class="subsite__stat" v-if="isUser">
               На проекте с {{ subsiteDateCreated }}
             </div>
           </div>
@@ -80,14 +80,14 @@ function requestProfile(routeTo, routeFrom, next) {
       id: routeTo.params.id,
     }),
 
-    (routeTo.path == `/u/${routeTo.params.id}` ||
-      routeTo.path == `/u/${routeTo.params.id}/entries`) &&
+    (routeTo.path === `/u/${routeTo.params.id}` ||
+      routeTo.path === `/u/${routeTo.params.id}/entries`) &&
       rootStore.dispatch("requestProfileEntries", {
         params: { subsitesIds: routeTo.params.id },
         clearEntries: !routeFrom.params.id !== routeTo.params.id,
       }),
 
-    routeTo.path == `/u/${routeTo.params.id}/comments` &&
+    routeTo.path === `/u/${routeTo.params.id}/comments` &&
       rootStore.dispatch("requestProfileComments", {
         params: { subsiteId: routeTo.params.id },
         clearComments: !routeFrom.params.id !== routeTo.params.id,
@@ -142,7 +142,6 @@ function requestProfileComments(routeTo, routeFrom, next) {
 export default {
   setup() {
     const store = useStore();
-
     const state = reactive({
       subsWords: ["подписчик", "подписчика", "подписчиков"],
       months: [
@@ -160,9 +159,8 @@ export default {
         "дек",
       ],
     });
-
     const profile = computed(() => store.getters.profile);
-
+    const isUser = computed(() => profile.value.subtype === "personal_blog");
     const coverStyleObj = computed(() => {
       if (profile.value.cover) {
         return {
@@ -170,19 +168,15 @@ export default {
         };
       }
     });
-
     const subsiteAvatar = computed(() => ({
       "background-image": `url(https://leonardo.osnova.io/${profile.value.avatar.data.uuid}/-/scale_crop/300x300/-/format/webp/)`,
     }));
-
     const subsiteName = computed(() => {
       return profile.value.name;
     });
-
     const subsiteDescription = computed(() => {
       return profile.value.description;
     });
-
     const subsiteRating = computed(() => {
       if (profile.value.rating) {
         if (profile.value.rating > 0) {
@@ -193,44 +187,36 @@ export default {
           let subsiteRatingFormatted = profile.value.rating
             .toString()
             .replace(/\-/g, "");
-
           return "−" + numberWithSpaces(subsiteRatingFormatted);
         }
       }
     });
-
     const subsiteRatingClassObj = computed(() => ({
       rating_positive: profile.value.rating > 0,
       rating_neutral: profile.value.rating === 0,
       rating_negative: profile.value.rating < 0,
     }));
-
     const subsiteSubs = computed(() => {
       if (profile.value.counters.subscribers) {
         let subsiteSubsWithSpaces = numberWithSpaces(
           profile.value.counters.subscribers
         );
-
         let subsiteSubsWordDecl = declensionWords(
           profile.value.counters.subscribers,
           state.subsWords
         );
-
         return subsiteSubsWithSpaces + " " + subsiteSubsWordDecl;
       }
     });
-
     const subsiteDateCreated = computed(() => {
       let dateCreatedFormatted = new Date(profile.value.created * 1000);
-
       let day = dateCreatedFormatted.getDate();
       let month = dateCreatedFormatted.getMonth();
       let year = dateCreatedFormatted.getFullYear();
-
       return `${day} ${state.months[month]} ${year}`;
     });
-
     return {
+      isUser,
       coverStyleObj,
       subsiteAvatar,
       subsiteName,
@@ -262,14 +248,14 @@ export default {
 
     if (
       routeFrom.params.id === routeTo.params.id &&
-      routeTo.path == `/u/${routeTo.params.id}/entries`
+      routeTo.path === `/u/${routeTo.params.id}/entries`
     ) {
       requestProfileEntries(routeTo, routeFrom, next);
     }
 
     if (
       routeFrom.params.id === routeTo.params.id &&
-      routeTo.path == `/u/${routeTo.params.id}/comments`
+      routeTo.path === `/u/${routeTo.params.id}/comments`
     ) {
       requestProfileComments(routeTo, routeFrom, next);
     }
@@ -319,13 +305,7 @@ export default {
           background-color: #dedede;
           background-size: cover;
           background-repeat: no-repeat;
-          background-position: 50% 50%;
-
-          &::before {
-            content: "";
-            display: block;
-            padding-top: 32.8125%;
-          }
+          background-position: 50% 0%;
 
           & + .subsite__avatar {
             margin-top: -88px;
@@ -516,9 +496,17 @@ export default {
     margin: 0 auto;
 
     & .pp-content {
+      grid-template-columns: 1fr;
+
       & .content-subsite {
         & .subsite {
           &__cover {
+            &::before {
+              content: "";
+              display: block;
+              padding-top: 32.8125%;
+            }
+
             & + .subsite__avatar {
               margin-top: -52px;
             }

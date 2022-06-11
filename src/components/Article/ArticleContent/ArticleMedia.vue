@@ -31,7 +31,7 @@
     />
   </div>
 
-  <div class="media" v-if="!isImage && isGallery">
+  <div class="media" v-if="isGallery">
     <GalleryComponent :srcImages="props.media.data.items" type="entry" />
   </div>
 </template>

@@ -1,6 +1,4 @@
 import { API_v2 } from "../../api/API_v2";
-import store from "../index";
-import { notify } from "@kyvg/vue3-notification";
 
 const profilePageModule = {
   state: () => ({

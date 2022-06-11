@@ -22,7 +22,6 @@ const routes = [
     path: "/u/:id(\\d+)",
     name: "ProfilePage",
     component: ProfilePage,
-    alias: "/s/:id(\\d+)",
     children: [
       {
         path: "entries",
