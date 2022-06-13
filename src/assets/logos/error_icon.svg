@@ -1,0 +1,15 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://www.w3.org/2000/svg" data-v-061c6868="" height="24" width="24">
+  <defs>
+    <symbol fill="none" viewBox="0 0 24 24" id="v_cancel">
+      <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" fill="#F01"></path>
+      <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" fill="#fff" fill-opacity=".2"></path>
+      <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" fill="#000" fill-opacity=".1"></path>
+      <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="#F01" stroke-width="1.995" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="#fff" stroke-opacity=".2" stroke-width="1.995" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M12 21a9 9 0 100-18 9 9 0 000 18z" stroke="#000" stroke-opacity=".1" stroke-width="1.995" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M14.828 14.828L9.172 9.172m0 5.656l5.656-5.656" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </symbol>
+  </defs>
+  <use xlink:href="#v_cancel"></use>
+</svg>
