@@ -185,8 +185,8 @@ function requestEntry(routeTo, next) {
       store.commit("closeStartScreen");
       next(false);
       notify({
-        title: "Ошибка " + error.response.data.error.code,
         type: "error",
+        title: "Ошибка " + error.response.data.error.code,
         text: error.response.data.message,
       });
     });
@@ -360,10 +360,8 @@ export default {
 }
 
 .entry-page {
-  --vertical-max-width: 55%;
-
   color: var(--black-color);
-  background: var(--entry-bg-color);
+  background: var(--island-bg);
   border-radius: 0 0 8px 8px;
 }
 
@@ -376,19 +374,19 @@ export default {
   margin: 0 auto;
   max-width: 640px;
 
-  & .article-title {
+  .article-title {
     font-size: 22px;
     font-weight: 500;
     line-height: 30px;
 
-    & .editorial-icon {
-      & .icon {
+    .editorial-icon {
+      .icon {
         margin-left: 4px;
       }
     }
   }
 
-  & + .entry-page__img-block,
+  + .entry-page__img-block,
   + .entry-page__video-block,
   + .ep-island {
     margin-top: 15px;
@@ -411,7 +409,7 @@ export default {
     margin-bottom: 15px;
   }
 
-  & + .entry-page__video-block {
+  + .entry-page__video-block {
     margin-top: 12px;
   }
 }
@@ -423,7 +421,7 @@ export default {
 
   margin: 30px 0;
   color: var(--black-color);
-  background: var(--entry-bg-color);
+  background: var(--island-bg);
   border-radius: 8px;
 
   &-header {
@@ -433,7 +431,7 @@ export default {
     padding-bottom: var(--header-pb);
     max-width: 640px;
 
-    & .comments-count {
+    .comments-count {
       font-size: var(--header-label-fs);
       line-height: 1.4em;
       font-weight: 500;
@@ -449,12 +447,12 @@ export default {
     padding-bottom: 30px;
     max-width: 640px;
 
-    & .entry-page__comment:first-child {
+    .entry-page__comment:first-child {
       margin-top: 0;
     }
   }
 
-  & .pseudo-reply-form {
+  .pseudo-reply-form {
     padding: 0 17px;
     height: 48px;
     border-radius: 10px;
@@ -494,13 +492,13 @@ export default {
   z-index: 1;
 
   &:hover {
-    background-color: var(--entry-bg-color);
+    background-color: var(--island-bg);
     border: 1px solid var(--form-border-color-hover);
     box-shadow: var(--form-shadow);
   }
 
   &_focused {
-    background-color: var(--entry-bg-color);
+    background-color: var(--island-bg);
     border: 1px solid var(--form-border-color-active) !important;
     box-shadow: var(--form-shadow);
     transition: border 0.2s;
@@ -513,14 +511,14 @@ export default {
   }
 
   &_filled {
-    background-color: var(--entry-bg-color);
+    background-color: var(--island-bg);
   }
 
   &__content {
     position: relative;
   }
 
-  & .attachments {
+  .attachments {
     padding-top: 25px;
     display: flex;
     flex-direction: row;
@@ -532,14 +530,14 @@ export default {
         margin-left: 20px;
       }
 
-      & .attachment {
+      .attachment {
         width: var(--attachment-item-size);
         height: var(--attachment-item-size);
         border-radius: 8px;
         box-shadow: var(--border-a);
         overflow: hidden;
 
-        & img {
+        img {
           width: 100%;
           height: 100%;
           display: block;
@@ -547,7 +545,7 @@ export default {
         }
       }
 
-      & .delete-btn {
+      .delete-btn {
         position: absolute;
         top: -7px;
         right: -7px;
@@ -556,12 +554,12 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--dropdown-bg-color);
+        background: var(--dropdown-bg);
         border-radius: 50%;
         box-shadow: var(--border-a);
         cursor: pointer;
 
-        & .icon {
+        .icon {
           color: red;
           width: 18px;
           height: 18px;
@@ -582,7 +580,7 @@ export default {
     user-select: auto;
   }
 
-  & .placeholder {
+  .placeholder {
     position: absolute;
     top: 0;
     left: 0;
@@ -595,11 +593,11 @@ export default {
     margin-top: 12px;
     display: flex;
 
-    & .attaches-actions {
+    .attaches-actions {
       display: flex;
       align-items: center;
 
-      & .media-attach-btn {
+      .media-attach-btn {
         width: 20px;
         height: 20px;
         display: flex;
@@ -613,10 +611,10 @@ export default {
         }
       }
 
-      & .attachments-loader {
+      .attachments-loader {
         margin-left: 15px;
 
-        & .custom-loader {
+        .custom-loader {
           &__loader-1,
           &__loader-2,
           &__loader-3 {
@@ -625,29 +623,29 @@ export default {
         }
       }
 
-      & .media-attach-input-hidden {
+      .media-attach-input-hidden {
         display: none;
       }
     }
 
-    & .reply-actions {
+    .reply-actions {
       margin-left: auto;
       display: flex;
       align-items: center;
 
-      & .cancel-btn {
+      .cancel-btn {
         margin-right: 15px;
         color: var(--grey-color);
         cursor: pointer;
       }
 
-      & .button {
+      .button {
         min-width: 100px;
         height: 40px;
         display: flex;
         align-items: center;
 
-        & .custom-loader {
+        .custom-loader {
           &__loader-1,
           &__loader-2,
           &__loader-3 {
@@ -662,18 +660,18 @@ export default {
 .ep-island {
   max-width: 640px;
 
-  & + .entry-page__video-block {
+  + .entry-page__video-block {
     margin-top: 15px;
   }
 }
 
 @media (hover: hover) {
   .reply-form {
-    & .attachments {
+    .attachments {
       &__item {
-        & .delete-btn {
+        .delete-btn {
           &:hover {
-            & .icon {
+            .icon {
               opacity: 0.5;
             }
           }

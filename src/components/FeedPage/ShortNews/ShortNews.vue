@@ -71,7 +71,7 @@ const requestNextPage = () => {
     margin-top: 15px;
     margin-bottom: 30px;
     color: var(--black-color);
-    background: var(--entry-bg-color);
+    background: var(--island-bg);
     font-size: 17px;
     line-height: 26px;
     border-radius: var(--b-rad);
@@ -80,11 +80,11 @@ const requestNextPage = () => {
       height: 250px;
     }
 
-    & > .loader {
+    > .loader {
       top: 0;
       padding: 125px 0;
 
-      & .custom-loader {
+      .custom-loader {
         &__loader-1,
         &__loader-2,
         &__loader-3 {
@@ -93,7 +93,7 @@ const requestNextPage = () => {
       }
     }
 
-    & .news-content {
+    .news-content {
       position: relative;
       padding: 20px;
 
@@ -102,12 +102,12 @@ const requestNextPage = () => {
           margin-top: 10px;
         }
 
-        & .link {
+        .link {
           margin-right: 7px;
           line-height: 26px;
         }
 
-        & .comments-count {
+        .comments-count {
           display: inline-flex;
           align-items: center;
           color: var(--grey-color);
@@ -115,12 +115,12 @@ const requestNextPage = () => {
           line-height: 16px;
           vertical-align: middle;
 
-          & > .icon {
+          > .icon {
             width: 16px;
             height: 16px;
           }
 
-          & > .count {
+          > .count {
             margin-left: 3px;
             font-size: 13px;
             font-weight: 500;
@@ -128,23 +128,23 @@ const requestNextPage = () => {
         }
       }
 
-      & .show-more-btn {
+      .show-more-btn {
         margin-top: 10px;
         display: inline-block;
         color: var(--blue-color);
         cursor: pointer;
 
-        & > .label {
+        > .label {
           font-size: 16px;
           font-weight: 500;
         }
 
-        & > .loader {
+        > .loader {
           position: relative;
           margin-top: 10px;
           line-height: 26px;
 
-          & .custom-loader {
+          .custom-loader {
             margin: 0;
 
             &__loader-1,
@@ -162,17 +162,17 @@ const requestNextPage = () => {
 @media (hover: hover) {
   .feed-page {
     &__short-news {
-      & .news-content {
+      .news-content {
         &__item {
-          & .link,
-          & .comments-count {
+          .link,
+          .comments-count {
             &:hover {
               color: var(--blue-color);
             }
           }
         }
 
-        & .show-more-btn {
+        .show-more-btn {
           &:hover {
             color: var(--red-color);
           }

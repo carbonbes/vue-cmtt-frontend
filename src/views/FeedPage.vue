@@ -373,26 +373,26 @@ export default {
     margin-top: 15px;
     margin-bottom: 15px;
 
-    & .feed-page__sorting-selector {
+    .feed-page__sorting-selector {
       position: relative;
       margin-left: 15px;
       display: inline-block;
       color: var(--black-color);
       user-select: none;
 
-      & .selector-btn {
+      .selector-btn {
         display: flex;
         align-items: center;
         cursor: pointer;
       }
 
-      & .icon {
+      .icon {
         margin-left: 3px;
         width: 16px;
         height: 16px;
       }
 
-      & .selector__dropdown {
+      .selector__dropdown {
         position: absolute;
         top: 100%;
         margin-top: 5px;
@@ -419,11 +419,11 @@ export default {
   margin-right: auto;
   max-width: 640px;
 
-  & .article-component,
+  .article-component,
   .feed-loader {
     margin-bottom: 30px;
 
-    & .custom-loader {
+    .custom-loader {
       &__loader-1,
       &__loader-2,
       &__loader-3 {

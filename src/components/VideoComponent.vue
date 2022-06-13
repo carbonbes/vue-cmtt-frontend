@@ -34,6 +34,7 @@
               ? srcVideo
               : `https://leonardo.osnova.io/${srcVideo}/-/format/mp4/`
           "
+          :type="this.contentType"
         />
       </video>
 
@@ -140,6 +141,7 @@ export default {
     externalService: Object,
     embedCover: String,
     type: String,
+    contentType: String,
   },
 
   data() {

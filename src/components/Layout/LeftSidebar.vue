@@ -212,15 +212,15 @@ onBeforeUnmount(() => {
 }
 
 .left-sidebar__link {
-  & .icon {
+  .icon {
     margin-right: 12px;
     color: var(--grey-color);
   }
 
   &_active {
-    background: var(--active-item-color) !important;
+    background: var(--left-sidebar-link-active-bg) !important;
 
-    & .icon {
+    .icon {
       color: var(--brand-color);
     }
   }
@@ -231,10 +231,10 @@ onBeforeUnmount(() => {
   align-items: center;
   cursor: pointer;
 
-  & > .theme-toggle-btn {
+  .theme-toggle-btn {
     padding: 0 15px;
 
-    & .icon {
+    .icon {
       width: 30px;
       height: 26px;
       color: var(--black-color);
@@ -250,9 +250,9 @@ onBeforeUnmount(() => {
     width: 80%;
     max-width: 300px;
     height: 100%;
-    background: var(--sidebar-bg-color);
+    background: var(--sidebar-bg);
 
-    & .sidebar {
+    .sidebar {
       height: 100%;
     }
   }
@@ -265,11 +265,11 @@ onBeforeUnmount(() => {
   .left-sidebar__item {
     display: flex;
 
-    & > .site-burger-btn,
-    & > .site-logo {
+    .site-burger-btn,
+    .site-logo {
       display: flex;
 
-      & .icon {
+      .icon {
         margin-left: 20px;
         align-self: center;
         color: var(--black-color);
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
     top: 0;
     width: 100vw;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(3px);
     z-index: 1;
   }
@@ -302,8 +302,8 @@ onBeforeUnmount(() => {
 
 @media (max-width: 769px) {
   .left-sidebar__item {
-    & > .site-burger-btn {
-      & .icon {
+    .site-burger-btn {
+      .icon {
         margin-left: 15px;
       }
     }
@@ -312,12 +312,12 @@ onBeforeUnmount(() => {
 
 @media (hover: hover) {
   .left-sidebar__link:hover {
-    background: var(--left-sidebar-link-hover-color);
+    background: var(--left-sidebar-link-hover-bg);
   }
 
   .left-sidebar__item.theme-toggle-btn {
     &:hover {
-      & .icon {
+      .icon {
         color: var(--brand-color);
       }
     }

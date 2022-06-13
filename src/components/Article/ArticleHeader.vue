@@ -58,9 +58,9 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
 .article-component__header {
   display: grid;
   grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(auto-fill, minmax(0px, auto));
+  grid-template-columns: repeat(3, minmax(0, max-content));
 
-  & .subsite-avatar {
+  .subsite-avatar {
     margin-right: 10px;
     width: 32px;
     height: 32px;
@@ -69,9 +69,10 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     background-size: cover;
     background-repeat: no-repeat;
     grid-row: 2 span;
+    grid-column: 1 span;
   }
 
-  & .subsite-name {
+  .subsite-name {
     min-width: 0;
     max-width: max-content;
     flex: 1;
@@ -82,9 +83,10 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     text-overflow: ellipsis;
     white-space: nowrap;
     grid-row: 1 span;
+    grid-column: 2 span;
   }
 
-  & .author-name {
+  .author-name {
     margin-right: 12px;
     min-width: 0;
     max-width: max-content;
@@ -95,15 +97,15 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     grid-row: 1 span;
   }
 
-  & .details {
+  .details {
     display: flex;
     align-self: flex-end;
     font-size: 13px;
     grid-row: 2 span;
-    grid-column: 2 / 3 span;
-    transform: translateY(3px);
+    grid-column: 2 span;
+    transform: translateY(2px);
 
-    & .date-created {
+    .date-created {
       color: var(--grey-color);
     }
   }
@@ -121,7 +123,7 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
 
     .subsite-avatar {
       &:hover {
-        & ~ .subsite-name {
+        ~ .subsite-name {
           color: var(--blue-color);
         }
       }

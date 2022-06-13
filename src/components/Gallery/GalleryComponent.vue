@@ -114,7 +114,7 @@ onUnmounted(() => {
 .gallery {
   display: grid;
   grid-gap: 4px;
-  background: var(--bg-color);
+  background: var(--main-bg);
 
   &__item {
     cursor: zoom-in;
@@ -138,7 +138,7 @@ onUnmounted(() => {
       }
     }
 
-    & img {
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -150,7 +150,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: var(--g2-t-rows-height);
 
-    & .gallery__item {
+    .gallery__item {
       grid-column: 1 span;
       grid-row: 1 span;
     }
@@ -161,7 +161,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, var(--g3-t-rows-height));
 
-    & .gallery__item {
+    .gallery__item {
       grid-column: 2 span;
       grid-row: 1 span;
 
@@ -176,7 +176,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 150px);
 
-    & .gallery__item {
+    .gallery__item {
       &:first-child {
         grid-column: 2 span;
         grid-row: 3 span;
@@ -189,7 +189,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, var(--g5-t-rows-height));
 
-    & .gallery__item {
+    .gallery__item {
       grid-column: 2 span;
 
       &:first-child {

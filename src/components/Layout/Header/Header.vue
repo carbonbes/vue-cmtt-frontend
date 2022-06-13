@@ -204,7 +204,7 @@ export default {
   width: 100%;
   height: 60px;
   display: flex;
-  background: var(--header-bg-color);
+  background: var(--header-bg);
   z-index: 4;
 
   &__item {
@@ -212,65 +212,65 @@ export default {
     display: flex;
     flex-shrink: 0;
 
-    & > .burger-btn {
+    > .burger-btn {
       padding-left: 20px;
       display: flex;
       align-items: center;
       cursor: pointer;
     }
 
-    & > .logo-btn {
+    > .logo-btn {
       padding-left: 20px;
       display: flex;
       align-items: center;
       user-select: none;
     }
 
-    & > .theme-toggle-btn,
-    & > .bell-btn,
-    & > .login-btn,
-    & > .profile {
+    > .theme-toggle-btn,
+    > .bell-btn,
+    > .login-btn,
+    > .profile {
       display: flex;
     }
 
-    & > .theme-toggle-btn,
-    & > .bell-btn,
-    & > .login-btn {
+    > .theme-toggle-btn,
+    > .bell-btn,
+    > .login-btn {
       padding: 0 17px;
       cursor: pointer;
 
-      & .icon {
+      .icon {
         align-self: center;
       }
     }
 
-    & > .theme-toggle-btn .icon,
-    & > .bell-btn .icon,
-    & > .profile .actions .dropdown-toggle-btn .icon,
-    & > .burger-btn .icon,
-    & > .login-btn .icon {
+    > .theme-toggle-btn .icon,
+    > .bell-btn .icon,
+    > .profile .actions .dropdown-toggle-btn .icon,
+    > .burger-btn .icon,
+    > .login-btn .icon {
       color: var(--black-color);
     }
 
-    & > .bell-btn,
-    & > .login-btn {
-      & .icon {
+    > .bell-btn,
+    > .login-btn {
+      .icon {
         width: 28px;
         height: 28px;
       }
     }
 
-    & > .bell-btn {
+    > .bell-btn {
       position: relative;
 
       &_pressed {
-        & .icon {
+        .icon {
           color: var(--brand-color);
           transform: rotate(10deg);
         }
       }
 
-      & .badge {
+      .badge {
         position: absolute;
         top: 15%;
         left: 50%;
@@ -286,16 +286,16 @@ export default {
       }
     }
 
-    & > .login-btn {
+    > .login-btn {
       padding-right: 30px;
     }
 
-    & > .profile {
-      & .avatar-link {
+    > .profile {
+      .avatar-link {
         display: flex;
         cursor: pointer;
 
-        & .avatar-img {
+        .avatar-img {
           margin-left: 17px;
           width: 40px;
           height: 40px;
@@ -308,16 +308,16 @@ export default {
         }
       }
 
-      & .actions {
+      .actions {
         display: flex;
         cursor: pointer;
 
-        & .dropdown-toggle-btn {
+        .dropdown-toggle-btn {
           padding-right: 30px;
           padding-left: 5px;
           display: flex;
 
-          & .icon {
+          .icon {
             width: 20px;
             height: 20px;
             align-self: center;
@@ -326,7 +326,7 @@ export default {
       }
     }
 
-    & .dropdown {
+    .dropdown {
       --right-gap: 20px;
 
       position: fixed;
@@ -352,33 +352,33 @@ export default {
   .header {
     &__item {
       &:hover {
-        & .burger-btn,
-        & .logo-btn {
+        .burger-btn,
+        .logo-btn {
           opacity: 0.7;
         }
 
-        & .theme-toggle-btn,
-        & .bell-btn,
-        & .login-btn {
-          & .icon {
+        .theme-toggle-btn,
+        .bell-btn,
+        .login-btn {
+          .icon {
             color: var(--brand-color);
           }
         }
       }
 
-      & > .profile {
-        & .avatar-link {
+      > .profile {
+        .avatar-link {
           &:hover {
-            & .avatar-img {
+            .avatar-img {
               opacity: 0.8;
             }
           }
         }
 
-        & .actions {
+        .actions {
           &:hover {
-            & .dropdown-toggle-btn {
-              & .icon {
+            .dropdown-toggle-btn {
+              .icon {
                 opacity: 0.7;
               }
             }
@@ -392,11 +392,11 @@ export default {
 @media screen and (max-width: 768px) {
   .header {
     &__item {
-      & > .burger-btn {
+      > .burger-btn {
         padding-left: 15px;
       }
 
-      & > .theme-toggle-btn {
+      > .theme-toggle-btn {
         display: none;
       }
 
@@ -404,31 +404,31 @@ export default {
         position: unset;
       }
 
-      & > .bell-btn {
+      > .bell-btn {
         padding: 0 10px;
       }
 
-      & > .profile {
-        & .avatar-link {
+      > .profile {
+        .avatar-link {
           &_without-action {
             display: none;
           }
 
-          & .avatar-img {
+          .avatar-img {
             margin-right: 15px;
           }
         }
 
-        & .actions {
+        .actions {
           display: none;
         }
       }
 
-      & .dropdown {
+      .dropdown {
         --right-gap: 15px;
 
-        & > .dropdown-component {
-          & .profile-link {
+        > .dropdown-component {
+          .profile-link {
             display: flex;
           }
         }
@@ -440,8 +440,8 @@ export default {
 @media (min-width: 769px) {
   .header {
     &__item {
-      & > .profile {
-        & .avatar-link {
+      > .profile {
+        .avatar-link {
           &.avatar-link_with-action {
             display: none;
           }

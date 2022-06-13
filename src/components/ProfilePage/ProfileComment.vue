@@ -69,25 +69,25 @@ const commentText = computed(() => props.comment.text);
 <style lang="scss">
 .profile__comment {
   padding: 15px 20px;
-  background: var(--entry-bg-color);
+  background: var(--island-bg);
   border-radius: 8px;
 
-  & .comment-header {
+  .comment-header {
     margin-bottom: 15px;
 
-    & .entry-title {
+    .entry-title {
       font-size: 15px;
       line-height: 22px;
       font-weight: 700;
     }
   }
 
-  & .comment-content {
+  .comment-content {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
 
-    & .comment-author {
+    .comment-author {
       display: flex;
       align-items: center;
 
@@ -108,17 +108,17 @@ const commentText = computed(() => props.comment.text);
       }
     }
 
-    & .comment-date {
+    .comment-date {
       margin-left: 13px;
 
-      & .date-time {
+      .date-time {
         color: var(--grey-color);
         font-size: 13px;
         line-height: 20px;
       }
     }
 
-    & .comment-text {
+    .comment-text {
       padding: 10px 0;
       font-size: 15px;
       line-height: 22px;
@@ -128,8 +128,8 @@ const commentText = computed(() => props.comment.text);
     }
   }
 
-  & .comment-footer {
-    & .reply-btn {
+  .comment-footer {
+    .reply-btn {
       color: var(--grey-color);
       font-size: 15px;
     }
@@ -138,17 +138,17 @@ const commentText = computed(() => props.comment.text);
 
 @media (hover: hover) {
   .profile__comment {
-    & .comment-header {
-      & .entry-title {
+    .comment-header {
+      .entry-title {
         &:hover {
           color: var(--blue-color);
         }
       }
     }
 
-    & .comment-content {
-      & .comment-date {
-        & .date-time {
+    .comment-content {
+      .comment-date {
+        .date-time {
           &:hover {
             color: var(--blue-color);
           }
@@ -156,8 +156,8 @@ const commentText = computed(() => props.comment.text);
       }
     }
 
-    & .comment-footer {
-      & .reply-btn {
+    .comment-footer {
+      .reply-btn {
         &:hover {
           color: var(--blue-color);
         }

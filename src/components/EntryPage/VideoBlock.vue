@@ -82,7 +82,7 @@ export default {
   &_wide {
     width: 100%;
 
-    & > div {
+    > div {
       margin-left: auto;
       margin-right: auto;
     }
@@ -94,15 +94,15 @@ export default {
     margin-right: auto;
     padding: 15px 30px;
     max-width: 640px;
-    background: var(--entry-block-highlight);
+    background: var(--article-cover-bg);
 
-    & > div {
+    > div {
       margin: 0 auto;
       max-width: var(--vertical-max-width);
     }
   }
 
-  & + .entry-page__video-block {
+  + .entry-page__video-block {
     margin-top: 7px;
   }
 }

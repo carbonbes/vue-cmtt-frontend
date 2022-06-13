@@ -3,6 +3,14 @@ const path = require("path");
 module.exports = {
   runtimeCompiler: true,
 
+  css: {
+    loaderOptions: {
+      scss: {
+        data: `@use "sass:color";@import "~@/variables.scss";@import "~@/mixins.scss";`,
+      },
+    },
+  },
+
   devServer: {
     open: true,
     proxy: {

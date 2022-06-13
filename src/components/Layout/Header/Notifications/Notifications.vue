@@ -152,24 +152,24 @@ onUnmounted(() => {
   margin-top: var(--mt);
   width: var(--width);
   color: var(--black-color);
-  background: var(--dropdown-bg-color);
+  background: var(--dropdown-bg);
   box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
   border-radius: var(--bradius);
 
-  & .notifications-header {
+  .notifications-header {
     padding: 15px 20px;
 
-    & .label {
+    .label {
       font-weight: 500;
     }
   }
 
-  & .delimiter {
+  .delimiter {
     margin: 0 20px;
     border-bottom: 1px solid var(--branch-color);
   }
 
-  & .notifications-content {
+  .notifications-content {
     max-height: 450px;
     overflow: auto !important;
     overflow-y: scroll;
@@ -181,7 +181,7 @@ onUnmounted(() => {
 
     scrollbar-width: none;
 
-    & .new-notifications-btn {
+    .new-notifications-btn {
       position: sticky;
       top: 0;
       padding: 15px;
@@ -194,18 +194,18 @@ onUnmounted(() => {
       z-index: 2;
     }
 
-    & .ps {
+    .ps {
       &__rail-y {
         width: 0;
         z-index: 3;
 
-        & .pc--clicking {
+        .pc--clicking {
           background-color: unset;
         }
       }
 
       &__thumb-y {
-        background-color: var(--dropdown-scrollbar-thumb-color);
+        background-color: var(--dropdown-scrollbar-thumb-bg);
       }
     }
 
@@ -220,7 +220,7 @@ onUnmounted(() => {
       display: flex;
       align-items: center;
 
-      & .custom-loader {
+      .custom-loader {
         &__loader-1,
         &__loader-2,
         &__loader-3 {
@@ -232,7 +232,7 @@ onUnmounted(() => {
     &__loader {
       padding: 20px;
 
-      & .custom-loader {
+      .custom-loader {
         &__loader-1,
         &__loader-2,
         &__loader-3 {
@@ -253,13 +253,13 @@ onUnmounted(() => {
         padding: 15px 20px;
       }
 
-      & .item__avatar {
+      .item__avatar {
         position: relative;
         margin-right: 12px;
         width: var(--avatar-size);
         height: var(--avatar-size);
 
-        & .avatar {
+        .avatar {
           min-width: var(--avatar-size);
           min-height: var(--avatar-size);
           width: var(--avatar-size);
@@ -269,7 +269,7 @@ onUnmounted(() => {
           box-shadow: var(--box-shadow-avatar);
         }
 
-        & .icon {
+        .icon {
           position: absolute;
           top: 65%;
           right: -2px;
@@ -284,7 +284,7 @@ onUnmounted(() => {
           &_other {
             background: #66a6ed;
 
-            & svg {
+            svg {
               width: 8px;
               height: 8px;
             }
@@ -293,7 +293,7 @@ onUnmounted(() => {
           &_subscribe {
             background: #66a6ed;
 
-            & svg {
+            svg {
               width: 11px;
               height: 12px;
             }
@@ -302,7 +302,7 @@ onUnmounted(() => {
           &_like {
             background: #45c045;
 
-            & svg {
+            svg {
               width: 16px;
               height: 11px;
             }
@@ -311,7 +311,7 @@ onUnmounted(() => {
           &_dislike {
             background: #ff4759;
 
-            & svg {
+            svg {
               width: 16px;
               height: 11px;
               transform: rotate(180deg);
@@ -320,27 +320,27 @@ onUnmounted(() => {
         }
       }
 
-      & .item__content {
-        & a {
+      .item__content {
+        a {
           position: relative;
           z-index: 1;
           &:hover {
             color: var(--blue-color);
           }
 
-          & b {
+          b {
             font-weight: 500;
           }
         }
 
-        & .date-time {
+        .date-time {
           display: inline-block;
           color: var(--grey-color);
           font-size: 13px;
         }
       }
 
-      & .item__url {
+      .item__url {
         position: absolute;
         top: 0;
         left: 0;
@@ -364,20 +364,20 @@ onUnmounted(() => {
 
 @media (hover: hover) {
   .header__notifications {
-    & .notifications-content {
+    .notifications-content {
       &__item {
         &:hover {
-          background: var(--dropdown-item-hover-bg-color);
+          background: var(--dropdown-item-hover-bg);
         }
       }
 
-      & .ps {
+      .ps {
         &__rail-y {
           &:hover {
             width: unset;
             background-color: unset;
 
-            & > .ps__thumb-y {
+            > .ps__thumb-y {
               width: 6px;
             }
           }

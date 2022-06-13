@@ -46,6 +46,7 @@
           :maxHeight="600"
           :embedCover="videoCover"
           type="embed"
+          :contentType="videoContentType"
         />
       </div>
     </div>
@@ -143,6 +144,12 @@ export default {
         (this.media && this.media[0].type === "animated_gif")
       ) {
         return this.media[0].sizes.large.h;
+      }
+    },
+
+    videoContentType() {
+      if (this.media && this.media[0].type === "video") {
+        return this.media[0].video_info.variants[0].content_type;
       }
     },
   },

@@ -74,16 +74,16 @@ export default {
     margin-top: 0;
   }
 
-  & .image {
+  .image {
     &_wide {
       width: 100%;
     }
 
     &_vertical {
       padding: 8px 30px;
-      background: var(--entry-block-highlight);
+      background: var(--article-cover-bg);
 
-      & > div {
+      > div {
         margin: 0 auto;
         max-width: var(--vertical-max-width) !important;
       }
@@ -92,9 +92,9 @@ export default {
     &_thin {
       padding: 8px 30px;
       max-width: 640px;
-      background: var(--entry-block-highlight);
+      background: var(--article-cover-bg);
 
-      & > div {
+      > div {
         margin: 0 auto;
         max-width: var(--vertical-max-width);
       }

@@ -52,7 +52,6 @@ export default {
   padding: 11px 16px;
   display: flex;
   flex-flow: row;
-  background: var(--link-block-bg-color);
   border: 1px solid var(--embed-border-color);
   border-radius: 6px;
   z-index: 1;
@@ -84,7 +83,7 @@ export default {
   justify-content: flex-end;
   flex-grow: 1;
 
-  & img {
+  img {
     width: 64px;
     height: 64px;
     border-radius: 2px;
@@ -98,7 +97,7 @@ export default {
   line-height: 16px;
   color: var(--grey-color);
 
-  & .icon {
+  .icon {
     margin-right: 7px;
     width: 16px;
     height: 16px;

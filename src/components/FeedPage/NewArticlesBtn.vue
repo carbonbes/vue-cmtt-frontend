@@ -24,14 +24,14 @@ const countLabel = computed(() => declensionWords(props.newArticles, labels));
 .new-articles-btn {
   margin-bottom: 30px;
   padding: 20px;
-  background: var(--entry-bg-color);
+  background: var(--island-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   cursor: pointer;
 
-  & > .count {
+  > .count {
     margin: 0 5px;
     padding: 4px;
     color: #fff;
@@ -41,7 +41,7 @@ const countLabel = computed(() => declensionWords(props.newArticles, labels));
     border-radius: 4px;
   }
 
-  & > .label {
+  > .label {
     color: var(--blue-color);
   }
 }

@@ -18,7 +18,7 @@ const props = defineProps({
 <style lang="scss">
 .dropdown-component {
   padding: 6px;
-  background: var(--dropdown-bg-color);
+  background: var(--dropdown-bg);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
   user-select: none;
@@ -43,14 +43,14 @@ const props = defineProps({
       margin-bottom: 4px;
     }
 
-    & .icon {
+    .icon {
       margin-right: 10px;
       width: 20px;
       height: 20px;
     }
 
     &_active {
-      background: var(--dropdown-item-active-bg-color);
+      background: var(--dropdown-item-active-bg);
       font-weight: 500;
       pointer-events: none;
       cursor: default;
@@ -62,7 +62,7 @@ const props = defineProps({
   .dropdown-component {
     &__item {
       &:hover {
-        background: var(--dropdown-item-hover-bg-color);
+        background: var(--dropdown-item-hover-bg);
       }
     }
   }

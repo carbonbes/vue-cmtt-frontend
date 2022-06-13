@@ -62,7 +62,7 @@ onMounted(() => {
     display: var(--sidebar-display);
     overflow: hidden;
 
-    & .sidebar-header {
+    .sidebar-header {
       padding: 15px 20px;
 
       &__title {
@@ -70,7 +70,7 @@ onMounted(() => {
       }
     }
 
-    & .sidebar-content {
+    .sidebar-content {
       &__link {
         padding: 13px 20px;
         display: flex;
@@ -79,11 +79,11 @@ onMounted(() => {
 
         &_active {
           color: var(--black-color);
-          background: \var(--dropdown-item-active-bg-color);
+          background: var(--dropdown-item-active-bg-lighter);
           pointer-events: none;
         }
 
-        & .label {
+        .label {
           margin-left: 13px;
           font-weight: 500;
         }
@@ -99,8 +99,8 @@ onMounted(() => {
     color: var(--black-color);
   }
 
-  & .sp-island {
-    background: var(--entry-bg-color);
+  .sp-island {
+    background: var(--island-bg);
     border-radius: var(--b-radius);
   }
 }

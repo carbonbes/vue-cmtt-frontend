@@ -34,8 +34,8 @@ watch(
 
 <style lang="scss">
 .entry-page__comment {
-  & .comment-content {
-    & .reply-form {
+  .comment-content {
+    .reply-form {
       margin-top: 12px;
       margin-bottom: 18px;
     }

@@ -217,7 +217,7 @@ export default {
 .profile-popup {
   width: 100%;
   height: 100%;
-  background: var(--dropdown-bg-color);
+  background: $dropdown-bg-color;
   box-shadow: 0 0 0 1px rgb(0 0 0 / 7%), 0 4px 8px 0 rgb(0 0 0 / 7%);
   border-radius: 8px;
   overflow: hidden;
@@ -227,8 +227,8 @@ export default {
   }
 
   &__cover {
-    & + .profile-popup__content {
-      & .profile-popup__avatar {
+    + .profile-popup__content {
+      .profile-popup__avatar {
         margin-top: -70px;
       }
     }
@@ -257,9 +257,9 @@ export default {
     height: 100px;
     border-radius: 50%;
     box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
-    border: 5px solid var(--dropdown-bg-color);
+    border: 5px solid $dropdown-bg-color;
     box-sizing: initial;
-    background: var(--dropdown-bg-color);
+    background: $dropdown-bg-color;
     background-size: cover;
     background-position: 50% 50%;
     background-repeat: no-repeat;
@@ -309,14 +309,14 @@ export default {
   &__subscribe-btn {
     margin-left: auto;
 
-    & .button {
+    .button {
       width: 35px;
       height: 35px;
       display: flex;
       align-items: center;
       justify-content: center;
 
-      & .icon {
+      .icon {
         width: 18px;
         height: 18px;
 
@@ -339,7 +339,7 @@ export default {
     white-space: normal;
     word-break: break-word;
 
-    & + .profile-popup__author-rating {
+    + .profile-popup__author-rating {
       margin-top: 20px;
     }
   }
@@ -347,7 +347,7 @@ export default {
   &__info {
     margin-top: 15px;
 
-    & > div {
+    > div {
       &:not(:first-child) {
         margin-top: 10px;
       }
@@ -369,7 +369,7 @@ export default {
   &__subs-loader {
     width: 125px;
     height: 15px;
-    background: var(--loader-grey-color);
+    background: $loader-grey-color;
     border-radius: 2px;
   }
 
@@ -377,7 +377,7 @@ export default {
     font-size: 14px;
     color: var(--grey-color);
 
-    & .label {
+    .label {
       color: var(--black-color);
       font-weight: 700;
     }

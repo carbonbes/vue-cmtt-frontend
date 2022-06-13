@@ -578,13 +578,13 @@ export default {
     }
 
     &_ignored {
-      & .ignored-comment__text {
+      .ignored-comment__text {
         color: var(--grey-color);
         line-height: 32px;
       }
     }
 
-    & .self-comment {
+    .self-comment {
       position: relative;
       padding-top: 18px;
       padding-bottom: 5px;
@@ -602,12 +602,12 @@ export default {
         }
       }
 
-      & .comment-content {
+      .comment-content {
         position: relative;
         display: flex;
         flex-wrap: wrap;
 
-        & .avatar {
+        .avatar {
           margin-top: 2px;
           margin-right: 10px;
           margin-bottom: -32px;
@@ -621,7 +621,7 @@ export default {
           order: -2;
         }
 
-        & .author-name {
+        .author-name {
           margin-right: 8px;
           white-space: nowrap;
           font-weight: 500;
@@ -629,13 +629,13 @@ export default {
           order: -2;
         }
 
-        & .up-arrow {
+        .up-arrow {
           display: flex;
           align-items: center;
           opacity: 0;
           order: -2;
 
-          & svg {
+          svg {
             width: 14px;
             height: 14px;
             color: var(--grey-color);
@@ -646,7 +646,7 @@ export default {
           flex-basis: 100%;
         }
 
-        & .date-created {
+        .date-created {
           margin-left: 42px;
           white-space: nowrap;
           line-height: 16px;
@@ -654,7 +654,7 @@ export default {
           color: var(--grey-color);
         }
 
-        & .is-author {
+        .is-author {
           margin-left: 8px;
           white-space: nowrap;
           line-height: 16px;
@@ -663,7 +663,7 @@ export default {
           z-index: 1;
         }
 
-        & .rating-wrapp {
+        .rating-wrapp {
           --action-gap: 8px;
 
           margin-left: auto;
@@ -671,14 +671,14 @@ export default {
           display: flex;
           order: -2;
 
-          & .rating {
+          .rating {
             margin-left: auto;
             height: 20px;
             display: flex;
             align-items: center;
             line-height: 20px;
 
-            & .icon {
+            .icon {
               width: 18px;
               height: 18px;
               color: var(--grey-color);
@@ -706,7 +706,7 @@ export default {
               }
             }
 
-            & .value-wrapp {
+            .value-wrapp {
               position: relative;
               min-width: 40px;
               padding: 0 12.5px;
@@ -726,7 +726,7 @@ export default {
                 background: var(--comment-rating-value-wrapp-bg-negative);
               }
 
-              & .value {
+              .value {
                 font-weight: 500;
                 font-size: 14px;
                 cursor: default;
@@ -766,7 +766,7 @@ export default {
                 }
               }
 
-              & .popup {
+              .popup {
                 position: absolute;
                 top: 100%;
                 margin-top: 5px;
@@ -786,14 +786,14 @@ export default {
           }
         }
 
-        & .text {
+        .text {
           margin: 6px 0;
           padding-right: var(--comment-content-right-gap);
           max-width: 100%;
           flex-basis: 100%;
           word-wrap: break-word;
 
-          & p {
+          p {
             margin: 0;
 
             &:not(:last-child) {
@@ -801,12 +801,12 @@ export default {
             }
           }
 
-          & .quote {
+          .quote {
             padding-top: 6px;
             padding-bottom: 6px;
             display: flex;
 
-            & .icon {
+            .icon {
               min-width: 16px;
               min-height: 12px;
               margin-right: 10px;
@@ -818,40 +818,40 @@ export default {
             }
           }
 
-          & + .media {
+          + .media {
             margin-top: 0;
           }
         }
 
-        & .media {
+        .media {
           margin: 10px 0;
           max-width: 100%;
           padding-right: var(--comment-content-right-gap);
           flex-basis: 100%;
 
-          & .img-wrapp {
-            & + .img-wrapp,
+          .img-wrapp {
+            + .img-wrapp,
             + .media-video {
               margin-top: 7px;
             }
           }
 
-          & .media-video {
-            & + .img-wrapp,
+          .media-video {
+            + .img-wrapp,
             + .media-video {
               margin-top: 7px;
             }
           }
         }
 
-        & .reply-btn {
+        .reply-btn {
           font-size: 14px;
           line-height: 20px;
           color: var(--grey-color);
           cursor: pointer;
         }
 
-        & .more-items-btn {
+        .more-items-btn {
           position: relative;
           margin-left: 10px;
           display: flex;
@@ -860,13 +860,13 @@ export default {
           line-height: 20px;
           color: var(--grey-color);
 
-          & > .icon {
+          > .icon {
             width: 16px;
             height: 16px;
             cursor: pointer;
           }
 
-          & .dropdown {
+          .dropdown {
             position: absolute;
             top: 100%;
             margin-top: 5px;
@@ -874,7 +874,7 @@ export default {
           }
         }
 
-        & .author-name,
+        .author-name,
         .date-created {
           overflow: hidden;
           text-overflow: ellipsis;
@@ -885,14 +885,14 @@ export default {
       }
     }
 
-    & .comment-replies {
+    .comment-replies {
       position: relative;
 
       &_collapsed {
         display: none;
       }
 
-      & .branch-collapse-btn {
+      .branch-collapse-btn {
         position: absolute;
         width: var(--branch-gap);
         height: 100%;
@@ -901,7 +901,7 @@ export default {
       }
     }
 
-    & .branch-expand-btn {
+    .branch-expand-btn {
       color: var(--blue-color);
       cursor: pointer;
     }
@@ -910,36 +910,36 @@ export default {
 
 @media (hover: hover) {
   .entry-page__comment {
-    & .self-comment {
-      & .comment-content {
+    .self-comment {
+      .comment-content {
         &:hover {
-          & .rating-wrapp .rating {
-            & .dislike-icon,
+          .rating-wrapp .rating {
+            .dislike-icon,
             .like-icon {
               opacity: 1;
             }
           }
 
-          & .up-arrow {
+          .up-arrow {
             opacity: 1;
           }
         }
 
-        & .avatar {
+        .avatar {
           &:hover {
-            & ~ .author-name {
+            ~ .author-name {
               color: var(--blue-color);
             }
           }
         }
 
-        & .author-name {
+        .author-name {
           &:hover {
             color: var(--blue-color);
           }
         }
 
-        & .reply-btn,
+        .reply-btn,
         .more-items-btn svg,
         .up-arrow svg {
           &:hover {
@@ -947,7 +947,7 @@ export default {
           }
         }
 
-        & .value-wrapp {
+        .value-wrapp {
           &:hover {
             &::before {
               content: "";
@@ -959,19 +959,19 @@ export default {
           }
         }
 
-        & .rating-wrapp .rating .dislike-icon {
+        .rating-wrapp .rating .dislike-icon {
           &:hover {
             color: var(--red-color);
           }
         }
 
-        & .rating-wrapp .rating .like-icon {
+        .rating-wrapp .rating .like-icon {
           &:hover {
             color: var(--green-color);
           }
         }
 
-        & .cancel-btn {
+        .cancel-btn {
           &:hover {
             opacity: 0.8;
           }
@@ -979,7 +979,7 @@ export default {
       }
     }
 
-    & .branch-expand-btn {
+    .branch-expand-btn {
       &:hover {
         color: var(--red-color);
       }
@@ -1002,33 +1002,33 @@ export default {
         }
       }
 
-      & .self-comment {
-        & .comment-content {
-          & .rating-wrapp {
+      .self-comment {
+        .comment-content {
+          .rating-wrapp {
             --action-gap: 2px;
 
             order: 1;
 
-            & .rating {
-              & .icon.dislike-icon,
+            .rating {
+              .icon.dislike-icon,
               .icon.like-icon {
                 opacity: 1;
               }
 
-              & .value-wrapp {
+              .value-wrapp {
                 padding: 0 13px;
                 min-width: unset;
                 justify-content: flex-end;
                 background: none;
 
-                & .popup {
+                .popup {
                   transform: translateX(30px);
                 }
               }
             }
           }
 
-          & .up-arrow {
+          .up-arrow {
             opacity: 1;
           }
         }

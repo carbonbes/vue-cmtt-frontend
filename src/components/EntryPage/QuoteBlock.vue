@@ -33,7 +33,7 @@ export default {
   margin: 15px auto;
   max-width: 640px;
 
-  & .quote-component {
+  .quote-component {
     border-radius: var(--border-radius);
   }
 }

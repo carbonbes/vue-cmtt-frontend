@@ -103,15 +103,15 @@ export default {
 
 <style lang="scss">
 .profile__entries {
-  & .entries-loader {
+  .entries-loader {
     padding: 20px;
     max-width: 640px;
-    background: var(--entry-bg-color);
+    background: var(--island-bg);
     color: var(--black-color);
     border-radius: 8px;
     user-select: none;
 
-    & .custom-loader {
+    .custom-loader {
       &__loader-1,
       &__loader-2,
       &__loader-3 {
@@ -122,13 +122,13 @@ export default {
 
   &_empty {
     padding: 88px 0;
-    background: var(--entry-bg-color);
+    background: var(--island-bg);
     border-radius: 8px;
     color: var(--grey-color);
     text-align: center;
   }
 
-  & .article-component {
+  .article-component {
     &:not(:last-child) {
       margin-bottom: 30px;
     }

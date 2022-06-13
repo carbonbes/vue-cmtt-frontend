@@ -282,19 +282,19 @@ export default {
   max-width: 960px;
   color: var(--black-color);
 
-  & .pp-content {
+  .pp-content {
     display: grid;
     grid-gap: var(--grid-gap);
 
-    & .content-subsite {
+    .content-subsite {
       grid-column: span 2;
 
-      & .subsite {
+      .subsite {
         padding: var(--offset-y) var(--offset-x);
         display: grid;
         font-size: 16px;
         line-height: 1.5em;
-        background: var(--entry-bg-color);
+        background: var(--island-bg);
         border-radius: var(--subsite-brad);
 
         &__cover {
@@ -307,7 +307,7 @@ export default {
           background-repeat: no-repeat;
           background-position: 50% 0%;
 
-          & + .subsite__avatar {
+          + .subsite__avatar {
             margin-top: -88px;
           }
         }
@@ -320,8 +320,7 @@ export default {
           background-repeat: no-repeat;
           background-position: 50% 0%;
           border-radius: 6px;
-          box-shadow: 0 0 0 var(--subsite-avatar-border-width)
-              var(--entry-bg-color),
+          box-shadow: 0 0 0 var(--subsite-avatar-border-width) var(--island-bg),
             inset var(--border-a);
         }
 
@@ -340,7 +339,7 @@ export default {
           margin-top: 4px;
           grid-column-start: span 2;
 
-          & ~ .subsite__stats {
+          ~ .subsite__stats {
             margin-top: 20px;
           }
         }
@@ -350,7 +349,7 @@ export default {
           display: flex;
           flex-direction: column;
 
-          & .subsite__stat {
+          .subsite__stat {
             display: flex;
 
             &:not(:last-child) {
@@ -358,7 +357,7 @@ export default {
             }
           }
 
-          & .rating {
+          .rating {
             margin-right: 16px;
             font-weight: 500;
 
@@ -382,26 +381,26 @@ export default {
           margin-right: calc(var(--offset-x) * -1);
         }
 
-        & .tabs {
+        .tabs {
           position: relative;
           min-width: 0;
           height: var(--height);
           font-size: var(--font-size);
         }
 
-        & .tabs__scroll {
+        .tabs__scroll {
           white-space: nowrap;
           overflow-x: hidden;
           overflow-y: hidden;
         }
 
-        & .tabs__content {
+        .tabs__content {
           padding-left: var(--offset-x);
           padding-right: var(--offset-x);
           display: inline-flex;
           vertical-align: top;
 
-          & .tab {
+          .tab {
             padding: 0 var(--tab-offset);
             flex-shrink: 0;
             font-weight: 500;
@@ -412,7 +411,7 @@ export default {
               color: var(--black-color);
               pointer-events: none;
 
-              & .tab__label {
+              .tab__label {
                 position: relative;
 
                 &::after {
@@ -450,7 +449,7 @@ export default {
       }
     }
 
-    & .content-content {
+    .content-content {
       padding-bottom: 30px;
       grid-column: 1;
     }
@@ -459,11 +458,11 @@ export default {
 
 @media (hover: hover) {
   .pp__wrapp {
-    & .pp-content {
-      & .content-subsite {
-        & .subsite {
-          & .tabs__content {
-            & .tab {
+    .pp-content {
+      .content-subsite {
+        .subsite {
+          .tabs__content {
+            .tab {
               &:hover {
                 color: var(--blue-color);
               }
@@ -495,11 +494,11 @@ export default {
     max-width: 640px;
     margin: 0 auto;
 
-    & .pp-content {
+    .pp-content {
       grid-template-columns: 1fr;
 
-      & .content-subsite {
-        & .subsite {
+      .content-subsite {
+        .subsite {
           &__cover {
             &::before {
               content: "";
@@ -507,12 +506,12 @@ export default {
               padding-top: 32.8125%;
             }
 
-            & + .subsite__avatar {
+            + .subsite__avatar {
               margin-top: -52px;
             }
           }
 
-          & .subsite__stats {
+          .subsite__stats {
             margin-top: 17px;
             font-size: 14px;
             line-height: 1.43em;
@@ -520,7 +519,7 @@ export default {
         }
       }
 
-      & .content-content {
+      .content-content {
         grid-column: span 2;
       }
     }
@@ -529,7 +528,7 @@ export default {
 
 @media screen and (min-width: 1000px) {
   .pp__wrapp {
-    & .pp-content {
+    .pp-content {
       grid-template-columns: 1fr 300px;
     }
   }

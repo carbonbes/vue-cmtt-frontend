@@ -147,8 +147,6 @@ const like = (actionType) => {
       ></span>
     </div>
 
-    <div class="spacer" />
-
     <div class="rating">
       <div
         class="vote-btn vote-dislike"
@@ -199,24 +197,24 @@ const like = (actionType) => {
   align-items: center;
   font-size: 15px;
 
-  & .comments-btn,
+  .comments-btn,
   .repost-btn,
   .favorite-btn {
-    & .icon {
+    .icon {
       width: 22px;
       height: 22px;
       color: inherit;
       stroke-width: 2.25;
     }
 
-    & .label {
+    .label {
       margin-left: 7px;
       color: inherit;
       font-weight: 500;
     }
   }
 
-  & .comments-btn,
+  .comments-btn,
   .repost-btn,
   .favorite-btn,
   .vote-btn {
@@ -224,11 +222,12 @@ const like = (actionType) => {
     cursor: pointer;
   }
 
-  & .rating {
+  .rating {
+    margin-left: auto;
     display: flex;
     align-items: center;
 
-    & .vote-btn {
+    .vote-btn {
       width: 32px;
       height: 32px;
       display: flex;
@@ -236,7 +235,7 @@ const like = (actionType) => {
       justify-content: center;
       border-radius: 50%;
 
-      & .icon {
+      .icon {
         width: 22px;
         height: 22px;
       }
@@ -261,13 +260,13 @@ const like = (actionType) => {
       }
     }
 
-    & .rating-wrapp {
+    .rating-wrapp {
       position: relative;
       display: flex;
       justify-content: center;
       cursor: default;
 
-      & .rating-value {
+      .rating-value {
         padding: 0 4px;
         font-weight: 500;
 
@@ -306,7 +305,7 @@ const like = (actionType) => {
         }
       }
 
-      & .entry-likes-popup {
+      .entry-likes-popup {
         position: absolute;
         top: 100%;
         margin-top: 13px;
@@ -331,8 +330,8 @@ const like = (actionType) => {
     align-items: center;
     line-height: 22px;
 
-    &:not(:last-child) {
-      margin-right: 25px;
+    &:not(:first-child) {
+      margin-left: 25px;
     }
   }
 }
@@ -347,12 +346,12 @@ const like = (actionType) => {
       }
     }
 
-    & .rating {
-      & .vote-btn:hover {
+    .rating {
+      .vote-btn:hover {
         background: var(--rating-button-hover);
       }
 
-      & .vote-btn {
+      .vote-btn {
         &.vote-like_pressed {
           &:hover {
             background: #4fa75733 !important;
@@ -366,7 +365,7 @@ const like = (actionType) => {
         }
       }
 
-      & .rating-wrapp {
+      .rating-wrapp {
         &:hover {
           &::before {
             content: "";
@@ -381,14 +380,31 @@ const like = (actionType) => {
   }
 }
 
+@media (max-width: 350px) {
+  .article-component__footer {
+    .repost-btn,
+    .favorite-btn {
+      .label {
+        display: none;
+      }
+    }
+
+    &-item {
+      &:not(:first-child) {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
 @media (max-width: 1080px) {
   .article-component__footer {
-    & .rating {
-      & .rating-wrapp {
+    .rating {
+      .rating-wrapp {
         justify-content: flex-end;
       }
 
-      & .likes-popup {
+      .likes-popup {
         transform: translateX(35px);
       }
     }

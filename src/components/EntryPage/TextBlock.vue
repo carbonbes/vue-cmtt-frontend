@@ -35,18 +35,18 @@ export default {
   max-width: 640px;
 
   &:first-child {
-    & p {
+    p {
       margin-top: 0;
     }
   }
 
   &:last-child {
-    & p {
+    p {
       margin-bottom: 0;
     }
   }
 
-  & p {
+  p {
     margin: 12px 0;
   }
 }

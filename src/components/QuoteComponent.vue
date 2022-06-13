@@ -103,13 +103,13 @@ export default {
     margin: 0 auto;
     max-width: 450px;
 
-    & .icon {
+    .icon {
       position: absolute;
       top: 0.25em;
       left: -57px;
     }
 
-    & .text {
+    .text {
       &_small {
         font-size: var(--font-size-small);
         font-weight: 400;
@@ -128,7 +128,7 @@ export default {
         line-height: var(--line-height-big);
       }
 
-      & p {
+      p {
         margin-top: 0.5em;
         margin-bottom: 0.5em;
 
@@ -144,12 +144,12 @@ export default {
       }
     }
 
-    & .author {
+    .author {
       margin-top: 20px;
       display: flex;
       align-items: center;
 
-      & .avatar {
+      .avatar {
         margin-right: 15px;
         width: 48px;
         height: 48px;
@@ -160,24 +160,24 @@ export default {
         border-radius: 50%;
       }
 
-      & .data {
+      .data {
         display: flex;
         flex-direction: column;
 
-        & .name {
+        .name {
           font-size: 17px;
           font-weight: 600;
           line-height: 1.45em;
         }
 
-        & .description {
+        .description {
           font-size: 16px;
           line-height: 1.35em;
         }
       }
     }
 
-    & p {
+    p {
       margin: 0;
     }
   }
@@ -194,7 +194,7 @@ export default {
     --line-height-big: 28px;
 
     &__content {
-      & .icon {
+      .icon {
         width: 21px;
         height: auto;
         left: -35px;

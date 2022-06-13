@@ -49,7 +49,7 @@ const articleLikes = computed(() => props.article.likes);
   display: flex;
   flex-flow: column;
   color: var(--black-color);
-  background: var(--entry-bg-color);
+  background: var(--island-bg);
   border-radius: var(--b-radius);
 
   & > &__header {
@@ -62,7 +62,7 @@ const articleLikes = computed(() => props.article.likes);
     word-break: break-word;
     line-height: 1.7em;
 
-    & .article-title {
+    .article-title {
       margin-top: -3px;
       padding: var(--title-padding);
       font-size: 22px;
@@ -73,14 +73,14 @@ const articleLikes = computed(() => props.article.likes);
         margin-bottom: -4px;
       }
 
-      & .editorial-icon {
-        & > .icon {
+      .editorial-icon {
+        > .icon {
           margin-left: 5px;
         }
       }
     }
 
-    & .subtitle {
+    .subtitle {
       margin-top: 4px;
       font-size: 17px;
 
@@ -92,8 +92,8 @@ const articleLikes = computed(() => props.article.likes);
         margin-bottom: -3px;
       }
 
-      & p {
-        & a {
+      p {
+        a {
           position: relative;
           z-index: 1;
         }
@@ -108,7 +108,7 @@ const articleLikes = computed(() => props.article.likes);
       }
     }
 
-    & .media {
+    .media {
       margin-top: 12px;
 
       &:first-child {
@@ -118,7 +118,7 @@ const articleLikes = computed(() => props.article.likes);
       &_wide {
         width: 100%;
 
-        & > div {
+        > div {
           margin-left: auto;
           margin-right: auto;
         }
@@ -126,29 +126,29 @@ const articleLikes = computed(() => props.article.likes);
 
       &_thin {
         padding: 8px 30px;
-        background: var(--entry-block-highlight);
+        background: var(--article-cover-bg);
 
-        & > div {
+        > div {
           margin: 0 auto;
           max-width: var(--vertical-cover-max-width);
         }
       }
     }
 
-    & .socials-embed {
+    .socials-embed {
       margin-top: 12px;
 
       &:first-child {
         margin-top: 0;
       }
 
-      & > .embed {
+      > .embed {
         position: relative;
         z-index: 1;
       }
     }
 
-    & .link-embed {
+    .link-embed {
       margin-top: 12px;
 
       &:first-child {
@@ -156,7 +156,7 @@ const articleLikes = computed(() => props.article.likes);
       }
     }
 
-    & .link {
+    .link {
       position: absolute;
       top: 0;
       left: 0;

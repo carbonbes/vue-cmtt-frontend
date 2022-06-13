@@ -43,7 +43,7 @@ export default {
   width: 215px;
   max-height: 264px;
   border-radius: 8px;
-  background: var(--dropdown-bg-color);
+  background: var(--dropdown-bg);
   box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
   overflow-y: scroll;
   scrollbar-width: none;
@@ -64,7 +64,7 @@ export default {
       margin-bottom: 2.5px;
     }
 
-    & .item-avatar {
+    .item-avatar {
       min-width: 22.5px;
       min-height: 22.5px;
       background-position: 50% 50%;
@@ -74,7 +74,7 @@ export default {
       border-radius: 6px;
     }
 
-    & .item-nickname {
+    .item-nickname {
       margin-left: 7.5px;
       white-space: nowrap;
       overflow: hidden;
@@ -94,7 +94,7 @@ export default {
 @media (hover: hover) {
   .likes-popup__item {
     &:hover {
-      background: var(--dropdown-item-hover-bg-color);
+      background: var(--dropdown-item-hover-bg);
     }
   }
 }

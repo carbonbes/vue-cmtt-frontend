@@ -155,7 +155,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--active-item-color);
+  background: var(--modal-bg);
   border-radius: 8px;
 
   &-enter-active,
@@ -195,7 +195,7 @@ export default {
     height: 46px;
     font-size: 15px;
 
-    & .custom-loader {
+    .custom-loader {
       &__loader-1,
       &__loader-2,
       &__loader-3 {

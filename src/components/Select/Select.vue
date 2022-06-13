@@ -63,7 +63,7 @@ const selectorCloseHandler = () => {
 .select-component {
   position: relative;
 
-  & .selector {
+  .selector {
     padding-left: 15px;
     padding-right: 12px;
     display: flex;
@@ -74,7 +74,7 @@ const selectorCloseHandler = () => {
     user-select: none;
 
     &_pressed {
-      & .icon {
+      .icon {
         transform: rotate(180deg);
       }
     }
@@ -84,7 +84,7 @@ const selectorCloseHandler = () => {
       pointer-events: none;
     }
 
-    & .icon {
+    .icon {
       margin-left: auto;
       width: 20px;
       height: 20px;
@@ -92,7 +92,7 @@ const selectorCloseHandler = () => {
     }
   }
 
-  & .dropdown {
+  .dropdown {
     position: absolute;
     margin-top: 7px;
     width: 100%;

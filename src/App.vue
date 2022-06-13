@@ -13,7 +13,7 @@
   <transition name="start-screen">
     <StartScreen :isShow="showStartScreen" v-if="showStartScreen" />
   </transition>
-  <notifications />
+  <Notification />
 </template>
 
 <script>
@@ -23,7 +23,8 @@ import store from "@/store";
 import Header from "@/components/Layout/Header/Header.vue";
 import LeftSidebar from "@/components/Layout/LeftSidebar.vue";
 import RightSidebar from "@/components/Layout/RightSidebar.vue";
-import StartScreen from "./components/Layout/StartScreen.vue";
+import StartScreen from "@/components/Layout/StartScreen.vue";
+import Notification from "@/components/Notification.vue";
 
 export default {
   components: {
@@ -34,6 +35,7 @@ export default {
       import("@/components/Layout/LoginModal.vue")
     ),
     StartScreen,
+    Notification,
   },
 
   data() {
@@ -144,10 +146,5 @@ export default {
 </script>
 
 <style lang="scss">
-@use "normalize.css";
-@use "roboto.css";
-@use "../node_modules/nprogress/nprogress.css";
-@use "../node_modules/photoswipe/dist/photoswipe.css";
-@use "style.scss";
-@use "../node_modules/vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
+@import "style.scss";
 </style>

@@ -209,9 +209,8 @@ const saveFeedSettings = () => {
   }
 
   notify({
-    title: "Изменения сохранены",
-    type: "succ",
-    text: "Настройки ленты сохранены!",
+    type: "success",
+    text: "Настройки ленты сохранены",
   });
 
   state.settingsChange = false;
@@ -281,21 +280,21 @@ onMounted(() => {
       margin-top: 25px;
     }
 
-    & .item-title {
+    .item-title {
       font-size: 18px;
       font-weight: 500;
     }
 
-    & .item-content {
-      & .select-component {
+    .item-content {
+      .select-component {
         margin-top: 12px;
       }
     }
 
-    & .action-button {
+    .action-button {
       display: inline-block;
 
-      & > .button {
+      > .button {
         padding: 10px 15px;
       }
     }
