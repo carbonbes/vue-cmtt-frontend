@@ -12,8 +12,8 @@ import ErrorIcon from "@/assets/logos/error_icon.svg?inline";
           <ErrorIcon class="error-icon" />
         </div>
         <div class="notification__content">
-          <span class="content__title" v-text="props.item.title"> </span>
-          <div class="content__main" v-html="props.item.text" />
+          <span class="content-title" v-text="props.item.title"> </span>
+          <div class="content-main" v-html="props.item.text" />
         </div>
       </div>
     </template>
@@ -47,21 +47,18 @@ import ErrorIcon from "@/assets/logos/error_icon.svg?inline";
   }
 
   &__content {
-    margin-left: 10px;
+    margin-left: 12px;
     display: flex;
-    align-items: center;
+    flex-flow: column;
     font-size: 15px;
 
-    .content__title {
+    .content-title {
       font-size: 14px;
       font-weight: 500;
 
       + .content-main {
-        margin-top: 10px;
+        margin-top: 5px;
       }
-    }
-
-    .content__main {
     }
   }
 

@@ -20,11 +20,11 @@ const profilePageModule = {
     },
 
     profileEntries(state) {
-      return state.profileEntries;
+      if (state.profileEntries) return state.profileEntries;
     },
 
     profileEntriesCount(state) {
-      return state.profile.counters.entries;
+      if (state.profile) return state.profile.counters.entries;
     },
 
     profileEntriesLastId(state) {
@@ -44,7 +44,7 @@ const profilePageModule = {
     },
 
     profileECommentsCount(state) {
-      return state.profile.counters.comments;
+      if (state.profile) return state.profile.counters.comments;
     },
 
     profileCommentsLastId(state) {

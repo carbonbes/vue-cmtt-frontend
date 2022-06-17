@@ -41,6 +41,7 @@ import { computed } from "vue";
 import ImageComponent from "@/components/ImageComponent.vue";
 import GalleryComponent from "@/components/Gallery/GalleryComponent.vue";
 import VideoComponent from "@/components/VideoComponent.vue";
+import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
 
 // props
 const props = defineProps(["media"]);
@@ -73,12 +74,26 @@ const imgSizes = computed(() => {
   }
 });
 
+const imgCalculatedWidth = computed(() => {
+  if (isImage.value) {
+    const { width } = сalculateAspectRatio(
+      props.media.data.items[0].image.data.width,
+      props.media.data.items[0].image.data.height,
+      640,
+      600
+    );
+
+    return width;
+  }
+});
+
 const imageClassObj = computed(() => {
   if (isImage.value) {
     return {
       media_wide: imgSizes.value.width >= 640,
       media_thin:
         imgSizes.value.width < 640 ||
+        imgCalculatedWidth.value < 640 ||
         imgSizes.value.height > imgSizes.value.width,
     };
   }

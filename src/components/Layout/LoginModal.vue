@@ -23,7 +23,6 @@
         validateOnInput
         @click="setEmailInputPressed"
         v-outside-click:[true]="clearEmailInputPressed"
-        :disabled="isLoginRequested"
       />
       <Field
         class="login-modal__input v-input"
@@ -34,14 +33,15 @@
         validateOnInput
         @click="setPasswordInputPressed"
         v-outside-click:[true]="clearPasswordInputPressed"
-        :disabled="isLoginRequested"
       />
       <button
         class="login-modal__button button button_b"
         :disabled="!(meta.valid && meta.dirty) || isLoginRequested"
       >
         <template v-if="!isLoginRequested">Войти</template>
-        <template v-if="isLoginRequested"><loader /></template>
+        <template v-if="isLoginRequested">
+          <Loader color="#fff" />
+        </template>
       </button>
       <div class="login-modal__error-msg" v-if="!isLoginRequested && isError">
         Ошибка: {{ error.message }}
@@ -128,12 +128,14 @@ export default {
     emailInputClassObj() {
       return {
         "v-input_pressed": this.emailInputPressed,
+        "v-input_disabled": this.isLoginRequested,
       };
     },
 
     passwordInputClassObj() {
       return {
         "v-input_pressed": this.passwordInputPressed,
+        "v-input_disabled": this.isLoginRequested,
       };
     },
 
@@ -194,14 +196,6 @@ export default {
     margin-top: 30px;
     height: 46px;
     font-size: 15px;
-
-    .custom-loader {
-      &__loader-1,
-      &__loader-2,
-      &__loader-3 {
-        background-color: #fff;
-      }
-    }
   }
 
   &__error-msg {

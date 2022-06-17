@@ -10,7 +10,7 @@
       :class="selfCommentClassObj"
       @mouseenter="setIsUnread(false)"
     >
-      <div class="comment-content" v-if="!isIgnored">
+      <div class="comment-content">
         <router-link
           class="avatar"
           :style="avatarStyleObj"
@@ -115,9 +115,6 @@
           v-if="replyFormIsOpen || this.editMode"
         />
       </div>
-      <div class="ignored-comment__text" v-if="isIgnored">
-        Комментарий скрыт
-      </div>
     </div>
     <div
       class="comment-replies"
@@ -129,16 +126,17 @@
         @click="toggleBranchCollapse"
         v-if="this.comment.level <= this.maxLvl - 1"
       />
-      <comment-block
-        v-for="comment in this.comment.replies"
-        :comment="comment"
-        :replyToAuthorName="authorName"
-        :maxLvl="maxLvl"
-        :key="comment.id"
-        @highlight-comment="highlightParentComment"
-        @unhighlight-parent-comment="unhighlightParentComment"
-        @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
-      />
+      <template v-for="comment in this.comment.replies" :key="comment.id">
+        <CommentBlock
+          :comment="comment"
+          :replyToAuthorName="authorName"
+          :maxLvl="maxLvl"
+          @highlight-comment="highlightParentComment"
+          @unhighlight-parent-comment="unhighlightParentComment"
+          @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
+          v-if="!comment.isIgnored"
+        />
+      </template>
     </div>
     <span
       class="branch-expand-btn"
@@ -213,10 +211,6 @@ export default {
       return this.comment.replyTo !== 0;
     },
 
-    isIgnored() {
-      return this.comment.isIgnored;
-    },
-
     replyTo() {
       return this.comment.replyTo;
     },
@@ -225,8 +219,6 @@ export default {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
         "entry-page__comment_max-lvl": this.comment.level > this.maxLvl,
-        "entry-page__comment_ignored": this.comment.isIgnored,
-        "entry-page__comment_removed": this.comment.isRemoved,
       };
     },
 
@@ -615,7 +607,7 @@ export default {
           height: 32px;
           display: flex;
           border-radius: 50%;
-          box-shadow: var(--box-shadow-avatar);
+          box-shadow: inset 0 0 0 1px var(--box-shadow-avatar);
           background-size: cover;
           background-position: 50% 50%;
           order: -2;

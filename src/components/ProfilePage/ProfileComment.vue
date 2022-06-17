@@ -98,7 +98,7 @@ const commentText = computed(() => props.comment.text);
         background-size: cover;
         background-repeat: no-repeat;
         border-radius: 6px;
-        box-shadow: var(--border-a);
+        box-shadow: 0 0 0 1px var(--border-a);
       }
 
       &__name {

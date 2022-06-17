@@ -16,7 +16,7 @@
       <p
         class="reply-form__text-field"
         :class="textFieldClassObj"
-        :contenteditable="contentEditableState"
+        contenteditable="true"
         @click="focusReplyForm"
         @input="replyTextHandler"
         @paste="onPasteHandler"
@@ -55,7 +55,7 @@
           :disabled="state.attachments.length === 2"
         />
         <div class="attachments-loader" v-if="state.uploadedAttachment">
-          <LoaderIcon />
+          <Loader color="var(--black-color)" />
         </div>
       </div>
       <div class="reply-actions">
@@ -69,7 +69,7 @@
             <div class="button__label">Ответить</div>
           </template>
           <template v-if="state.commentIsSended">
-            <LoaderIcon />
+            <Loader color="#fff" />
           </template>
           <template v-if="props.editMode && !state.commentIsSended">
             <div class="button__label">Редактировать</div>
@@ -85,7 +85,7 @@ import { computed, reactive, ref, onMounted, inject } from "vue";
 import { useStore } from "vuex";
 import { notify } from "@kyvg/vue3-notification";
 import MediaIcon from "@/assets/logos/media_icon.svg?inline";
-import LoaderIcon from "@/components/Loader.vue";
+import Loader from "@/components/Loader.vue";
 import DeleteIcon from "@/assets/logos/delete_icon.svg?inline";
 
 const store = useStore();
@@ -144,14 +144,6 @@ const mediaAttachBtnClassObj = computed(() => ({
   "media-attach-btn_disabled": state.attachments.length === 2,
 }));
 
-const contentEditableState = computed(() => {
-  if (state.commentIsSended) {
-    return false;
-  } else {
-    return true;
-  }
-});
-
 // methods
 const focusReplyForm = () => {
   state.replyFormFocused = true;
@@ -198,8 +190,7 @@ const onPasteHandler = (e) => {
     state.uploadedAttachment
   ) {
     notify({
-      title: "Внимание",
-      type: "warn",
+      type: "error",
       text: "Подождите, пока загрузится текущий файл",
     });
   } else if (
@@ -207,7 +198,6 @@ const onPasteHandler = (e) => {
     state.attachments.length === 2
   ) {
     notify({
-      title: "Ошибка",
       type: "error",
       text: "Максимально можно прикрепить только два файла к комментарию, удалите один из них и повторите попытку",
     });
@@ -265,6 +255,7 @@ const postComment = () => {
           state.commentIsSended = false;
 
           notify({
+            type: "error",
             title: "Ошибка " + error.response.data.error.code,
             text: error.response.data.message,
           });
@@ -287,6 +278,7 @@ const postComment = () => {
           state.commentIsSended = false;
 
           notify({
+            type: "error",
             title: "Ошибка " + error.response.data.error.code,
             text: error.response.data.message,
           });
@@ -301,7 +293,6 @@ onMounted(() => {
   focusReplyForm();
 
   if (props.editMode) {
-    console.log(textFieldRef);
     textFieldRef.value.innerText = props.selfCommentText;
     state.text = props.selfCommentText;
     state.attachments = [...props.selfCommentMedia];

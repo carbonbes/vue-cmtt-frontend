@@ -9,7 +9,18 @@
         --#{$name}: #{$property};
 
         @if ($name =="modal-bg") {
-          --#{$name}-light: #{color.scale($property, $lightness: 10%)};
+          --#{$name}-light: #{color.scale($property, $lightness: 5%)};
+          --#{$name}-lighter: #{color.scale($property, $lightness: 10%)};
+        }
+
+        @if ($name =="grey-color") {
+          @if ($theme-name =="light") {
+            --#{$name}-lighter: #{color.scale($property, $lightness: 70%)};
+          }
+
+          @else if ($theme-name =="dark") {
+            --#{$name}-lighter: #{color.scale($property, $lightness: -50%)};
+          }
         }
 
         @else if ($name =="dropdown-item-active-bg") {

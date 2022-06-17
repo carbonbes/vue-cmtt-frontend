@@ -64,4 +64,20 @@ export const API_v1 = {
   myNotificationsCount() {
     return instance_v1.get("user/me/updates/count");
   },
+
+  createEntry(data) {
+    console.log(data);
+    let formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("text", data.text);
+    formData.append("subsite_id", data.subsite_id);
+    formData.append("attachments", data.attachments);
+
+    return instance_v1.post("entry/create", formData);
+  },
+
+  searchUserForMention(query) {
+    return instance_v1.get("search-for-mentions", { query: { q: query } });
+  },
 };

@@ -4,10 +4,11 @@ import FeedModule from "./modules/FeedPage";
 import EntryPageModule from "./modules/EntryPage";
 import ProfilePageModule from "./modules/ProfilePage";
 import NotificationsModule from "./modules/Notifications";
+import EditorModule from "./modules/Editor";
 import createWebSocketPlugin from "./plugins/createWebSocketPlugin";
 import { API_v1 } from "@/api/API_v1";
-import { notify } from "@kyvg/vue3-notification";
 import { entryRatingInstance, entryRepostsInstance } from "@/api/config";
+import { notify } from "@kyvg/vue3-notification";
 
 const plugin = createWebSocketPlugin();
 
@@ -18,6 +19,7 @@ export default createStore({
     entry: EntryPageModule,
     profile: ProfilePageModule,
     notifications: NotificationsModule,
+    editor: EditorModule,
   },
 
   mutations: {
@@ -57,6 +59,7 @@ export default createStore({
         );
 
         notify({
+          type: "error",
           title: "Ошибка " + error.response.data.error.code,
           text: error.response.data.message,
         });
@@ -83,15 +86,34 @@ export default createStore({
                 data: response.data.data.likers,
               });
             }
+          })
+          .catch((e) => {
+            notify({
+              type: "error",
+              title: "Ошибка " + e.response.data.error.code,
+              text: e.response.data.message,
+            });
           });
       } else if (data.type === "comment") {
-        return API_v1.getCommentLikes(data.id).then((response) => {
-          commit("setCommentLikesList", {
-            commentId: data.id,
-            data: response.data.result,
+        return API_v1.getCommentLikes(data.id)
+          .then((response) => {
+            commit("setCommentLikesList", {
+              commentId: data.id,
+              data: response.data.result,
+            });
+          })
+          .catch((e) => {
+            notify({
+              type: "error",
+              title: "Ошибка " + e.response.data.error.code,
+              text: e.response.data.message,
+            });
           });
-        });
       }
+    },
+
+    uploadFile({}, file) {
+      return API_v1.uploadFile(file);
     },
   },
 

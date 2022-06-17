@@ -10,6 +10,11 @@
       <LoginModal :isShow="loginModalVisibility" />
     </div>
   </transition>
+  <transition name="editor-component">
+    <div class="modal" v-if="editorVisible">
+      <Editor :isVisible="this.editorVisible" :closeEditor="this.closeEditor" />
+    </div>
+  </transition>
   <transition name="start-screen">
     <StartScreen :isShow="showStartScreen" v-if="showStartScreen" />
   </transition>
@@ -36,6 +41,9 @@ export default {
     ),
     StartScreen,
     Notification,
+    Editor: defineAsyncComponent(() =>
+      import("@/components/Editor/Editor.vue")
+    ),
   },
 
   data() {
@@ -45,6 +53,7 @@ export default {
       loginModalVisibility: false,
       showStartScreen: true,
       unsubscribe: null,
+      editorVisible: false,
     };
   },
 
@@ -113,6 +122,14 @@ export default {
       }
     },
 
+    toggleVisibleEditor() {
+      this.editorVisible = !this.editorVisible;
+    },
+
+    closeEditor() {
+      this.editorVisible = false;
+    },
+
     ...mapActions(["requestAuth"]),
   },
 
@@ -128,6 +145,7 @@ export default {
 
     this.emitter.on("theme-toggle", this.themeToggle);
     this.emitter.on("login-modal-toggle", this.toggleShowLoginModal);
+    this.emitter.on("editor-modal-toggle", this.toggleVisibleEditor);
 
     this.startScreenWatch();
   },
@@ -139,6 +157,7 @@ export default {
 
     this.emitter.off("theme-toggle", this.themeToggle);
     this.emitter.off("login-modal-toggle", this.toggleShowLoginModal);
+    this.emitter.off("editor-modal-toggle", this.toggleVisibleEditor);
 
     this.unsubscribe();
   },

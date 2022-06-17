@@ -47,7 +47,9 @@ const requestNextPage = () => {
 
 <template>
   <div class="feed-page__short-news" :class="componentClassObj">
-    <div class="loader" v-if="isRequested"><Loader /></div>
+    <div class="loader" v-if="isRequested">
+      <Loader color="var(--black-color)" />
+    </div>
     <div class="news-content" v-if="!isRequested">
       <ShortNewsItem v-for="item in news" :item="item" :key="item.id" />
       <div class="show-more-btn" @click="requestNextPage">
@@ -55,7 +57,9 @@ const requestNextPage = () => {
           <span class="label">Показать еще...</span>
         </template>
         <template v-if="isNextPageRequested">
-          <div class="loader"><Loader /></div>
+          <div class="loader">
+            <Loader color="var(--black-color)" />
+          </div>
         </template>
       </div>
     </div>
@@ -83,14 +87,6 @@ const requestNextPage = () => {
     > .loader {
       top: 0;
       padding: 125px 0;
-
-      .custom-loader {
-        &__loader-1,
-        &__loader-2,
-        &__loader-3 {
-          background-color: var(--black-color);
-        }
-      }
     }
 
     .news-content {
@@ -146,12 +142,6 @@ const requestNextPage = () => {
 
           .custom-loader {
             margin: 0;
-
-            &__loader-1,
-            &__loader-2,
-            &__loader-3 {
-              background-color: var(--black-color);
-            }
           }
         }
       }

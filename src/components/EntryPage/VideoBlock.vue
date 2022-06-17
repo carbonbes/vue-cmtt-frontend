@@ -88,7 +88,6 @@ export default {
     }
   }
 
-  &_vertical,
   &_thin {
     margin-left: auto;
     margin-right: auto;
@@ -98,7 +97,7 @@ export default {
 
     > div {
       margin: 0 auto;
-      max-width: var(--vertical-max-width);
+      max-width: 55%;
     }
   }
 
@@ -109,8 +108,7 @@ export default {
 
 @media (max-width: 640px) {
   .entry-page__video-block {
-    &_thin,
-    &_vertical {
+    &_thin {
       padding: 0;
     }
   }

@@ -41,7 +41,7 @@
         />
       </template>
 
-      <div class="feed-loader"><loader /></div>
+      <div class="feed-loader"><Loader color="var(--black-color)" /></div>
     </div>
   </div>
 </template>
@@ -422,14 +422,6 @@ export default {
   .article-component,
   .feed-loader {
     margin-bottom: 30px;
-
-    .custom-loader {
-      &__loader-1,
-      &__loader-2,
-      &__loader-3 {
-        background-color: var(--black-color);
-      }
-    }
   }
 }
 </style>

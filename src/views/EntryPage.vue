@@ -494,13 +494,13 @@ export default {
   &:hover {
     background-color: var(--island-bg);
     border: 1px solid var(--form-border-color-hover);
-    box-shadow: var(--form-shadow);
+    box-shadow: 0 0 0 3px var(--form-shadow);
   }
 
   &_focused {
     background-color: var(--island-bg);
     border: 1px solid var(--form-border-color-active) !important;
-    box-shadow: var(--form-shadow);
+    box-shadow: 0 0 0 3px var(--form-shadow);
     transition: border 0.2s;
   }
 
@@ -534,7 +534,7 @@ export default {
         width: var(--attachment-item-size);
         height: var(--attachment-item-size);
         border-radius: 8px;
-        box-shadow: var(--border-a);
+        box-shadow: 0 0 0 1px var(--border-a);
         overflow: hidden;
 
         img {
@@ -556,7 +556,7 @@ export default {
         justify-content: center;
         background: var(--dropdown-bg);
         border-radius: 50%;
-        box-shadow: var(--border-a);
+        box-shadow: 0 0 0 1px var(--border-a);
         cursor: pointer;
 
         .icon {

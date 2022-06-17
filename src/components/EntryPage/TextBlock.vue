@@ -19,11 +19,14 @@ export default {
       return this.text
         .replace(
           /(\[(.+?)\])\((https?\:\/\/.+?)\)/g,
-          '<a href="$3" target="_blank">$2</a>'
+          "<a href='$3' target='_blank'>$2</a>"
         )
         .replace(/(?:\*)\*(.+?)\*(?:\*)/g, "<b>$1</b>")
         .replace(/\*(?!\s)(.+?)(?!\s)\*/gm, "<i>$1</i>")
-        .replace(/\\?\\?(#([a-zа-яё0-9_\\]+))/gi, '<a href="/tag/$2">$1</a>');
+        .replace(
+          /\B\\{0,}(\#([a-zа-яё0-9_\\]+))/gi,
+          "<a href='/tag/$2'>$1</a>"
+        );
     },
   },
 };

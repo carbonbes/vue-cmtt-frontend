@@ -1,5 +1,5 @@
 <template>
-  <div class="date-time">{{ dateTime }}</div>
+  <div class="date-time" v-text="dateTime"></div>
 </template>
 
 <script>

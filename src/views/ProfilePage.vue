@@ -106,8 +106,8 @@ function requestProfile(routeTo, routeFrom, next) {
       rootStore.commit("clearProfileComments");
       rootStore.commit("closeStartScreen");
       notify({
-        title: "Ошибка " + error.response.data.error.code,
         type: "error",
+        title: "Ошибка " + error.response.data.error.code,
         text: error.response.data.message,
       });
     });
@@ -321,7 +321,7 @@ export default {
           background-position: 50% 0%;
           border-radius: 6px;
           box-shadow: 0 0 0 var(--subsite-avatar-border-width) var(--island-bg),
-            inset var(--border-a);
+            inset 0 0 0 1px var(--border-a);
         }
 
         &__name {

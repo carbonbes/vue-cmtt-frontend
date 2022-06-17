@@ -1,6 +1,10 @@
 <template>
   <template v-for="comment in props.comments" :key="comment.id">
-    <comment-block :comment="comment" :maxLvl="state.maxLvl" />
+    <CommentBlock
+      :comment="comment"
+      :maxLvl="state.maxLvl"
+      v-if="!comment.isIgnored"
+    />
   </template>
 </template>
 

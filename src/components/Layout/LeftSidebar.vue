@@ -45,6 +45,15 @@
           <MyFeedIcon class="icon" />Моя лента
         </router-link>
       </div>
+      <div class="left-sidebar__actions">
+        <button
+          class="create-entry-btn button button_a"
+          @click="openEditor"
+          v-if="isAuth"
+        >
+          <span class="button__label">Создать запись</span>
+        </button>
+      </div>
     </div>
     <div class="sidebar-tint" />
   </nav>
@@ -110,6 +119,11 @@ const sidebarHide = () => {
 
 const toggleTheme = () => {
   emitter.emit("theme-toggle");
+};
+
+const openEditor = () => {
+  emitter.emit("editor-modal-toggle");
+  sidebarHide();
 };
 
 // computed
@@ -187,6 +201,16 @@ onBeforeUnmount(() => {
 
   &_hidden {
     display: none;
+  }
+
+  &__actions {
+    margin: 12px 10px;
+
+    .create-entry-btn {
+      width: 100%;
+      height: 50px;
+      font-size: 18px;
+    }
   }
 }
 
@@ -294,9 +318,19 @@ onBeforeUnmount(() => {
   }
 }
 
-@media (min-width: 769px) {
-  .left-sidebar__item.theme-toggle-btn {
-    display: none;
+@media (min-width: 500px) {
+  .left-sidebar {
+    &__actions {
+      .create-entry-btn {
+        display: none;
+      }
+    }
+
+    &__item {
+      .theme-toggle-btn {
+        display: none;
+      }
+    }
   }
 }
 
@@ -311,14 +345,27 @@ onBeforeUnmount(() => {
 }
 
 @media (hover: hover) {
-  .left-sidebar__link:hover {
-    background: var(--left-sidebar-link-hover-bg);
-  }
+  .left-sidebar {
+    &__link {
+      &:hover {
+        background: var(--left-sidebar-link-hover-bg);
+      }
+    }
 
-  .left-sidebar__item.theme-toggle-btn {
-    &:hover {
-      .icon {
-        color: var(--brand-color);
+    &__item {
+      .theme-toggle-btn {
+        &:hover {
+          .icon {
+            color: var(--brand-color);
+          }
+        }
+      }
+
+      .site-burger-btn,
+      .site-logo {
+        &:hover {
+          opacity: 0.7;
+        }
       }
     }
   }

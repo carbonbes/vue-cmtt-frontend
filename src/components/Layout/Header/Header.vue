@@ -8,6 +8,7 @@ import SiteLogo from "@/assets/logos/site_logo.svg?inline";
 import BellIcon from "@/assets/logos/bell_icon.svg?inline";
 import UserIcon from "@/assets/logos/user_icon.svg?inline";
 import ChevronDown from "@/assets/logos/chevron-down_icon.svg?inline";
+import PencilIcon from "@/assets/logos/pencil_icon.svg?inline";
 import notifySound from "@/assets/sounds/notify.mp3";
 
 export default {
@@ -25,6 +26,7 @@ export default {
     MoonIcon,
     SiteLogo,
     ChevronDown,
+    PencilIcon,
     Dropdown: defineAsyncComponent(() => import("./Dropdown.vue")),
     Notifications: defineAsyncComponent(() =>
       import("./Notifications/Notifications.vue")
@@ -129,6 +131,17 @@ export default {
     <div class="spacer"></div>
 
     <div class="header__item">
+      <button
+        class="entry-create-btn button button_a"
+        @click="this.emitter.emit('editor-modal-toggle')"
+        v-if="isAuth && !isAuthRequested"
+      >
+        <PencilIcon class="icon" />
+        <span class="button__label">Новая запись</span>
+      </button>
+    </div>
+
+    <div class="header__item">
       <div
         class="theme-toggle-btn"
         @click="toggleTheme"
@@ -212,30 +225,44 @@ export default {
     display: flex;
     flex-shrink: 0;
 
-    > .burger-btn {
+    .burger-btn {
       padding-left: 20px;
       display: flex;
       align-items: center;
       cursor: pointer;
     }
 
-    > .logo-btn {
+    .logo-btn {
       padding-left: 20px;
       display: flex;
       align-items: center;
       user-select: none;
     }
 
-    > .theme-toggle-btn,
-    > .bell-btn,
-    > .login-btn,
-    > .profile {
+    .entry-create-btn {
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      align-self: center;
+      height: 40px;
+
+      .icon {
+        margin-left: 15px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .theme-toggle-btn,
+    .bell-btn,
+    .login-btn,
+    .profile {
       display: flex;
     }
 
-    > .theme-toggle-btn,
-    > .bell-btn,
-    > .login-btn {
+    .theme-toggle-btn,
+    .bell-btn,
+    .login-btn {
       padding: 0 17px;
       cursor: pointer;
 
@@ -244,23 +271,23 @@ export default {
       }
     }
 
-    > .theme-toggle-btn .icon,
-    > .bell-btn .icon,
-    > .profile .actions .dropdown-toggle-btn .icon,
-    > .burger-btn .icon,
-    > .login-btn .icon {
+    .theme-toggle-btn .icon,
+    .bell-btn .icon,
+    .profile .actions .dropdown-toggle-btn .icon,
+    .burger-btn .icon,
+    .login-btn .icon {
       color: var(--black-color);
     }
 
-    > .bell-btn,
-    > .login-btn {
+    .bell-btn,
+    .login-btn {
       .icon {
         width: 28px;
         height: 28px;
       }
     }
 
-    > .bell-btn {
+    .bell-btn {
       position: relative;
 
       &_pressed {
@@ -286,11 +313,11 @@ export default {
       }
     }
 
-    > .login-btn {
+    .login-btn {
       padding-right: 30px;
     }
 
-    > .profile {
+    .profile {
       .avatar-link {
         display: flex;
         cursor: pointer;
@@ -304,7 +331,7 @@ export default {
           background-repeat: no-repeat;
           background-size: cover;
           border-radius: 6px;
-          box-shadow: var(--box-shadow-avatar);
+          box-shadow: inset 0 0 0 1px var(--box-shadow-avatar);
         }
       }
 
@@ -366,7 +393,7 @@ export default {
         }
       }
 
-      > .profile {
+      .profile {
         .avatar-link {
           &:hover {
             .avatar-img {
@@ -389,26 +416,36 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 500px) {
   .header {
     &__item {
-      > .burger-btn {
-        padding-left: 15px;
+      .entry-create-btn {
+        display: none;
       }
 
-      > .theme-toggle-btn {
+      .theme-toggle-btn {
         display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    &__item {
+      .burger-btn {
+        padding-left: 15px;
       }
 
       &.notifications {
         position: unset;
       }
 
-      > .bell-btn {
+      .bell-btn {
         padding: 0 10px;
       }
 
-      > .profile {
+      .profile {
         .avatar-link {
           &_without-action {
             display: none;
@@ -427,7 +464,7 @@ export default {
       .dropdown {
         --right-gap: 15px;
 
-        > .dropdown-component {
+        .dropdown-component {
           .profile-link {
             display: flex;
           }
@@ -440,7 +477,7 @@ export default {
 @media (min-width: 769px) {
   .header {
     &__item {
-      > .profile {
+      .profile {
         .avatar-link {
           &.avatar-link_with-action {
             display: none;

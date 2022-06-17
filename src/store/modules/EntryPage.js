@@ -20,11 +20,11 @@ const entryPageModule = {
     },
 
     entryId(state) {
-      return state.entry.id;
+      if (state.entry) return state.entry.id;
     },
 
     entryAuthorId(state) {
-      return state.entry.author.id;
+      if (state.entry) return state.entry.author.id;
     },
 
     subsiteData(state) {
@@ -304,6 +304,7 @@ const entryPageModule = {
         });
 
         notify({
+          type: "error",
           title: "Ошибка " + error.response.data.error.code,
           text: error.response.data.message,
         });
@@ -341,10 +342,6 @@ const entryPageModule = {
 
     editComment({}, data) {
       return API_v1.editComment(data);
-    },
-
-    uploadFile({}, file) {
-      return API_v1.uploadFile(file);
     },
 
     requestCommentEtcControls({ commit }, id) {

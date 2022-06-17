@@ -65,7 +65,7 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    box-shadow: var(--box-shadow-avatar);
+    box-shadow: inset 0 0 0 1px var(--box-shadow-avatar);
     background-size: cover;
     background-repeat: no-repeat;
     grid-row: 2 span;

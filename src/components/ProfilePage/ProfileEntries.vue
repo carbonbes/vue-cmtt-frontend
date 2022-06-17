@@ -20,7 +20,7 @@
     </template>
 
     <div class="entries-loader" v-if="this.currentPage < this.totalPages">
-      <loader />
+      <Loader color="var(--black-color)" />
     </div>
   </div>
 
@@ -110,14 +110,6 @@ export default {
     color: var(--black-color);
     border-radius: 8px;
     user-select: none;
-
-    .custom-loader {
-      &__loader-1,
-      &__loader-2,
-      &__loader-3 {
-        background-color: var(--black-color);
-      }
-    }
   }
 
   &_empty {

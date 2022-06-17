@@ -34,7 +34,7 @@
         />
       </template>
       <div class="notifications-content__loader">
-        <Loader />
+        <Loader color="var(--black-color)" />
       </div>
     </perfect-scrollbar>
     <div
@@ -47,7 +47,7 @@
       Войдите в аккаунт, чтобы просмотреть свои уведомления
     </div>
     <div class="notifications-content__loading" v-if="state.isRequested">
-      <Loader />
+      <Loader color="var(--black-color)" />
     </div>
   </div>
 </template>
@@ -219,26 +219,10 @@ onUnmounted(() => {
       height: 250px;
       display: flex;
       align-items: center;
-
-      .custom-loader {
-        &__loader-1,
-        &__loader-2,
-        &__loader-3 {
-          background-color: var(--black-color);
-        }
-      }
     }
 
     &__loader {
       padding: 20px;
-
-      .custom-loader {
-        &__loader-1,
-        &__loader-2,
-        &__loader-3 {
-          background-color: var(--black-color);
-        }
-      }
     }
 
     &__item {
@@ -266,7 +250,7 @@ onUnmounted(() => {
           height: var(--avatar-size);
           background-size: cover;
           border-radius: 50%;
-          box-shadow: var(--box-shadow-avatar);
+          box-shadow: inset 0 0 0 1px var(--box-shadow-avatar);
         }
 
         .icon {

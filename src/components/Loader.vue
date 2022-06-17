@@ -1,30 +1,35 @@
+<script setup>
+const props = defineProps(["color"]);
+</script>
+
 <template>
-  <div class="custom-loader">
-    <span class="custom-loader__loader-1"></span>
-    <span class="custom-loader__loader-2"></span>
-    <span class="custom-loader__loader-3"></span>
+  <div class="loader-component">
+    <span
+      v-for="index in 3"
+      :key="index"
+      :class="'loader-component__' + index"
+      :style="{ backgroundColor: props.color }"
+    />
   </div>
 </template>
 
 <style lang="scss">
-.custom-loader {
+.loader-component {
   margin: 0 auto;
   width: 20px;
   height: 4px;
   display: flex;
   align-items: center;
 
-  &__loader-1,
-  &__loader-2,
-  &__loader-3 {
+  &__1,
+  &__2,
+  &__3 {
     width: 4px;
     height: 4px;
     display: block;
     border-radius: 50%;
     opacity: 0.2;
-    animation-name: loader;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
+    animation: loader 1s infinite;
 
     &:nth-child(1) {
       margin-right: 4px;

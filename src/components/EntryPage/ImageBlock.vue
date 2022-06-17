@@ -79,16 +79,6 @@ export default {
       width: 100%;
     }
 
-    &_vertical {
-      padding: 8px 30px;
-      background: var(--article-cover-bg);
-
-      > div {
-        margin: 0 auto;
-        max-width: var(--vertical-max-width) !important;
-      }
-    }
-
     &_thin {
       padding: 8px 30px;
       max-width: 640px;
@@ -96,7 +86,7 @@ export default {
 
       > div {
         margin: 0 auto;
-        max-width: var(--vertical-max-width);
+        max-width: 55%;
       }
     }
   }

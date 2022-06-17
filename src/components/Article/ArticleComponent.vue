@@ -125,7 +125,7 @@ const articleLikes = computed(() => props.article.likes);
       }
 
       &_thin {
-        padding: 8px 30px;
+        padding: 8px 100px;
         background: var(--article-cover-bg);
 
         > div {
