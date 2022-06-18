@@ -260,10 +260,7 @@ export default {
     },
 
     isNewAllSite() {
-      return (
-        this.$route.params.pageName === "new" &&
-        this.$route.params.sorting === "all"
-      );
+      return this.$route.params.pageName === "new";
     },
 
     dropdownConfig() {

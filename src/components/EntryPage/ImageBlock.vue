@@ -7,7 +7,7 @@
         :srcWidth="srcWidth"
         :srcHeight="srcHeight"
         maxWidth="1020"
-        maxHeight="1020"
+        maxHeight="600"
       />
     </div>
 
@@ -45,9 +45,8 @@ export default {
 
     classObject() {
       return {
-        image_wide: this.srcWidth >= 1020 && this.srcWidth > this.srcHeight,
-        image_thin: this.srcWidth < 1020 && this.srcWidth > this.srcHeight,
-        image_vertical: this.srcWidth < this.srcHeight,
+        image_wide: this.srcWidth >= 1020 || this.srcWidth > this.srcHeight,
+        image_thin: this.srcWidth < 1020 || this.srcWidth < this.srcHeight,
       };
     },
 
@@ -56,7 +55,7 @@ export default {
         this.srcWidth,
         this.srcHeight,
         1020,
-        700
+        600
       );
 
       return width;
