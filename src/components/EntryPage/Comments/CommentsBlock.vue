@@ -1,27 +1,22 @@
-<template>
-  <template v-for="comment in props.comments" :key="comment.id">
-    <CommentBlock
-      :comment="comment"
-      :maxLvl="state.maxLvl"
-      v-if="!comment.isIgnored"
-    />
-  </template>
-</template>
-
 <script setup>
-import { reactive, watch } from "vue";
+import { reactive, watch, computed } from "vue";
+import { useStore } from "vuex";
 import { useMediaQuery } from "@vueuse/core";
 import CommentBlock from "@/components/EntryPage/Comments/CommentBlock.vue";
 
 const isMobile = useMediaQuery("(max-width: 768px)");
+const store = useStore();
 
 // props
-const props = defineProps({ comments: Array });
+const props = defineProps(["comments"]);
 
 // state
 const state = reactive({
   maxLvl: 8,
 });
+
+// computed
+const ignoredSubsites = computed(() => store.getters.ignoredProfiles);
 
 // watch
 watch(
@@ -35,6 +30,18 @@ watch(
   }
 );
 </script>
+
+<template>
+  <template v-for="comment in props.comments" :key="comment.id">
+    <CommentBlock
+      :comment="comment"
+      :maxLvl="state.maxLvl"
+      v-if="
+        !ignoredSubsites.some((subsite) => subsite.id === comment.author.id)
+      "
+    />
+  </template>
+</template>
 
 <style lang="scss">
 .entry-page__comment {

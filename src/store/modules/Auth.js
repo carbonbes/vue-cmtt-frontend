@@ -1,7 +1,7 @@
-import axios from "axios";
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 
+import { instance_v2 } from "../../api/config";
 const authModule = {
   state: () => ({
     auth: [],
@@ -65,7 +65,7 @@ const authModule = {
   },
 
   actions: {
-    requestAuth({ commit }) {
+    requestAuth({ commit, dispatch }) {
       commit("setAuthIsRequested", true);
 
       API_v2.subsiteMe()
@@ -73,6 +73,7 @@ const authModule = {
           localStorage.m_hash = response.data.result.mHash;
           localStorage.user_hash = response.data.result.userHash;
 
+          dispatch("requestSubscriptions", response.data.result.id);
           commit("setAuth", response.data.result);
           commit("setIsAuth", true);
           commit("setAuthIsRequested", false);
@@ -90,38 +91,13 @@ const authModule = {
       API_v1.requestLogin(data)
         .then((response) => {
           localStorage.token = response.headers["x-device-token"];
-          dispatch("mySubscriptions", {
-            token: response.headers["x-device-token"],
-            myId: response.data.result.id,
-          }).then((response) => {
-            localStorage.setItem(
-              "my_subscriptions",
-              JSON.stringify(response.data.result.items)
-            );
-            location.reload();
-          });
+          location.reload();
         })
         .catch((error) => {
           commit("setLoginIsRequested", false);
           commit("setIsError", true);
           commit("setError", error.response.data);
         });
-    },
-
-    mySubscriptions({}, data) {
-      return axios.get(
-        process.env.NODE_ENV == "production"
-          ? process.env.VUE_APP_API_BASE_URL +
-              "/v2.1/subsite/subscriptions?subsiteId=" +
-              data.myId
-          : "http://localhost:8080/v2.1/subsite/subscriptions?subsiteId=" +
-              data.myId,
-        {
-          headers: {
-            "X-Device-Token": data.token,
-          },
-        }
-      );
     },
 
     logout() {

@@ -134,7 +134,11 @@
           @highlight-comment="highlightParentComment"
           @unhighlight-parent-comment="unhighlightParentComment"
           @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
-          v-if="!comment.isIgnored"
+          v-if="
+            !this.ignoredProfiles.some(
+              (subsite) => comment.author.id === subsite.id
+            )
+          "
         />
       </template>
     </div>
@@ -341,31 +345,161 @@ export default {
     },
 
     etcControlsConfig() {
-      return {
-        items: [
-          this.comment.etcControls !== null &&
-            this.comment.etcControls.edit && {
+      if (
+        this.comment.etcControls !== null &&
+        !this.comment.etcControls.edit &&
+        !this.comment.etcControls.remove &&
+        !this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      } else if (
+        this.comment.etcControls !== null &&
+        this.comment.etcControls.edit &&
+        !this.comment.etcControls.remove &&
+        !this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            {
               icon: PencilIcon,
               label: "Редактировать",
               action: this.openEditForm,
               type: "default",
             },
-          this.comment.etcControls !== null &&
-            this.comment.etcControls.remove && {
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      } else if (
+        this.comment.etcControls !== null &&
+        this.comment.etcControls.edit &&
+        this.comment.etcControls.remove &&
+        !this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            {
+              icon: PencilIcon,
+              label: "Редактировать",
+              action: this.openEditForm,
+              type: "default",
+            },
+            {
               icon: DeleteIcon,
               label: "Удалить",
               type: "default",
             },
-          this.comment.etcControls !== null &&
-            this.comment.etcControls.remove_thread && {
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      } else if (
+        this.comment.etcControls !== null &&
+        this.comment.etcControls.edit &&
+        this.comment.etcControls.remove &&
+        this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            {
+              icon: PencilIcon,
+              label: "Редактировать",
+              action: this.openEditForm,
+              type: "default",
+            },
+            {
+              icon: DeleteIcon,
+              label: "Удалить",
+              type: "default",
+            },
+            {
               icon: DeleteThreadIcon,
               label: "Удалить ветку",
               type: "default",
             },
-          { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
-          { icon: FlagIcon, label: "Пожаловаться", type: "default" },
-        ],
-      };
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      } else if (
+        this.comment.etcControls !== null &&
+        !this.comment.etcControls.edit &&
+        this.comment.etcControls.remove &&
+        this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            {
+              icon: DeleteIcon,
+              label: "Удалить",
+              type: "default",
+            },
+            {
+              icon: DeleteThreadIcon,
+              label: "Удалить ветку",
+              type: "default",
+            },
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      } else if (
+        this.comment.etcControls !== null &&
+        this.comment.etcControls.edit &&
+        !this.comment.etcControls.remove &&
+        this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            {
+              icon: PencilIcon,
+              label: "Редактировать",
+              action: this.openEditForm,
+              type: "default",
+            },
+            {
+              icon: DeleteIcon,
+              label: "Удалить",
+              type: "default",
+            },
+            {
+              icon: DeleteThreadIcon,
+              label: "Удалить ветку",
+              type: "default",
+            },
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      } else if (
+        this.comment.etcControls !== null &&
+        this.comment.etcControls.edit &&
+        this.comment.etcControls.remove &&
+        !this.comment.etcControls.remove_thread
+      ) {
+        return {
+          items: [
+            {
+              icon: PencilIcon,
+              label: "Редактировать",
+              action: this.openEditForm,
+              type: "default",
+            },
+            {
+              icon: DeleteIcon,
+              label: "Удалить",
+              type: "default",
+            },
+            { icon: ChainIcon, label: "Копировать ссылку", type: "default" },
+            { icon: FlagIcon, label: "Пожаловаться", type: "default" },
+          ],
+        };
+      }
     },
 
     ...mapGetters([
@@ -373,6 +507,7 @@ export default {
       "entryId",
       "entryAuthorId",
       "temporaryHightlightComment",
+      "ignoredProfiles",
     ]),
   },
 
