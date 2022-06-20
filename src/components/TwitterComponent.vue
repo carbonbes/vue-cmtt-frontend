@@ -27,8 +27,8 @@
           :imageSrc="imgSrc"
           :srcWidth="imageSrcWidth"
           :srcHeight="imageSrcHeight"
-          :maxWidth="1400"
-          :maxHeight="600"
+          :maxWidth="640"
+          :maxHeight="460"
           type="embed"
         />
       </div>
@@ -42,8 +42,8 @@
           :srcVideo="videoSrc"
           :srcWidth="videoSrcWidth"
           :srcHeight="videoSrcHeight"
-          :maxWidth="1400"
-          :maxHeight="600"
+          :maxWidth="640"
+          :maxHeight="460"
           :embedCover="videoCover"
           type="embed"
           :contentType="videoContentType"

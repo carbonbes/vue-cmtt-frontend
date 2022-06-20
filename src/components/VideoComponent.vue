@@ -122,7 +122,7 @@ import PlayIcon from "@/assets/logos/play_icon.svg?inline";
 import YoutubeIcon from "@/assets/logos/youtube_icon.svg?inline";
 import CoubIcon from "@/assets/logos/coub_icon.svg?inline";
 import VimeoIcon from "@/assets/logos/vimeo_icon.svg?inline";
-import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
+import сalculateSizes from "@/utils/сalculateSizes";
 
 export default {
   components: {
@@ -176,7 +176,7 @@ export default {
     },
 
     calculatedWidth() {
-      const { width } = сalculateAspectRatio(
+      const { width } = сalculateSizes(
         this.srcWidth,
         this.srcHeight,
         this.maxWidth,

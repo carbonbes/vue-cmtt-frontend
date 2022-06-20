@@ -1,9 +1,4 @@
-export const сalculateAspectRatio = (
-  srcWidth,
-  srcHeight,
-  maxWidth,
-  maxHeight
-) => {
+const сalculateSizes = (srcWidth, srcHeight, maxWidth, maxHeight) => {
   let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
   return {
@@ -11,3 +6,5 @@ export const сalculateAspectRatio = (
     height: Math.round(srcHeight * ratio),
   };
 };
+
+export default сalculateSizes;

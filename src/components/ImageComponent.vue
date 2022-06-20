@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
+import сalculateSizes from "@/utils/сalculateSizes";
 import PhotoSwipeLightbox from "photoswipe/dist/photoswipe-lightbox.esm.min.js";
 
 export default {
@@ -20,16 +20,10 @@ export default {
     styleObject() {
       return {
         maxWidth:
-          (this.srcWidth >= this.maxWidth &&
-            (this.srcHeight > this.maxHeight ||
-              this.srcHeight < this.maxHeight)) ||
-          (this.srcWidth < this.maxWidth && this.srcHeight > this.maxHeight)
+          this.srcWidth >= this.maxWidth
             ? this.calculatedWidth + "px"
             : this.srcWidth + "px",
-        maxHeight:
-          this.srcHeight >= this.maxHeight
-            ? this.calculatedHeight + "px"
-            : this.srcHeight + "px",
+        maxHeight: this.maxHeight,
       };
     },
 
@@ -41,7 +35,7 @@ export default {
     },
 
     calculatedWidth() {
-      const { width } = сalculateAspectRatio(
+      const { width } = сalculateSizes(
         this.srcWidth,
         this.srcHeight,
         this.maxWidth,
@@ -49,17 +43,6 @@ export default {
       );
 
       return width;
-    },
-
-    calculatedHeight() {
-      const { height } = сalculateAspectRatio(
-        this.srcWidth,
-        this.srcHeight,
-        this.maxWidth,
-        this.maxHeight
-      );
-
-      return height;
     },
   },
 

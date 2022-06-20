@@ -3,7 +3,7 @@ import { computed } from "vue";
 import ImageComponent from "@/components/ImageComponent.vue";
 import GalleryComponent from "@/components/Gallery/GalleryComponent.vue";
 import VideoComponent from "@/components/VideoComponent.vue";
-import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
+import сalculateSizes from "@/utils/сalculateSizes";
 
 // props
 const props = defineProps(["media"]);
@@ -38,7 +38,7 @@ const imgSizes = computed(() => {
 
 const imgCalculatedWidth = computed(() => {
   if (isImage.value) {
-    const { width } = сalculateAspectRatio(
+    const { width } = сalculateSizes(
       props.media.data.items[0].image.data.width,
       props.media.data.items[0].image.data.height,
       640,
@@ -135,7 +135,7 @@ const gifClassObj = computed(() => {
       :srcWidth="imgSizes.width"
       :srcHeight="imgSizes.height"
       :maxWidth="640"
-      :maxHeight="600"
+      :maxHeight="460"
       type="1"
     />
   </div>
@@ -146,7 +146,7 @@ const gifClassObj = computed(() => {
       :srcWidth="props.media.data.video.data.width"
       :srcHeight="props.media.data.video.data.height"
       :maxWidth="640"
-      :maxHeight="600"
+      :maxHeight="460"
       :externalService="props.media.data.video.data.external_service"
     />
   </div>
@@ -157,7 +157,7 @@ const gifClassObj = computed(() => {
       :srcWidth="props.media.data.items[0].image.data.width"
       :srcHeight="props.media.data.items[0].image.data.height"
       :maxWidth="640"
-      :maxHeight="600"
+      :maxHeight="460"
     />
   </div>
 

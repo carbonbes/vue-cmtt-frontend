@@ -21,7 +21,7 @@
 
 <script>
 import Image from "../ImageComponent.vue";
-import { сalculateAspectRatio } from "@/utils/сalculateAspectRatio";
+import сalculateSizes from "@/utils/сalculateSizes";
 
 export default {
   props: {
@@ -51,7 +51,7 @@ export default {
     },
 
     calculatedWidth() {
-      const { width } = сalculateAspectRatio(
+      const { width } = сalculateSizes(
         this.srcWidth,
         this.srcHeight,
         1020,
