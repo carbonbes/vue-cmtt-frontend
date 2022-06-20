@@ -1,7 +1,9 @@
 <template>
-  <template v-for="(text, index) in replacedString" :key="index">
-    <component :is="{ template: '<p>' + text + '</p>' }"></component>
-  </template>
+  <component
+    v-for="(text, i) in replacedString"
+    :key="i"
+    :is="{ template: '<p>' + text + '</p>' }"
+  />
 </template>
 
 <script>

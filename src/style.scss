@@ -288,7 +288,7 @@ body {
 .profile-popup__description,
 .quote-component__content .author .name,
 .quote-component__content .author .description,
-.entry-content__subtitle p,
+.article-component__content .subtitle p,
 .entry-page__comment .text {
   a {
     color: var(--blue-color);
@@ -474,7 +474,7 @@ body {
   .profile-popup__description,
   .quote-component__content .author .name,
   .quote-component__content .author .description,
-  .entry-content__subtitle p,
+  .article-component__content .subtitle p,
   .entry-page__comment .text {
     a {
       &:hover {

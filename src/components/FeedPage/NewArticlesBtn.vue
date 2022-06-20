@@ -23,7 +23,7 @@ const countLabel = computed(() => declensionWords(props.newArticles, labels));
 <style lang="scss">
 .new-articles-btn {
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 15px;
   background: var(--island-bg);
   display: flex;
   align-items: center;
