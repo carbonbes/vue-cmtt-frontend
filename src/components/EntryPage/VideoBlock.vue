@@ -1,22 +1,22 @@
 <template>
   <div class="entry-page__video-block" :class="classObject">
     <video-component
-      :srcVideo="item.data.items[0].image.data.uuid"
-      :srcWidth="item.data.items[0].image.data.width"
-      :srcHeight="item.data.items[0].image.data.height"
-      :maxWidth="maxWidth"
-      :maxHeight="maxHeight"
-      :externalService="item.data.items[0].image.data.external_service"
+      :src-video="item.data.items[0].image.data.uuid"
+      :src-width="item.data.items[0].image.data.width"
+      :src-height="item.data.items[0].image.data.height"
+      max-width="640"
+      max-height="460"
+      :external-service="item.data.items[0].image.data.external_service"
       v-if="type === 'default'"
     />
 
     <video-component
-      :srcVideo="item.data.video.data.thumbnail.data.uuid"
-      :srcWidth="item.data.video.data.width"
-      :srcHeight="item.data.video.data.height"
-      :maxWidth="maxWidth"
-      :maxHeight="maxHeight"
-      :externalService="item.data.video.data.external_service"
+      :src-video="item.data.video.data.thumbnail.data.uuid"
+      :src-width="item.data.video.data.width"
+      :src-height="item.data.video.data.height"
+      max-width="640"
+      max-height="460"
+      :external-service="item.data.video.data.external_service"
       v-if="type === 'video'"
     />
   </div>
@@ -56,14 +56,6 @@ export default {
             this.item.data.video.data.width < this.item.data.video.data.height,
         };
       }
-    },
-
-    maxWidth() {
-      return 640;
-    },
-
-    maxHeight() {
-      return 700;
     },
   },
 };

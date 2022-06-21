@@ -1,13 +1,13 @@
 <template>
   <div class="entry-page__img-block">
     <div class="image" :class="classObject">
-      <Image
-        :imageSrc="this.item.data.items[0].image.data.uuid"
+      <ImageComponent
+        :image-src="this.item.data.items[0].image.data.uuid"
+        :src-width="srcWidth"
+        :src-height="srcHeight"
+        max-width="640"
+        max-height="460"
         type="2"
-        :srcWidth="srcWidth"
-        :srcHeight="srcHeight"
-        maxWidth="1020"
-        maxHeight="600"
       />
     </div>
 
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import Image from "../ImageComponent.vue";
+import ImageComponent from "../ImageComponent.vue";
 import сalculateSizes from "@/utils/сalculateSizes";
 
 export default {
@@ -28,7 +28,7 @@ export default {
     item: Object,
   },
 
-  components: { Image },
+  components: { ImageComponent },
 
   computed: {
     srcWidth() {

@@ -164,7 +164,7 @@ export default {
       allFeedNewDropdownSettings: {
         items: [
           {
-            label: "От -10",
+            label: "От −10",
             path: "/new/from-10",
             type: "link",
             activeClassPathes: ["/new", "/new/from-10"],
@@ -313,7 +313,7 @@ export default {
         this.$route.path === "/new" ||
         this.$route.path === "/new/from-10"
       ) {
-        return "От -10";
+        return "От −10";
       } else if (this.$route.path === "/new/from5") {
         return "От +5";
       } else if (this.$route.path === "/new/from10") {
