@@ -7,7 +7,6 @@
         :src-height="srcHeight"
         max-width="640"
         max-height="460"
-        type="2"
       />
     </div>
 

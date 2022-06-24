@@ -226,7 +226,7 @@ export default {
     },
 
     commentsTree() {
-      return this.flatCommentsToTree(this.commentsList);
+      return this.makeCommentsTree(this.commentsList);
     },
 
     commentsWordDecl() {
@@ -237,28 +237,19 @@ export default {
   },
 
   methods: {
-    flatCommentsToTree(comments) {
-      let map = {},
-        node,
-        roots = [],
-        i;
-
-      for (i = 0; i < comments.length; i += 1) {
-        map[comments[i].id] = i;
-        comments[i].replies = [];
-      }
-
-      for (i = 0; i < comments.length; i += 1) {
-        node = comments[i];
-        if (node.replyTo !== 0) {
-          if (comments[map[node.replyTo]]) {
-            comments[map[node.replyTo]].replies.push(node);
-          } else return;
-        } else {
-          roots.push(node);
-        }
-      }
-      return roots;
+    makeCommentsTree(nodes, parentId = 0) {
+      return nodes
+        .filter((node) => node.replyTo === parentId)
+        .reduce(
+          (tree, node) => [
+            ...tree,
+            {
+              ...node,
+              replies: this.makeCommentsTree(nodes, node.id),
+            },
+          ],
+          []
+        );
     },
 
     openTopReplyForm() {
