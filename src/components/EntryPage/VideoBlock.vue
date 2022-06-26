@@ -42,17 +42,16 @@ export default {
           "entry-page__video-block_wide":
             this.item.data.items[0].image.data.width > this.maxWidth,
           "entry-page__video-block_thin":
-            this.item.data.items[0].image.data.width < this.maxWidth,
-          "entry-page__video-block_vertical":
+            this.item.data.items[0].image.data.width < this.maxWidth ||
             this.item.data.items[0].image.data.width <
-            this.item.data.items[0].image.data.height,
+              this.item.data.items[0].image.data.height,
         };
       } else if (this.type === "video") {
         return {
           "entry-page__video-block_wide":
             this.item.data.video.data.width > this.maxWidth ||
             this.item.data.video.data.external_service,
-          "entry-page__video-block_vertical":
+          "entry-page__video-block_thin":
             this.item.data.video.data.width < this.item.data.video.data.height,
         };
       }
@@ -83,7 +82,7 @@ export default {
   &_thin {
     margin-left: auto;
     margin-right: auto;
-    padding: 15px 30px;
+    padding: 8px 0;
     max-width: 640px;
     background: var(--article-cover-bg);
 
