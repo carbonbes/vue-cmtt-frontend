@@ -6,6 +6,14 @@
     :style="{ '--level': this.comment.level }"
   >
     <div
+      class="branch"
+      :class="branchClassObj"
+      @click="$emit('collapseBranch')"
+      @mouseenter="setIdCommentBranchFocused(this.comment.replyTo)"
+      @mouseleave="setIdCommentBranchFocused(0)"
+      v-if="this.comment.level <= this.maxLvl - 1 && this.comment.level !== 0"
+    />
+    <div
       class="self-comment"
       :class="selfCommentClassObj"
       @mouseenter="setIsUnread(false)"
@@ -29,7 +37,7 @@
           }"
           v-if="isReply"
           @click="$emit('temporaryHighlightParentComment')"
-          @mouseenter="$emit('highlightComment')"
+          @mouseenter="$emit('highlightParentComment')"
           @mouseleave="$emit('unhighlightParentComment')"
         >
           <up-arrow-icon />
@@ -121,18 +129,16 @@
       :class="commentRepliesClassObj"
       v-if="this.comment.replies.length > 0"
     >
-      <div
-        class="branch-collapse-btn"
-        @click="toggleBranchCollapse"
-        v-if="this.comment.level <= this.maxLvl - 1"
-      />
       <template v-for="comment in this.comment.replies" :key="comment.id">
         <CommentBlock
           :comment="comment"
           :replyToAuthorName="authorName"
           :maxLvl="maxLvl"
-          @highlight-comment="highlightParentComment"
+          :idCommentBranchFocused="idCommentBranchFocused"
+          :setIdCommentBranchFocused="setIdCommentBranchFocused"
+          @highlight-parent-comment="highlightParentComment"
           @unhighlight-parent-comment="unhighlightParentComment"
+          @collapse-branch="collapseBranch"
           @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
           v-if="
             !this.ignoredProfiles.some(
@@ -144,8 +150,8 @@
     </div>
     <span
       class="branch-expand-btn"
-      v-if="branchIsCollapsed"
-      @click="toggleBranchCollapse"
+      v-if="this.branchIsCollapsed"
+      @click="expandBranch"
     >
       Раскрыть ветку
     </span>
@@ -172,11 +178,13 @@ import PencilIcon from "@/assets/logos/pencil_icon.svg?inline";
 export default {
   name: "comment-block",
 
-  props: {
-    comment: Object,
-    replyToAuthorName: String,
-    maxLvl: Number,
-  },
+  props: [
+    "comment",
+    "replyToAuthorName",
+    "maxLvl",
+    "idCommentBranchFocused",
+    "setIdCommentBranchFocused",
+  ],
 
   components: {
     DateTime,
@@ -223,6 +231,13 @@ export default {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
         "entry-page__comment_max-lvl": this.comment.level > this.maxLvl,
+      };
+    },
+
+    branchClassObj() {
+      return {
+        branch_highlighted:
+          this.idCommentBranchFocused === this.comment.replyTo,
       };
     },
 
@@ -512,8 +527,12 @@ export default {
   },
 
   methods: {
-    toggleBranchCollapse() {
-      this.branchIsCollapsed = !this.branchIsCollapsed;
+    collapseBranch() {
+      this.branchIsCollapsed = true;
+    },
+
+    expandBranch() {
+      this.branchIsCollapsed = false;
     },
 
     getLikes() {
@@ -665,6 +684,7 @@ export default {
     --right-gap-highlighted: -21px;
     --width-highlighted: 100%;
 
+    position: relative;
     margin-top: 9px;
     font-size: 16px;
     line-height: 1.5em;
@@ -673,26 +693,10 @@ export default {
       margin-top: 0;
       padding-left: var(--branch-gap);
 
-      &::before {
-        content: "";
-        position: absolute;
-        margin-left: -22px;
-        box-sizing: content-box;
-        display: block;
-        width: 12px;
-        height: 36px;
-        border: solid var(--branch-color);
-        border-width: 0 0 1px 1px;
-        border-bottom-left-radius: 8px;
-        z-index: 1;
-      }
-
-      &:not(.entry-page__comment_max-lvl):not(:last-child) {
-        border-left: 1px solid var(--branch-color);
-      }
-
       &:not(.entry-page__comment_max-lvl):last-child {
-        border-left: 1px solid transparent;
+        > .branch {
+          height: 0;
+        }
       }
     }
 
@@ -708,6 +712,41 @@ export default {
       .ignored-comment__text {
         color: var(--grey-color);
         line-height: 32px;
+      }
+    }
+
+    .branch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: var(--branch-gap);
+      height: 100%;
+      border-left: 1px solid var(--branch-color);
+      cursor: pointer;
+      z-index: 1;
+
+      &_highlighted {
+        border-color: var(--branch-hovered-color);
+        box-shadow: inset 1px 0 0 0 var(--branch-hovered-color);
+
+        &::before {
+          border-color: var(--branch-hovered-color) !important;
+          box-shadow: inset 1px -1px 0 0 var(--branch-hovered-color);
+        }
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        margin-left: -1px;
+        box-sizing: content-box;
+        display: block;
+        width: 12px;
+        height: 36px;
+        border: solid var(--branch-color);
+        border-width: 0 0 1px 1px;
+        border-bottom-left-radius: 8px;
+        z-index: 1;
       }
     }
 
@@ -1018,18 +1057,11 @@ export default {
       &_collapsed {
         display: none;
       }
-
-      .branch-collapse-btn {
-        position: absolute;
-        width: var(--branch-gap);
-        height: 100%;
-        cursor: pointer;
-        z-index: 2;
-      }
     }
 
     .branch-expand-btn {
       color: var(--blue-color);
+      font-size: 15px;
       cursor: pointer;
     }
   }
@@ -1106,10 +1138,8 @@ export default {
       }
     }
 
-    .branch-expand-btn {
-      &:hover {
-        color: var(--red-color);
-      }
+    .branch-expand-btn:hover {
+      color: var(--red-color);
     }
   }
 }
