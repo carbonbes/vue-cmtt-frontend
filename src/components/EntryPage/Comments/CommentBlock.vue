@@ -11,7 +11,7 @@
       @click="$emit('collapseBranch')"
       @mouseenter="setIdCommentBranchFocused(this.comment.replyTo)"
       @mouseleave="setIdCommentBranchFocused(0)"
-      v-if="this.comment.level <= this.maxLvl - 1 && this.comment.level !== 0"
+      v-if="this.comment.level <= this.maxLvl && this.comment.level !== 0"
     />
     <div
       class="self-comment"
@@ -230,7 +230,7 @@ export default {
     commentClassObj() {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
-        "entry-page__comment_max-lvl": this.comment.level > this.maxLvl,
+        "entry-page__comment_max-lvl": this.comment.level >= this.maxLvl,
       };
     },
 
@@ -703,15 +703,8 @@ export default {
     &_max-lvl {
       padding-left: 0;
 
-      &::before {
+      .branch {
         display: none;
-      }
-    }
-
-    &_ignored {
-      .ignored-comment__text {
-        color: var(--grey-color);
-        line-height: 32px;
       }
     }
 
