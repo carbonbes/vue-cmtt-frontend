@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, watch, computed } from "vue";
+import { reactive, watch } from "vue";
 import { useStore } from "vuex";
 import { useMediaQuery } from "@vueuse/core";
 import CommentBlock from "@/components/EntryPage/Comments/CommentBlock.vue";
@@ -15,9 +15,6 @@ const state = reactive({
   maxLvl: 8,
   idCommentBranchFocused: 0,
 });
-
-// computed
-const ignoredSubsites = computed(() => store.getters.ignoredProfiles);
 
 // methods
 const setIdCommentBranchFocused = (commentId) => {
@@ -44,9 +41,6 @@ watch(
       :maxLvl="state.maxLvl"
       :idCommentBranchFocused="state.idCommentBranchFocused"
       :setIdCommentBranchFocused="setIdCommentBranchFocused"
-      v-if="
-        !ignoredSubsites.some((subsite) => subsite.id === comment.author.id)
-      "
     />
   </template>
 </template>

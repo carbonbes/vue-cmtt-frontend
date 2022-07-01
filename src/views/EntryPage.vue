@@ -174,7 +174,6 @@ function requestEntry(routeTo, next) {
     store.dispatch("requestCommentsList", {
       params: { contentId: routeTo.params.id },
     }),
-    store.dispatch("requestIgnoredSubsites"),
   ])
     .then(() => {
       nProgress.done();

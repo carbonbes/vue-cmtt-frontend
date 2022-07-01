@@ -140,11 +140,6 @@
           @unhighlight-parent-comment="unhighlightParentComment"
           @collapse-branch="collapseBranch"
           @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
-          v-if="
-            !this.ignoredProfiles.some(
-              (subsite) => comment.author.id === subsite.id
-            )
-          "
         />
       </template>
     </div>
@@ -231,6 +226,7 @@ export default {
       return {
         "entry-page__comment_reply": this.comment.replyTo !== 0,
         "entry-page__comment_max-lvl": this.comment.level >= this.maxLvl,
+        "entry-page__comment_ignored": this.comment.isIgnored,
       };
     },
 
@@ -594,6 +590,7 @@ export default {
 
     openEditForm() {
       this.editMode = true;
+      this.etcControlsDropdownIsOpen = false;
     },
 
     closeEditForm() {
@@ -706,6 +703,10 @@ export default {
       .branch {
         display: none;
       }
+    }
+
+    &_ignored {
+      display: none;
     }
 
     .branch {

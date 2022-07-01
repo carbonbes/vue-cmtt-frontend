@@ -141,7 +141,7 @@ export default createStore({
     },
 
     requestSubscriptions({ commit }, subsiteId) {
-      API_v2.subscriptions(subsiteId).then((response) => {
+      return API_v2.subscriptions(subsiteId).then((response) => {
         commit("setSubscriptions", response.data.result.items);
       });
     },

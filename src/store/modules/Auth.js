@@ -68,15 +68,19 @@ const authModule = {
     requestAuth({ commit, dispatch }) {
       commit("setAuthIsRequested", true);
 
-      API_v2.subsiteMe()
+      return API_v2.subsiteMe()
         .then((response) => {
           localStorage.m_hash = response.data.result.mHash;
           localStorage.user_hash = response.data.result.userHash;
 
-          dispatch("requestSubscriptions", response.data.result.id);
-          commit("setAuth", response.data.result);
-          commit("setIsAuth", true);
-          commit("setAuthIsRequested", false);
+          Promise.all([
+            dispatch("requestSubscriptions", response.data.result.id),
+            dispatch("requestIgnoredSubsites"),
+          ]).then(() => {
+            commit("setAuth", response.data.result);
+            commit("setIsAuth", true);
+            commit("setAuthIsRequested", false);
+          });
         })
         .catch(() => {
           commit("setIsAuth", false);
