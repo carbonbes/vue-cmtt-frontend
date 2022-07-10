@@ -132,17 +132,17 @@ export default {
     VimeoIcon,
   },
 
-  props: {
-    srcVideo: String,
-    srcWidth: [Number, String],
-    srcHeight: [Number, String],
-    maxWidth: [Number, String],
-    maxHeight: [Number, String],
-    externalService: Object,
-    embedCover: String,
-    type: String,
-    contentType: String,
-  },
+  props: [
+    "srcVideo",
+    "srcWidth",
+    "srcHeight",
+    "maxWidth",
+    "maxHeight",
+    "externalService",
+    "embedCover",
+    "type",
+    "contentType",
+  ],
 
   data() {
     return { isPlaying: false };
@@ -157,13 +157,10 @@ export default {
   computed: {
     styleObject() {
       return {
-        maxWidth:
+        "max-width":
           this.externalService && Object.keys(this.externalService).length !== 0
             ? this.maxWidth + "px"
-            : (this.srcWidth >= this.maxWidth &&
-                (this.srcHeight > this.maxHeight ||
-                  this.srcHeight < this.maxHeight)) ||
-              (this.srcWidth < this.maxWidth && this.srcHeight > this.maxHeight)
+            : this.srcWidth >= this.maxWidth
             ? this.calculatedWidth + "px"
             : this.srcWidth + "px",
       };

@@ -4,7 +4,7 @@
       <div class="embed-header__author-avatar" :style="authorAvatar" />
       <div class="embed-header__data">
         <div class="embed-header__author-name">{{ authorName }}</div>
-        <date-time
+        <DateTime
           :date="dateTime * 1000"
           type="1"
           :title="new Date(dateTime * 1000).toLocaleString()"
@@ -12,7 +12,7 @@
       </div>
       <div class="spacer" />
       <div class="embed-header__logo">
-        <telegram-logo class="telegram-logo" />
+        <TelegramLogo class="telegram-logo" />
       </div>
     </div>
     <div class="embed-text__wrap" v-if="text">
@@ -27,26 +27,26 @@
     <div class="embed-cover" v-if="imageSrc || videoSrc || imagesGallery">
       <div class="embed-cover__img" v-if="imageSrc">
         <ImageComponent
-          :imageSrc="imageSrc"
-          :srcWidth="imageSrcWidth"
-          :srcHeight="imageSrcHeight"
-          :maxWidth="640"
-          :maxHeight="460"
+          :image-src="imageSrc"
+          :src-width="imageSrcWidth"
+          :src-height="imageSrcHeight"
+          max-width="400"
+          max-height="460"
           type="embed"
         />
       </div>
 
       <div class="embed-cover__gallery" v-if="imagesGallery">
-        <gallery-component :srcImages="imagesGallery" type="telegram_embed" />
+        <GalleryComponent :src-images="imagesGallery" type="telegram_embed" />
       </div>
 
       <div class="embed-cover__video" v-if="videoCover">
-        <video-component
-          :srcVideo="videoSrc"
-          :srcWidth="videoSrcWidth"
-          :srcHeight="videoSrcHeight"
-          :maxWidth="640"
-          :maxHeight="460"
+        <VideoComponent
+          :src-video="videoSrc"
+          :src-width="videoSrcWidth"
+          :src-height="videoSrcHeight"
+          max-width="400"
+          max-height="460"
           :embedCover="coverSrc"
           type="embed"
         />
@@ -63,21 +63,21 @@ import GalleryComponent from "./Gallery/GalleryComponent.vue";
 import TelegramLogo from "@/assets/logos/telegram_logo.svg?inline";
 
 export default {
+  props: [
+    "authorAvatarSrc",
+    "authorName",
+    "dateTime",
+    "text",
+    "imgCover",
+    "videoCover",
+  ],
+
   components: {
     DateTime,
     ImageComponent,
     VideoComponent,
     GalleryComponent,
     TelegramLogo,
-  },
-
-  props: {
-    authorAvatarSrc: String,
-    authorName: String,
-    dateTime: [String, Number],
-    text: String,
-    imgCover: Object,
-    videoCover: Object,
   },
 
   data() {

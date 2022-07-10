@@ -23,21 +23,26 @@ const subtitles = computed(() =>
       :isEditorial="props.isEditorial"
       v-if="props.title"
     />
+
     <ArticleSubtitles :subtitles="subtitles" v-if="subtitles.length" />
+
     <template v-for="(block, i) in props.content" :key="i">
       <ArticleMedia
         :media="block"
         v-if="block.cover && (block.type === 'media' || block.type === 'video')"
       />
+
       <ArticleSocialEmbeds
         :embed="block"
         v-if="
           block.cover && (block.type === 'telegram' || block.type === 'tweet')
         "
       />
+      
       <ArticleLink :link="block" v-if="block.cover && block.type === 'link'" />
       <!-- <ArticleQuote :quote="block" v-if="block.cover && block.type === 'quote'" /> -->
     </template>
+
     <router-link
       class="link"
       :to="{ path: '/' + props.articleId }"

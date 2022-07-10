@@ -7,7 +7,7 @@
           <div class="embed-header__author-name">{{ authorName }}</div>
           <span class="embed-header__author-tag">@{{ authorTag }}</span>
         </div>
-        <date-time
+        <DateTime
           :date="dateTimeFormatted"
           type="1"
           :title="new Date(dateTimeFormatted).toLocaleString()"
@@ -15,7 +15,7 @@
       </div>
       <div class="spacer" />
       <div class="embed-header__logo">
-        <twitter-logo class="twitter-logo" />
+        <TwitterLogo class="twitter-logo" />
       </div>
     </div>
     <div class="embed-text__wrap" v-if="text">
@@ -23,30 +23,30 @@
     </div>
     <div class="embed-cover" v-if="imgSrc || videoSrc">
       <div class="embed-cover__img" v-if="imgSrc && this.media.length === 1">
-        <image-component
-          :imageSrc="imgSrc"
-          :srcWidth="imageSrcWidth"
-          :srcHeight="imageSrcHeight"
-          :maxWidth="640"
-          :maxHeight="460"
+        <ImageComponent
+          :image-src="imgSrc"
+          :src-width="imageSrcWidth"
+          :src-height="imageSrcHeight"
+          max-width="400"
+          max-height="460"
           type="embed"
         />
       </div>
 
       <div class="embed-cover__gallery" v-if="imagesGallery">
-        <gallery-component :srcImages="imagesGallery" type="twitter_embed" />
+        <GalleryComponent :src-images="imagesGallery" type="twitter_embed" />
       </div>
 
       <div class="embed-cover__video" v-if="videoSrc">
-        <video-component
-          :srcVideo="videoSrc"
-          :srcWidth="videoSrcWidth"
-          :srcHeight="videoSrcHeight"
-          :maxWidth="640"
-          :maxHeight="460"
-          :embedCover="videoCover"
+        <VideoComponent
+          :src-video="videoSrc"
+          :src-width="videoSrcWidth"
+          :src-height="videoSrcHeight"
+          max-width="400"
+          max-height="460"
+          :embed-cover="videoCover"
           type="embed"
-          :contentType="videoContentType"
+          :content-type="videoContentType"
         />
       </div>
     </div>
@@ -61,14 +61,14 @@ import GalleryComponent from "./Gallery/GalleryComponent.vue";
 import TwitterLogo from "@/assets/logos/twitter_logo.svg?inline";
 
 export default {
-  props: {
-    authorAvatar: String,
-    authorName: String,
-    authorTag: String,
-    dateTime: [String, Number],
-    text: String,
-    media: Object,
-  },
+  props: [
+    "authorAvatar",
+    "authorName",
+    "authorTag",
+    "dateTime",
+    "text",
+    "media",
+  ],
 
   components: {
     DateTime,

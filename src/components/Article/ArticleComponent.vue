@@ -22,16 +22,16 @@ const articleLikes = computed(() => props.article.likes);
   <div class="article-component">
     <ArticleHeader class="e-island" :article="props.article" dateType="0" />
     <ArticleContent
-      :articleId="articleId"
+      :article-id="articleId"
       :title="articleTitle"
-      :isEditorial="isEditorial"
+      :is-editorial="isEditorial"
       :content="articleContent"
     />
     <ArticleFooter
       class="e-island"
-      :articleId="articleId"
-      :articleCounters="articleCounters"
-      :articleLikes="articleLikes"
+      :article-id="articleId"
+      :article-counters="articleCounters"
+      :article-likes="articleLikes"
       :type="props.type"
     />
   </div>
@@ -110,28 +110,20 @@ const articleLikes = computed(() => props.article.likes);
 
     .media {
       margin-top: 12px;
+      display: flex;
+      justify-content: center;
+      background: var(--article-cover-bg);
 
       &:first-child {
         margin-top: 0;
       }
 
-      &_wide {
+      > div {
         width: 100%;
-
-        > div {
-          margin-left: auto;
-          margin-right: auto;
-        }
       }
 
-      &_thin {
-        padding: 8px 100px;
-        background: var(--article-cover-bg);
-
-        > div {
-          margin: 0 auto;
-          max-width: var(--vertical-cover-max-width);
-        }
+      .gallery {
+        z-index: 1;
       }
     }
 
