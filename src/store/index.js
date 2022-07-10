@@ -7,7 +7,7 @@ import NotificationsModule from "./modules/Notifications";
 import EditorModule from "./modules/Editor";
 import createWebSocketPlugin from "./plugins/createWebSocketPlugin";
 import { API_v1 } from "@/api/API_v1";
-import { API_v2 } from "@/api/API_v2";
+import { instance_v1, instance_v2 } from "../api/config";
 import { entryRatingInstance, entryRepostsInstance } from "@/api/config";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -23,33 +23,10 @@ export default createStore({
     editor: EditorModule,
   },
 
-  state: () => ({
-    subscriptions: null,
-    ignoredProfiles: null,
-  }),
-
-  getters: {
-    subscriptions(state) {
-      return state.subscriptions;
-    },
-
-    ignoredProfiles(state) {
-      return state.ignoredProfiles;
-    },
-  },
-
   mutations: {
     connectApiChannel() {},
     disconnectApiChannel() {},
     closeStartScreen() {},
-
-    setSubscriptions(state, data) {
-      state.subscriptions = data;
-    },
-
-    setIgnoredProfiles(state, data) {
-      state.ignoredProfiles = data;
-    },
   },
 
   actions: {
@@ -141,15 +118,33 @@ export default createStore({
     },
 
     requestSubscriptions({ commit }, subsiteId) {
-      return API_v2.subscriptions(subsiteId).then((response) => {
-        commit("setSubscriptions", response.data.result.items);
-      });
+      let token = localStorage.getItem("token");
+
+      return instance_v2
+        .get(`subsite/subscriptions?subsiteId=${subsiteId}`, {
+          headers: { "X-Device-Token": token },
+        })
+        .then((response) => {
+          localStorage.setItem(
+            "subscriptions",
+            JSON.stringify(response.data.result.items)
+          );
+        });
     },
 
     requestIgnoredSubsites({ commit }) {
-      return API_v1.requestIgnoredSubsites().then((response) => {
-        commit("setIgnoredProfiles", response.data.result);
-      });
+      let token = localStorage.getItem("token");
+
+      return instance_v1
+        .get("ignores/subsites", {
+          headers: { "X-Device-Token": token },
+        })
+        .then((response) => {
+          localStorage.setItem(
+            "ignoredProfiles",
+            JSON.stringify(response.data.result)
+          );
+        });
     },
   },
 

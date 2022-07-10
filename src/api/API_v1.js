@@ -76,8 +76,4 @@ export const API_v1 = {
 
     return instance_v1.post("entry/create", formData);
   },
-
-  requestIgnoredSubsites() {
-    return instance_v1.get("ignores/subsites");
-  },
 };

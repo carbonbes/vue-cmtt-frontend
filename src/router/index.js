@@ -77,7 +77,7 @@ const router = createRouter({
           to.name === "EntryPage" &&
           to.query.comments === null
         ) {
-          resolve({ el: "#entry-page__comments", top: 60 });
+          resolve({ el: "#entry-page__comments", top: 90 });
         }
 
         if (
@@ -85,7 +85,7 @@ const router = createRouter({
           to.name === "EntryPage" &&
           to.query.comments === null
         ) {
-          resolve({ el: "#entry-page__comments", top: 60, behavior: "smooth" });
+          resolve({ el: "#entry-page__comments", top: 90, behavior: "smooth" });
         }
 
         if (savedPosition) resolve(savedPosition);

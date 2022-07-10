@@ -1,7 +1,6 @@
 import { API_v1 } from "../../api/API_v1";
 import { API_v2 } from "../../api/API_v2";
 
-import { instance_v2 } from "../../api/config";
 const authModule = {
   state: () => ({
     auth: [],
@@ -65,7 +64,7 @@ const authModule = {
   },
 
   actions: {
-    requestAuth({ commit, dispatch }) {
+    requestAuth({ commit }) {
       commit("setAuthIsRequested", true);
 
       return API_v2.subsiteMe()
@@ -73,7 +72,6 @@ const authModule = {
           localStorage.m_hash = response.data.result.mHash;
           localStorage.user_hash = response.data.result.userHash;
 
-          dispatch("requestSubscriptions", response.data.result.id);
           commit("setAuth", response.data.result);
           commit("setIsAuth", true);
           commit("setAuthIsRequested", false);
@@ -91,7 +89,13 @@ const authModule = {
       API_v1.requestLogin(data)
         .then((response) => {
           localStorage.token = response.headers["x-device-token"];
-          location.reload();
+
+          Promise.all([
+            dispatch("requestSubscriptions", response.data.result.id),
+            dispatch("requestIgnoredSubsites"),
+          ]).then(() => {
+            location.reload();
+          });
         })
         .catch((error) => {
           commit("setLoginIsRequested", false);
