@@ -468,7 +468,7 @@ export default {
 }
 
 .reply-form {
-  --attachment-item-size: 80px;
+  --attachment-item-size: 96px;
 
   position: relative;
   padding: 13.5px 12px 12px 17px;
@@ -510,7 +510,6 @@ export default {
   }
 
   .attachments {
-    padding-top: 25px;
     display: flex;
     flex-direction: row;
 
@@ -563,7 +562,7 @@ export default {
     position: relative;
     margin: 0;
     padding-top: 0;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     width: 100%;
     display: inline-block;
     line-height: 26px;
