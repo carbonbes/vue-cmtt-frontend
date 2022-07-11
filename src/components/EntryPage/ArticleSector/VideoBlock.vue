@@ -1,6 +1,6 @@
 <template>
   <div class="entry-page__video-block" :class="classObject">
-    <video-component
+    <VideoComponent
       :src-video="item.data.items[0].image.data.uuid"
       :src-width="item.data.items[0].image.data.width"
       :src-height="item.data.items[0].image.data.height"
@@ -10,7 +10,7 @@
       v-if="type === 'default'"
     />
 
-    <video-component
+    <VideoComponent
       :src-video="item.data.video.data.thumbnail.data.uuid"
       :src-width="item.data.video.data.width"
       :src-height="item.data.video.data.height"
@@ -40,16 +40,16 @@ export default {
       if (this.type === "default") {
         return {
           "entry-page__video-block_wide":
-            this.item.data.items[0].image.data.width > this.maxWidth,
+            this.item.data.items[0].image.data.width > 640,
           "entry-page__video-block_thin":
-            this.item.data.items[0].image.data.width < this.maxWidth ||
+            this.item.data.items[0].image.data.width < 640 ||
             this.item.data.items[0].image.data.width <
               this.item.data.items[0].image.data.height,
         };
       } else if (this.type === "video") {
         return {
           "entry-page__video-block_wide":
-            this.item.data.video.data.width > this.maxWidth ||
+            this.item.data.video.data.width > 640 ||
             this.item.data.video.data.external_service,
           "entry-page__video-block_thin":
             this.item.data.video.data.width < this.item.data.video.data.height,

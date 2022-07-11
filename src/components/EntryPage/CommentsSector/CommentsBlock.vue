@@ -2,7 +2,7 @@
 import { computed, reactive, watch } from "vue";
 import { useStore } from "vuex";
 import { useMediaQuery } from "@vueuse/core";
-import CommentBlock from "@/components/EntryPage/Comments/CommentBlock.vue";
+import CommentBlock from "./CommentBlock.vue";
 
 const isMobile = useMediaQuery("(max-width: 768px)");
 const store = useStore();
@@ -17,9 +17,13 @@ const state = reactive({
 });
 
 // computed
-const ignoredSubsites = computed(() =>
-  JSON.parse(localStorage.getItem("ignoredProfiles"))
-);
+const ignoredSubsites = computed(() => {
+  const ignoredProfiles = JSON.parse(localStorage.getItem("ignoredProfiles"));
+
+  if (!ignoredProfiles) {
+    return [];
+  } else return ignoredProfiles;
+});
 
 // methods
 const setIdCommentBranchFocused = (commentId) => {

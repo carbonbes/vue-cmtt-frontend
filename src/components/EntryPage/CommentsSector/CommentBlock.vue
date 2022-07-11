@@ -163,9 +163,9 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import DateTime from "@/components/DateTime.vue";
 import VoteIcon from "@/assets/logos/vote_icon.svg?inline";
 import LikesPopup from "@/components/LikesPopup/LikesPopup.vue";
-import CommentText from "@/components/EntryPage/Comments/CommentText.vue";
-import CommentMedia from "@/components/EntryPage/Comments/CommentMedia.vue";
-import ReplyForm from "@/components/EntryPage/Comments/ReplyForm.vue";
+import CommentText from "./CommentText.vue";
+import CommentMedia from "./CommentMedia.vue";
+import ReplyForm from "../ReplyForm.vue";
 import UpArrowIcon from "@/assets/logos/up_arrow.svg?inline";
 import MoreItemIcon from "@/assets/logos/more-item_icon.svg?inline";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
@@ -518,7 +518,13 @@ export default {
     },
 
     ignoredProfiles() {
-      return JSON.parse(localStorage.getItem("ignoredProfiles"));
+      const ignoredSubsites = JSON.parse(
+        localStorage.getItem("ignoredProfiles")
+      );
+
+      if (!ignoredSubsites) {
+        return [];
+      } else return ignoredSubsites;
     },
 
     ...mapGetters([

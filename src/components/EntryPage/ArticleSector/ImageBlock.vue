@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ImageComponent from "../ImageComponent.vue";
+import ImageComponent from "../../ImageComponent.vue";
 import сalculateSizes from "@/utils/сalculateSizes";
 
 export default {
