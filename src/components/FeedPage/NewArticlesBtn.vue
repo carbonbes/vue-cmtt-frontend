@@ -45,4 +45,10 @@ const countLabel = computed(() => declensionWords(props.newArticles, labels));
     color: var(--blue-color);
   }
 }
+
+@media (max-width: 640px) {
+  .new-articles-btn {
+    border-radius: 0;
+  }
+}
 </style>
