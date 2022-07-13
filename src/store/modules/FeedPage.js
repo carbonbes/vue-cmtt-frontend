@@ -1,5 +1,4 @@
-import { API_v2 } from "../../api/API_v2";
-import store from "../index";
+import Api from "@/api";
 
 const feedPageModule = {
   state: () => ({
@@ -149,7 +148,7 @@ const feedPageModule = {
     requestFeed({ commit }, data) {
       commit("setFeedIsRequested", true);
 
-      return API_v2.getFeed(data.params).then((response) => {
+      return Api.requestFeed(data.params).then((response) => {
         let items = response.data.result.items
           .filter((entry) => entry.type === "entry")
           .map((entry) => entry.data)
@@ -175,7 +174,7 @@ const feedPageModule = {
     },
 
     requestShortNews({ commit }, data) {
-      return API_v2.getShortNews(data).then((response) => {
+      return Api.requestDigest(data).then((response) => {
         commit("setShortNews", response.data.result.news);
         commit("setShortNewsLastId", response.data.result.lastId);
       });

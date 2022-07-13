@@ -1,4 +1,4 @@
-import { API_v1 } from "@/api/API_v1";
+import Api from "@/api";
 
 const editorModule = {
   state: () => ({
@@ -21,7 +21,7 @@ const editorModule = {
     requestSubsitesList() {},
 
     createEntry({}, data) {
-      return API_v1.createEntry(data);
+      return Api.requestCreateEntry(data);
     },
   },
 };

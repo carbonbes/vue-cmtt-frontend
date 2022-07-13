@@ -1,5 +1,4 @@
-import { API_v1 } from "../../api/API_v1";
-import { API_v2 } from "../../api/API_v2";
+import Api from "@/api";
 import { entryRatingInstance, entryRepostsInstance } from "../../api/config";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -273,7 +272,7 @@ const entryPageModule = {
 
   actions: {
     requestEntry({ commit }, id) {
-      return API_v2.getEntry(id).then((response) => {
+      return Api.requestEntry(id).then((response) => {
         let entry = response.data.result;
         entry.likes.prevIsLiked = null;
         entry.likes.prevIsLiked = entry.likes.isLiked;
@@ -287,7 +286,7 @@ const entryPageModule = {
     },
 
     requestSubsiteData({ commit }, id) {
-      return API_v2.subsite(id).then((response) => {
+      return Api.requestProfile(id).then((response) => {
         commit("setSubsiteData", response.data.result);
       });
     },
@@ -295,7 +294,7 @@ const entryPageModule = {
     postCommentLike({ commit }, data) {
       commit("setCommentIsLiked", data);
 
-      return API_v1.postLike(data).catch((error) => {
+      return Api.requestAddLike(data).catch((error) => {
         commit("setCommentIsLiked", {
           id: data.id,
           content: data.content,
@@ -320,7 +319,7 @@ const entryPageModule = {
     },
 
     requestCommentsList({ commit }, data) {
-      return API_v2.getComments(data).then((response) => {
+      return Api.requestComments(data).then((response) => {
         let items = response.data.result.items.map((item) => {
           item.etcControls = null;
           item.likes.prevIsLiked = null;
@@ -337,15 +336,15 @@ const entryPageModule = {
     },
 
     postComment({}, data) {
-      return API_v1.postComment(data);
+      return Api.requestCreateComment(data);
     },
 
     editComment({}, data) {
-      return API_v1.editComment(data);
+      return Apu.requestEditComment(data);
     },
 
     requestCommentEtcControls({ commit }, id) {
-      return API_v2.getCommentEtcControls(id).then((response) => {
+      return Api.requestCommentEtcControls(id).then((response) => {
         commit("setCommentEtcControls", {
           id,
           controls: response.data.result.etcControls,

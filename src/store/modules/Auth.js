@@ -1,5 +1,4 @@
-import { API_v1 } from "../../api/API_v1";
-import { API_v2 } from "../../api/API_v2";
+import Api from "@/api";
 
 const authModule = {
   state: () => ({
@@ -67,7 +66,7 @@ const authModule = {
     requestAuth({ commit }) {
       commit("setAuthIsRequested", true);
 
-      return API_v2.subsiteMe()
+      return Api.requestMyProfile()
         .then((response) => {
           localStorage.m_hash = response.data.result.mHash;
           localStorage.user_hash = response.data.result.userHash;
@@ -86,7 +85,7 @@ const authModule = {
       commit("setLoginIsRequested", true);
       commit("setIsError", false);
 
-      API_v1.requestLogin(data)
+      Api.requestLogin(data)
         .then((response) => {
           localStorage.token = response.headers["x-device-token"];
 

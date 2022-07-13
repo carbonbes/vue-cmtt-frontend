@@ -1,6 +1,6 @@
-import { instance_v1 } from "./config";
+import { instance_v1, instance_v2, instance_v2_31 } from "./config";
 
-export const API_v1 = {
+const Api = {
   requestLogin(data) {
     let formData = new FormData();
     formData.append("login", data.email);
@@ -9,11 +9,11 @@ export const API_v1 = {
     return instance_v1.post("auth/login", formData);
   },
 
-  getCommentLikes(id) {
+  requestCommentLikes(id) {
     return instance_v1.get(`comment/likers/${id}`);
   },
 
-  postComment(data) {
+  requestCreateComment(data) {
     let formData = new FormData();
 
     formData.append("id", data.id);
@@ -24,7 +24,7 @@ export const API_v1 = {
     return instance_v1.post("comment/add", formData);
   },
 
-  editComment(data) {
+  requestEditComment(data) {
     let formData = new FormData();
 
     formData.append("id", data.entryId);
@@ -35,7 +35,7 @@ export const API_v1 = {
     return instance_v1.post("comment/edit", formData);
   },
 
-  postLike(data) {
+  requestAddLike(data) {
     let formData = new FormData();
     formData.append("id", data.id);
     formData.append("type", data.type);
@@ -44,14 +44,14 @@ export const API_v1 = {
     return instance_v1.post("like", formData);
   },
 
-  uploadFile(file) {
+  requestUploadFile(file) {
     let formData = new FormData();
     formData.append("file", file);
 
     return instance_v1.post("uploader/upload", formData);
   },
 
-  myNotifications(data) {
+  requestNotifications(data) {
     if (!data.lastId) {
       return instance_v1.get("user/me/updates?is_read=1");
     } else if (data.lastId) {
@@ -61,11 +61,11 @@ export const API_v1 = {
     }
   },
 
-  myNotificationsCount() {
+  requestNotificationsCount() {
     return instance_v1.get("user/me/updates/count");
   },
 
-  createEntry(data) {
+  requestCreateEntry(data) {
     console.log(data);
     let formData = new FormData();
 
@@ -76,4 +76,48 @@ export const API_v1 = {
 
     return instance_v1.post("entry/create", formData);
   },
+
+  requestFeed(params) {
+    return instance_v2_31.get("feed", {
+      params: {
+        ...params,
+      },
+    });
+  },
+
+  requestTimeline(params) {
+    return instance_v2.get("timeline", {
+      params: {
+        ...params,
+      },
+    });
+  },
+
+  requestEntry(id) {
+    return instance_v2.get(`content?id=${id}`);
+  },
+
+  requestComments(data) {
+    return instance_v2.get("comments", { params: { ...data.params } });
+  },
+
+  requestCommentEtcControls(commentId) {
+    return instance_v2.get("comment/etcControls", {
+      params: { commentId },
+    });
+  },
+
+  requestProfile(id) {
+    return instance_v2.get(`subsite?id=${id}`);
+  },
+
+  requestMyProfile() {
+    return instance_v2.get("subsite/me");
+  },
+
+  requestDigest(data) {
+    return instance_v2.get("news", { params: { ...data } });
+  },
 };
+
+export default Api;

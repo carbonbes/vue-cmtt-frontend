@@ -1,4 +1,4 @@
-import { API_v1 } from "../../api/API_v1";
+import Api from "@/api";
 
 const notificationsModule = {
   state: () => ({
@@ -54,7 +54,7 @@ const notificationsModule = {
 
   actions: {
     requestNotifications({ commit, state }, data) {
-      return API_v1.myNotifications(data).then((response) => {
+      return Api.requestNotifications(data).then((response) => {
         commit("setNotificationsList", response.data.result);
         if (state.notificationsList.length > 0) {
           commit(
@@ -66,7 +66,7 @@ const notificationsModule = {
     },
 
     requestNotificationsCount({ commit }) {
-      return API_v1.myNotificationsCount().then((response) => {
+      return Api.requestNotificationsCount().then((response) => {
         commit("setNotificationsCount", response.data.result.count);
       });
     },

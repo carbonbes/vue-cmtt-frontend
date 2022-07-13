@@ -6,7 +6,7 @@ import ProfilePageModule from "./modules/ProfilePage";
 import NotificationsModule from "./modules/Notifications";
 import EditorModule from "./modules/Editor";
 import createWebSocketPlugin from "./plugins/createWebSocketPlugin";
-import { API_v1 } from "@/api/API_v1";
+import Api from "@/api";
 import { instance_v1, instance_v2 } from "../api/config";
 import { entryRatingInstance, entryRepostsInstance } from "@/api/config";
 import { notify } from "@kyvg/vue3-notification";
@@ -42,7 +42,7 @@ export default createStore({
         data
       );
 
-      return API_v1.postLike(data).catch((error) => {
+      return Api.requestAddLike(data).catch((error) => {
         commit(
           data.articleType === "feedArticle"
             ? "setFeedEntryIsLiked"
@@ -96,7 +96,7 @@ export default createStore({
             });
           });
       } else if (data.type === "comment") {
-        return API_v1.getCommentLikes(data.id)
+        return Api.requestCommentLikes(data.id)
           .then((response) => {
             commit("setCommentLikesList", {
               commentId: data.id,
@@ -114,7 +114,7 @@ export default createStore({
     },
 
     uploadFile({}, file) {
-      return API_v1.uploadFile(file);
+      return Api.requestUploadFile(file);
     },
 
     requestSubscriptions({ commit }, subsiteId) {

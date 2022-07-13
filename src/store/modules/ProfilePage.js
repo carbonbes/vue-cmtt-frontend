@@ -1,4 +1,4 @@
-import { API_v2 } from "../../api/API_v2";
+import Api from "@/api";
 
 const profilePageModule = {
   state: () => ({
@@ -172,14 +172,14 @@ const profilePageModule = {
 
   actions: {
     requestProfile({ commit }, data) {
-      return API_v2.subsite(data.id).then((response) => {
+      return Api.requestProfile(data.id).then((response) => {
         commit("setProfile", response.data.result);
         commit("setProfileHidden", false);
       });
     },
 
     requestProfileEntries({ commit, state }, data) {
-      return API_v2.getTimeline(data.params).then((response) => {
+      return Api.requestTimeline(data.params).then((response) => {
         if (!state.profileHidden) {
           let items = response.data.result.items
             .map((entry) => entry.data)
@@ -207,7 +207,7 @@ const profilePageModule = {
     },
 
     requestProfileComments({ commit, state }, data) {
-      return API_v2.getComments(data).then((response) => {
+      return Api.requestComments(data).then((response) => {
         if (!state.profileHidden) {
           if (data.clearComments) {
             commit("clearProfileComments");
