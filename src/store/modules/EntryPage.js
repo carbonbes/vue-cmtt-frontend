@@ -340,7 +340,7 @@ const entryPageModule = {
     },
 
     editComment({}, data) {
-      return Apu.requestEditComment(data);
+      return Api.requestEditComment(data);
     },
 
     requestCommentEtcControls({ commit }, id) {

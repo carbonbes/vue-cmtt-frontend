@@ -1,47 +1,33 @@
 <template>
   <div class="likes-popup" ref="likesPopupRef">
-    <template v-for="(like, index) in this.likes" :key="index">
-      <template v-if="this.type === 'entry'">
-        <LikesPopupItem
-          :userId="index"
-          :avatarUrl="like.avatar_url"
-          :userName="like.user_name"
-          :sign="like.sign"
-          :popupRef="this.$refs.likesPopupRef"
-        />
-      </template>
-
-      <template v-if="this.type === 'comment'">
-        <LikesPopupItem
-          :userId="index"
-          :avatarUrl="like.avatar_url"
-          :userName="like.name"
-          :sign="like.sign"
-          :popupRef="this.$refs.likesPopupRef"
-        />
-      </template>
-    </template>
+    <ScrollComponent content-max-height="264px" thumb-width="2px">
+      <LikesPopupItem
+        v-for="(like, i) in props.likes"
+        :key="i"
+        :user-id="i"
+        :avatar-url="like.avatar_url"
+        :user-name="like.user_name || like.name"
+        :sign="like.sign"
+        :popup-ref="likesPopupRef"
+      />
+    </ScrollComponent>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import LikesPopupItem from "./LikesPopupItem.vue";
+import ScrollComponent from "../ScrollComponent.vue";
 
-export default {
-  props: {
-    likes: Object,
-    type: String,
-  },
+const likesPopupRef = ref(null);
 
-  components: { LikesPopupItem },
-};
+const props = defineProps(["likes"]);
 </script>
 
 <style lang="scss">
 .likes-popup {
   padding: 5px;
   width: 215px;
-  max-height: 264px;
   border-radius: 8px;
   background: var(--dropdown-bg);
   box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
@@ -50,7 +36,7 @@ export default {
   overscroll-behavior: none;
 
   &::-webkit-scrollbar {
-    width: 0;
+    display: none;
   }
 
   &__item {

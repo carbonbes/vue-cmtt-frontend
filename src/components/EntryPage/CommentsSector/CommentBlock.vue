@@ -75,10 +75,7 @@
               ></transition-group>
               <transition name="popup">
                 <div class="popup" v-if="likesPopupIsOpen">
-                  <likes-popup
-                    :likes="this.comment.likes.likesList"
-                    type="comment"
-                  />
+                  <likes-popup :likes="this.comment.likes.likesList" />
                 </div>
               </transition>
             </div>

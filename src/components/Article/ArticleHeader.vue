@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import DateTime from "../DateTime.vue";
+import PinIcon from "@/assets/logos/pin_icon.svg?inline";
 
 // props
 const props = defineProps(["article", "dateType"]);
@@ -20,6 +21,7 @@ const dateCreatedTitle = computed(() =>
   new Date(dateCreated.value).toLocaleString()
 );
 const isSameAuthor = computed(() => subsiteId.value === authorId.value);
+const isPinned = computed(() => props.article.isPinned);
 </script>
 
 <template>
@@ -49,6 +51,9 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
             :title="dateCreatedTitle"
           />
         </router-link>
+      </div>
+      <div class="pin-icon" v-if="isPinned" title="Закреплено автором">
+        <PinIcon class="icon" />
       </div>
     </div>
   </div>
@@ -107,6 +112,15 @@ const isSameAuthor = computed(() => subsiteId.value === authorId.value);
 
     .date-created {
       color: var(--grey-color);
+    }
+
+    .pin-icon {
+      margin-left: 10px;
+
+      .icon {
+        width: 11px;
+        color: var(--grey-color);
+      }
     }
   }
 }
