@@ -35,7 +35,7 @@ watch(
   () => isMobile.value,
   () => {
     if (isMobile.value) {
-      state.maxLvl = 4;
+      state.maxLvl = 5;
     } else if (!isMobile.value) {
       state.maxLvl = 8;
     }

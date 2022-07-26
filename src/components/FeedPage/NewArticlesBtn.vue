@@ -28,15 +28,16 @@ const countLabel = computed(() => declensionWords(props.newArticles, labels));
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 15px;
   border-radius: 8px;
   cursor: pointer;
 
   > .count {
     margin: 0 5px;
-    padding: 4px;
+    padding: 2px 4px;
     color: #fff;
     background: var(--blue-color);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     border-radius: 4px;
   }

@@ -23,13 +23,23 @@
           }
         }
 
-        @else if ($name =="dropdown-item-active-bg") {
+        @if ($name =="dropdown-item-active-bg") {
           @if ($theme-name =="light") {
             --#{$name}-lighter: #{color.scale($property, $lightness: 35%)};
           }
 
           @else if ($theme-name =="dark") {
             --#{$name}-lighter: #{color.scale($property, $lightness: -35%)};
+          }
+        }
+
+        @if ($name =="scrollbar-thumb-bg") {
+          @if ($theme-name =="light") {
+            --#{$name}-darker: #{color.scale($property, $lightness: -20%)}
+          }
+
+          @else if ($theme-name =="dark") {
+            --#{$name}-darker: #{color.scale($property, $lightness: 40%)}
           }
         }
       }

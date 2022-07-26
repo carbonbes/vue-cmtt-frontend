@@ -1,6 +1,12 @@
 <template>
   <div class="likes-popup" ref="likesPopupRef">
-    <ScrollComponent content-max-height="264px" thumb-width="2px">
+    <ScrollComponent
+      content-padding="5px"
+      content-max-height="264px"
+      thumb-track-y-offset="5px"
+      thumb-right-offset="5px"
+      thumb-width="2px"
+    >
       <LikesPopupItem
         v-for="(like, i) in props.likes"
         :key="i"
@@ -17,7 +23,7 @@
 <script setup>
 import { ref } from "vue";
 import LikesPopupItem from "./LikesPopupItem.vue";
-import ScrollComponent from "../ScrollComponent.vue";
+import ScrollComponent from "@/components/ScrollComponent.vue";
 
 const likesPopupRef = ref(null);
 
@@ -26,18 +32,11 @@ const props = defineProps(["likes"]);
 
 <style lang="scss">
 .likes-popup {
-  padding: 5px;
   width: 215px;
+  max-height: 264px;
   border-radius: 8px;
   background: var(--dropdown-bg);
   box-shadow: 0 4px 8px rgb(0 0 0 / 6%), 0 0 1px rgb(0 0 0 / 25%);
-  overflow-y: scroll;
-  scrollbar-width: none;
-  overscroll-behavior: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   &__item {
     padding: 7.5px;
@@ -46,8 +45,8 @@ const props = defineProps(["likes"]);
     border-radius: 5px;
     color: var(--black-color);
 
-    &:not(:last-child) {
-      margin-bottom: 2.5px;
+    &:not(:first-child) {
+      margin-top: 2.5px;
     }
 
     .item-avatar {

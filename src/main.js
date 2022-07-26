@@ -9,7 +9,8 @@ import bodyScrollLock from "@/plugins/bodyScrollLock";
 import onKeydown from "@/plugins/onKeydown";
 import onClickOutside from "@/plugins/onClickOutside";
 import intersectionObserver from "@/plugins/intersectionObserver";
-import PerfectScrollbar from "vue3-perfect-scrollbar";
+import resizeObserver from "@/plugins/resizeObserver";
+import focus from "@/plugins/focus";
 
 const app = createApp(App);
 const emitter = mitt();
@@ -30,5 +31,6 @@ app
   .use(onKeydown)
   .use(onClickOutside)
   .use(intersectionObserver)
-  .use(PerfectScrollbar)
+  .use(resizeObserver)
+  .use(focus)
   .mount("body");

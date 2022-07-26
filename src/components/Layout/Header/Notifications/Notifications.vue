@@ -4,8 +4,12 @@
       <div class="label">Уведомления</div>
     </div>
     <div class="delimiter"></div>
-    <perfect-scrollbar
+    <ScrollComponent
       class="notifications-content"
+      content-max-height="450px"
+      thumb-track-y-offset="5px"
+      thumb-width="4px"
+      thumb-right-offset="5px"
       v-if="notifications.length > 0 && isAuth && !state.isRequested"
     >
       <div
@@ -36,7 +40,7 @@
       <div class="notifications-content__loader">
         <Loader color="var(--black-color)" />
       </div>
-    </perfect-scrollbar>
+    </ScrollComponent>
     <div
       class="notifications-content__empty"
       v-if="!notifications.length && isAuth && !state.isRequested"
@@ -57,6 +61,7 @@ import { reactive, computed, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import NotificationsItem from "./NotificationsItem.vue";
 import Loader from "@/components/Loader.vue";
+import ScrollComponent from "@/components/ScrollComponent.vue";
 
 const store = useStore();
 
@@ -171,15 +176,6 @@ onUnmounted(() => {
 
   .notifications-content {
     max-height: 450px;
-    overflow: auto !important;
-    overflow-y: scroll;
-    overscroll-behavior: contain;
-
-    &::-webkit-scrollbar {
-      width: 0px;
-    }
-
-    scrollbar-width: none;
 
     .new-notifications-btn {
       position: sticky;

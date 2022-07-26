@@ -115,7 +115,7 @@ const isPinned = computed(() => props.article.isPinned);
     }
 
     .pin-icon {
-      margin-left: 10px;
+      margin-left: 8px;
 
       .icon {
         width: 11px;
