@@ -3,8 +3,8 @@
     <ScrollComponent
       content-padding="5px"
       content-max-height="264px"
-      thumb-track-y-offset="5px"
-      thumb-right-offset="5px"
+      thumb-track-y-offset="10px"
+      thumb-track-right-offset="5px"
       thumb-width="2px"
     >
       <LikesPopupItem

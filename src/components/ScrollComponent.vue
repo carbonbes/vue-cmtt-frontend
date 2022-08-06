@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
 // props
 const props = defineProps({
@@ -15,7 +15,7 @@ const props = defineProps({
     type: String,
     default: "0",
   },
-  thumbRightOffset: {
+  thumbTrackRightOffset: {
     type: String,
     default: "0",
   },
@@ -40,7 +40,13 @@ const thumbRef = ref(null);
 // methods
 const calculateVisibleArea = () => {
   state.value.visibleArea =
-    contentRef.value.clientHeight / contentRef.value.scrollHeight;
+    thumbTrackRef.value.clientHeight / contentRef.value.scrollHeight;
+};
+
+const setScrollbarVisibility = () => {
+  if (contentRef.value.clientHeight / contentRef.value.scrollHeight >= 1) {
+    thumbTrackRef.value.style.display = "none";
+  }
 };
 
 const calculateThumbHeight = () => {
@@ -67,6 +73,7 @@ const createScrollbar = () => {
   contentRef.value.addEventListener("scroll", scrollHandler, { passive: true });
 
   calculateVisibleArea();
+  setScrollbarVisibility();
   calculateThumbHeight();
 
   thumbRef.value.style.height = Math.round(state.value.thumbHeight) + "px";
@@ -74,6 +81,7 @@ const createScrollbar = () => {
 
 const updateScrollbar = () => {
   calculateVisibleArea();
+  setScrollbarVisibility();
   calculateThumbHeight();
 
   thumbRef.value.style.height = Math.round(state.value.thumbHeight) + "px";
@@ -106,6 +114,7 @@ onBeforeUnmount(() => {
 <style lang="scss">
 .scrollbar-component {
   display: flex;
+  overflow: hidden;
 
   .content {
     padding: v-bind("props.contentPadding");
@@ -120,12 +129,13 @@ onBeforeUnmount(() => {
 
   .thumb-track {
     position: relative;
+    right: v-bind("props.thumbTrackRightOffset");
     margin: v-bind("props.thumbTrackYOffset") 0;
 
     .thumb {
       position: absolute;
       top: 0;
-      right: v-bind("props.thumbRightOffset");
+      right: 0;
       width: v-bind("props.thumbWidth");
       background: var(--scrollbar-thumb-bg);
       border-radius: 8px;

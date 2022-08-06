@@ -8,8 +8,8 @@
       class="notifications-content"
       content-max-height="450px"
       thumb-track-y-offset="5px"
-      thumb-width="4px"
-      thumb-right-offset="5px"
+      thumb-track-right-offset="5px"
+      thumb-width="3px"
       v-if="notifications.length > 0 && isAuth && !state.isRequested"
     >
       <div
