@@ -13,7 +13,6 @@ const props = defineProps(["comments"]);
 // state
 const state = reactive({
   maxLvl: 8,
-  idCommentBranchFocused: 0,
 });
 
 // computed
@@ -24,11 +23,6 @@ const ignoredSubsites = computed(() => {
     return [];
   } else return ignoredProfiles;
 });
-
-// methods
-const setIdCommentBranchFocused = (commentId) => {
-  state.idCommentBranchFocused = commentId;
-};
 
 // watch
 watch(
@@ -48,8 +42,6 @@ watch(
     <CommentBlock
       :comment="comment"
       :maxLvl="state.maxLvl"
-      :idCommentBranchFocused="state.idCommentBranchFocused"
-      :setIdCommentBranchFocused="setIdCommentBranchFocused"
       v-if="
         !ignoredSubsites.some((subsite) => subsite.id === comment.author.id)
       "

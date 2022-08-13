@@ -9,8 +9,8 @@
       class="branch"
       :class="branchClassObj"
       @click="$emit('collapseBranch')"
-      @mouseenter="setIdCommentBranchFocused(this.comment.replyTo)"
-      @mouseleave="setIdCommentBranchFocused(0)"
+      @mouseenter="this.highlightBranch"
+      @mouseleave="this.unhighlightBranch"
       v-if="this.comment.level <= this.maxLvl && this.comment.level !== 0"
     />
     <div
@@ -131,8 +131,6 @@
           :comment="comment"
           :replyToAuthorName="authorName"
           :maxLvl="maxLvl"
-          :idCommentBranchFocused="idCommentBranchFocused"
-          :setIdCommentBranchFocused="setIdCommentBranchFocused"
           @highlight-parent-comment="highlightParentComment"
           @unhighlight-parent-comment="unhighlightParentComment"
           @collapse-branch="collapseBranch"
@@ -179,8 +177,6 @@ export default {
     "comment",
     "replyToAuthorName",
     "maxLvl",
-    "idCommentBranchFocused",
-    "setIdCommentBranchFocused",
   ],
 
   components: {
@@ -529,6 +525,7 @@ export default {
       "entryId",
       "entryAuthorId",
       "temporaryHightlightComment",
+      "idCommentBranchFocused",
     ]),
   },
 
@@ -648,13 +645,21 @@ export default {
       }
     },
 
+    highlightBranch() {
+      this.setIdCommentBranchFocused(this.comment.replyTo)
+    },
+
+    unhighlightBranch() {
+      this.setIdCommentBranchFocused(0)
+    },
+
     ...mapActions([
       "requestLikesList",
       "postCommentLike",
       "requestCommentEtcControls",
     ]),
 
-    ...mapMutations(["setCommentPrevLiked"]),
+    ...mapMutations(["setCommentPrevLiked", "setIdCommentBranchFocused"]),
   },
 
   watch: {

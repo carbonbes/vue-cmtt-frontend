@@ -11,6 +11,7 @@ const entryPageModule = {
     temporaryHightlightComment: null,
     temporaryHightlightCommentTimeout: null,
     idEntryConnectedChannel: null,
+    idCommentBranchFocused: null,
   }),
 
   getters: {
@@ -44,6 +45,10 @@ const entryPageModule = {
 
     idEntryConnectedChannel(state) {
       return state.idEntryConnectedChannel;
+    },
+
+    idCommentBranchFocused(state) {
+      return state.idCommentBranchFocused;
     },
   },
 
@@ -263,6 +268,10 @@ const entryPageModule = {
 
     setIdEntryConnectedChannel(state, id) {
       state.idEntryConnectedChannel = id;
+    },
+
+    setIdCommentBranchFocused(state, id) {
+      state.idCommentBranchFocused = id;
     },
 
     connectEntryPageChannel() {},
