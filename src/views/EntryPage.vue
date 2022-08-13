@@ -84,6 +84,8 @@
             :data="block.data"
             v-if="block.type === 'tweet'"
           />
+
+          <ListBlock :items="block.data.items" v-if="block.type === 'list'" />
         </template>
       </div>
       <div class="entry-page__footer ep-island">
@@ -160,6 +162,7 @@ import PersonBlock from "@/components/EntryPage/ArticleSector/PersonBlock.vue";
 import TwitterBlock from "@/components/EntryPage/ArticleSector/TwitterBlock.vue";
 import TelegramBlock from "@/components/EntryPage/ArticleSector/TelegramBlock.vue";
 import CommentsBlock from "@/components/EntryPage/CommentsSector/CommentsBlock.vue";
+import ListBlock from "@/components/EntryPage/ArticleSector/ListBlock.vue";
 import ReplyForm from "@/components/EntryPage/ReplyForm.vue";
 import store from "@/store";
 import nProgress from "nprogress";
@@ -207,6 +210,7 @@ export default {
     TwitterBlock,
     TelegramBlock,
     CommentsBlock,
+    ListBlock,
     ReplyForm,
   },
 

@@ -288,7 +288,8 @@ body {
 .quote-component__content .author .name,
 .quote-component__content .author .description,
 .article-component__content .subtitle p,
-.entry-page__comment .text {
+.entry-page__comment .text,
+.list-component ul li {
   a {
     color: var(--blue-color);
     border-bottom: 1px solid var(--link-text-decoration-color);
@@ -474,7 +475,8 @@ body {
   .quote-component__content .author .name,
   .quote-component__content .author .description,
   .article-component__content .subtitle p,
-  .entry-page__comment .text {
+  .entry-page__comment .text,
+  .list-component ul li {
     a {
       &:hover {
         color: var(--red-color);
