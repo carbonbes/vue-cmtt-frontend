@@ -4,7 +4,7 @@
 
 <script>
 import moment from "moment";
-import declensionWords from "@/utils/declensionWords";
+import wordDeclension from "@/utils/wordDeclension";
 
 export default {
   data() {
@@ -80,13 +80,13 @@ export default {
                 this.dateTime =
                   minutesAgo +
                   " " +
-                  declensionWords(minutesAgo, this.minutesWords) +
+                  wordDeclension(minutesAgo, this.minutesWords) +
                   " назад";
               }
             } else if (secondsAgo > 3600 && secondsAgo <= 86400) {
               if (secondsAgo <= 18000) {
                 this.dateTime =
-                  hoursAgo + " " + declensionWords(hoursAgo, this.hoursWords);
+                  hoursAgo + " " + wordDeclension(hoursAgo, this.hoursWords);
               } else if (secondsAgo > 18000) {
                 if (this.type === "0") {
                   this.dateTime = time;

@@ -74,7 +74,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import declensionWords from "@/utils/declensionWords";
+import wordDeclension from "@/utils/wordDeclension";
 import numberWithSpaces from "@/utils/numberWithSpaces";
 import UserAddIcon from "@/assets/logos/user_add.svg?inline";
 import CheckIcon from "@/assets/logos/check_icon.svg?inline";
@@ -166,7 +166,7 @@ export default {
     },
 
     subsLabel() {
-      return declensionWords(
+      return wordDeclension(
         this.subsiteData.counters?.subscribers,
         this.subsWords
       );

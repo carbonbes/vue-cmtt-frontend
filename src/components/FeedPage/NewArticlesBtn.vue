@@ -8,7 +8,7 @@
 
 <script setup>
 import { markRaw, computed } from "vue";
-import declensionWords from "@/utils/declensionWords";
+import wordDeclension from "@/utils/wordDeclension";
 
 // props
 const props = defineProps(["newArticles", "requestFeed"]);
@@ -17,7 +17,7 @@ const props = defineProps(["newArticles", "requestFeed"]);
 const labels = markRaw(["новую запись", "новые записи", "новых записей"]);
 
 // computed
-const countLabel = computed(() => declensionWords(props.newArticles, labels));
+const countLabel = computed(() => wordDeclension(props.newArticles, labels));
 </script>
 
 <style lang="scss">

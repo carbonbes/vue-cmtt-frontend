@@ -167,7 +167,7 @@ import ReplyForm from "@/components/EntryPage/ReplyForm.vue";
 import store from "@/store";
 import nProgress from "nprogress";
 import { notify } from "@kyvg/vue3-notification";
-import declensionWords from "@/utils/declensionWords";
+import wordDeclension from "@/utils/wordDeclension";
 
 function requestEntry(routeTo, next) {
   nProgress.start();
@@ -233,7 +233,7 @@ export default {
     },
 
     commentsWordDecl() {
-      return declensionWords(this.commentsList.length, this.commentWords);
+      return wordDeclension(this.commentsList.length, this.commentWords);
     },
 
     ...mapGetters(["entry", "commentsList"]),

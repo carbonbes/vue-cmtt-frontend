@@ -68,7 +68,7 @@ import { computed, reactive } from "vue";
 import { useStore } from "vuex";
 import rootStore from "@/store";
 import nProgress from "nprogress";
-import declensionWords from "@/utils/declensionWords";
+import wordDeclension from "@/utils/wordDeclension";
 import numberWithSpaces from "@/utils/numberWithSpaces";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -201,7 +201,7 @@ export default {
         let subsiteSubsWithSpaces = numberWithSpaces(
           profile.value.counters.subscribers
         );
-        let subsiteSubsWordDecl = declensionWords(
+        let subsiteSubsWordDecl = wordDeclension(
           profile.value.counters.subscribers,
           state.subsWords
         );

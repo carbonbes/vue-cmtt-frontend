@@ -1,4 +1,4 @@
-export default function declensionWords(number, words) {
+export default function wordDeclension(number, words) {
   let value = number % 100;
   let num = value % 10;
   if (value > 10 && value < 20) return words[2];
