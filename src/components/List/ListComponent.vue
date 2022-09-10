@@ -18,7 +18,7 @@ defineProps({
 <style lang="scss">
 .list-component {
   ul {
-    padding-left: 16px;
+    padding-left: 32px;
 
     li {
       margin: 10px 0;
