@@ -11,6 +11,7 @@ import onClickOutside from "@/plugins/onClickOutside";
 import intersectionObserver from "@/plugins/intersectionObserver";
 import resizeObserver from "@/plugins/resizeObserver";
 import focus from "@/plugins/focus";
+import CommentQuote from "@/components/EntryPage/CommentsSector/CommentQuote.vue";
 
 const app = createApp(App);
 const emitter = mitt();
@@ -22,6 +23,8 @@ nProgress.configure({
   parent: ".loader",
   trickleSpeed: 40,
 });
+
+app.component("CommentQuote", CommentQuote);
 
 app
   .use(store)
