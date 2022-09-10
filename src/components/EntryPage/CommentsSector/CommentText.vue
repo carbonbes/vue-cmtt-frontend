@@ -39,9 +39,9 @@ export default {
     sanitizedString() {
       return this.replacedString.map((item) =>
         DOMPurify.sanitize(item, {
-          ALLOWED_TAGS: ["a"],
-          ALLOWED_ATTR: ["class", "target"],
-          ADD_TAGS: ["router-link", "comment-quote", "br"],
+          ALLOWED_TAGS: ["a", "br"],
+          ALLOWED_ATTR: ["target"],
+          ADD_TAGS: ["router-link", "comment-quote"],
           ADD_ATTR: [":to"],
         })
       );
