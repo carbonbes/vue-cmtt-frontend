@@ -1,12 +1,14 @@
 <template>
   <component
-    v-for="(text, i) in replacedString"
+    v-for="(text, i) in sanitizedString"
     :key="i"
     :is="{ template: '<p>' + text + '</p>' }"
   />
 </template>
 
 <script>
+import DOMPurify from "dompurify";
+
 export default {
   props: {
     string: String,
@@ -35,6 +37,16 @@ export default {
             )
             .replace(/\n/g, "<br>")
         );
+    },
+
+    sanitizedString() {
+      return this.replacedString.map((item) =>
+        DOMPurify.sanitize(item, {
+          ALLOWED_TAGS: ["br", "a"],
+          ADD_TAGS: ["router-link"],
+          ADD_ATTR: [":to", "target"],
+        })
+      );
     },
   },
 };
