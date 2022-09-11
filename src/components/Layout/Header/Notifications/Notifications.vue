@@ -163,6 +163,7 @@ onUnmounted(() => {
 
   .notifications-header {
     padding: 15px 20px;
+    height: 50px;
 
     .label {
       font-weight: 500;
@@ -188,21 +189,6 @@ onUnmounted(() => {
       text-align: center;
       cursor: pointer;
       z-index: 2;
-    }
-
-    .ps {
-      &__rail-y {
-        width: 0;
-        z-index: 3;
-
-        .pc--clicking {
-          background-color: unset;
-        }
-      }
-
-      &__thumb-y {
-        background-color: var(--dropdown-scrollbar-thumb-bg);
-      }
     }
 
     &__empty {
@@ -372,6 +358,14 @@ onUnmounted(() => {
     --mt: 0;
     --width: 100%;
     --bradius: 0;
+
+    .notifications-content {
+      max-height: calc(100vh - 110px);
+
+      .content {
+        max-height: unset;
+      }
+    }
   }
 }
 </style>
