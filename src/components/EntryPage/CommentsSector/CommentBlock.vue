@@ -731,12 +731,12 @@ export default {
       z-index: 1;
 
       &_highlighted {
-        border-color: var(--branch-hovered-color);
-        box-shadow: inset 1px 0 0 0 var(--branch-hovered-color);
+        border-color: var(--brand-color);
+        box-shadow: inset 1px 0 0 0 var(--brand-color);
 
         &::before {
-          border-color: var(--branch-hovered-color) !important;
-          box-shadow: inset 1px -1px 0 0 var(--branch-hovered-color);
+          border-color: var(--brand-color) !important;
+          box-shadow: inset 1px -1px 0 0 var(--brand-color);
         }
       }
 

@@ -49,12 +49,18 @@
 
           <text-block :item="block" v-if="block.type === 'text'" />
 
-          <link-block
+          <LinkBlock
             :title="block.data.link.data.title"
             :description="block.data.link.data.description"
             :urlSrc="block.data.link.data.url"
             :sourceIcon="block.data.link.data.image?.data.uuid"
-            v-if="block.type === 'link'"
+            :availability="true"
+            v-if="block.data.link && block.type === 'link'"
+          />
+
+          <LinkBlock
+            :availability="false"
+            v-if="!block.data.link && block.type === 'link'"
           />
 
           <quote-block

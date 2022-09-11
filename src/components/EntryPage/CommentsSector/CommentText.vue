@@ -40,7 +40,7 @@ export default {
       return this.replacedString.map((item) =>
         DOMPurify.sanitize(item, {
           ALLOWED_TAGS: ["a", "br"],
-          ALLOWED_ATTR: ["target"],
+          ALLOWED_ATTR: ["target", "href"],
           ADD_TAGS: ["router-link", "comment-quote"],
           ADD_ATTR: [":to"],
         })

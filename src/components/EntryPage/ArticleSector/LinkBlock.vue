@@ -6,6 +6,7 @@
         :description="description"
         :urlSrc="urlSrc"
         :sourceIcon="sourceIcon"
+        :availability="availability"
       />
     </div>
   </div>
@@ -22,6 +23,7 @@ export default {
     description: String,
     urlSrc: String,
     sourceIcon: String,
+    availability: Boolean,
   },
 };
 </script>
@@ -32,7 +34,7 @@ export default {
   margin-bottom: 15px;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .entry-page__link-block {
     margin-left: 15px;
     margin-right: 15px;

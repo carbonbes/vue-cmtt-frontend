@@ -1,18 +1,3 @@
-<template>
-  <a class="link-block" :href="urlSrc" target="_blank">
-    <div class="link-block__content">
-      <span class="link-block__title">{{ title }}</span>
-      <span class="link-block__description">{{ description }}</span>
-      <div class="link-block__url">
-        <link-icon class="icon" />{{ shortUrl[1] }}
-      </div>
-    </div>
-    <div class="link-block__logo" v-if="sourceLogo">
-      <img :src="sourceLogo" />
-    </div>
-  </a>
-</template>
-
 <script>
 import LinkIcon from "@/assets/logos/link_icon.svg?inline";
 
@@ -22,6 +7,7 @@ export default {
     description: String,
     urlSrc: String,
     sourceIcon: String,
+    availability: Boolean,
   },
 
   components: { LinkIcon },
@@ -46,7 +32,30 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<template>
+  <template v-if="this.availability">
+    <a class="link-block" :href="urlSrc" target="_blank">
+      <div class="content">
+        <span class="title">{{ title }}</span>
+        <span class="description">{{ description }}</span>
+        <div class="url"><LinkIcon class="icon" />{{ shortUrl[1] }}</div>
+      </div>
+      <div class="logo" v-if="sourceLogo">
+        <img :src="sourceLogo" />
+      </div>
+    </a>
+  </template>
+
+  <template v-if="!this.availability">
+    <div class="link-block link-block_unavailable">
+      <div class="link-block__content">
+        <span class="title">Ссылка недоступна</span>
+      </div>
+    </div>
+  </template>
+</template>
+
+<style lang="scss" scoped>
 .link-block {
   position: relative;
   padding: 11px 16px;
@@ -55,21 +64,34 @@ export default {
   border: 1px solid var(--embed-border-color);
   border-radius: 6px;
   z-index: 1;
+
+  &_unavailable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grey-color);
+
+    .link-block__content {
+      .title {
+        font-size: 16px;
+      }
+    }
+  }
 }
 
-.link-block__title {
+.title {
   margin-bottom: 2px;
   font-size: 18px;
   font-weight: 500;
 }
 
-.link-block__description {
+.description {
   font-size: 15px;
   line-height: 22px;
 }
 
-.link-block__title,
-.link-block__description {
+.title,
+.description {
   display: block;
   line-height: 26px;
   white-space: nowrap;
@@ -78,7 +100,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.link-block__logo {
+.logo {
   display: flex;
   justify-content: flex-end;
   flex-grow: 1;
@@ -90,7 +112,7 @@ export default {
   }
 }
 
-.link-block__url {
+.url {
   margin-top: 15px;
   display: flex;
   font-size: 13px;
@@ -105,8 +127,8 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-  .link-block__title,
-  .link-block__description {
+  .title,
+  .description {
     max-width: 175px;
   }
 }
