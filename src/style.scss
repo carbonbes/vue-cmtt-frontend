@@ -380,7 +380,7 @@ body {
 }
 
 .embed-text {
-  br {
+  >br {
     display: block;
     content: "";
     height: 4px;
@@ -392,12 +392,16 @@ body {
     cursor: pointer;
   }
 
-  b {
+  >b {
     font-weight: 400;
   }
 
-  i {
+  >i {
     font-style: normal;
+  }
+
+  >p {
+    margin: 0;
   }
 }
 
