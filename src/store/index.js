@@ -8,7 +8,6 @@ import EditorModule from "./modules/Editor";
 import createWebSocketPlugin from "./plugins/createWebSocketPlugin";
 import Api from "@/api";
 import { instance_v1, instance_v2 } from "../api/config";
-import { entryRatingInstance, entryRepostsInstance } from "@/api/config";
 import { notify } from "@kyvg/vue3-notification";
 
 const plugin = createWebSocketPlugin();
@@ -69,22 +68,21 @@ export default createStore({
 
     requestLikesList({ commit }, data) {
       if (data.type === "entry") {
-        return entryRatingInstance
-          .get(`vote/get_likers?id=${data.id}&type=1`)
+        return Api.requestEntryLikes(data.id)
           .then((response) => {
             if (data.subtype === "pageArticle") {
               commit("setArticlePageLikesList", {
-                data: response.data.data.likers,
+                data: response.data.result,
               });
             } else if (data.subtype === "feedArticle") {
               commit("setFeedArticleLikesList", {
                 id: data.id,
-                data: response.data.data.likers,
+                data: response.data.result,
               });
             } else if (data.subtype === "profileArticle") {
               commit("setProfileArticleLikesList", {
                 id: data.id,
-                data: response.data.data.likers,
+                data: response.data.result,
               });
             }
           })

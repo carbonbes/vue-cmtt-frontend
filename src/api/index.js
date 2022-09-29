@@ -9,6 +9,10 @@ const Api = {
     return instance_v1.post("auth/login", formData);
   },
 
+  requestEntryLikes(entryId) {
+    return instance_v2_31.get(`content/likers/${entryId}`);
+  },
+
   requestCommentLikes(id) {
     return instance_v1.get(`comment/likers/${id}`);
   },
