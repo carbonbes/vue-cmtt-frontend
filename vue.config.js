@@ -15,7 +15,7 @@ module.exports = {
     open: true,
     proxy: {
       "/v1.9": {
-        target: "https://api.tjournal.ru/v1.9",
+        target: "https://api.dtf.ru/v1.9",
         changeOrigin: true,
         pathRewrite: {
           "^/v1.9": "",
@@ -23,7 +23,7 @@ module.exports = {
       },
 
       "/v2.1": {
-        target: "https://api.tjournal.ru/v2.1",
+        target: "https://api.dtf.ru/v2.1",
         changeOrigin: true,
         pathRewrite: {
           "^/v2.1": "",
@@ -31,7 +31,7 @@ module.exports = {
       },
 
       "/v2.31": {
-        target: "https://api.tjournal.ru/v2.31",
+        target: "https://api.dtf.ru/v2.31",
         changeOrigin: true,
         pathRewrite: {
           "^/v2.31": "",
@@ -39,7 +39,7 @@ module.exports = {
       },
 
       "/entry/rating": {
-        target: "https://tjournal.ru",
+        target: "https://dtf.ru",
         changeOrigin: true,
         pathRewrite: {
           "^/entry/rating": "",
@@ -47,7 +47,7 @@ module.exports = {
       },
 
       "/entry/reposts": {
-        target: "https://tjournal.ru",
+        target: "https://dtf.ru",
         changeOrigin: true,
         pathRewrite: {
           "^/entry/reposts": "",

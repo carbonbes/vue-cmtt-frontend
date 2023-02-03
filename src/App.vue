@@ -16,7 +16,7 @@
     </div>
   </transition>
   <transition name="start-screen">
-    <StartScreen :isShow="showStartScreen" v-if="showStartScreen" />
+    <StartScreen v-if="showStartScreen" />
   </transition>
   <Notification />
 </template>

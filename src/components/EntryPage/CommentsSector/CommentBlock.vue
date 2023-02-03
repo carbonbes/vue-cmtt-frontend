@@ -728,6 +728,7 @@ export default {
       height: 100%;
       border-left: 1px solid var(--branch-color);
       cursor: pointer;
+      transition: border-color .2s ease, box-shadow .2s ease;
       z-index: 1;
 
       &_highlighted {
@@ -751,6 +752,7 @@ export default {
         border: solid var(--branch-color);
         border-width: 0 0 1px 1px;
         border-bottom-left-radius: 8px;
+        transition: border-color .2s ease, box-shadow .2s ease;
         z-index: 1;
       }
     }
@@ -760,16 +762,22 @@ export default {
       padding-top: 18px;
       padding-bottom: 5px;
 
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: var(--right-gap-highlighted);
+        padding: var(--padding-highlighted);
+        width: var(--width-highlighted);
+        height: 100%;
+        background: var(--comment-highlight-bg);
+        opacity: 0;
+        transition: opacity .2s ease;
+      }
+
       &_highlighted {
         &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: var(--right-gap-highlighted);
-          padding: var(--padding-highlighted);
-          width: var(--width-highlighted);
-          height: 100%;
-          background: var(--comment-highlight-bg);
+          opacity: 1;
         }
       }
 
@@ -805,6 +813,7 @@ export default {
           align-items: center;
           opacity: 0;
           order: -2;
+          transition: opacity .2s ease;
 
           svg {
             width: 14px;
@@ -859,6 +868,7 @@ export default {
                 margin-right: var(--action-gap);
                 transform: rotate(180deg);
                 opacity: 0;
+                transition: opacity .2s ease;
 
                 &_pressed {
                   color: var(--red-color);
@@ -869,6 +879,7 @@ export default {
               &.like-icon {
                 margin-left: var(--action-gap);
                 opacity: 0;
+                transition: opacity .2s ease;
 
                 &_pressed {
                   color: var(--green-color);

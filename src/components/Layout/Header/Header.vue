@@ -236,6 +236,7 @@ export default {
       padding-left: 20px;
       display: flex;
       align-items: center;
+      color: var(--black-color);
       user-select: none;
     }
 

@@ -1,10 +1,8 @@
 <svg xmlns:xlink="http://www.w3.org/1999/xlink"
-  xmlns="http://www.w3.org/2000/svg" height="50" width="32">
+  xmlns="http://www.w3.org/2000/svg" height="50" width="70" fill="currentColor">
   <defs>
-    <symbol viewBox="0 0 24 25" id="site_logo">
-      <path fill="#e8a427" class="st0" d="M0 19h8.5v6H0v-6z"></path>
-      <path fill="var(--black-color)" class="st1" d="M0 7h8.5v18l6.5-6V7h9V0H0v7z"></path>
-      <path fill="rgba(0,0,0,0.15)" class="st2" d="M7.5 19h1v6l-1-6z"></path>
+    <symbol viewBox="0 0 70 24" id="site_logo">
+      <path d="M14.446 0H0v23h14.446c5.014 0 9.091-3.984 9.091-8.883V8.883C23.538 3.984 19.46 0 14.446 0zm3.171 14.117c0 1.708-1.421 3.099-3.17 3.099h-8.53V5.783h8.529c1.748 0 3.17 1.388 3.17 3.1v5.234zm7.591-8.334h8.264v17.169h5.918V5.783h8.264V0H25.208M70 5.783V0H50.889v22.952h5.918V16.19h9.982v-5.78h-9.982V5.783"></path>
     </symbol>
   </defs>
   <use xlink:href="#site_logo"></use>

@@ -466,6 +466,7 @@ body {
   >.logo {
     width: 100px;
     height: 100px;
+    color: var(--black-color);
     animation: logo-pulse infinite 3s;
   }
 }

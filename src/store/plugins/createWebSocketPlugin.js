@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 export default function createWebSocketPlugin() {
-  let socket = io("https://ws-sio.tjournal.ru", {
+  let socket = io("https://ws-sio.dtf.ru", {
     transports: ["websocket"],
   });
 
