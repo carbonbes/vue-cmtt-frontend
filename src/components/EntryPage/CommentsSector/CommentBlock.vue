@@ -9,8 +9,8 @@
       class="branch"
       :class="branchClassObj"
       @click="$emit('collapseBranch')"
-      @mouseenter="this.highlightBranch"
-      @mouseleave="this.unhighlightBranch"
+      @mouseenter="$emit('highlightBranch', true)"
+      @mouseleave="$emit('highlightBranch', false)"
       v-if="this.comment.level <= this.maxLvl && this.comment.level !== 0"
     />
     <div
@@ -131,10 +131,12 @@
           :comment="comment"
           :replyToAuthorName="authorName"
           :maxLvl="maxLvl"
+          @highlight-branch="highlightBranch"
           @highlight-parent-comment="highlightParentComment"
           @unhighlight-parent-comment="unhighlightParentComment"
           @collapse-branch="collapseBranch"
           @temporary-highlight-parent-pomment="temporaryHighlightParentComment"
+          ref="commentBlockRef"
           v-if="
             !this.ignoredProfiles.some(
               (subsite) => comment.author.id === subsite.id
@@ -199,6 +201,7 @@ export default {
   data() {
     return {
       branchIsCollapsed: false,
+      branchIsHighlighted: false,
       likesPopupIsFocused: false,
       likesPopupIsOpen: false,
       replyFormIsOpen: false,
@@ -229,8 +232,7 @@ export default {
 
     branchClassObj() {
       return {
-        branch_highlighted:
-          this.idCommentBranchFocused === this.comment.replyTo,
+        branch_highlighted: this.branchIsHighlighted,
       };
     },
 
@@ -645,12 +647,8 @@ export default {
       }
     },
 
-    highlightBranch() {
-      this.setIdCommentBranchFocused(this.comment.replyTo)
-    },
-
-    unhighlightBranch() {
-      this.setIdCommentBranchFocused(0)
+    highlightBranch(value) {
+      this.$refs.commentBlockRef?.map((comment) => comment.branchIsHighlighted = value)
     },
 
     ...mapActions([
